@@ -1,0 +1,12 @@
+name: sudoku_engine
+description: Pure Dart Sudoku domain contracts for MICHI.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: ^3.11.0
+resolution: workspace
+dependencies:
+  meta: ^1.17.0
+dev_dependencies:
+  test: ^1.25.0
+  very_good_analysis: ^10.2.0

@@ -1,0 +1,44 @@
+name: michi_mobile
+description: MICHI Sudoku Coach for iOS and Android.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+resolution: workspace
+
+dependencies:
+  auto_route: ^10.2.3
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  freezed_annotation: ^3.1.0
+  get_it: ^9.2.1
+  injectable: ^2.7.1+4
+  json_annotation: ^4.9.0
+  michi_design_system:
+    path: ../../packages/michi_design_system
+  slang: ^4.19.0
+  slang_flutter: ^4.19.0
+  sudoku_engine:
+    path: ../../packages/sudoku_engine
+  sudoku_scanner:
+    path: ../../packages/sudoku_scanner
+
+dev_dependencies:
+  auto_route_generator: 10.2.6
+  bloc_test: ^10.0.0
+  build_runner: ^2.10.5
+  flutter_test:
+    sdk: flutter
+  freezed: 3.2.3
+  injectable_generator: 2.9.0
+  json_serializable: 6.11.2
+  mocktail: ^1.0.4
+  slang_build_runner: ^4.19.0
+  very_good_analysis: ^10.2.0
+
+flutter:
+  uses-material-design: true

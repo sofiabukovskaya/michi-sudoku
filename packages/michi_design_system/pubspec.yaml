@@ -1,0 +1,17 @@
+name: michi_design_system
+description: MICHI design tokens and reusable Flutter primitives.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: ^3.11.0
+resolution: workspace
+dependencies:
+  flutter:
+    sdk: flutter
+  theme_tailor_annotation: ^3.1.1
+dev_dependencies:
+  build_runner: ^2.10.5
+  flutter_test:
+    sdk: flutter
+  theme_tailor: 3.1.1
+  very_good_analysis: ^10.2.0

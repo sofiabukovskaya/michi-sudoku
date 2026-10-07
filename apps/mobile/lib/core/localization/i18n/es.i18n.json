@@ -1,0 +1,48 @@
+{
+  "appName": "MICHI",
+  "common": {
+    "continueLabel": "Continuar",
+    "start": "Empezar"
+  },
+  "splash": {
+    "subtitle": "Aprende a ver el siguiente paso."
+  },
+  "welcome": {
+    "title": "Tu camino en el sudoku."
+  },
+  "onboarding": {
+    "title": "Tu aprendizaje empieza aquí.",
+    "chooseLevel": "Elegir nivel"
+  },
+  "playerLevel": {
+    "title": "¿Cuánto sabes de sudoku?",
+    "goToGame": "Empezar a jugar"
+  },
+  "auth": {
+    "title": "Cuenta",
+    "unavailable": "La sincronización del progreso llegará más adelante."
+  },
+  "home": {
+    "title": "Tu camino en el sudoku",
+    "game": "Jugar",
+    "learn": "Aprender",
+    "progress": "Progreso",
+    "profile": "Perfil",
+    "scanner": "Escáner"
+  },
+  "game": {
+    "unavailable": "El tablero llegará en la siguiente fase."
+  },
+  "learn": {
+    "unavailable": "Las lecciones de técnicas llegarán más adelante."
+  },
+  "progress": {
+    "unavailable": "El dominio de las técnicas llegará más adelante."
+  },
+  "profile": {
+    "unavailable": "La configuración del perfil llegará más adelante."
+  },
+  "scanner": {
+    "unavailable": "La importación con cámara llegará después del juego principal."
+  }
+}
