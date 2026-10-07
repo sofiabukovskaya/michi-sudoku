@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/michi_colors.dart';
+import '../theme/michi_palette.dart';
 import '../tokens/michi_radius.dart';
 
 final class MichiTextField extends StatelessWidget {
@@ -28,9 +28,10 @@ final class MichiTextField extends StatelessWidget {
       labelText: label,
       errorText: errorText,
       filled: true,
-      fillColor: MichiColors.ivory,
+      fillColor: MichiPalette.of(context).ivory,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(MichiRadius.control),
+        borderSide: BorderSide(color: MichiPalette.of(context).inputLine),
       ),
     ),
   );

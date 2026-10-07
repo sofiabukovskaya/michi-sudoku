@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/michi_colors.dart';
+import '../theme/michi_palette.dart';
 import '../tokens/michi_radius.dart';
 import '../tokens/michi_typography.dart';
 
@@ -22,6 +22,7 @@ final class MichiButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = MichiPalette.of(context);
     final action = isLoading ? null : onPressed;
     final child = isLoading
         ? Row(
@@ -33,8 +34,8 @@ final class MichiButton extends StatelessWidget {
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   color: variant == MichiButtonVariant.primary
-                      ? MichiColors.ivory
-                      : MichiColors.indigo,
+                      ? palette.ivory
+                      : palette.indigo,
                 ),
               ),
               const SizedBox(width: 8),
@@ -62,17 +63,17 @@ final class MichiButton extends StatelessWidget {
         style: style.copyWith(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled) && !isLoading) {
-              return MichiColors.disabledBackground;
+              return palette.disabledBackground;
             }
             if (states.contains(WidgetState.pressed)) {
-              return MichiColors.indigoPressed;
+              return palette.indigoPressed;
             }
-            return MichiColors.indigo;
+            return palette.indigo;
           }),
           foregroundColor: WidgetStateProperty.resolveWith(
             (states) => states.contains(WidgetState.disabled) && !isLoading
-                ? MichiColors.disabledText
-                : MichiColors.ivory,
+                ? palette.disabledText
+                : palette.ivory,
           ),
         ),
         child: child,
@@ -80,24 +81,22 @@ final class MichiButton extends StatelessWidget {
       MichiButtonVariant.secondary => FilledButton(
         onPressed: action,
         style: style.copyWith(
-          backgroundColor: const WidgetStatePropertyAll(MichiColors.cream),
-          foregroundColor: const WidgetStatePropertyAll(
-            MichiColors.textPrimary,
-          ),
+          backgroundColor: WidgetStatePropertyAll(palette.cream),
+          foregroundColor: WidgetStatePropertyAll(palette.textPrimary),
         ),
         child: child,
       ),
       MichiButtonVariant.outline => OutlinedButton(
         onPressed: action,
         style: style.copyWith(
-          foregroundColor: const WidgetStatePropertyAll(MichiColors.indigo),
+          foregroundColor: WidgetStatePropertyAll(palette.indigo),
         ),
         child: child,
       ),
       MichiButtonVariant.text => TextButton(
         onPressed: action,
         style: style.copyWith(
-          foregroundColor: const WidgetStatePropertyAll(MichiColors.indigo),
+          foregroundColor: WidgetStatePropertyAll(palette.indigo),
         ),
         child: child,
       ),

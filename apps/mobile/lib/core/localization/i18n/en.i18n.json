@@ -1,0 +1,48 @@
+{
+  "appName": "MICHI",
+  "common": {
+    "continueLabel": "Continue",
+    "start": "Start"
+  },
+  "splash": {
+    "subtitle": "Learn to see the next move."
+  },
+  "welcome": {
+    "title": "Your path through Sudoku."
+  },
+  "onboarding": {
+    "title": "Your learning starts here.",
+    "chooseLevel": "Choose your level"
+  },
+  "playerLevel": {
+    "title": "How well do you know Sudoku?",
+    "goToGame": "Start playing"
+  },
+  "auth": {
+    "title": "Account",
+    "unavailable": "Progress sync is coming later."
+  },
+  "home": {
+    "title": "Your path through Sudoku",
+    "game": "Play",
+    "learn": "Learn",
+    "progress": "Progress",
+    "profile": "Profile",
+    "scanner": "Scanner"
+  },
+  "game": {
+    "unavailable": "The Sudoku board is coming in the next phase."
+  },
+  "learn": {
+    "unavailable": "Technique lessons are coming later."
+  },
+  "progress": {
+    "unavailable": "Technique mastery is coming later."
+  },
+  "profile": {
+    "unavailable": "Profile settings are coming later."
+  },
+  "scanner": {
+    "unavailable": "Camera import will follow the core game."
+  }
+}

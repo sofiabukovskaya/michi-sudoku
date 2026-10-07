@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/michi_colors.dart';
+import '../theme/michi_palette.dart';
 
 final class MichiIconButton extends StatelessWidget {
   const MichiIconButton({
@@ -19,7 +19,7 @@ final class MichiIconButton extends StatelessWidget {
     icon: Icon(icon),
     tooltip: tooltip,
     onPressed: onPressed,
-    color: MichiColors.textPrimary,
+    color: MichiPalette.of(context).textPrimary,
     constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
   );
 }

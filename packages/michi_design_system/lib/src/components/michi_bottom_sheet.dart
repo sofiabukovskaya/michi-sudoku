@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/michi_colors.dart';
+import '../theme/michi_palette.dart';
 import '../tokens/michi_radius.dart';
 import '../tokens/michi_spacing.dart';
 
@@ -11,9 +11,9 @@ final class MichiBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-    decoration: const BoxDecoration(
-      color: MichiColors.ivory,
-      borderRadius: BorderRadius.vertical(
+    decoration: BoxDecoration(
+      color: MichiPalette.of(context).ivory,
+      borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MichiRadius.hero),
       ),
     ),

@@ -1,0 +1,48 @@
+{
+  "appName": "MICHI",
+  "common": {
+    "continueLabel": "Pokračovat",
+    "start": "Začít"
+  },
+  "splash": {
+    "subtitle": "Nauč se vidět další tah."
+  },
+  "welcome": {
+    "title": "Tvoje cesta sudoku."
+  },
+  "onboarding": {
+    "title": "Tady začíná tvoje učení.",
+    "chooseLevel": "Vybrat úroveň"
+  },
+  "playerLevel": {
+    "title": "Jak dobře znáš sudoku?",
+    "goToGame": "Začít hrát"
+  },
+  "auth": {
+    "title": "Účet",
+    "unavailable": "Synchronizace postupu přijde později."
+  },
+  "home": {
+    "title": "Tvoje cesta sudoku",
+    "game": "Hrát",
+    "learn": "Učení",
+    "progress": "Pokrok",
+    "profile": "Profil",
+    "scanner": "Skener"
+  },
+  "game": {
+    "unavailable": "Hrací pole přijde v další fázi."
+  },
+  "learn": {
+    "unavailable": "Lekce technik přijdou později."
+  },
+  "progress": {
+    "unavailable": "Přehled zvládnutých technik přijde později."
+  },
+  "profile": {
+    "unavailable": "Nastavení profilu přijde později."
+  },
+  "scanner": {
+    "unavailable": "Import z fotoaparátu přijde po základní hře."
+  }
+}

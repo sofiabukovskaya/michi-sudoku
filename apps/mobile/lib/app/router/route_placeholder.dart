@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/core/localization/translations.g.dart';
 
 /// Consistent shell for Phase 1 routes; replaced by feature UI later.
 final class RoutePlaceholder extends StatelessWidget {
@@ -18,7 +19,7 @@ final class RoutePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('MICHI')),
+    appBar: AppBar(title: Text(context.t.appName)),
     body: SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(MichiSpacing.xl),
@@ -26,10 +27,10 @@ final class RoutePlaceholder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(),
-            Text(title, style: MichiTypography.display),
+            Text(title, style: Theme.of(context).textTheme.displayLarge),
             if (subtitle != null) ...[
               const SizedBox(height: MichiSpacing.lg),
-              Text(subtitle!, style: MichiTypography.body),
+              Text(subtitle!, style: Theme.of(context).textTheme.bodyLarge),
             ],
             const Spacer(),
             if (actionLabel != null)

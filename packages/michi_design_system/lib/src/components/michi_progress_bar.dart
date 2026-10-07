@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/michi_colors.dart';
+import '../theme/michi_palette.dart';
 import '../tokens/michi_radius.dart';
 
 final class MichiProgressBar extends StatelessWidget {
@@ -15,8 +15,8 @@ final class MichiProgressBar extends StatelessWidget {
     child: LinearProgressIndicator(
       value: value.clamp(0, 1),
       minHeight: 8,
-      color: MichiColors.coral,
-      backgroundColor: MichiColors.cream,
+      color: MichiPalette.of(context).coral,
+      backgroundColor: MichiPalette.of(context).cream,
     ),
   );
 }

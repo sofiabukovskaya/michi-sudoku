@@ -43,4 +43,21 @@ void main() {
     await tester.tap(find.text('Почати'));
     expect(taps, 1);
   });
+
+  testWidgets('MichiButton reads the generated palette extension', (
+    tester,
+  ) async {
+    final palette = MichiPalette.light.copyWith(indigo: Colors.purple);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(extensions: [palette]),
+        home: Scaffold(
+          body: MichiButton(label: 'Start', onPressed: () {}),
+        ),
+      ),
+    );
+
+    final button = tester.widget<FilledButton>(find.byType(FilledButton));
+    expect(button.style?.backgroundColor?.resolve({}), Colors.purple);
+  });
 }

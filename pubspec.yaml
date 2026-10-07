@@ -28,4 +28,4 @@ melos:
       description: Format Dart sources in the workspace.
     generate:
       run: melos exec --depends-on=build_runner -- "dart run build_runner build"
-      description: Generate AutoRoute, injectable, Freezed and JSON code.
+      description: Generate routes, DI, models, translations and themes.
