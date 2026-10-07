@@ -1,0 +1,13 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - lib/**/*.g.dart
+    - lib/**/*.freezed.dart
+
+linter:
+  rules:
+    # Internal source uses relative imports; public APIs remain explicit.
+    always_use_package_imports: false
+    # Placeholder routes and value objects do not need docs on every field.
+    public_member_api_docs: false
