@@ -2,7 +2,8 @@
 
 MICHI is a local-first Flutter app for learning to solve Sudoku logically. The
 Coach will teach the reasoning behind a move rather than reveal an answer.
-This repository currently contains the **Phase 1 architecture only**.
+Phases 1–4 are implemented: the workspace foundation, Sudoku domain rules,
+exact mathematical solver, and initial human reasoning pipeline.
 
 ## Workspace
 
@@ -11,7 +12,7 @@ apps/mobile/                   Flutter app (iOS and Android)
   lib/app/                     Bootstrap, router, theme
   lib/core/                    DI, errors, localization, persistence models
   lib/features/                Feature-first UI and future feature modules
-packages/sudoku_engine/        Pure Dart Sudoku domain contracts
+packages/sudoku_engine/        Pure Dart rules, exact solver, human solver
 packages/sudoku_scanner/       Flutter image recognition contracts
 packages/michi_design_system/  Flutter tokens and reusable controls
 ```
@@ -73,6 +74,9 @@ immediately after checkout. For a direct Android build, run
 - Existing starter Android and iOS identifiers (`com.example...`) are retained
   until a production application identifier is chosen.
 
-Phase 2 will implement Sudoku constraints, candidates, exact and human solvers,
-then Coach deductions and game state. Firebase, scanning, ML and full visual
-screens remain outside this phase.
+The engine now supports constraints, candidates, exact solving, and structured
+human deductions for Naked Single, Hidden Single, Naked Pair, and Pointing
+Pair. See [the engine README](packages/sudoku_engine/README.md) for its API and
+the distinction between mathematical solving and human reasoning. Coach hint
+planning, game state, Firebase, scanning, ML, and full visual screens remain
+future work.

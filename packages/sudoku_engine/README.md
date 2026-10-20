@@ -33,8 +33,9 @@ determine whether a puzzle has a solution.
    determines mathematical solvability, returns a complete solution, counts
    solutions up to a caller-provided limit, and checks uniqueness by counting
    at most two. Rule-invalid or contradictory boards have zero solutions.
-2. **HumanSolver — future Phase 4.** Will identify named, teachable deductions
-   in technique order.
+2. **HumanSolver — implemented in Phase 4.** `DeterministicHumanSolver`
+   identifies named, teachable deductions from the current board and logical
+   candidate state. It never consults exact search when choosing a move.
 3. **CoachEngine — future phase.** Will convert structured deductions into
    progressive hint data for the app to localize and display.
 
@@ -53,11 +54,47 @@ final count = solver.countSolutions(board, limit: 2); // Stops at 2
 final unique = solver.hasUniqueSolution(board);
 ```
 
+## Human reasoning
+
+`HumanSolverState.initial(board)` derives legal candidate masks for empty
+cells. The immutable state stores those masks separately from `SudokuBoard`:
+board values alone cannot retain a Naked Pair or Pointing Pair elimination.
+Applying a `Deduction` creates a new state, removes the specified candidates,
+places any digits, and intersects the remaining masks with the new board's
+legal candidates. A previously eliminated candidate never reappears after an
+unrelated placement. Invalid deduction actions throw `StateError`; an invalid
+board or impossible candidate state is reported as a contradiction.
+
+Each deduction contains a technique ID, focus cells, structured evidence,
+candidate eliminations, and/or digit placements. Evidence is semantic data
+(`CandidateSetEvidence`, `UnitCandidateEvidence`, `UnitEvidence`), with no
+localized text. The app can later turn it into Coach hints and explanations.
+
+Phase 4 supports **Naked Single**, **Hidden Single**, **Naked Pair**, and
+**Pointing Pair**, in that priority order. Within a technique, scanning is
+deterministic: cells by index; units as rows, columns, then boxes; digits in
+ascending order. Hidden Single keeps the first row/column/box evidence path
+when the same placement is found more than once.
+
+```dart
+const humanSolver = DeterministicHumanSolver();
+final state = HumanSolverState.initial(board);
+final next = humanSolver.findNextDeduction(state); // Deduction?; null if none
+final result = humanSolver.solveLogically(board); // status, finalState, trace
+```
+
+`HumanSolveResult` preserves the ordered deduction trace and ends with
+`solved`, `stuck`, or `contradiction`. **Stuck is a valid result:** a perfectly
+solvable Sudoku may require a technique outside the current catalogue. Human
+reasoning does not determine mathematical solvability or uniqueness; use
+`ExactSolver` for those questions. Exact search is used only as a test oracle
+for the HumanSolver regression fixtures.
+
 `SudokuPuzzle` remains a minimal puzzle identity and given board. `SudokuMove`
 remains a small semantic placement/elimination model. Gameplay progress and
 undo history belong in the application.
 
-Generator and difficulty components remain future work. No human technique,
-hint, or puzzle generation algorithm is implemented in Phase 3.
+Coach hint planning, more advanced human techniques, generator, and difficulty
+analysis remain future work.
 
 Run `dart test` from this directory with the workspace's Dart SDK.
