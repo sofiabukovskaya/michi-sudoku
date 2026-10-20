@@ -2,8 +2,9 @@
 
 MICHI is a local-first Flutter app for learning to solve Sudoku logically. The
 Coach will teach the reasoning behind a move rather than reveal an answer.
-Phases 1–4 are implemented: the workspace foundation, Sudoku domain rules,
-exact mathematical solver, and initial human reasoning pipeline.
+Phases 1–5 are implemented: the workspace foundation, Sudoku domain rules,
+exact mathematical solver, initial human reasoning, and progressive Coach
+planning.
 
 ## Workspace
 
@@ -12,7 +13,7 @@ apps/mobile/                   Flutter app (iOS and Android)
   lib/app/                     Bootstrap, router, theme
   lib/core/                    DI, errors, localization, persistence models
   lib/features/                Feature-first UI and future feature modules
-packages/sudoku_engine/        Pure Dart rules, exact solver, human solver
+packages/sudoku_engine/        Pure Dart rules, solvers, Coach planning
 packages/sudoku_scanner/       Flutter image recognition contracts
 packages/michi_design_system/  Flutter tokens and reusable controls
 ```
@@ -74,9 +75,8 @@ immediately after checkout. For a direct Android build, run
 - Existing starter Android and iOS identifiers (`com.example...`) are retained
   until a production application identifier is chosen.
 
-The engine now supports constraints, candidates, exact solving, and structured
-human deductions for Naked Single, Hidden Single, Naked Pair, and Pointing
-Pair. See [the engine README](packages/sudoku_engine/README.md) for its API and
-the distinction between mathematical solving and human reasoning. Coach hint
-planning, game state, Firebase, scanning, ML, and full visual screens remain
-future work.
+The engine now supports constraints, candidates, exact solving, structured
+human deductions for four techniques, and four-level semantic Coach plans.
+See [the engine README](packages/sudoku_engine/README.md) for the APIs and
+responsibility boundaries. Localized hint presentation, game state, Firebase,
+scanning, ML, and full visual screens remain future work.

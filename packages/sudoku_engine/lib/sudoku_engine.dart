@@ -1,6 +1,7 @@
 /// Deterministic Sudoku domain models and contracts. No Flutter dependency.
 library;
 
+export 'src/coach/candidate_ref.dart';
 export 'src/coach/coach_engine.dart';
 export 'src/coach/coach_hint.dart';
 export 'src/coach/coach_plan.dart';
