@@ -1,50 +1,93 @@
 import 'package:sudoku_engine/sudoku_engine.dart';
 import 'package:test/test.dart';
 
+import '../fixtures/boards.dart';
+
 void main() {
   group('SudokuBoard', () {
-    test('requires exactly 81 cells with digits from 1 to 9', () {
+    test('requires exactly 81 values in the range 0–9', () {
       expect(() => SudokuBoard(const []), throwsArgumentError);
+      expect(() => SudokuBoard(List<int>.filled(80, 0)), throwsArgumentError);
+      expect(() => SudokuBoard(List<int>.filled(82, 0)), throwsArgumentError);
       expect(
-        () => SudokuBoard([0, ...List<int?>.filled(80, null)]),
-        throwsArgumentError,
+        () => SudokuBoard([-1, ...List<int>.filled(80, 0)]),
+        throwsRangeError,
       );
       expect(
-        () => SudokuBoard([10, ...List<int?>.filled(80, null)]),
-        throwsArgumentError,
+        () => SudokuBoard([10, ...List<int>.filled(80, 0)]),
+        throwsRangeError,
       );
     });
 
-    test('copies input and returns a new board when a cell changes', () {
-      final input = List<int?>.filled(81, null);
-      final original = SudokuBoard(input);
+    test('accepts empty and complete boards and counts values', () {
+      final empty = SudokuBoard.empty();
+      final complete = SudokuBoard.parse(solvedPuzzle);
+      expect(empty.emptyCellCount, 81);
+      expect(empty.filledCellCount, 0);
+      expect(empty.isComplete, isFalse);
+      expect(complete.emptyCellCount, 0);
+      expect(complete.filledCellCount, 81);
+      expect(complete.isComplete, isTrue);
+      expect(complete.valueAtPosition(8, 8), 9);
+    });
+
+    test('copies input, protects values and returns a changed board', () {
+      final input = List<int>.filled(81, 0);
+      final original = SudokuBoard.fromValues(input);
       input[0] = 9;
-      expect(original.valueAt(CellRef(0, 0)), isNull);
-      expect(() => original.cells[0] = 9, throwsUnsupportedError);
+      expect(original.valueAt(CellRef(row: 0, column: 0)), 0);
+      expect(() => original.values[0] = 9, throwsUnsupportedError);
 
-      final changed = original.withValue(CellRef(0, 0), 5);
-      expect(changed.valueAt(CellRef(0, 0)), 5);
-      expect(original.valueAt(CellRef(0, 0)), isNull);
-      expect(changed, SudokuBoard([5, ...List<int?>.filled(80, null)]));
+      final cell = CellRef(row: 0, column: 0);
+      final changed = original.withValue(cell, 5);
+      expect(changed.valueAt(cell), 5);
+      expect(changed.isFilled(cell), isTrue);
+      expect(original.isEmpty(cell), isTrue);
+      expect(changed.withValue(cell, 0), original);
+      expect(changed, SudokuBoard([5, ...List<int>.filled(80, 0)]));
+      expect(
+        changed.hashCode,
+        SudokuBoard([5, ...List<int>.filled(80, 0)]).hashCode,
+      );
+      expect(() => original.withValue(cell, 10), throwsRangeError);
+    });
+
+    test('parses whitespace and dots as empty cells', () {
+      final board = SudokuBoard.parse(standardPuzzle.replaceFirst('0', '.'));
+      expect(board.valueAtPosition(0, 0), 5);
+      expect(board.valueAtPosition(0, 2), 0);
+      expect(board.filledCellCount, 30);
+    });
+
+    test('rejects malformed compact boards', () {
+      expect(() => SudokuBoard.parse('123'), throwsFormatException);
+      expect(
+        () => SudokuBoard.parse('x0'),
+        throwsFormatException,
+      );
+      expect(
+        () => SudokuBoard.parse('0' * 80 + '٥'),
+        throwsFormatException,
+      );
+    });
+
+    test('can represent duplicate digits for subsequent validation', () {
+      final board = SudokuBoard.empty()
+          .withValue(CellRef(row: 0, column: 0), 5)
+          .withValue(CellRef(row: 0, column: 1), 5);
+      expect(board.filledCellCount, 2);
+      expect(SudokuConstraints.validate(board).isValid, isFalse);
     });
   });
 
-  test('CellRef validates coordinates and maps indices', () {
-    expect(CellRef.fromIndex(80), CellRef(8, 8));
-    expect(CellRef(4, 3).index, 39);
-    expect(() => CellRef(9, 0), throwsRangeError);
-    expect(() => CellRef.fromIndex(81), throwsRangeError);
-  });
-
-  test('CandidateMask keeps digits in the 1–9 range', () {
-    final mask = CandidateMask(0).withDigit(7);
-    expect(mask.contains(7), isTrue);
-    expect(mask.withoutDigit(7).contains(7), isFalse);
-    expect(() => mask.contains(0), throwsRangeError);
-  });
-
-  test('semantic moves reject invalid digits', () {
-    expect(() => DigitPlacement(CellRef(0, 0), 0), throwsRangeError);
-    expect(() => CandidateElimination(CellRef(0, 0), 10), throwsRangeError);
+  test('semantic moves still reject invalid digits', () {
+    expect(
+      () => DigitPlacement(CellRef(row: 0, column: 0), 0),
+      throwsRangeError,
+    );
+    expect(
+      () => CandidateElimination(CellRef(row: 0, column: 0), 10),
+      throwsRangeError,
+    );
   });
 }
