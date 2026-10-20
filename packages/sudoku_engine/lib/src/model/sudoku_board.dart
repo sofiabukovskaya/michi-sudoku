@@ -2,30 +2,71 @@ import 'package:meta/meta.dart';
 
 import 'cell_ref.dart';
 
-/// An immutable classic Sudoku board. Null represents an empty cell.
+/// Immutable cell values for a classic 9×9 Sudoku board.
+///
+/// Values are flat, row-major, and zero means empty. Construction checks only
+/// shape and digit range; duplicate Sudoku values are reported by validation.
 @immutable
 final class SudokuBoard {
-  SudokuBoard(List<int?> cells) : _cells = List<int?>.unmodifiable(cells) {
-    if (_cells.length != 81) {
-      throw ArgumentError.value(cells.length, 'cells.length', 'Expected 81.');
+  SudokuBoard(List<int> values) : _values = List<int>.unmodifiable(values) {
+    if (_values.length != 81) {
+      throw ArgumentError.value(values.length, 'values.length', 'Expected 81.');
     }
-    for (final value in _cells) {
-      if (value != null && (value < 1 || value > 9)) {
-        throw ArgumentError.value(value, 'cell', 'Expected null or 1–9.');
-      }
+    for (final value in _values) {
+      RangeError.checkValueInInterval(value, 0, 9, 'value');
     }
   }
 
-  factory SudokuBoard.empty() => SudokuBoard(List<int?>.filled(81, null));
+  factory SudokuBoard.fromValues(Iterable<int> values) =>
+      SudokuBoard(values.toList());
 
-  final List<int?> _cells;
+  factory SudokuBoard.empty() => SudokuBoard(List<int>.filled(81, 0));
 
-  List<int?> get cells => _cells;
+  /// Parses 81 digits, optionally with whitespace and `.` for empty cells.
+  factory SudokuBoard.parse(String source) {
+    final compact = source.replaceAll(RegExp(r'\s'), '');
+    if (compact.length != 81) {
+      throw FormatException('Expected 81 cells; found ${compact.length}.');
+    }
+    final values = <int>[];
+    for (var index = 0; index < compact.length; index++) {
+      final character = compact[index];
+      if (character == '.') {
+        values.add(0);
+      } else {
+        final digit = int.tryParse(character);
+        if (digit == null || digit < 0 || digit > 9) {
+          throw FormatException('Invalid cell character at index $index.');
+        }
+        values.add(digit);
+      }
+    }
+    return SudokuBoard(values);
+  }
 
-  int? valueAt(CellRef cell) => _cells[cell.index];
+  final List<int> _values;
 
-  SudokuBoard withValue(CellRef cell, int? value) {
-    final next = _cells.toList()..[cell.index] = value;
+  /// An unmodifiable view of the 81 values.
+  List<int> get values => _values;
+
+  int valueAt(CellRef cell) => _values[cell.index];
+
+  int valueAtPosition(int row, int column) =>
+      valueAt(CellRef(row: row, column: column));
+
+  bool isEmpty(CellRef cell) => valueAt(cell) == 0;
+
+  bool isFilled(CellRef cell) => !isEmpty(cell);
+
+  int get emptyCellCount => _values.where((value) => value == 0).length;
+
+  int get filledCellCount => 81 - emptyCellCount;
+
+  bool get isComplete => emptyCellCount == 0;
+
+  SudokuBoard withValue(CellRef cell, int digit) {
+    RangeError.checkValueInInterval(digit, 0, 9, 'digit');
+    final next = _values.toList()..[cell.index] = digit;
     return SudokuBoard(next);
   }
 
@@ -33,11 +74,11 @@ final class SudokuBoard {
   bool operator ==(Object other) {
     if (other is! SudokuBoard) return false;
     for (var index = 0; index < 81; index++) {
-      if (_cells[index] != other._cells[index]) return false;
+      if (_values[index] != other._values[index]) return false;
     }
     return true;
   }
 
   @override
-  int get hashCode => Object.hashAll(_cells);
+  int get hashCode => Object.hashAll(_values);
 }

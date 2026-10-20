@@ -1,15 +1,25 @@
 import 'package:meta/meta.dart';
 
-/// Compact set of candidate digits; bit zero corresponds to digit 1.
+/// Immutable set of digits 1–9, with digit `d` stored in bit `d - 1`.
 @immutable
 final class CandidateMask {
-  CandidateMask(this.bits) {
-    if (bits < 0 || bits > allBits) {
-      throw RangeError.range(bits, 0, allBits, 'bits');
+  CandidateMask(int bits) : bits = _validBits(bits);
+
+  const CandidateMask._(this.bits);
+
+  factory CandidateMask.fromDigits(Iterable<int> digits) {
+    var bits = 0;
+    for (final digit in digits) {
+      _checkDigit(digit);
+      bits |= 1 << (digit - 1);
     }
+    return CandidateMask._(bits);
   }
 
   static const int allBits = 0x1ff;
+  static const CandidateMask empty = CandidateMask._(0);
+  static const CandidateMask all = CandidateMask._(allBits);
+
   final int bits;
 
   bool contains(int digit) {
@@ -17,20 +27,67 @@ final class CandidateMask {
     return bits & (1 << (digit - 1)) != 0;
   }
 
-  CandidateMask withDigit(int digit) {
+  CandidateMask add(int digit) {
     _checkDigit(digit);
-    return CandidateMask(bits | (1 << (digit - 1)));
+    return CandidateMask._(bits | (1 << (digit - 1)));
   }
 
-  CandidateMask withoutDigit(int digit) {
+  CandidateMask remove(int digit) {
     _checkDigit(digit);
-    return CandidateMask(bits & ~(1 << (digit - 1)));
+    return CandidateMask._(bits & ~(1 << (digit - 1)));
+  }
+
+  /// Phase 1 names retained for existing callers.
+  CandidateMask withDigit(int digit) => add(digit);
+
+  CandidateMask withoutDigit(int digit) => remove(digit);
+
+  CandidateMask union(CandidateMask other) =>
+      CandidateMask._(bits | other.bits);
+
+  CandidateMask intersection(CandidateMask other) =>
+      CandidateMask._(bits & other.bits);
+
+  CandidateMask difference(CandidateMask other) =>
+      CandidateMask._(bits & ~other.bits);
+
+  int get count {
+    var remaining = bits;
+    var result = 0;
+    while (remaining != 0) {
+      remaining &= remaining - 1;
+      result++;
+    }
+    return result;
+  }
+
+  bool get isEmpty => bits == 0;
+
+  bool get isSingle => bits != 0 && bits & (bits - 1) == 0;
+
+  /// The only digit, or null when the mask has zero or multiple digits.
+  int? get singleDigit {
+    if (!isSingle) return null;
+    for (var digit = 1; digit <= 9; digit++) {
+      if (contains(digit)) return digit;
+    }
+    throw StateError('A single-bit candidate mask must contain a digit.');
+  }
+
+  /// Digits in ascending order.
+  Iterable<int> get digits sync* {
+    for (var digit = 1; digit <= 9; digit++) {
+      if (contains(digit)) yield digit;
+    }
+  }
+
+  static int _validBits(int bits) {
+    RangeError.checkValueInInterval(bits, 0, allBits, 'bits');
+    return bits;
   }
 
   static void _checkDigit(int digit) {
-    if (digit < 1 || digit > 9) {
-      throw RangeError.range(digit, 1, 9, 'digit');
-    }
+    RangeError.checkValueInInterval(digit, 1, 9, 'digit');
   }
 
   @override
@@ -39,4 +96,7 @@ final class CandidateMask {
 
   @override
   int get hashCode => bits.hashCode;
+
+  @override
+  String toString() => 'CandidateMask(${digits.join(', ')})';
 }
