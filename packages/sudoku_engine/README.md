@@ -24,16 +24,40 @@ dependency.
 
 Board construction enforces only the 81-cell shape and digit range. A board
 with conflicting digits remains representable, so validation can explain a
-bad scan or entry. This validation checks Sudoku constraints only. **Phase 2
-does not determine whether a puzzle is solvable or has a unique solution.**
-That belongs to the Phase 3 `ExactSolver`.
+bad scan or entry. Constraint validation reports rule conflicts; it does not
+determine whether a puzzle has a solution.
+
+## Solver layers
+
+1. **ExactSolver — implemented in Phase 3.** `BacktrackingExactSolver`
+   determines mathematical solvability, returns a complete solution, counts
+   solutions up to a caller-provided limit, and checks uniqueness by counting
+   at most two. Rule-invalid or contradictory boards have zero solutions.
+2. **HumanSolver — future Phase 4.** Will identify named, teachable deductions
+   in technique order.
+3. **CoachEngine — future phase.** Will convert structured deductions into
+   progressive hint data for the app to localize and display.
+
+Exact search validates the starting board, repeatedly places cells with a
+single legal candidate, then branches on the empty cell with the fewest
+candidates (MRV). Ties use the lowest cell index and digits are tried from
+1 to 9. It uses immutable board copies and the core candidate/constraint
+APIs. Its search path does **not** claim to be how a human should solve the
+puzzle.
+
+```dart
+const solver = BacktrackingExactSolver();
+final solution = solver.solve(board); // SudokuBoard?; null if unsolvable
+final exists = solver.hasSolution(board);
+final count = solver.countSolutions(board, limit: 2); // Stops at 2
+final unique = solver.hasUniqueSolution(board);
+```
 
 `SudokuPuzzle` remains a minimal puzzle identity and given board. `SudokuMove`
 remains a small semantic placement/elimination model. Gameplay progress and
 undo history belong in the application.
 
-Later, `HumanSolver` will find teachable deductions, `CoachEngine` will turn
-them into progressive hints, and generator/difficulty components will create
-and classify puzzles. None of those algorithms are implemented here.
+Generator and difficulty components remain future work. No human technique,
+hint, or puzzle generation algorithm is implemented in Phase 3.
 
 Run `dart test` from this directory with the workspace's Dart SDK.
