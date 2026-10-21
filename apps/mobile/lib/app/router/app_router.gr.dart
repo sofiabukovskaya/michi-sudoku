@@ -28,18 +28,54 @@ class AuthRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [GamePage]
-class GameRoute extends PageRouteInfo<void> {
-  const GameRoute({List<PageRouteInfo>? children})
-    : super(GameRoute.name, initialChildren: children);
+class GameRoute extends PageRouteInfo<GameRouteArgs> {
+  GameRoute({
+    SudokuPuzzle? puzzle,
+    GameCubit? cubit,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         GameRoute.name,
+         args: GameRouteArgs(puzzle: puzzle, cubit: cubit, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'GameRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const GamePage();
+      final args = data.argsAs<GameRouteArgs>(
+        orElse: () => const GameRouteArgs(),
+      );
+      return GamePage(puzzle: args.puzzle, cubit: args.cubit, key: args.key);
     },
   );
+}
+
+class GameRouteArgs {
+  const GameRouteArgs({this.puzzle, this.cubit, this.key});
+
+  final SudokuPuzzle? puzzle;
+
+  final GameCubit? cubit;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'GameRouteArgs{puzzle: $puzzle, cubit: $cubit, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GameRouteArgs) return false;
+    return puzzle == other.puzzle && cubit == other.cubit && key == other.key;
+  }
+
+  @override
+  int get hashCode => puzzle.hashCode ^ cubit.hashCode ^ key.hashCode;
 }
 
 /// generated route for

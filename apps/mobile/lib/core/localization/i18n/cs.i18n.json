@@ -31,7 +31,27 @@
     "scanner": "Skener"
   },
   "game": {
-    "unavailable": "Hrací pole přijde v další fázi."
+    "title": "Denní sudoku · Střední",
+    "undo": "Zpět",
+    "erase": "Smazat",
+    "notes": "Poznámky",
+    "hint": "Nápověda",
+    "mistakes": "Chyby: $count ze 3",
+    "notesModeOn": "Režim poznámek: čísla přepínají kandidáty",
+    "row": "Řádek",
+    "column": "sloupec",
+    "empty": "prázdné",
+    "given": "zadané",
+    "entered": "vložené",
+    "selected": "vybrané",
+    "error": "chybné",
+    "candidates": "kandidáti",
+    "completeTitle": "Vyřešeno.",
+    "completeBody": "Dokončili jste toto sudoku.",
+    "backHome": "Zpět domů",
+    "pause": "Pozastavit",
+    "pausedTitle": "Pozastaveno",
+    "resume": "Pokračovat"
   },
   "learn": {
     "unavailable": "Lekce technik přijdou později."
@@ -44,5 +64,40 @@
   },
   "scanner": {
     "unavailable": "Import z fotoaparátu přijde po základní hře."
+  },
+  "coach": {
+    "step": "Nápověda $step ze 4",
+    "try": "Zkusím to",
+    "show": "Ukázat",
+    "see": "Vidím",
+    "more": "Další nápověda",
+    "close": "Zavřít",
+    "showMistake": "Ukázat chybu",
+    "place": "Vložit $digit",
+    "unitRow": "řádek $index",
+    "unitColumn": "sloupec $index",
+    "unitBox": "blok $index",
+    "inspectCell": "Podívejte se na zvýrazněné pole.",
+    "inspectUnit": "Podívejte se na zvýrazněný $unit.",
+    "inspectCandidates": "Které číslice sem mohou patřit?",
+    "inspectPositions": "Kam může tato číslice patřit ve zvýrazněném $unit?",
+    "inspectPair": "Najděte dvě pole se stejnými dvěma kandidáty.",
+    "singleRemains": "V tomto poli zbývá jediný kandidát.",
+    "onlyPosition": "Pro tuto číslici zbývá v $unit jediné místo.",
+    "pairRestriction": "Tyto dvě číslice patří do zvýrazněné dvojice. Jinde v $unit je lze vyloučit.",
+    "alignment": "Kandidáti leží v jedné linii, takže číslici lze vyloučit mimo blok.",
+    "resultPlacement": "$digit patří jen do zvýrazněného pole.",
+    "resultEliminations": "Odstraňte přeškrtnuté kandidáty ze zvýrazněných polí.",
+    "resultActions": "Použijte zvýrazněný logický krok.",
+    "technique": "Technika: $name",
+    "nakedSingle": "nahý singl",
+    "hiddenSingle": "skrytý singl",
+    "nakedPair": "nahá dvojice",
+    "pointingPair": "ukazující dvojice",
+    "unavailable": "Nápověda není dostupná",
+    "wrongTitle": "Nejdřív opravte chybu.",
+    "wrongBody": "Dokud je na desce chybná číslice, nelze určit logický další krok.",
+    "stuckTitle": "Zatím žádný podporovaný krok.",
+    "stuckBody": "MICHI zatím neumí vysvětlit další krok dostupnými technikami."
   }
 }

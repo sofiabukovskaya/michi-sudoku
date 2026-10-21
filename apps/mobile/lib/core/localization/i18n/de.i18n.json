@@ -31,7 +31,27 @@
     "scanner": "Scanner"
   },
   "game": {
-    "unavailable": "Das Spielfeld kommt in der nächsten Phase."
+    "title": "Tägliches Sudoku · Mittel",
+    "undo": "Rückgängig",
+    "erase": "Löschen",
+    "notes": "Notizen",
+    "hint": "Hinweis",
+    "mistakes": "Fehler: $count von 3",
+    "notesModeOn": "Notizmodus: Zahl antippen, um Kandidaten umzuschalten",
+    "row": "Zeile",
+    "column": "Spalte",
+    "empty": "leer",
+    "given": "vorgegeben",
+    "entered": "eingetragen",
+    "selected": "ausgewählt",
+    "error": "falsch",
+    "candidates": "Kandidaten",
+    "completeTitle": "Gelöst.",
+    "completeBody": "Du hast dieses Sudoku abgeschlossen.",
+    "backHome": "Zur Startseite",
+    "pause": "Pause",
+    "pausedTitle": "Pausiert",
+    "resume": "Fortsetzen"
   },
   "learn": {
     "unavailable": "Techniklektionen kommen später."
@@ -44,5 +64,40 @@
   },
   "scanner": {
     "unavailable": "Der Kameraimport folgt nach dem Grundspiel."
+  },
+  "coach": {
+    "step": "Hinweis $step von 4",
+    "try": "Ich versuche es",
+    "show": "Anzeigen",
+    "see": "Verstanden",
+    "more": "Weiterer Hinweis",
+    "close": "Schließen",
+    "showMistake": "Fehler anzeigen",
+    "place": "$digit eintragen",
+    "unitRow": "Zeile $index",
+    "unitColumn": "Spalte $index",
+    "unitBox": "Block $index",
+    "inspectCell": "Sieh dir das markierte Feld an.",
+    "inspectUnit": "Sieh dir die markierte $unit an.",
+    "inspectCandidates": "Welche Zahlen passen in dieses Feld?",
+    "inspectPositions": "Wo kann diese Zahl in der markierten $unit stehen?",
+    "inspectPair": "Finde zwei Felder mit denselben zwei Kandidaten.",
+    "singleRemains": "In diesem Feld bleibt nur ein Kandidat.",
+    "onlyPosition": "Für diese Zahl bleibt in der $unit nur eine Position.",
+    "pairRestriction": "Diese zwei Zahlen besetzen das markierte Paar. Anderswo in der $unit können sie entfallen.",
+    "alignment": "Die Kandidaten liegen auf einer Linie. Außerhalb des Blocks kann die Zahl entfernt werden.",
+    "resultPlacement": "$digit passt nur in das markierte Feld.",
+    "resultEliminations": "Entferne die durchgestrichenen Kandidaten aus den markierten Feldern.",
+    "resultActions": "Wende den markierten logischen Schritt an.",
+    "technique": "Technik: $name",
+    "nakedSingle": "Nackter Einer",
+    "hiddenSingle": "Versteckter Einer",
+    "nakedPair": "Nacktes Paar",
+    "pointingPair": "Zeigende Paare",
+    "unavailable": "Hinweis nicht verfügbar",
+    "wrongTitle": "Korrigiere zuerst den Fehler.",
+    "wrongBody": "Solange eine falsche Zahl auf dem Brett steht, ist kein logischer nächster Schritt möglich.",
+    "stuckTitle": "Noch kein unterstützter Schritt.",
+    "stuckBody": "MICHI kann den nächsten Schritt mit den verfügbaren Techniken noch nicht erklären."
   }
 }

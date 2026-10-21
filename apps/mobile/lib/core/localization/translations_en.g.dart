@@ -52,6 +52,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$progress$en progress = _Translations$progress$en._(_root);
 	@override late final _Translations$profile$en profile = _Translations$profile$en._(_root);
 	@override late final _Translations$scanner$en scanner = _Translations$scanner$en._(_root);
+	@override late final _Translations$coach$en coach = _Translations$coach$en._(_root);
 }
 
 // Path: common
@@ -140,7 +141,27 @@ class _Translations$game$en extends Translations$game$uk {
 	final TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'The Sudoku board is coming in the next phase.';
+	@override String get title => 'Daily Sudoku · Medium';
+	@override String get undo => 'Undo';
+	@override String get erase => 'Erase';
+	@override String get notes => 'Notes';
+	@override String get hint => 'Hint';
+	@override String mistakes({required Object count}) => 'Mistakes: ${count} of 3';
+	@override String get notesModeOn => 'Notes mode: tap a number to toggle a candidate';
+	@override String get row => 'Row';
+	@override String get column => 'column';
+	@override String get empty => 'empty';
+	@override String get given => 'given';
+	@override String get entered => 'entered';
+	@override String get selected => 'selected';
+	@override String get error => 'incorrect';
+	@override String get candidates => 'candidates';
+	@override String get completeTitle => 'Solved.';
+	@override String get completeBody => 'You completed this Sudoku.';
+	@override String get backHome => 'Back to home';
+	@override String get pause => 'Pause';
+	@override String get pausedTitle => 'Paused';
+	@override String get resume => 'Resume';
 }
 
 // Path: learn
@@ -183,6 +204,48 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get unavailable => 'Camera import will follow the core game.';
 }
 
+// Path: coach
+class _Translations$coach$en extends Translations$coach$uk {
+	_Translations$coach$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String step({required Object step}) => 'Hint ${step} of 4';
+	@override String get kTry => 'I\'ll try';
+	@override String get show => 'Show me';
+	@override String get see => 'I see';
+	@override String get more => 'Another hint';
+	@override String get close => 'Close';
+	@override String get showMistake => 'Show mistake';
+	@override String place({required Object digit}) => 'Place ${digit}';
+	@override String unitRow({required Object index}) => 'row ${index}';
+	@override String unitColumn({required Object index}) => 'column ${index}';
+	@override String unitBox({required Object index}) => 'box ${index}';
+	@override String get inspectCell => 'Look at the highlighted cell.';
+	@override String inspectUnit({required Object unit}) => 'Look at the highlighted ${unit}.';
+	@override String get inspectCandidates => 'Which digits can go in this cell?';
+	@override String inspectPositions({required Object unit}) => 'Where can this digit go in the highlighted ${unit}?';
+	@override String get inspectPair => 'Find the two cells with the same two candidates.';
+	@override String get singleRemains => 'Only one candidate remains in this cell.';
+	@override String onlyPosition({required Object unit}) => 'Only one place remains for this digit in the ${unit}.';
+	@override String pairRestriction({required Object unit}) => 'These two digits occupy the highlighted pair. Remove them elsewhere in the ${unit}.';
+	@override String get alignment => 'The candidate positions align in one line, so remove this digit outside the box.';
+	@override String resultPlacement({required Object digit}) => '${digit} can go only in the highlighted cell.';
+	@override String get resultEliminations => 'Remove the crossed-out candidates from the highlighted cells.';
+	@override String get resultActions => 'Use the highlighted logical action.';
+	@override String technique({required Object name}) => 'Technique: ${name}';
+	@override String get nakedSingle => 'Naked single';
+	@override String get hiddenSingle => 'Hidden single';
+	@override String get nakedPair => 'Naked pair';
+	@override String get pointingPair => 'Pointing pair';
+	@override String get unavailable => 'Hint unavailable';
+	@override String get wrongTitle => 'Fix the mistake first.';
+	@override String get wrongBody => 'A logical next step cannot be found while a wrong digit remains on the board.';
+	@override String get stuckTitle => 'No supported step yet.';
+	@override String get stuckBody => 'MICHI cannot explain the next step with the techniques currently available.';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -208,11 +271,64 @@ extension on TranslationsEn {
 			'home.progress' => 'Progress',
 			'home.profile' => 'Profile',
 			'home.scanner' => 'Scanner',
-			'game.unavailable' => 'The Sudoku board is coming in the next phase.',
+			'game.title' => 'Daily Sudoku · Medium',
+			'game.undo' => 'Undo',
+			'game.erase' => 'Erase',
+			'game.notes' => 'Notes',
+			'game.hint' => 'Hint',
+			'game.mistakes' => ({required Object count}) => 'Mistakes: ${count} of 3',
+			'game.notesModeOn' => 'Notes mode: tap a number to toggle a candidate',
+			'game.row' => 'Row',
+			'game.column' => 'column',
+			'game.empty' => 'empty',
+			'game.given' => 'given',
+			'game.entered' => 'entered',
+			'game.selected' => 'selected',
+			'game.error' => 'incorrect',
+			'game.candidates' => 'candidates',
+			'game.completeTitle' => 'Solved.',
+			'game.completeBody' => 'You completed this Sudoku.',
+			'game.backHome' => 'Back to home',
+			'game.pause' => 'Pause',
+			'game.pausedTitle' => 'Paused',
+			'game.resume' => 'Resume',
 			'learn.unavailable' => 'Technique lessons are coming later.',
 			'progress.unavailable' => 'Technique mastery is coming later.',
 			'profile.unavailable' => 'Profile settings are coming later.',
 			'scanner.unavailable' => 'Camera import will follow the core game.',
+			'coach.step' => ({required Object step}) => 'Hint ${step} of 4',
+			'coach.kTry' => 'I\'ll try',
+			'coach.show' => 'Show me',
+			'coach.see' => 'I see',
+			'coach.more' => 'Another hint',
+			'coach.close' => 'Close',
+			'coach.showMistake' => 'Show mistake',
+			'coach.place' => ({required Object digit}) => 'Place ${digit}',
+			'coach.unitRow' => ({required Object index}) => 'row ${index}',
+			'coach.unitColumn' => ({required Object index}) => 'column ${index}',
+			'coach.unitBox' => ({required Object index}) => 'box ${index}',
+			'coach.inspectCell' => 'Look at the highlighted cell.',
+			'coach.inspectUnit' => ({required Object unit}) => 'Look at the highlighted ${unit}.',
+			'coach.inspectCandidates' => 'Which digits can go in this cell?',
+			'coach.inspectPositions' => ({required Object unit}) => 'Where can this digit go in the highlighted ${unit}?',
+			'coach.inspectPair' => 'Find the two cells with the same two candidates.',
+			'coach.singleRemains' => 'Only one candidate remains in this cell.',
+			'coach.onlyPosition' => ({required Object unit}) => 'Only one place remains for this digit in the ${unit}.',
+			'coach.pairRestriction' => ({required Object unit}) => 'These two digits occupy the highlighted pair. Remove them elsewhere in the ${unit}.',
+			'coach.alignment' => 'The candidate positions align in one line, so remove this digit outside the box.',
+			'coach.resultPlacement' => ({required Object digit}) => '${digit} can go only in the highlighted cell.',
+			'coach.resultEliminations' => 'Remove the crossed-out candidates from the highlighted cells.',
+			'coach.resultActions' => 'Use the highlighted logical action.',
+			'coach.technique' => ({required Object name}) => 'Technique: ${name}',
+			'coach.nakedSingle' => 'Naked single',
+			'coach.hiddenSingle' => 'Hidden single',
+			'coach.nakedPair' => 'Naked pair',
+			'coach.pointingPair' => 'Pointing pair',
+			'coach.unavailable' => 'Hint unavailable',
+			'coach.wrongTitle' => 'Fix the mistake first.',
+			'coach.wrongBody' => 'A logical next step cannot be found while a wrong digit remains on the board.',
+			'coach.stuckTitle' => 'No supported step yet.',
+			'coach.stuckBody' => 'MICHI cannot explain the next step with the techniques currently available.',
 			_ => null,
 		};
 	}

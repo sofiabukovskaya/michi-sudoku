@@ -15,3 +15,11 @@ dev_dependencies:
     sdk: flutter
   theme_tailor: 3.1.1
   very_good_analysis: ^10.2.0
+flutter:
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-wght.ttf
+    - family: Lora
+      fonts:
+        - asset: assets/fonts/Lora-wght.ttf

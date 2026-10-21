@@ -31,7 +31,27 @@
     "scanner": "Scanner"
   },
   "game": {
-    "unavailable": "The Sudoku board is coming in the next phase."
+    "title": "Daily Sudoku · Medium",
+    "undo": "Undo",
+    "erase": "Erase",
+    "notes": "Notes",
+    "hint": "Hint",
+    "mistakes": "Mistakes: $count of 3",
+    "notesModeOn": "Notes mode: tap a number to toggle a candidate",
+    "row": "Row",
+    "column": "column",
+    "empty": "empty",
+    "given": "given",
+    "entered": "entered",
+    "selected": "selected",
+    "error": "incorrect",
+    "candidates": "candidates",
+    "completeTitle": "Solved.",
+    "completeBody": "You completed this Sudoku.",
+    "backHome": "Back to home",
+    "pause": "Pause",
+    "pausedTitle": "Paused",
+    "resume": "Resume"
   },
   "learn": {
     "unavailable": "Technique lessons are coming later."
@@ -44,5 +64,40 @@
   },
   "scanner": {
     "unavailable": "Camera import will follow the core game."
+  },
+  "coach": {
+    "step": "Hint $step of 4",
+    "try": "I'll try",
+    "show": "Show me",
+    "see": "I see",
+    "more": "Another hint",
+    "close": "Close",
+    "showMistake": "Show mistake",
+    "place": "Place $digit",
+    "unitRow": "row $index",
+    "unitColumn": "column $index",
+    "unitBox": "box $index",
+    "inspectCell": "Look at the highlighted cell.",
+    "inspectUnit": "Look at the highlighted $unit.",
+    "inspectCandidates": "Which digits can go in this cell?",
+    "inspectPositions": "Where can this digit go in the highlighted $unit?",
+    "inspectPair": "Find the two cells with the same two candidates.",
+    "singleRemains": "Only one candidate remains in this cell.",
+    "onlyPosition": "Only one place remains for this digit in the $unit.",
+    "pairRestriction": "These two digits occupy the highlighted pair. Remove them elsewhere in the $unit.",
+    "alignment": "The candidate positions align in one line, so remove this digit outside the box.",
+    "resultPlacement": "$digit can go only in the highlighted cell.",
+    "resultEliminations": "Remove the crossed-out candidates from the highlighted cells.",
+    "resultActions": "Use the highlighted logical action.",
+    "technique": "Technique: $name",
+    "nakedSingle": "Naked single",
+    "hiddenSingle": "Hidden single",
+    "nakedPair": "Naked pair",
+    "pointingPair": "Pointing pair",
+    "unavailable": "Hint unavailable",
+    "wrongTitle": "Fix the mistake first.",
+    "wrongBody": "A logical next step cannot be found while a wrong digit remains on the board.",
+    "stuckTitle": "No supported step yet.",
+    "stuckBody": "MICHI cannot explain the next step with the techniques currently available."
   }
 }

@@ -14,6 +14,7 @@ final class MichiApp extends StatelessWidget {
     child: Builder(
       builder: (context) => MaterialApp.router(
         title: context.t.appName,
+        debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         locale: TranslationProvider.of(context).flutterLocale,
         supportedLocales: AppLocaleUtils.supportedLocales,

@@ -1,10 +1,10 @@
 # MICHI — Sudoku Coach
 
 MICHI is a local-first Flutter app for learning to solve Sudoku logically. The
-Coach will teach the reasoning behind a move rather than reveal an answer.
-Phases 1–5 are implemented: the workspace foundation, Sudoku domain rules,
-exact mathematical solver, initial human reasoning, and progressive Coach
-planning.
+Coach teaches the reasoning behind a move through progressive hints.
+Phases 1–6 are implemented: the workspace foundation, Sudoku domain rules,
+exact mathematical solver, initial human reasoning, progressive Coach planning,
+and a playable Game and Coach vertical slice.
 
 ## Workspace
 
@@ -12,7 +12,9 @@ planning.
 apps/mobile/                   Flutter app (iOS and Android)
   lib/app/                     Bootstrap, router, theme
   lib/core/                    DI, errors, localization, persistence models
-  lib/features/                Feature-first UI and future feature modules
+  lib/features/game/           Play state, board rendering and controls
+  lib/features/coach/          Semantic hint presentation
+  lib/features/                Other feature modules and placeholders
 packages/sudoku_engine/        Pure Dart rules, solvers, Coach planning
 packages/sudoku_scanner/       Flutter image recognition contracts
 packages/michi_design_system/  Flutter tokens and reusable controls
@@ -33,7 +35,10 @@ Firebase, camera types, or localized UI copy.
 Features add `data/`, `domain/`, and `presentation/` only when each layer has a
 real responsibility. Placeholder pages are stateless; no placeholder Cubits or
 repositories have been created. `flutter_bloc` and `bloc_test` are ready for
-features with stateful behavior.
+features with stateful behavior. `GameCubit` owns board entries, manual notes,
+selection, undo, mistakes and Coach progression. The board is painted from
+immutable view state, with a semantic target for each cell. Coach copy is
+mapped from structured engine hints into Slang translations.
 
 ## Setup
 
@@ -51,9 +56,14 @@ cd apps/mobile && flutter run
 
 `dart run melos run generate` runs `build_runner` in the mobile and design
 system packages. It produces AutoRoute, injectable, Freezed, JSON, Slang and
-Theme Tailor code. Generated files stay in the source tree so the app can build
+Theme Tailor code, plus BDD widget tests. Generated files stay in the source tree so the app can build
 immediately after checkout. For a direct Android build, run
 `cd apps/mobile && flutter build apk --debug`.
+
+The home screen opens a bundled demo puzzle for the Phase 6 game. Game and Coach
+behavior is covered by Cubit tests, widget tests, and BDD scenarios under
+`apps/mobile/test/features/game/`. Run only those tests with
+`cd apps/mobile && flutter test test/features/game`.
 
 ## Decisions and scope
 
@@ -69,14 +79,13 @@ immediately after checkout. For a direct Android build, run
   implementations.
 - Theme Tailor generates the design system's palette extension. Approved
   colors, spacing, radius, motion and initial controls live in that package.
-  The flattened design PDF does not provide font files; Manrope
-  and Lora are named in typography tokens, with system fallback until assets are
-  supplied.
+  Manrope and Lora font assets are bundled under the Open Font License.
 - Existing starter Android and iOS identifiers (`com.example...`) are retained
   until a production application identifier is chosen.
 
-The engine now supports constraints, candidates, exact solving, structured
-human deductions for four techniques, and four-level semantic Coach plans.
+The engine supports constraints, candidates, exact solving, structured human
+deductions for four techniques, and four-level semantic Coach plans.
 See [the engine README](packages/sudoku_engine/README.md) for the APIs and
-responsibility boundaries. Localized hint presentation, game state, Firebase,
-scanning, ML, and full visual screens remain future work.
+responsibility boundaries. Phase 6 adds localized hint presentation and local
+game state. Persistence, Firebase, scanning, ML, and unrelated visual screens
+remain future work.

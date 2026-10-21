@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/widgets.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_page.dart';
+import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/presentation/game_page.dart';
 import 'package:michi_mobile/features/home/presentation/home_page.dart';
 import 'package:michi_mobile/features/learn/presentation/learn_page.dart';
@@ -10,6 +12,7 @@ import 'package:michi_mobile/features/profile/presentation/profile_page.dart';
 import 'package:michi_mobile/features/progress/presentation/progress_page.dart';
 import 'package:michi_mobile/features/scanner/presentation/scanner_page.dart';
 import 'package:michi_mobile/features/splash/presentation/splash_page.dart';
+import 'package:sudoku_engine/sudoku_engine.dart';
 
 part 'app_router.gr.dart';
 

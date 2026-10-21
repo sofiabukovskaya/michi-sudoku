@@ -31,7 +31,27 @@
     "scanner": "Scanner"
   },
   "game": {
-    "unavailable": "La grille arrivera lors de la prochaine phase."
+    "title": "Sudoku du jour · Moyen",
+    "undo": "Annuler",
+    "erase": "Effacer",
+    "notes": "Notes",
+    "hint": "Indice",
+    "mistakes": "Erreurs : $count sur 3",
+    "notesModeOn": "Mode notes : touchez un chiffre pour modifier les candidats",
+    "row": "Ligne",
+    "column": "colonne",
+    "empty": "vide",
+    "given": "donnée",
+    "entered": "saisie",
+    "selected": "sélectionnée",
+    "error": "incorrecte",
+    "candidates": "candidats",
+    "completeTitle": "Résolu.",
+    "completeBody": "Vous avez terminé ce sudoku.",
+    "backHome": "Retour à l’accueil",
+    "pause": "Pause",
+    "pausedTitle": "En pause",
+    "resume": "Reprendre"
   },
   "learn": {
     "unavailable": "Les leçons sur les techniques arriveront plus tard."
@@ -44,5 +64,40 @@
   },
   "scanner": {
     "unavailable": "L’importation par caméra suivra le jeu principal."
+  },
+  "coach": {
+    "step": "Indice $step sur 4",
+    "try": "Je vais essayer",
+    "show": "Afficher",
+    "see": "Je vois",
+    "more": "Autre indice",
+    "close": "Fermer",
+    "showMistake": "Voir l’erreur",
+    "place": "Placer $digit",
+    "unitRow": "ligne $index",
+    "unitColumn": "colonne $index",
+    "unitBox": "bloc $index",
+    "inspectCell": "Regardez la case en surbrillance.",
+    "inspectUnit": "Regardez la $unit en surbrillance.",
+    "inspectCandidates": "Quels chiffres peuvent aller dans cette case ?",
+    "inspectPositions": "Où ce chiffre peut-il aller dans la $unit ?",
+    "inspectPair": "Trouvez deux cases avec les mêmes deux candidats.",
+    "singleRemains": "Il ne reste qu’un seul candidat dans cette case.",
+    "onlyPosition": "Il ne reste qu’une place pour ce chiffre dans la $unit.",
+    "pairRestriction": "Ces deux chiffres occupent la paire surlignée. Vous pouvez les éliminer ailleurs dans la $unit.",
+    "alignment": "Les candidats sont alignés : ce chiffre peut être éliminé hors du bloc.",
+    "resultPlacement": "$digit ne peut aller que dans la case surlignée.",
+    "resultEliminations": "Retirez les candidats barrés des cases surlignées.",
+    "resultActions": "Appliquez l’étape logique surlignée.",
+    "technique": "Technique : $name",
+    "nakedSingle": "candidat unique",
+    "hiddenSingle": "unique caché",
+    "nakedPair": "paire nue",
+    "pointingPair": "paire pointante",
+    "unavailable": "Indice indisponible",
+    "wrongTitle": "Corrigez d’abord l’erreur.",
+    "wrongBody": "Impossible de trouver une étape logique tant qu’un chiffre est incorrect.",
+    "stuckTitle": "Aucune étape prise en charge.",
+    "stuckBody": "MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles."
   }
 }

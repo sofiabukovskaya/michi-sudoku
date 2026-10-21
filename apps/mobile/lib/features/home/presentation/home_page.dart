@@ -24,7 +24,7 @@ final class HomePage extends StatelessWidget {
             const SizedBox(height: MichiSpacing.xxl),
             MichiButton(
               label: context.t.home.game,
-              onPressed: () => context.router.push(const GameRoute()),
+              onPressed: () => context.router.push(GameRoute()),
             ),
             const SizedBox(height: MichiSpacing.sm),
             MichiButton(

@@ -31,7 +31,27 @@
     "scanner": "Escáner"
   },
   "game": {
-    "unavailable": "El tablero llegará en la siguiente fase."
+    "title": "Sudoku diario · Intermedio",
+    "undo": "Deshacer",
+    "erase": "Borrar",
+    "notes": "Notas",
+    "hint": "Pista",
+    "mistakes": "Errores: $count de 3",
+    "notesModeOn": "Modo notas: toca un número para alternar candidatos",
+    "row": "Fila",
+    "column": "columna",
+    "empty": "vacía",
+    "given": "inicial",
+    "entered": "introducida",
+    "selected": "seleccionada",
+    "error": "incorrecta",
+    "candidates": "candidatos",
+    "completeTitle": "Resuelto.",
+    "completeBody": "Has completado este sudoku.",
+    "backHome": "Volver al inicio",
+    "pause": "Pausar",
+    "pausedTitle": "Pausado",
+    "resume": "Continuar"
   },
   "learn": {
     "unavailable": "Las lecciones de técnicas llegarán más adelante."
@@ -44,5 +64,40 @@
   },
   "scanner": {
     "unavailable": "La importación con cámara llegará después del juego principal."
+  },
+  "coach": {
+    "step": "Pista $step de 4",
+    "try": "Lo intentaré",
+    "show": "Mostrar",
+    "see": "Ya veo",
+    "more": "Otra pista",
+    "close": "Cerrar",
+    "showMistake": "Mostrar error",
+    "place": "Colocar $digit",
+    "unitRow": "fila $index",
+    "unitColumn": "columna $index",
+    "unitBox": "bloque $index",
+    "inspectCell": "Mira la casilla resaltada.",
+    "inspectUnit": "Mira la $unit resaltada.",
+    "inspectCandidates": "¿Qué números pueden ir aquí?",
+    "inspectPositions": "¿Dónde puede ir este número en la $unit resaltada?",
+    "inspectPair": "Encuentra dos casillas con los mismos dos candidatos.",
+    "singleRemains": "Solo queda un candidato en esta casilla.",
+    "onlyPosition": "Solo queda un lugar para este número en la $unit.",
+    "pairRestriction": "Estos dos números ocupan el par resaltado. Puedes eliminarlos en otras casillas de la $unit.",
+    "alignment": "Los candidatos están alineados, así que este número se elimina fuera del bloque.",
+    "resultPlacement": "$digit solo puede ir en la casilla resaltada.",
+    "resultEliminations": "Elimina los candidatos tachados de las casillas resaltadas.",
+    "resultActions": "Aplica el paso lógico resaltado.",
+    "technique": "Técnica: $name",
+    "nakedSingle": "único candidato",
+    "hiddenSingle": "único oculto",
+    "nakedPair": "par desnudo",
+    "pointingPair": "par apuntador",
+    "unavailable": "Pista no disponible",
+    "wrongTitle": "Corrige primero el error.",
+    "wrongBody": "No se puede encontrar un paso lógico mientras haya un número incorrecto.",
+    "stuckTitle": "Aún no hay un paso compatible.",
+    "stuckBody": "MICHI todavía no puede explicar el siguiente paso con las técnicas disponibles."
   }
 }

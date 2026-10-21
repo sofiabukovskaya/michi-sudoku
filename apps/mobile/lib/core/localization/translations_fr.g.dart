@@ -52,6 +52,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$progress$fr progress = _Translations$progress$fr._(_root);
 	@override late final _Translations$profile$fr profile = _Translations$profile$fr._(_root);
 	@override late final _Translations$scanner$fr scanner = _Translations$scanner$fr._(_root);
+	@override late final _Translations$coach$fr coach = _Translations$coach$fr._(_root);
 }
 
 // Path: common
@@ -140,7 +141,27 @@ class _Translations$game$fr extends Translations$game$uk {
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'La grille arrivera lors de la prochaine phase.';
+	@override String get title => 'Sudoku du jour · Moyen';
+	@override String get undo => 'Annuler';
+	@override String get erase => 'Effacer';
+	@override String get notes => 'Notes';
+	@override String get hint => 'Indice';
+	@override String mistakes({required Object count}) => 'Erreurs : ${count} sur 3';
+	@override String get notesModeOn => 'Mode notes : touchez un chiffre pour modifier les candidats';
+	@override String get row => 'Ligne';
+	@override String get column => 'colonne';
+	@override String get empty => 'vide';
+	@override String get given => 'donnée';
+	@override String get entered => 'saisie';
+	@override String get selected => 'sélectionnée';
+	@override String get error => 'incorrecte';
+	@override String get candidates => 'candidats';
+	@override String get completeTitle => 'Résolu.';
+	@override String get completeBody => 'Vous avez terminé ce sudoku.';
+	@override String get backHome => 'Retour à l’accueil';
+	@override String get pause => 'Pause';
+	@override String get pausedTitle => 'En pause';
+	@override String get resume => 'Reprendre';
 }
 
 // Path: learn
@@ -183,6 +204,48 @@ class _Translations$scanner$fr extends Translations$scanner$uk {
 	@override String get unavailable => 'L’importation par caméra suivra le jeu principal.';
 }
 
+// Path: coach
+class _Translations$coach$fr extends Translations$coach$uk {
+	_Translations$coach$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String step({required Object step}) => 'Indice ${step} sur 4';
+	@override String get kTry => 'Je vais essayer';
+	@override String get show => 'Afficher';
+	@override String get see => 'Je vois';
+	@override String get more => 'Autre indice';
+	@override String get close => 'Fermer';
+	@override String get showMistake => 'Voir l’erreur';
+	@override String place({required Object digit}) => 'Placer ${digit}';
+	@override String unitRow({required Object index}) => 'ligne ${index}';
+	@override String unitColumn({required Object index}) => 'colonne ${index}';
+	@override String unitBox({required Object index}) => 'bloc ${index}';
+	@override String get inspectCell => 'Regardez la case en surbrillance.';
+	@override String inspectUnit({required Object unit}) => 'Regardez la ${unit} en surbrillance.';
+	@override String get inspectCandidates => 'Quels chiffres peuvent aller dans cette case ?';
+	@override String inspectPositions({required Object unit}) => 'Où ce chiffre peut-il aller dans la ${unit} ?';
+	@override String get inspectPair => 'Trouvez deux cases avec les mêmes deux candidats.';
+	@override String get singleRemains => 'Il ne reste qu’un seul candidat dans cette case.';
+	@override String onlyPosition({required Object unit}) => 'Il ne reste qu’une place pour ce chiffre dans la ${unit}.';
+	@override String pairRestriction({required Object unit}) => 'Ces deux chiffres occupent la paire surlignée. Vous pouvez les éliminer ailleurs dans la ${unit}.';
+	@override String get alignment => 'Les candidats sont alignés : ce chiffre peut être éliminé hors du bloc.';
+	@override String resultPlacement({required Object digit}) => '${digit} ne peut aller que dans la case surlignée.';
+	@override String get resultEliminations => 'Retirez les candidats barrés des cases surlignées.';
+	@override String get resultActions => 'Appliquez l’étape logique surlignée.';
+	@override String technique({required Object name}) => 'Technique : ${name}';
+	@override String get nakedSingle => 'candidat unique';
+	@override String get hiddenSingle => 'unique caché';
+	@override String get nakedPair => 'paire nue';
+	@override String get pointingPair => 'paire pointante';
+	@override String get unavailable => 'Indice indisponible';
+	@override String get wrongTitle => 'Corrigez d’abord l’erreur.';
+	@override String get wrongBody => 'Impossible de trouver une étape logique tant qu’un chiffre est incorrect.';
+	@override String get stuckTitle => 'Aucune étape prise en charge.';
+	@override String get stuckBody => 'MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles.';
+}
+
 /// The flat map containing all translations for locale <fr>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -208,11 +271,64 @@ extension on TranslationsFr {
 			'home.progress' => 'Progression',
 			'home.profile' => 'Profil',
 			'home.scanner' => 'Scanner',
-			'game.unavailable' => 'La grille arrivera lors de la prochaine phase.',
+			'game.title' => 'Sudoku du jour · Moyen',
+			'game.undo' => 'Annuler',
+			'game.erase' => 'Effacer',
+			'game.notes' => 'Notes',
+			'game.hint' => 'Indice',
+			'game.mistakes' => ({required Object count}) => 'Erreurs : ${count} sur 3',
+			'game.notesModeOn' => 'Mode notes : touchez un chiffre pour modifier les candidats',
+			'game.row' => 'Ligne',
+			'game.column' => 'colonne',
+			'game.empty' => 'vide',
+			'game.given' => 'donnée',
+			'game.entered' => 'saisie',
+			'game.selected' => 'sélectionnée',
+			'game.error' => 'incorrecte',
+			'game.candidates' => 'candidats',
+			'game.completeTitle' => 'Résolu.',
+			'game.completeBody' => 'Vous avez terminé ce sudoku.',
+			'game.backHome' => 'Retour à l’accueil',
+			'game.pause' => 'Pause',
+			'game.pausedTitle' => 'En pause',
+			'game.resume' => 'Reprendre',
 			'learn.unavailable' => 'Les leçons sur les techniques arriveront plus tard.',
 			'progress.unavailable' => 'Le suivi des techniques maîtrisées arrivera plus tard.',
 			'profile.unavailable' => 'Les réglages du profil arriveront plus tard.',
 			'scanner.unavailable' => 'L’importation par caméra suivra le jeu principal.',
+			'coach.step' => ({required Object step}) => 'Indice ${step} sur 4',
+			'coach.kTry' => 'Je vais essayer',
+			'coach.show' => 'Afficher',
+			'coach.see' => 'Je vois',
+			'coach.more' => 'Autre indice',
+			'coach.close' => 'Fermer',
+			'coach.showMistake' => 'Voir l’erreur',
+			'coach.place' => ({required Object digit}) => 'Placer ${digit}',
+			'coach.unitRow' => ({required Object index}) => 'ligne ${index}',
+			'coach.unitColumn' => ({required Object index}) => 'colonne ${index}',
+			'coach.unitBox' => ({required Object index}) => 'bloc ${index}',
+			'coach.inspectCell' => 'Regardez la case en surbrillance.',
+			'coach.inspectUnit' => ({required Object unit}) => 'Regardez la ${unit} en surbrillance.',
+			'coach.inspectCandidates' => 'Quels chiffres peuvent aller dans cette case ?',
+			'coach.inspectPositions' => ({required Object unit}) => 'Où ce chiffre peut-il aller dans la ${unit} ?',
+			'coach.inspectPair' => 'Trouvez deux cases avec les mêmes deux candidats.',
+			'coach.singleRemains' => 'Il ne reste qu’un seul candidat dans cette case.',
+			'coach.onlyPosition' => ({required Object unit}) => 'Il ne reste qu’une place pour ce chiffre dans la ${unit}.',
+			'coach.pairRestriction' => ({required Object unit}) => 'Ces deux chiffres occupent la paire surlignée. Vous pouvez les éliminer ailleurs dans la ${unit}.',
+			'coach.alignment' => 'Les candidats sont alignés : ce chiffre peut être éliminé hors du bloc.',
+			'coach.resultPlacement' => ({required Object digit}) => '${digit} ne peut aller que dans la case surlignée.',
+			'coach.resultEliminations' => 'Retirez les candidats barrés des cases surlignées.',
+			'coach.resultActions' => 'Appliquez l’étape logique surlignée.',
+			'coach.technique' => ({required Object name}) => 'Technique : ${name}',
+			'coach.nakedSingle' => 'candidat unique',
+			'coach.hiddenSingle' => 'unique caché',
+			'coach.nakedPair' => 'paire nue',
+			'coach.pointingPair' => 'paire pointante',
+			'coach.unavailable' => 'Indice indisponible',
+			'coach.wrongTitle' => 'Corrigez d’abord l’erreur.',
+			'coach.wrongBody' => 'Impossible de trouver une étape logique tant qu’un chiffre est incorrect.',
+			'coach.stuckTitle' => 'Aucune étape prise en charge.',
+			'coach.stuckBody' => 'MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles.',
 			_ => null,
 		};
 	}

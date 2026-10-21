@@ -57,6 +57,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$progress$uk progress = Translations$progress$uk.internal(_root);
 	late final Translations$profile$uk profile = Translations$profile$uk.internal(_root);
 	late final Translations$scanner$uk scanner = Translations$scanner$uk.internal(_root);
+	late final Translations$coach$uk coach = Translations$coach$uk.internal(_root);
 }
 
 // Path: common
@@ -178,8 +179,68 @@ class Translations$game$uk {
 
 	// Translations
 
-	/// uk: 'Ігрове поле з’явиться у наступній фазі.'
-	String get unavailable => 'Ігрове поле з’явиться у наступній фазі.';
+	/// uk: 'Судоку дня · Середній'
+	String get title => 'Судоку дня · Середній';
+
+	/// uk: 'Скасувати'
+	String get undo => 'Скасувати';
+
+	/// uk: 'Стерти'
+	String get erase => 'Стерти';
+
+	/// uk: 'Нотатки'
+	String get notes => 'Нотатки';
+
+	/// uk: 'Підказка'
+	String get hint => 'Підказка';
+
+	/// uk: 'Помилки: $count з 3'
+	String mistakes({required Object count}) => 'Помилки: ${count} з 3';
+
+	/// uk: 'Режим нотаток: цифри додаються як кандидати'
+	String get notesModeOn => 'Режим нотаток: цифри додаються як кандидати';
+
+	/// uk: 'Рядок'
+	String get row => 'Рядок';
+
+	/// uk: 'стовпець'
+	String get column => 'стовпець';
+
+	/// uk: 'порожня'
+	String get empty => 'порожня';
+
+	/// uk: 'задана'
+	String get given => 'задана';
+
+	/// uk: 'введена'
+	String get entered => 'введена';
+
+	/// uk: 'вибрана'
+	String get selected => 'вибрана';
+
+	/// uk: 'помилка'
+	String get error => 'помилка';
+
+	/// uk: 'кандидати'
+	String get candidates => 'кандидати';
+
+	/// uk: 'Розв’язано.'
+	String get completeTitle => 'Розв’язано.';
+
+	/// uk: 'Це судоку розв’язано.'
+	String get completeBody => 'Це судоку розв’язано.';
+
+	/// uk: 'На головну'
+	String get backHome => 'На головну';
+
+	/// uk: 'Пауза'
+	String get pause => 'Пауза';
+
+	/// uk: 'Пауза'
+	String get pausedTitle => 'Пауза';
+
+	/// uk: 'Продовжити'
+	String get resume => 'Продовжити';
 }
 
 // Path: learn
@@ -230,6 +291,114 @@ class Translations$scanner$uk {
 	String get unavailable => 'Імпорт із камери з’явиться після основної гри.';
 }
 
+// Path: coach
+class Translations$coach$uk {
+	Translations$coach$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Підказка $step з 4'
+	String step({required Object step}) => 'Підказка ${step} з 4';
+
+	/// uk: 'Спробую'
+	String get kTry => 'Спробую';
+
+	/// uk: 'Показати'
+	String get show => 'Показати';
+
+	/// uk: 'Бачу'
+	String get see => 'Бачу';
+
+	/// uk: 'Ще підказка'
+	String get more => 'Ще підказка';
+
+	/// uk: 'Закрити'
+	String get close => 'Закрити';
+
+	/// uk: 'Показати помилку'
+	String get showMistake => 'Показати помилку';
+
+	/// uk: 'Поставити $digit'
+	String place({required Object digit}) => 'Поставити ${digit}';
+
+	/// uk: 'рядок $index'
+	String unitRow({required Object index}) => 'рядок ${index}';
+
+	/// uk: 'стовпець $index'
+	String unitColumn({required Object index}) => 'стовпець ${index}';
+
+	/// uk: 'блок $index'
+	String unitBox({required Object index}) => 'блок ${index}';
+
+	/// uk: 'Подивись на виділену клітинку.'
+	String get inspectCell => 'Подивись на виділену клітинку.';
+
+	/// uk: 'Подивись на виділений $unit.'
+	String inspectUnit({required Object unit}) => 'Подивись на виділений ${unit}.';
+
+	/// uk: 'Які цифри можуть стояти в цій клітинці?'
+	String get inspectCandidates => 'Які цифри можуть стояти в цій клітинці?';
+
+	/// uk: 'Де ця цифра може стояти у виділеному $unit?'
+	String inspectPositions({required Object unit}) => 'Де ця цифра може стояти у виділеному ${unit}?';
+
+	/// uk: 'Знайди дві клітинки з однаковою парою кандидатів.'
+	String get inspectPair => 'Знайди дві клітинки з однаковою парою кандидатів.';
+
+	/// uk: 'У цій клітинці лишається один кандидат.'
+	String get singleRemains => 'У цій клітинці лишається один кандидат.';
+
+	/// uk: 'Для цієї цифри в $unit лишається одне місце.'
+	String onlyPosition({required Object unit}) => 'Для цієї цифри в ${unit} лишається одне місце.';
+
+	/// uk: 'Ці дві цифри займають виділену пару. В інших клітинках $unit їх можна виключити.'
+	String pairRestriction({required Object unit}) => 'Ці дві цифри займають виділену пару. В інших клітинках ${unit} їх можна виключити.';
+
+	/// uk: 'Кандидати лежать на одній лінії, тому поза блоком цю цифру можна виключити.'
+	String get alignment => 'Кандидати лежать на одній лінії, тому поза блоком цю цифру можна виключити.';
+
+	/// uk: '$digit може стояти тільки тут.'
+	String resultPlacement({required Object digit}) => '${digit} може стояти тільки тут.';
+
+	/// uk: 'Виключи перекреслених кандидатів із виділених клітинок.'
+	String get resultEliminations => 'Виключи перекреслених кандидатів із виділених клітинок.';
+
+	/// uk: 'Виконай виділений логічний крок.'
+	String get resultActions => 'Виконай виділений логічний крок.';
+
+	/// uk: 'Техніка: $name'
+	String technique({required Object name}) => 'Техніка: ${name}';
+
+	/// uk: 'голий одинак'
+	String get nakedSingle => 'голий одинак';
+
+	/// uk: 'прихований одинак'
+	String get hiddenSingle => 'прихований одинак';
+
+	/// uk: 'гола пара'
+	String get nakedPair => 'гола пара';
+
+	/// uk: 'вказівна пара'
+	String get pointingPair => 'вказівна пара';
+
+	/// uk: 'Підказка недоступна'
+	String get unavailable => 'Підказка недоступна';
+
+	/// uk: 'Спершу виправ помилку.'
+	String get wrongTitle => 'Спершу виправ помилку.';
+
+	/// uk: 'З неправильною цифрою на дошці логічний хід знайти неможливо.'
+	String get wrongBody => 'З неправильною цифрою на дошці логічний хід знайти неможливо.';
+
+	/// uk: 'Поки немає відомого кроку.'
+	String get stuckTitle => 'Поки немає відомого кроку.';
+
+	/// uk: 'MICHI поки не може пояснити наступний хід доступними техніками.'
+	String get stuckBody => 'MICHI поки не може пояснити наступний хід доступними техніками.';
+}
+
 /// The flat map containing all translations for locale <uk>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -255,11 +424,64 @@ extension on Translations {
 			'home.progress' => 'Прогрес',
 			'home.profile' => 'Профіль',
 			'home.scanner' => 'Сканер',
-			'game.unavailable' => 'Ігрове поле з’явиться у наступній фазі.',
+			'game.title' => 'Судоку дня · Середній',
+			'game.undo' => 'Скасувати',
+			'game.erase' => 'Стерти',
+			'game.notes' => 'Нотатки',
+			'game.hint' => 'Підказка',
+			'game.mistakes' => ({required Object count}) => 'Помилки: ${count} з 3',
+			'game.notesModeOn' => 'Режим нотаток: цифри додаються як кандидати',
+			'game.row' => 'Рядок',
+			'game.column' => 'стовпець',
+			'game.empty' => 'порожня',
+			'game.given' => 'задана',
+			'game.entered' => 'введена',
+			'game.selected' => 'вибрана',
+			'game.error' => 'помилка',
+			'game.candidates' => 'кандидати',
+			'game.completeTitle' => 'Розв’язано.',
+			'game.completeBody' => 'Це судоку розв’язано.',
+			'game.backHome' => 'На головну',
+			'game.pause' => 'Пауза',
+			'game.pausedTitle' => 'Пауза',
+			'game.resume' => 'Продовжити',
 			'learn.unavailable' => 'Уроки технік з’являться пізніше.',
 			'progress.unavailable' => 'Майстерність технік з’явиться пізніше.',
 			'profile.unavailable' => 'Налаштування профілю з’являться пізніше.',
 			'scanner.unavailable' => 'Імпорт із камери з’явиться після основної гри.',
+			'coach.step' => ({required Object step}) => 'Підказка ${step} з 4',
+			'coach.kTry' => 'Спробую',
+			'coach.show' => 'Показати',
+			'coach.see' => 'Бачу',
+			'coach.more' => 'Ще підказка',
+			'coach.close' => 'Закрити',
+			'coach.showMistake' => 'Показати помилку',
+			'coach.place' => ({required Object digit}) => 'Поставити ${digit}',
+			'coach.unitRow' => ({required Object index}) => 'рядок ${index}',
+			'coach.unitColumn' => ({required Object index}) => 'стовпець ${index}',
+			'coach.unitBox' => ({required Object index}) => 'блок ${index}',
+			'coach.inspectCell' => 'Подивись на виділену клітинку.',
+			'coach.inspectUnit' => ({required Object unit}) => 'Подивись на виділений ${unit}.',
+			'coach.inspectCandidates' => 'Які цифри можуть стояти в цій клітинці?',
+			'coach.inspectPositions' => ({required Object unit}) => 'Де ця цифра може стояти у виділеному ${unit}?',
+			'coach.inspectPair' => 'Знайди дві клітинки з однаковою парою кандидатів.',
+			'coach.singleRemains' => 'У цій клітинці лишається один кандидат.',
+			'coach.onlyPosition' => ({required Object unit}) => 'Для цієї цифри в ${unit} лишається одне місце.',
+			'coach.pairRestriction' => ({required Object unit}) => 'Ці дві цифри займають виділену пару. В інших клітинках ${unit} їх можна виключити.',
+			'coach.alignment' => 'Кандидати лежать на одній лінії, тому поза блоком цю цифру можна виключити.',
+			'coach.resultPlacement' => ({required Object digit}) => '${digit} може стояти тільки тут.',
+			'coach.resultEliminations' => 'Виключи перекреслених кандидатів із виділених клітинок.',
+			'coach.resultActions' => 'Виконай виділений логічний крок.',
+			'coach.technique' => ({required Object name}) => 'Техніка: ${name}',
+			'coach.nakedSingle' => 'голий одинак',
+			'coach.hiddenSingle' => 'прихований одинак',
+			'coach.nakedPair' => 'гола пара',
+			'coach.pointingPair' => 'вказівна пара',
+			'coach.unavailable' => 'Підказка недоступна',
+			'coach.wrongTitle' => 'Спершу виправ помилку.',
+			'coach.wrongBody' => 'З неправильною цифрою на дошці логічний хід знайти неможливо.',
+			'coach.stuckTitle' => 'Поки немає відомого кроку.',
+			'coach.stuckBody' => 'MICHI поки не може пояснити наступний хід доступними техніками.',
 			_ => null,
 		};
 	}

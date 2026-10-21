@@ -52,6 +52,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$progress$cs progress = _Translations$progress$cs._(_root);
 	@override late final _Translations$profile$cs profile = _Translations$profile$cs._(_root);
 	@override late final _Translations$scanner$cs scanner = _Translations$scanner$cs._(_root);
+	@override late final _Translations$coach$cs coach = _Translations$coach$cs._(_root);
 }
 
 // Path: common
@@ -140,7 +141,27 @@ class _Translations$game$cs extends Translations$game$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Hrací pole přijde v další fázi.';
+	@override String get title => 'Denní sudoku · Střední';
+	@override String get undo => 'Zpět';
+	@override String get erase => 'Smazat';
+	@override String get notes => 'Poznámky';
+	@override String get hint => 'Nápověda';
+	@override String mistakes({required Object count}) => 'Chyby: ${count} ze 3';
+	@override String get notesModeOn => 'Režim poznámek: čísla přepínají kandidáty';
+	@override String get row => 'Řádek';
+	@override String get column => 'sloupec';
+	@override String get empty => 'prázdné';
+	@override String get given => 'zadané';
+	@override String get entered => 'vložené';
+	@override String get selected => 'vybrané';
+	@override String get error => 'chybné';
+	@override String get candidates => 'kandidáti';
+	@override String get completeTitle => 'Vyřešeno.';
+	@override String get completeBody => 'Dokončili jste toto sudoku.';
+	@override String get backHome => 'Zpět domů';
+	@override String get pause => 'Pozastavit';
+	@override String get pausedTitle => 'Pozastaveno';
+	@override String get resume => 'Pokračovat';
 }
 
 // Path: learn
@@ -183,6 +204,48 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get unavailable => 'Import z fotoaparátu přijde po základní hře.';
 }
 
+// Path: coach
+class _Translations$coach$cs extends Translations$coach$uk {
+	_Translations$coach$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String step({required Object step}) => 'Nápověda ${step} ze 4';
+	@override String get kTry => 'Zkusím to';
+	@override String get show => 'Ukázat';
+	@override String get see => 'Vidím';
+	@override String get more => 'Další nápověda';
+	@override String get close => 'Zavřít';
+	@override String get showMistake => 'Ukázat chybu';
+	@override String place({required Object digit}) => 'Vložit ${digit}';
+	@override String unitRow({required Object index}) => 'řádek ${index}';
+	@override String unitColumn({required Object index}) => 'sloupec ${index}';
+	@override String unitBox({required Object index}) => 'blok ${index}';
+	@override String get inspectCell => 'Podívejte se na zvýrazněné pole.';
+	@override String inspectUnit({required Object unit}) => 'Podívejte se na zvýrazněný ${unit}.';
+	@override String get inspectCandidates => 'Které číslice sem mohou patřit?';
+	@override String inspectPositions({required Object unit}) => 'Kam může tato číslice patřit ve zvýrazněném ${unit}?';
+	@override String get inspectPair => 'Najděte dvě pole se stejnými dvěma kandidáty.';
+	@override String get singleRemains => 'V tomto poli zbývá jediný kandidát.';
+	@override String onlyPosition({required Object unit}) => 'Pro tuto číslici zbývá v ${unit} jediné místo.';
+	@override String pairRestriction({required Object unit}) => 'Tyto dvě číslice patří do zvýrazněné dvojice. Jinde v ${unit} je lze vyloučit.';
+	@override String get alignment => 'Kandidáti leží v jedné linii, takže číslici lze vyloučit mimo blok.';
+	@override String resultPlacement({required Object digit}) => '${digit} patří jen do zvýrazněného pole.';
+	@override String get resultEliminations => 'Odstraňte přeškrtnuté kandidáty ze zvýrazněných polí.';
+	@override String get resultActions => 'Použijte zvýrazněný logický krok.';
+	@override String technique({required Object name}) => 'Technika: ${name}';
+	@override String get nakedSingle => 'nahý singl';
+	@override String get hiddenSingle => 'skrytý singl';
+	@override String get nakedPair => 'nahá dvojice';
+	@override String get pointingPair => 'ukazující dvojice';
+	@override String get unavailable => 'Nápověda není dostupná';
+	@override String get wrongTitle => 'Nejdřív opravte chybu.';
+	@override String get wrongBody => 'Dokud je na desce chybná číslice, nelze určit logický další krok.';
+	@override String get stuckTitle => 'Zatím žádný podporovaný krok.';
+	@override String get stuckBody => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.';
+}
+
 /// The flat map containing all translations for locale <cs>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -208,11 +271,64 @@ extension on TranslationsCs {
 			'home.progress' => 'Pokrok',
 			'home.profile' => 'Profil',
 			'home.scanner' => 'Skener',
-			'game.unavailable' => 'Hrací pole přijde v další fázi.',
+			'game.title' => 'Denní sudoku · Střední',
+			'game.undo' => 'Zpět',
+			'game.erase' => 'Smazat',
+			'game.notes' => 'Poznámky',
+			'game.hint' => 'Nápověda',
+			'game.mistakes' => ({required Object count}) => 'Chyby: ${count} ze 3',
+			'game.notesModeOn' => 'Režim poznámek: čísla přepínají kandidáty',
+			'game.row' => 'Řádek',
+			'game.column' => 'sloupec',
+			'game.empty' => 'prázdné',
+			'game.given' => 'zadané',
+			'game.entered' => 'vložené',
+			'game.selected' => 'vybrané',
+			'game.error' => 'chybné',
+			'game.candidates' => 'kandidáti',
+			'game.completeTitle' => 'Vyřešeno.',
+			'game.completeBody' => 'Dokončili jste toto sudoku.',
+			'game.backHome' => 'Zpět domů',
+			'game.pause' => 'Pozastavit',
+			'game.pausedTitle' => 'Pozastaveno',
+			'game.resume' => 'Pokračovat',
 			'learn.unavailable' => 'Lekce technik přijdou později.',
 			'progress.unavailable' => 'Přehled zvládnutých technik přijde později.',
 			'profile.unavailable' => 'Nastavení profilu přijde později.',
 			'scanner.unavailable' => 'Import z fotoaparátu přijde po základní hře.',
+			'coach.step' => ({required Object step}) => 'Nápověda ${step} ze 4',
+			'coach.kTry' => 'Zkusím to',
+			'coach.show' => 'Ukázat',
+			'coach.see' => 'Vidím',
+			'coach.more' => 'Další nápověda',
+			'coach.close' => 'Zavřít',
+			'coach.showMistake' => 'Ukázat chybu',
+			'coach.place' => ({required Object digit}) => 'Vložit ${digit}',
+			'coach.unitRow' => ({required Object index}) => 'řádek ${index}',
+			'coach.unitColumn' => ({required Object index}) => 'sloupec ${index}',
+			'coach.unitBox' => ({required Object index}) => 'blok ${index}',
+			'coach.inspectCell' => 'Podívejte se na zvýrazněné pole.',
+			'coach.inspectUnit' => ({required Object unit}) => 'Podívejte se na zvýrazněný ${unit}.',
+			'coach.inspectCandidates' => 'Které číslice sem mohou patřit?',
+			'coach.inspectPositions' => ({required Object unit}) => 'Kam může tato číslice patřit ve zvýrazněném ${unit}?',
+			'coach.inspectPair' => 'Najděte dvě pole se stejnými dvěma kandidáty.',
+			'coach.singleRemains' => 'V tomto poli zbývá jediný kandidát.',
+			'coach.onlyPosition' => ({required Object unit}) => 'Pro tuto číslici zbývá v ${unit} jediné místo.',
+			'coach.pairRestriction' => ({required Object unit}) => 'Tyto dvě číslice patří do zvýrazněné dvojice. Jinde v ${unit} je lze vyloučit.',
+			'coach.alignment' => 'Kandidáti leží v jedné linii, takže číslici lze vyloučit mimo blok.',
+			'coach.resultPlacement' => ({required Object digit}) => '${digit} patří jen do zvýrazněného pole.',
+			'coach.resultEliminations' => 'Odstraňte přeškrtnuté kandidáty ze zvýrazněných polí.',
+			'coach.resultActions' => 'Použijte zvýrazněný logický krok.',
+			'coach.technique' => ({required Object name}) => 'Technika: ${name}',
+			'coach.nakedSingle' => 'nahý singl',
+			'coach.hiddenSingle' => 'skrytý singl',
+			'coach.nakedPair' => 'nahá dvojice',
+			'coach.pointingPair' => 'ukazující dvojice',
+			'coach.unavailable' => 'Nápověda není dostupná',
+			'coach.wrongTitle' => 'Nejdřív opravte chybu.',
+			'coach.wrongBody' => 'Dokud je na desce chybná číslice, nelze určit logický další krok.',
+			'coach.stuckTitle' => 'Zatím žádný podporovaný krok.',
+			'coach.stuckBody' => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.',
 			_ => null,
 		};
 	}

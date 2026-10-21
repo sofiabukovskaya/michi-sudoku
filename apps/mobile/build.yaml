@@ -12,3 +12,7 @@ targets:
           lazy: false
           locale_handling: true
           flutter_integration: true
+      bdd_widget_test|featureBuilder:
+        options:
+          customHeaders:
+            - "import 'package:flutter_test/flutter_test.dart';"
