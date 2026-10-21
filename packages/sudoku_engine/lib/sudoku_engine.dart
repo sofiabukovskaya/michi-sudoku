@@ -1,6 +1,7 @@
 /// Deterministic Sudoku domain models and contracts. No Flutter dependency.
 library;
 
+export 'src/coach/candidate_ref.dart';
 export 'src/coach/coach_engine.dart';
 export 'src/coach/coach_hint.dart';
 export 'src/coach/coach_plan.dart';
@@ -10,8 +11,15 @@ export 'src/core/sudoku_unit.dart';
 export 'src/generator/difficulty_analyzer.dart';
 export 'src/generator/sudoku_generator.dart';
 export 'src/human_solver/deduction.dart';
+export 'src/human_solver/human_solve_result.dart';
 export 'src/human_solver/human_solver.dart';
+export 'src/human_solver/human_solver_state.dart';
+export 'src/human_solver/human_technique_strategy.dart';
 export 'src/human_solver/sudoku_technique.dart';
+export 'src/human_solver/techniques/hidden_single.dart';
+export 'src/human_solver/techniques/naked_pair.dart';
+export 'src/human_solver/techniques/naked_single.dart';
+export 'src/human_solver/techniques/pointing_pair.dart';
 export 'src/model/candidate_mask.dart';
 export 'src/model/cell_ref.dart';
 export 'src/model/sudoku_board.dart';

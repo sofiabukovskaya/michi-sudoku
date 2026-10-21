@@ -24,16 +24,108 @@ dependency.
 
 Board construction enforces only the 81-cell shape and digit range. A board
 with conflicting digits remains representable, so validation can explain a
-bad scan or entry. This validation checks Sudoku constraints only. **Phase 2
-does not determine whether a puzzle is solvable or has a unique solution.**
-That belongs to the Phase 3 `ExactSolver`.
+bad scan or entry. Constraint validation reports rule conflicts; it does not
+determine whether a puzzle has a solution.
+
+## Domain layers
+
+1. **Sudoku Core — implemented in Phase 2.** Board values, constraints, units,
+   and candidate calculation establish the rules.
+2. **ExactSolver — implemented in Phase 3.** `BacktrackingExactSolver`
+   determines mathematical solvability, returns a complete solution, counts
+   solutions up to a caller-provided limit, and checks uniqueness by counting
+   at most two. Rule-invalid or contradictory boards have zero solutions.
+3. **HumanSolver — implemented in Phase 4.** `DeterministicHumanSolver`
+   identifies named, teachable deductions from the current board and logical
+   candidate state. It never consults exact search when choosing a move.
+4. **CoachEngine — implemented in Phase 5.** `StructuredCoachEngine` turns an
+   existing structured deduction into a four-level disclosure plan.
+
+Exact search validates the starting board, repeatedly places cells with a
+single legal candidate, then branches on the empty cell with the fewest
+candidates (MRV). Ties use the lowest cell index and digits are tried from
+1 to 9. It uses immutable board copies and the core candidate/constraint
+APIs. Its search path does **not** claim to be how a human should solve the
+puzzle.
+
+```dart
+const solver = BacktrackingExactSolver();
+final solution = solver.solve(board); // SudokuBoard?; null if unsolvable
+final exists = solver.hasSolution(board);
+final count = solver.countSolutions(board, limit: 2); // Stops at 2
+final unique = solver.hasUniqueSolution(board);
+```
+
+## Human reasoning
+
+`HumanSolverState.initial(board)` derives legal candidate masks for empty
+cells. The immutable state stores those masks separately from `SudokuBoard`:
+board values alone cannot retain a Naked Pair or Pointing Pair elimination.
+Applying a `Deduction` creates a new state, removes the specified candidates,
+places any digits, and intersects the remaining masks with the new board's
+legal candidates. A previously eliminated candidate never reappears after an
+unrelated placement. Invalid deduction actions throw `StateError`; an invalid
+board or impossible candidate state is reported as a contradiction.
+
+Each deduction contains a technique ID, focus cells, structured evidence,
+candidate eliminations, and/or digit placements. Evidence is semantic data
+(`CandidateSetEvidence`, `UnitCandidateEvidence`, `UnitEvidence`), with no
+localized text. The app can later turn it into Coach hints and explanations.
+
+Phase 4 supports **Naked Single**, **Hidden Single**, **Naked Pair**, and
+**Pointing Pair**, in that priority order. Within a technique, scanning is
+deterministic: cells by index; units as rows, columns, then boxes; digits in
+ascending order. Hidden Single keeps the first row/column/box evidence path
+when the same placement is found more than once.
+
+```dart
+const humanSolver = DeterministicHumanSolver();
+final state = HumanSolverState.initial(board);
+final next = humanSolver.findNextDeduction(state); // Deduction?; null if none
+final result = humanSolver.solveLogically(board); // status, finalState, trace
+```
+
+`HumanSolveResult` preserves the ordered deduction trace and ends with
+`solved`, `stuck`, or `contradiction`. **Stuck is a valid result:** a perfectly
+solvable Sudoku may require a technique outside the current catalogue. Human
+reasoning does not determine mathematical solvability or uniqueness; use
+`ExactSolver` for those questions. Exact search is used only as a test oracle
+for the HumanSolver regression fixtures.
+
+## Progressive Coach plans
+
+Coach consumes one existing `Deduction`. It does not solve Sudoku, call either
+solver, or determine whether that deduction is mathematically valid. The
+application first requests a move from HumanSolver, then passes that move to
+Coach. The engine assumes a valid deduction and checks that the evidence
+needed to plan its hints is present; malformed supported deductions throw
+`StateError`, and unsupported technique IDs throw `UnsupportedError`.
+
+```dart
+const coach = StructuredCoachEngine();
+final deduction = humanSolver.findNextDeduction(state);
+if (deduction != null) {
+  final plan = coach.createPlan(deduction);
+  final firstHint = plan.hintForLevel(CoachHintLevel.direction);
+  final resultHint = plan.hintForLevel(CoachHintLevel.result);
+}
+```
+
+Every supported technique produces exactly four immutable, ordered hints:
+**Direction → Focus → Reasoning → Result**. The first three hints reveal no
+placement or elimination action. The Result hint contains exactly the
+deduction's actions, including eliminations for Naked Pair and Pointing Pair.
+`CoachHintIntent`, focus cells and units, `CandidateRef` highlights, and selected
+deduction evidence give the Flutter layer semantic input for localization and
+visual presentation. `CandidateRef` marks a relevant candidate; it does not
+claim that candidate can be eliminated. The plan is stateless; the app will
+track which level the player has viewed.
 
 `SudokuPuzzle` remains a minimal puzzle identity and given board. `SudokuMove`
 remains a small semantic placement/elimination model. Gameplay progress and
 undo history belong in the application.
 
-Later, `HumanSolver` will find teachable deductions, `CoachEngine` will turn
-them into progressive hints, and generator/difficulty components will create
-and classify puzzles. None of those algorithms are implemented here.
+Localized hint presentation, more advanced human techniques, generator, and
+difficulty analysis remain future work.
 
 Run `dart test` from this directory with the workspace's Dart SDK.
