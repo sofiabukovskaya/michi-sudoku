@@ -32,11 +32,21 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
   GameRoute({
     SudokuPuzzle? puzzle,
     GameCubit? cubit,
+    GameRepository? repository,
+    GameClock? clock,
+    bool restore = false,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          GameRoute.name,
-         args: GameRouteArgs(puzzle: puzzle, cubit: cubit, key: key),
+         args: GameRouteArgs(
+           puzzle: puzzle,
+           cubit: cubit,
+           repository: repository,
+           clock: clock,
+           restore: restore,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -48,50 +58,114 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
       final args = data.argsAs<GameRouteArgs>(
         orElse: () => const GameRouteArgs(),
       );
-      return GamePage(puzzle: args.puzzle, cubit: args.cubit, key: args.key);
+      return GamePage(
+        puzzle: args.puzzle,
+        cubit: args.cubit,
+        repository: args.repository,
+        clock: args.clock,
+        restore: args.restore,
+        key: args.key,
+      );
     },
   );
 }
 
 class GameRouteArgs {
-  const GameRouteArgs({this.puzzle, this.cubit, this.key});
+  const GameRouteArgs({
+    this.puzzle,
+    this.cubit,
+    this.repository,
+    this.clock,
+    this.restore = false,
+    this.key,
+  });
 
   final SudokuPuzzle? puzzle;
 
   final GameCubit? cubit;
 
+  final GameRepository? repository;
+
+  final GameClock? clock;
+
+  final bool restore;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'GameRouteArgs{puzzle: $puzzle, cubit: $cubit, key: $key}';
+    return 'GameRouteArgs{puzzle: $puzzle, cubit: $cubit, repository: $repository, clock: $clock, restore: $restore, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! GameRouteArgs) return false;
-    return puzzle == other.puzzle && cubit == other.cubit && key == other.key;
+    return puzzle == other.puzzle &&
+        cubit == other.cubit &&
+        repository == other.repository &&
+        clock == other.clock &&
+        restore == other.restore &&
+        key == other.key;
   }
 
   @override
-  int get hashCode => puzzle.hashCode ^ cubit.hashCode ^ key.hashCode;
+  int get hashCode =>
+      puzzle.hashCode ^
+      cubit.hashCode ^
+      repository.hashCode ^
+      clock.hashCode ^
+      restore.hashCode ^
+      key.hashCode;
 }
 
 /// generated route for
 /// [HomePage]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({
+    GameRepository? repository,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         HomeRoute.name,
+         args: HomeRouteArgs(repository: repository, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'HomeRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const HomePage();
+      final args = data.argsAs<HomeRouteArgs>(
+        orElse: () => const HomeRouteArgs(),
+      );
+      return HomePage(repository: args.repository, key: args.key);
     },
   );
+}
+
+class HomeRouteArgs {
+  const HomeRouteArgs({this.repository, this.key});
+
+  final GameRepository? repository;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{repository: $repository, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! HomeRouteArgs) return false;
+    return repository == other.repository && key == other.key;
+  }
+
+  @override
+  int get hashCode => repository.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -192,18 +266,51 @@ class ScannerRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [SplashPage]
-class SplashRoute extends PageRouteInfo<void> {
-  const SplashRoute({List<PageRouteInfo>? children})
-    : super(SplashRoute.name, initialChildren: children);
+class SplashRoute extends PageRouteInfo<SplashRouteArgs> {
+  SplashRoute({
+    GameRepository? repository,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         SplashRoute.name,
+         args: SplashRouteArgs(repository: repository, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'SplashRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const SplashPage();
+      final args = data.argsAs<SplashRouteArgs>(
+        orElse: () => const SplashRouteArgs(),
+      );
+      return SplashPage(repository: args.repository, key: args.key);
     },
   );
+}
+
+class SplashRouteArgs {
+  const SplashRouteArgs({this.repository, this.key});
+
+  final GameRepository? repository;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SplashRouteArgs{repository: $repository, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SplashRouteArgs) return false;
+    return repository == other.repository && key == other.key;
+  }
+
+  @override
+  int get hashCode => repository.hashCode ^ key.hashCode;
 }
 
 /// generated route for

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
@@ -7,13 +8,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
+import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_controls.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_top_bar.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_geometry.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_keypad.dart';
@@ -21,137 +25,312 @@ import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
 final class GamePage extends StatefulWidget {
-  const GamePage({this.puzzle, this.cubit, super.key});
+  const GamePage({
+    this.puzzle,
+    this.cubit,
+    this.repository,
+    this.clock,
+    this.restore = false,
+    super.key,
+  });
 
   /// Optional input keeps the route ready for future puzzle sources.
   final SudokuPuzzle? puzzle;
 
   /// Supplied by widget tests; normal navigation uses the composition root.
   final GameCubit? cubit;
+  final GameRepository? repository;
+  final GameClock? clock;
+  final bool restore;
 
   @override
   State<GamePage> createState() => _GamePageState();
 }
 
-final class _GamePageState extends State<GamePage> {
-  late final GameCubit _cubit;
-  late final Timer _timer;
-  Duration _elapsed = Duration.zero;
-  bool _paused = false;
+final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
+  GameCubit? _cubit;
+  Timer? _ticker;
+  bool _loading = true;
+  bool _loadFailed = false;
 
   @override
   void initState() {
     super.initState();
-    _cubit =
-        widget.cubit ??
-        GameCubit(
-          puzzle: widget.puzzle ?? DemoPuzzle.standard,
-          exactSolver: getIt<ExactSolver>(),
-          humanSolver: getIt<HumanSolver>(),
-          coachEngine: getIt<CoachEngine>(),
-        );
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (!mounted || _paused || _cubit.state.status == GameStatus.completed) {
+    WidgetsBinding.instance.addObserver(this);
+    if (widget.cubit case final cubit?) {
+      _attach(cubit);
+    } else {
+      unawaited(_initialize());
+    }
+  }
+
+  Future<void> _initialize() async {
+    try {
+      final repository = widget.repository ?? getIt<GameRepository>();
+      final stored = widget.restore ? await repository.loadActiveGame() : null;
+      if (widget.restore && stored == null) {
+        if (mounted) {
+          setState(() {
+            _loading = false;
+            _loadFailed = true;
+          });
+        }
         return;
       }
-      setState(() => _elapsed += const Duration(seconds: 1));
+      final exactSolver = getIt<ExactSolver>();
+      final humanSolver = getIt<HumanSolver>();
+      final coachEngine = getIt<CoachEngine>();
+      final clock = widget.clock ?? getIt<GameClock>();
+      final GameCubit cubit;
+      if (stored == null) {
+        cubit = GameCubit(
+          puzzle: widget.puzzle ?? DemoPuzzle.standard,
+          exactSolver: exactSolver,
+          humanSolver: humanSolver,
+          coachEngine: coachEngine,
+          repository: repository,
+          clock: clock,
+        );
+      } else {
+        try {
+          cubit = GameCubit.restore(
+            stored: stored,
+            exactSolver: exactSolver,
+            humanSolver: humanSolver,
+            coachEngine: coachEngine,
+            repository: repository,
+            clock: clock,
+          );
+        } on FormatException catch (error, stackTrace) {
+          developer.log(
+            'Discarding an invalid restored game',
+            name: 'michi.game',
+            error: error,
+            stackTrace: stackTrace,
+          );
+          await repository.deleteActiveGame(stored.gameId);
+          rethrow;
+          // The solver reports invalid puzzle content with StateError.
+          // ignore: avoid_catching_errors
+        } on StateError catch (error, stackTrace) {
+          developer.log(
+            'Discarding an unsolvable restored game',
+            name: 'michi.game',
+            error: error,
+            stackTrace: stackTrace,
+          );
+          await repository.deleteActiveGame(stored.gameId);
+          rethrow;
+        }
+      }
+      if (!mounted) {
+        await cubit.close();
+        return;
+      }
+      setState(() => _attach(cubit));
+    } on Object catch (error, stackTrace) {
+      developer.log(
+        'Unable to open game',
+        name: 'michi.game',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _loadFailed = true;
+        });
+      }
+    }
+  }
+
+  void _attach(GameCubit cubit) {
+    _cubit = cubit;
+    _loading = false;
+    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted &&
+          !cubit.state.isPaused &&
+          cubit.state.status != GameStatus.completed) {
+        setState(() {});
+      }
     });
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState lifecycle) {
+    if (lifecycle == AppLifecycleState.inactive ||
+        lifecycle == AppLifecycleState.paused ||
+        lifecycle == AppLifecycleState.detached) {
+      final cubit = _cubit;
+      if (cubit != null) unawaited(cubit.onAppBackground());
+    }
+  }
+
+  @override
   void dispose() {
-    _timer.cancel();
-    if (widget.cubit == null) unawaited(_cubit.close());
+    WidgetsBinding.instance.removeObserver(this);
+    _ticker?.cancel();
+    if (widget.cubit == null && _cubit != null) {
+      unawaited(_cubit!.close());
+    }
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => BlocProvider.value(
-    value: _cubit,
-    child: Scaffold(
-      backgroundColor: MichiPalette.of(context).paper,
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final compact = constraints.maxHeight < 710;
-            final widthCell = ((constraints.maxWidth - 38) / 9)
-                .floor()
-                .clamp(36, 44)
-                .toDouble();
-            // Reserve space for controls and keypad on short viewports.
-            final heightCell = ((constraints.maxHeight - 220) / 9)
-                .floor()
-                .clamp(36, 44)
-                .toDouble();
-            final cellSize = math.min(widthCell, heightCell);
-            return BlocBuilder<GameCubit, GameState>(
-              builder: (context, state) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: MichiSpacing.sm,
-                    ),
-                    child: GameTopBar(
-                      elapsed: _elapsed,
-                      paused: _paused,
-                      onBack: () => Navigator.of(context).maybePop(),
-                      onPause: () => setState(() => _paused = !_paused),
-                    ),
-                  ),
-                  if (_paused)
-                    Expanded(
-                      child: _PausedSurface(
-                        onResume: () => setState(() => _paused = false),
-                      ),
-                    )
-                  else ...[
-                    SizedBox(
-                      height: compact ? MichiSpacing.sm : MichiSpacing.lg,
-                    ),
-                    SudokuBoardWidget(
-                      view: BoardViewState.fromGame(state),
-                      cellSize: cellSize,
-                      onCellTap: _cubit.selectCell,
-                    ),
-                    const SizedBox(height: MichiSpacing.sm),
-                    Expanded(
-                      child: state.status == GameStatus.completed
-                          ? const _CompletedSurface()
-                          : state.coach != null
-                          ? CoachPanel(
-                              model: CoachPresenter.present(
-                                context.t,
-                                state.coach!,
-                              ),
-                              onNext: _cubit.requestNextHint,
-                              onDismiss: _cubit.dismissHint,
-                              onApply: _cubit.applyCoachResult,
-                            )
-                          : state.hintUnavailable != null
-                          ? HintUnavailablePanel(
-                              reason: state.hintUnavailable!,
-                              onDismiss: _cubit.dismissHint,
-                              onShowMistake: _cubit.selectWrongCell,
-                            )
-                          : _GameInputArea(
-                              state: state,
-                              compact: compact,
-                              onUndo: _cubit.undo,
-                              onErase: _cubit.erase,
-                              onToggleNotes: _cubit.toggleNotesMode,
-                              onHint: _cubit.requestHint,
-                              onDigit: _cubit.enterDigit,
-                            ),
+  Widget build(BuildContext context) {
+    final cubit = _cubit;
+    if (cubit == null) {
+      return Scaffold(
+        backgroundColor: MichiPalette.of(context).paper,
+        body: Center(
+          child: _loading
+              ? Text(context.t.game.loading, style: MichiTypography.secondary)
+              : _loadFailed
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(context.t.game.restoreUnavailable),
+                    const SizedBox(height: MichiSpacing.lg),
+                    MichiButton(
+                      label: context.t.game.backHome,
+                      onPressed: () => Navigator.of(context).maybePop(),
                     ),
                   ],
-                ],
+                )
+              : const SizedBox.shrink(),
+        ),
+      );
+    }
+    return BlocProvider.value(
+      value: cubit,
+      child: BlocListener<GameCubit, GameState>(
+        listenWhen: (previous, current) =>
+            previous.storageFailure != current.storageFailure,
+        listener: (context, state) {
+          if (state.storageFailure == null) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(context.t.game.saveFailed),
+              action: SnackBarAction(
+                label: context.t.game.retrySave,
+                onPressed: cubit.retryPersistence,
               ),
-            );
-          },
+            ),
+          );
+        },
+        child: Scaffold(
+          backgroundColor: MichiPalette.of(context).paper,
+          body: SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final compact = constraints.maxHeight < 710;
+                final widthCell = ((constraints.maxWidth - 38) / 9)
+                    .floor()
+                    .clamp(36, 44)
+                    .toDouble();
+                final heightCell = ((constraints.maxHeight - 220) / 9)
+                    .floor()
+                    .clamp(36, 44)
+                    .toDouble();
+                final cellSize = math.min(widthCell, heightCell);
+                return BlocBuilder<GameCubit, GameState>(
+                  builder: (context, state) {
+                    if (state.status == GameStatus.completed) {
+                      return _CompletedSurface(
+                        state: state,
+                        elapsed: cubit.elapsed,
+                        onHome: () async {
+                          await cubit.flushPersistence();
+                          if (context.mounted &&
+                              cubit.state.storageFailure == null) {
+                            await Navigator.of(context).maybePop();
+                          }
+                        },
+                      );
+                    }
+                    final input = _GameInputArea(
+                      state: state,
+                      compact: compact,
+                      onUndo: cubit.undo,
+                      onErase: cubit.erase,
+                      onToggleNotes: cubit.toggleNotesMode,
+                      onHint: cubit.requestHint,
+                      onDigit: cubit.enterDigit,
+                    );
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: MichiSpacing.sm,
+                          ),
+                          child: GameTopBar(
+                            elapsed: cubit.elapsed,
+                            paused: state.isPaused,
+                            onBack: () async {
+                              cubit.pause();
+                              await cubit.flushPersistence();
+                              if (context.mounted &&
+                                  cubit.state.storageFailure == null) {
+                                await Navigator.of(context).maybePop();
+                              }
+                            },
+                            onPause: state.isPaused
+                                ? cubit.resume
+                                : cubit.pause,
+                          ),
+                        ),
+                        SizedBox(
+                          height: compact ? MichiSpacing.sm : MichiSpacing.lg,
+                        ),
+                        if (state.isPaused)
+                          _PausedSurface(
+                            dimension: BoardGeometry(cellSize).size,
+                            elapsed: cubit.elapsed,
+                            onResume: cubit.resume,
+                          )
+                        else
+                          SudokuBoardWidget(
+                            view: BoardViewState.fromGame(state),
+                            cellSize: cellSize,
+                            onCellTap: cubit.selectCell,
+                          ),
+                        const SizedBox(height: MichiSpacing.sm),
+                        Expanded(
+                          child: state.isPaused
+                              ? ExcludeSemantics(
+                                  child: IgnorePointer(
+                                    child: Opacity(opacity: 0.38, child: input),
+                                  ),
+                                )
+                              : state.coach != null
+                              ? CoachPanel(
+                                  model: CoachPresenter.present(
+                                    context.t,
+                                    state.coach!,
+                                  ),
+                                  onNext: cubit.requestNextHint,
+                                  onDismiss: cubit.dismissHint,
+                                  onApply: cubit.applyCoachResult,
+                                )
+                              : state.hintUnavailable != null
+                              ? HintUnavailablePanel(
+                                  reason: state.hintUnavailable!,
+                                  onDismiss: cubit.dismissHint,
+                                  onShowMistake: cubit.selectWrongCell,
+                                )
+                              : input,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 final class _GameInputArea extends StatelessWidget {
@@ -205,41 +384,134 @@ final class _GameInputArea extends StatelessWidget {
 }
 
 final class _PausedSurface extends StatelessWidget {
-  const _PausedSurface({required this.onResume});
+  const _PausedSurface({
+    required this.dimension,
+    required this.elapsed,
+    required this.onResume,
+  });
 
+  final double dimension;
+  final Duration elapsed;
   final VoidCallback onResume;
 
   @override
-  Widget build(BuildContext context) => Center(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(context.t.game.pausedTitle, style: MichiTypography.heading),
-        const SizedBox(height: MichiSpacing.xl),
-        MichiButton(label: context.t.game.resume, onPressed: onResume),
-      ],
+  Widget build(BuildContext context) => SizedBox.square(
+    dimension: dimension,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: MichiColors.cream,
+        borderRadius: BorderRadius.circular(MichiRadius.control),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(context.t.game.pausedTitle, style: MichiTypography.heading),
+            const SizedBox(height: MichiSpacing.sm),
+            Text(
+              context.t.game.pausedAt(time: _formatElapsed(elapsed)),
+              style: MichiTypography.secondary,
+            ),
+            const SizedBox(height: MichiSpacing.xl),
+            MichiButton(label: context.t.game.resume, onPressed: onResume),
+          ],
+        ),
+      ),
     ),
   );
 }
 
 final class _CompletedSurface extends StatelessWidget {
-  const _CompletedSurface();
+  const _CompletedSurface({
+    required this.state,
+    required this.elapsed,
+    required this.onHome,
+  });
+
+  final GameState state;
+  final Duration elapsed;
+  final VoidCallback onHome;
 
   @override
-  Widget build(BuildContext context) => MichiBottomSheet(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(context.t.game.completeTitle, style: MichiTypography.heading),
-        const SizedBox(height: MichiSpacing.sm),
-        Text(context.t.game.completeBody, style: MichiTypography.secondary),
-        const SizedBox(height: MichiSpacing.xl),
-        MichiButton(
-          label: context.t.game.backHome,
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
-      ],
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) => SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          DecoratedBox(
+            decoration: const BoxDecoration(
+              color: MichiColors.indigo,
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(MichiRadius.hero),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(MichiSpacing.xl),
+              child: SizedBox(
+                height: math.max(260, constraints.maxHeight * 0.45),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        tooltip: context.t.game.backHome,
+                        onPressed: onHome,
+                        icon: const Icon(Icons.close, color: MichiColors.ivory),
+                      ),
+                    ),
+                    const Spacer(),
+                    Align(
+                      child: Image.asset(
+                        'assets/images/coach_mascot.png',
+                        height: 130,
+                        excludeFromSemantics: true,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      context.t.game.completeTitle,
+                      style: MichiTypography.display.copyWith(
+                        color: MichiColors.ivory,
+                      ),
+                    ),
+                    const SizedBox(height: MichiSpacing.sm),
+                    Text(
+                      _formatElapsed(elapsed),
+                      style: MichiTypography.heading.copyWith(
+                        color: MichiColors.ivory,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(MichiSpacing.xl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(context.t.game.completeBody, style: MichiTypography.body),
+                const SizedBox(height: MichiSpacing.xl),
+                Text(
+                  context.t.game.completionStats(
+                    mistakes: state.mistakes,
+                    hints: state.hintsRequested,
+                  ),
+                  style: MichiTypography.secondary,
+                ),
+                const SizedBox(height: MichiSpacing.xl),
+                MichiButton(label: context.t.game.backHome, onPressed: onHome),
+              ],
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
+
+String _formatElapsed(Duration elapsed) =>
+    '${elapsed.inMinutes.toString().padLeft(2, '0')}:'
+    '${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}';

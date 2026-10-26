@@ -25,6 +25,14 @@
   "home": {
     "title": "Твій шлях у судоку",
     "game": "Гра",
+    "continueGame": "Продовжити: середній",
+    "continueDetails": "Розпочато $date · $progress% · $time",
+    "replaceTitle": "Почати нову головоломку?",
+    "replaceBody": "Незавершену гру буде замінено.",
+    "keepPlaying": "Продовжити гру",
+    "startNew": "Почати нову",
+    "storageUnavailable": "Збережена гра недоступна. Спробуй пізніше.",
+    "loading": "Шукаємо збережену гру…",
     "learn": "Навчання",
     "progress": "Прогрес",
     "profile": "Профіль",
@@ -51,7 +59,13 @@
     "backHome": "На головну",
     "pause": "Пауза",
     "pausedTitle": "Пауза",
-    "resume": "Продовжити"
+    "resume": "Продовжити",
+    "pausedAt": "Таймер зупинено на $time",
+    "loading": "Готуємо головоломку…",
+    "restoreUnavailable": "Не вдалося відновити гру.",
+    "saveFailed": "Не вдалося зберегти гру.",
+    "retrySave": "Повторити",
+    "completionStats": "$mistakes помилок · $hints підказок"
   },
   "learn": {
     "unavailable": "Уроки технік з’являться пізніше."

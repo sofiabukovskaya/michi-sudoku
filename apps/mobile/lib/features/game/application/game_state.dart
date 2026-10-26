@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:michi_mobile/core/errors/app_failure.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 enum GameStatus { playing, completed }
@@ -38,6 +39,8 @@ final class ActiveCoachSession {
 @immutable
 final class GameState {
   GameState({
+    required this.gameId,
+    required this.startedAt,
     required this.puzzle,
     required this.solution,
     required this.board,
@@ -47,11 +50,17 @@ final class GameState {
     this.notesMode = false,
     this.mistakes = 0,
     this.status = GameStatus.playing,
+    this.isPaused = false,
+    this.hintsRequested = 0,
+    this.highestHintLevelUsed = 0,
+    this.storageFailure,
     this.coach,
     this.hintUnavailable,
   }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
        history = List<GameSnapshot>.unmodifiable(history);
 
+  final String gameId;
+  final DateTime startedAt;
   final SudokuPuzzle puzzle;
   final SudokuBoard solution;
   final SudokuBoard board;
@@ -61,6 +70,10 @@ final class GameState {
   final bool notesMode;
   final int mistakes;
   final GameStatus status;
+  final bool isPaused;
+  final int hintsRequested;
+  final int highestHintLevelUsed;
+  final StorageFailure? storageFailure;
   final ActiveCoachSession? coach;
   final HintUnavailableReason? hintUnavailable;
 
@@ -81,6 +94,21 @@ final class GameState {
         CellRef.fromIndex,
       ).where((cell) => board.valueAt(cell) == digit && !isWrong(cell)).length;
 
+  int get editableCells => puzzle.givens.emptyCellCount;
+
+  int get correctEditableCells =>
+      Iterable<CellRef>.generate(
+            81,
+            CellRef.fromIndex,
+          )
+          .where(
+            (cell) =>
+                !isGiven(cell) &&
+                board.isFilled(cell) &&
+                board.valueAt(cell) == solution.valueAt(cell),
+          )
+          .length;
+
   bool get canUndo => history.isNotEmpty;
 
   bool get canErase {
@@ -99,11 +127,18 @@ final class GameState {
     bool? notesMode,
     int? mistakes,
     GameStatus? status,
+    bool? isPaused,
+    int? hintsRequested,
+    int? highestHintLevelUsed,
+    StorageFailure? storageFailure,
+    bool keepStorageFailure = true,
     ActiveCoachSession? coach,
     bool keepCoach = true,
     HintUnavailableReason? hintUnavailable,
     bool keepHintUnavailable = true,
   }) => GameState(
+    gameId: gameId,
+    startedAt: startedAt,
     puzzle: puzzle,
     solution: solution,
     board: board ?? this.board,
@@ -115,6 +150,12 @@ final class GameState {
     notesMode: notesMode ?? this.notesMode,
     mistakes: mistakes ?? this.mistakes,
     status: status ?? this.status,
+    isPaused: isPaused ?? this.isPaused,
+    hintsRequested: hintsRequested ?? this.hintsRequested,
+    highestHintLevelUsed: highestHintLevelUsed ?? this.highestHintLevelUsed,
+    storageFailure: keepStorageFailure
+        ? storageFailure ?? this.storageFailure
+        : storageFailure,
     coach: keepCoach ? coach ?? this.coach : coach,
     hintUnavailable: keepHintUnavailable
         ? hintUnavailable ?? this.hintUnavailable

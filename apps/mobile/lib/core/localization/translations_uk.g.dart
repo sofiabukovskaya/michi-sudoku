@@ -158,6 +158,30 @@ class Translations$home$uk {
 	/// uk: 'Гра'
 	String get game => 'Гра';
 
+	/// uk: 'Продовжити: середній'
+	String get continueGame => 'Продовжити: середній';
+
+	/// uk: 'Розпочато $date · $progress% · $time'
+	String continueDetails({required Object date, required Object progress, required Object time}) => 'Розпочато ${date} · ${progress}% · ${time}';
+
+	/// uk: 'Почати нову головоломку?'
+	String get replaceTitle => 'Почати нову головоломку?';
+
+	/// uk: 'Незавершену гру буде замінено.'
+	String get replaceBody => 'Незавершену гру буде замінено.';
+
+	/// uk: 'Продовжити гру'
+	String get keepPlaying => 'Продовжити гру';
+
+	/// uk: 'Почати нову'
+	String get startNew => 'Почати нову';
+
+	/// uk: 'Збережена гра недоступна. Спробуй пізніше.'
+	String get storageUnavailable => 'Збережена гра недоступна. Спробуй пізніше.';
+
+	/// uk: 'Шукаємо збережену гру…'
+	String get loading => 'Шукаємо збережену гру…';
+
 	/// uk: 'Навчання'
 	String get learn => 'Навчання';
 
@@ -241,6 +265,24 @@ class Translations$game$uk {
 
 	/// uk: 'Продовжити'
 	String get resume => 'Продовжити';
+
+	/// uk: 'Таймер зупинено на $time'
+	String pausedAt({required Object time}) => 'Таймер зупинено на ${time}';
+
+	/// uk: 'Готуємо головоломку…'
+	String get loading => 'Готуємо головоломку…';
+
+	/// uk: 'Не вдалося відновити гру.'
+	String get restoreUnavailable => 'Не вдалося відновити гру.';
+
+	/// uk: 'Не вдалося зберегти гру.'
+	String get saveFailed => 'Не вдалося зберегти гру.';
+
+	/// uk: 'Повторити'
+	String get retrySave => 'Повторити';
+
+	/// uk: '$mistakes помилок · $hints підказок'
+	String completionStats({required Object mistakes, required Object hints}) => '${mistakes} помилок · ${hints} підказок';
 }
 
 // Path: learn
@@ -420,6 +462,14 @@ extension on Translations {
 			'auth.unavailable' => 'Синхронізація прогресу з’явиться пізніше.',
 			'home.title' => 'Твій шлях у судоку',
 			'home.game' => 'Гра',
+			'home.continueGame' => 'Продовжити: середній',
+			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Розпочато ${date} · ${progress}% · ${time}',
+			'home.replaceTitle' => 'Почати нову головоломку?',
+			'home.replaceBody' => 'Незавершену гру буде замінено.',
+			'home.keepPlaying' => 'Продовжити гру',
+			'home.startNew' => 'Почати нову',
+			'home.storageUnavailable' => 'Збережена гра недоступна. Спробуй пізніше.',
+			'home.loading' => 'Шукаємо збережену гру…',
 			'home.learn' => 'Навчання',
 			'home.progress' => 'Прогрес',
 			'home.profile' => 'Профіль',
@@ -445,6 +495,12 @@ extension on Translations {
 			'game.pause' => 'Пауза',
 			'game.pausedTitle' => 'Пауза',
 			'game.resume' => 'Продовжити',
+			'game.pausedAt' => ({required Object time}) => 'Таймер зупинено на ${time}',
+			'game.loading' => 'Готуємо головоломку…',
+			'game.restoreUnavailable' => 'Не вдалося відновити гру.',
+			'game.saveFailed' => 'Не вдалося зберегти гру.',
+			'game.retrySave' => 'Повторити',
+			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} помилок · ${hints} підказок',
 			'learn.unavailable' => 'Уроки технік з’являться пізніше.',
 			'progress.unavailable' => 'Майстерність технік з’явиться пізніше.',
 			'profile.unavailable' => 'Налаштування профілю з’являться пізніше.',

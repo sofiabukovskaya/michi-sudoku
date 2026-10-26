@@ -2,17 +2,19 @@
 
 MICHI is a local-first Flutter app for learning to solve Sudoku logically. The
 Coach teaches the reasoning behind a move through progressive hints.
-Phases 1–6 are implemented: the workspace foundation, Sudoku domain rules,
+Phases 1–7 are implemented: the workspace foundation, Sudoku domain rules,
 exact mathematical solver, initial human reasoning, progressive Coach planning,
-and a playable Game and Coach vertical slice.
+and a playable Game and Coach flow with local game restoration.
 
 ## Workspace
 
 ```text
 apps/mobile/                   Flutter app (iOS and Android)
   lib/app/                     Bootstrap, router, theme
-  lib/core/                    DI, errors, localization, persistence models
+  lib/core/                    DI, errors, localization, clock
   lib/features/game/           Play state, board rendering and controls
+    data/                       Drift database, repository and codecs
+    domain/                     App-facing game persistence contract
   lib/features/coach/          Semantic hint presentation
   lib/features/                Other feature modules and placeholders
 packages/sudoku_engine/        Pure Dart rules, solvers, Coach planning
@@ -36,13 +38,41 @@ Features add `data/`, `domain/`, and `presentation/` only when each layer has a
 real responsibility. Placeholder pages are stateless; no placeholder Cubits or
 repositories have been created. `flutter_bloc` and `bloc_test` are ready for
 features with stateful behavior. `GameCubit` owns board entries, manual notes,
-selection, undo, mistakes and Coach progression. The board is painted from
+selection, undo, mistakes, timer and Coach progression. The board is painted from
 immutable view state, with a semantic target for each cell. Coach copy is
 mapped from structured engine hints into Slang translations.
+
+## Local game storage
+
+The mobile app uses Drift with a SQLite database named `michi_games` (schema
+version 1). `active_games` has a single slot for the unfinished game;
+`completed_games` is keyed by game ID. Completion inserts its history row and
+removes the matching active row in one transaction. Repeating a completion is
+safe. `GameRepository` keeps SQL out of `GameCubit` and exposes active-game,
+summary, completion and recent-history operations.
+
+Boards are stored as 81-character `0`–`9` strings. Player pencil notes are
+JSON from zero-based cell index to `CandidateMask` bits. The last 100 meaningful
+board/note snapshots are stored as undo history. Mistakes remain cumulative
+when an action is undone. Selection and open Coach panels are transient;
+restored games reopen paused. Startup skips onboarding when a saved game exists.
+A corrupt active record is logged and removed,
+while completed history is retained. Unsupported future schema versions fail
+explicitly until a migration is added.
+
+Each meaningful action queues a serialized save. The timer stores accumulated
+duration and a running wall-clock timestamp; a monotonic clock measures the
+current foreground run. Pausing or backgrounding records the accumulated time
+without writing every second. If a process stops without a pause callback,
+restoration adds a bounded wall-clock gap and reopens paused. Home progress is
+correctly filled editable cells divided by all editable cells, so wrong digits
+never increase progress. Starting another game asks for confirmation.
 
 ## Setup
 
 Tested with Flutter 3.41.6, Dart 3.11.4 and the native Android/iOS toolchains.
+Use the Dart SDK bundled with that Flutter installation if another `dart`
+launcher on your `PATH` reports an older SDK.
 
 ```sh
 flutter pub get
@@ -60,7 +90,7 @@ Theme Tailor code, plus BDD widget tests. Generated files stay in the source tre
 immediately after checkout. For a direct Android build, run
 `cd apps/mobile && flutter build apk --debug`.
 
-The home screen opens a bundled demo puzzle for the Phase 6 game. Game and Coach
+The home screen opens a bundled demo puzzle or continues the saved game. Game and Coach
 behavior is covered by Cubit tests, widget tests, and BDD scenarios under
 `apps/mobile/test/features/game/`. Run only those tests with
 `cd apps/mobile && flutter test test/features/game`.
@@ -86,6 +116,5 @@ behavior is covered by Cubit tests, widget tests, and BDD scenarios under
 The engine supports constraints, candidates, exact solving, structured human
 deductions for four techniques, and four-level semantic Coach plans.
 See [the engine README](packages/sudoku_engine/README.md) for the APIs and
-responsibility boundaries. Phase 6 adds localized hint presentation and local
-game state. Persistence, Firebase, scanning, ML, and unrelated visual screens
-remain future work.
+responsibility boundaries. Firebase, scanning, ML, a production puzzle catalog,
+Daily Sudoku and unrelated visual screens remain future work.

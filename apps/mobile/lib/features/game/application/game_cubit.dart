@@ -1,45 +1,174 @@
+import 'dart:developer' as developer;
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:michi_mobile/core/errors/app_failure.dart';
+import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
+import 'package:michi_mobile/features/game/application/game_timer.dart';
+import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
-/// Owns one offline game session. Sudoku reasoning stays in sudoku_engine.
+/// Owns an offline game session and serializes its persistence operations.
 final class GameCubit extends Cubit<GameState> {
-  GameCubit({
+  factory GameCubit({
     required SudokuPuzzle puzzle,
     required ExactSolver exactSolver,
     required HumanSolver humanSolver,
     required CoachEngine coachEngine,
-  }) : _humanSolver = humanSolver,
-       _coachEngine = coachEngine,
-       super(_initialState(puzzle, exactSolver));
-
-  final HumanSolver _humanSolver;
-  final CoachEngine _coachEngine;
-
-  static GameState _initialState(SudokuPuzzle puzzle, ExactSolver solver) {
-    if (solver.countSolutions(puzzle.givens) != 1) {
-      throw StateError('Puzzle ${puzzle.id} must have one solution.');
-    }
-    final solution = solver.solve(puzzle.givens);
-    if (solution == null) {
-      throw StateError('Puzzle ${puzzle.id} has no solution.');
-    }
-    return GameState(
-      puzzle: puzzle,
-      solution: solution,
-      board: puzzle.givens,
-      notes: const {},
-      history: const [],
+    GameRepository? repository,
+    GameClock? clock,
+  }) {
+    final gameClock = clock ?? SystemGameClock();
+    final now = gameClock.now();
+    return GameCubit._(
+      state: GameState(
+        gameId:
+            '${puzzle.id}-${now.microsecondsSinceEpoch}-'
+            '${Random.secure().nextInt(0x7fffffff)}',
+        startedAt: now,
+        puzzle: puzzle,
+        solution: _solve(puzzle, exactSolver),
+        board: puzzle.givens,
+        notes: const {},
+        history: const [],
+      ),
+      timer: GameTimer.start(gameClock),
+      clock: gameClock,
+      repository: repository,
+      humanSolver: humanSolver,
+      coachEngine: coachEngine,
+      saveOnCreate: true,
     );
   }
 
+  /// Restored games reopen paused. Selection and Coach UI are transient.
+  factory GameCubit.restore({
+    required StoredGame stored,
+    required ExactSolver exactSolver,
+    required HumanSolver humanSolver,
+    required CoachEngine coachEngine,
+    GameRepository? repository,
+    GameClock? clock,
+  }) {
+    final gameClock = clock ?? SystemGameClock();
+    _validateStored(stored);
+    final puzzle = SudokuPuzzle(
+      id: stored.puzzleId,
+      givens: stored.initialBoard,
+    );
+    final solution = _solve(puzzle, exactSolver);
+    if (stored.currentBoard == solution) {
+      throw const FormatException('Completed board stored as active.');
+    }
+    return GameCubit._(
+      state: GameState(
+        gameId: stored.gameId,
+        startedAt: stored.startedAt,
+        puzzle: puzzle,
+        solution: solution,
+        board: stored.currentBoard,
+        notes: stored.notes,
+        history: [
+          for (final item in stored.undoHistory)
+            GameSnapshot(board: item.board, notes: item.notes),
+        ],
+        mistakes: stored.mistakes,
+        isPaused: true,
+        hintsRequested: stored.hintsRequested,
+        highestHintLevelUsed: stored.highestHintLevelUsed,
+      ),
+      timer: GameTimer.restore(
+        clock: gameClock,
+        elapsedBeforeRun: stored.elapsedBeforeRun,
+        runningSince: stored.runningSince,
+      ),
+      clock: gameClock,
+      repository: repository,
+      humanSolver: humanSolver,
+      coachEngine: coachEngine,
+      saveOnCreate: !stored.isPaused,
+    );
+  }
+
+  GameCubit._({
+    required GameState state,
+    required GameTimer timer,
+    required GameClock clock,
+    required GameRepository? repository,
+    required HumanSolver humanSolver,
+    required CoachEngine coachEngine,
+    required bool saveOnCreate,
+  }) : _timer = timer,
+       _clock = clock,
+       _repository = repository,
+       _humanSolver = humanSolver,
+       _coachEngine = coachEngine,
+       super(state) {
+    if (saveOnCreate) _scheduleSave();
+  }
+
+  final HumanSolver _humanSolver;
+  final CoachEngine _coachEngine;
+  final GameRepository? _repository;
+  final GameClock _clock;
+  GameTimer _timer;
+  Future<void> _writes = Future<void>.value();
+
+  static SudokuBoard _solve(SudokuPuzzle puzzle, ExactSolver solver) {
+    if (solver.countSolutions(puzzle.givens) != 1) {
+      throw StateError('Puzzle ${puzzle.id} must have one solution.');
+    }
+    return solver.solve(puzzle.givens)!;
+  }
+
+  static void _validateStored(StoredGame stored) {
+    if (stored.gameId.isEmpty ||
+        stored.mistakes < 0 ||
+        stored.undoHistory.length > 100 ||
+        stored.isPaused != (stored.runningSince == null)) {
+      throw const FormatException('Incoherent stored game.');
+    }
+    for (var index = 0; index < 81; index++) {
+      final cell = CellRef.fromIndex(index);
+      if (stored.initialBoard.isFilled(cell) &&
+          stored.initialBoard.valueAt(cell) !=
+              stored.currentBoard.valueAt(cell)) {
+        throw const FormatException('A given cell was changed.');
+      }
+    }
+  }
+
+  Duration get elapsed => _timer.elapsed;
+
+  Future<void> flushPersistence() => _writes;
+
+  void pause() {
+    if (state.isPaused || state.status == GameStatus.completed) return;
+    _timer = _timer.pause();
+    emit(state.copyWith(isPaused: true));
+    _scheduleSave();
+  }
+
+  void resume() {
+    if (!state.isPaused || state.status == GameStatus.completed) return;
+    _timer = _timer.resume();
+    emit(state.copyWith(isPaused: false));
+    _scheduleSave();
+  }
+
+  Future<void> onAppBackground() async {
+    pause();
+    await flushPersistence();
+  }
+
   void selectCell(CellRef cell) {
-    if (state.status == GameStatus.completed) return;
+    if (state.isPaused || state.status == GameStatus.completed) return;
     emit(state.copyWith(selectedCell: cell));
   }
 
   void toggleNotesMode() {
-    if (state.status == GameStatus.completed) return;
+    if (state.isPaused || state.status == GameStatus.completed) return;
     emit(state.copyWith(notesMode: !state.notesMode));
   }
 
@@ -48,6 +177,7 @@ final class GameCubit extends Cubit<GameState> {
     final cell = state.selectedCell;
     if (cell == null ||
         state.isGiven(cell) ||
+        state.isPaused ||
         state.status != GameStatus.playing) {
       return;
     }
@@ -56,7 +186,6 @@ final class GameCubit extends Cubit<GameState> {
       return;
     }
     if (state.board.valueAt(cell) == digit) return;
-
     final nextBoard = state.board.withValue(cell, digit);
     final nextNotes = Map<CellRef, CandidateMask>.of(state.notes)..remove(cell);
     if (digit == state.solution.valueAt(cell)) {
@@ -96,7 +225,10 @@ final class GameCubit extends Cubit<GameState> {
 
   void erase() {
     final cell = state.selectedCell;
-    if (cell == null || !state.canErase || state.status != GameStatus.playing) {
+    if (cell == null ||
+        state.isPaused ||
+        !state.canErase ||
+        state.status != GameStatus.playing) {
       return;
     }
     final nextNotes = Map<CellRef, CandidateMask>.of(state.notes);
@@ -109,7 +241,11 @@ final class GameCubit extends Cubit<GameState> {
   }
 
   void undo() {
-    if (!state.canUndo || state.status == GameStatus.completed) return;
+    if (!state.canUndo ||
+        state.isPaused ||
+        state.status == GameStatus.completed) {
+      return;
+    }
     final previous = state.history.last;
     final boardChanged = previous.board != state.board;
     emit(
@@ -121,10 +257,11 @@ final class GameCubit extends Cubit<GameState> {
         keepHintUnavailable: !boardChanged,
       ),
     );
+    _scheduleSave();
   }
 
   void requestHint() {
-    if (state.status != GameStatus.playing) return;
+    if (state.isPaused || state.status != GameStatus.playing) return;
     if (state.wrongCells.isNotEmpty) {
       emit(
         state.copyWith(
@@ -134,8 +271,9 @@ final class GameCubit extends Cubit<GameState> {
       );
       return;
     }
-    final solverState = HumanSolverState.initial(state.board);
-    final deduction = _humanSolver.findNextDeduction(solverState);
+    final deduction = _humanSolver.findNextDeduction(
+      HumanSolverState.initial(state.board),
+    );
     if (deduction == null) {
       emit(
         state.copyWith(
@@ -150,24 +288,38 @@ final class GameCubit extends Cubit<GameState> {
       state.copyWith(
         coach: ActiveCoachSession(plan: plan, hintIndex: 0),
         keepHintUnavailable: false,
+        hintsRequested: state.hintsRequested + 1,
+        highestHintLevelUsed: state.highestHintLevelUsed < 1
+            ? 1
+            : state.highestHintLevelUsed,
       ),
     );
+    _scheduleSave();
   }
 
   void requestNextHint() {
     final current = state.coach;
-    if (current == null) return;
-    emit(state.copyWith(coach: current.next()));
+    if (state.isPaused || current == null) return;
+    final next = current.next();
+    if (next.hintIndex == current.hintIndex) return;
+    emit(
+      state.copyWith(
+        coach: next,
+        highestHintLevelUsed: next.hintIndex + 1 > state.highestHintLevelUsed
+            ? next.hintIndex + 1
+            : state.highestHintLevelUsed,
+      ),
+    );
+    _scheduleSave();
   }
 
-  void dismissHint() => emit(
-    state.copyWith(
-      keepCoach: false,
-      keepHintUnavailable: false,
-    ),
-  );
+  void dismissHint() {
+    if (state.isPaused) return;
+    emit(state.copyWith(keepCoach: false, keepHintUnavailable: false));
+  }
 
   void selectWrongCell() {
+    if (state.isPaused) return;
     final wrong = state.wrongCells.firstOrNull;
     if (wrong == null) return;
     emit(
@@ -179,18 +331,29 @@ final class GameCubit extends Cubit<GameState> {
     );
   }
 
-  /// Placement results require explicit user action; eliminations are visual.
+  /// Placement results require an explicit action; eliminations stay visual.
   void applyCoachResult() {
     final coach = state.coach;
-    if (coach == null || coach.hint.level != CoachHintLevel.result) return;
+    if (state.isPaused ||
+        coach == null ||
+        coach.hint.level != CoachHintLevel.result) {
+      return;
+    }
     final placements = coach.hint.revealedPlacements;
     if (placements.length != 1) return;
     final move = placements.single;
     if (state.isGiven(move.cell)) return;
     selectCell(move.cell);
-    final wasNotesMode = state.notesMode;
-    if (wasNotesMode) emit(state.copyWith(notesMode: false));
+    if (state.notesMode) emit(state.copyWith(notesMode: false));
     enterDigit(move.digit);
+  }
+
+  void retryPersistence() {
+    if (state.status == GameStatus.completed) {
+      _scheduleCompletion();
+    } else {
+      _scheduleSave();
+    }
   }
 
   void _commit(
@@ -199,19 +362,102 @@ final class GameCubit extends Cubit<GameState> {
     int? mistakes,
     bool invalidateCoach = true,
   }) {
-    final previous = GameSnapshot(board: state.board, notes: state.notes);
+    final history = [
+      ...state.history,
+      GameSnapshot(board: state.board, notes: state.notes),
+    ];
+    if (history.length > 100) history.removeAt(0);
+    final completed = board == state.solution;
+    if (completed) _timer = _timer.pause();
     emit(
       state.copyWith(
         board: board,
         notes: notes,
-        history: [...state.history, previous],
+        history: history,
         mistakes: mistakes,
-        status: board == state.solution
-            ? GameStatus.completed
-            : GameStatus.playing,
+        status: completed ? GameStatus.completed : GameStatus.playing,
         keepCoach: !invalidateCoach,
         keepHintUnavailable: !invalidateCoach,
       ),
     );
+    if (completed) {
+      _scheduleCompletion();
+    } else {
+      _scheduleSave();
+    }
+  }
+
+  void _scheduleSave() {
+    final repository = _repository;
+    if (repository == null || state.status == GameStatus.completed) return;
+    final snapshot = state;
+    final timer = _timer;
+    final game = StoredGame(
+      gameId: snapshot.gameId,
+      puzzleId: snapshot.puzzle.id,
+      initialBoard: snapshot.puzzle.givens,
+      currentBoard: snapshot.board,
+      notes: snapshot.notes,
+      undoHistory: [
+        for (final item in snapshot.history)
+          StoredGameSnapshot(board: item.board, notes: item.notes),
+      ],
+      mistakes: snapshot.mistakes,
+      elapsedBeforeRun: timer.elapsedBeforeRun,
+      runningSince: timer.runningSince,
+      startedAt: snapshot.startedAt,
+      updatedAt: _clock.now(),
+      isPaused: timer.isPaused,
+      hintsRequested: snapshot.hintsRequested,
+      highestHintLevelUsed: snapshot.highestHintLevelUsed,
+      correctEditableCells: snapshot.correctEditableCells,
+      editableCells: snapshot.editableCells,
+    );
+    _enqueue(() => repository.saveActiveGame(game));
+  }
+
+  void _scheduleCompletion() {
+    final repository = _repository;
+    if (repository == null) return;
+    final snapshot = state;
+    final completed = CompletedGame(
+      gameId: snapshot.gameId,
+      puzzleId: snapshot.puzzle.id,
+      initialBoard: snapshot.puzzle.givens,
+      completedBoard: snapshot.board,
+      startedAt: snapshot.startedAt,
+      completedAt: _clock.now(),
+      elapsed: _timer.elapsed,
+      mistakes: snapshot.mistakes,
+      hintsRequested: snapshot.hintsRequested,
+      highestHintLevelUsed: snapshot.highestHintLevelUsed,
+    );
+    _enqueue(() => repository.completeGame(completed));
+  }
+
+  void _enqueue(Future<void> Function() action) {
+    _writes = _writes.then((_) async {
+      try {
+        await action();
+        if (!isClosed && state.storageFailure != null) {
+          emit(state.copyWith(keepStorageFailure: false));
+        }
+      } on Object catch (error, stackTrace) {
+        developer.log(
+          'Game persistence failed',
+          name: 'michi.game',
+          error: error,
+          stackTrace: stackTrace,
+        );
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              storageFailure: const StorageFailure('Game could not be saved.'),
+              keepStorageFailure: false,
+            ),
+          );
+        }
+      }
+    });
   }
 }

@@ -25,6 +25,14 @@
   "home": {
     "title": "Ton parcours dans le sudoku",
     "game": "Jouer",
+    "continueGame": "Reprendre : moyen",
+    "continueDetails": "Commencé le $date · $progress % · $time",
+    "replaceTitle": "Commencer un nouveau sudoku ?",
+    "replaceBody": "La partie en cours sera remplacée.",
+    "keepPlaying": "Continuer la partie",
+    "startNew": "Commencer un nouveau",
+    "storageUnavailable": "Partie sauvegardée indisponible. Réessayez plus tard.",
+    "loading": "Recherche de la partie sauvegardée…",
     "learn": "Apprendre",
     "progress": "Progression",
     "profile": "Profil",
@@ -51,7 +59,13 @@
     "backHome": "Retour à l’accueil",
     "pause": "Pause",
     "pausedTitle": "En pause",
-    "resume": "Reprendre"
+    "resume": "Reprendre",
+    "pausedAt": "Chronomètre arrêté à $time",
+    "loading": "Préparation du sudoku…",
+    "restoreUnavailable": "Impossible de restaurer la partie.",
+    "saveFailed": "Impossible de sauvegarder la partie.",
+    "retrySave": "Réessayer",
+    "completionStats": "$mistakes erreurs · $hints indices"
   },
   "learn": {
     "unavailable": "Les leçons sur les techniques arriveront plus tard."

@@ -25,6 +25,14 @@
   "home": {
     "title": "Your path through Sudoku",
     "game": "Play",
+    "continueGame": "Continue: Medium",
+    "continueDetails": "Started $date · $progress% · $time",
+    "replaceTitle": "Start a new puzzle?",
+    "replaceBody": "Your unfinished game will be replaced.",
+    "keepPlaying": "Keep playing",
+    "startNew": "Start new puzzle",
+    "storageUnavailable": "Saved game unavailable. Try again later.",
+    "loading": "Checking saved game…",
     "learn": "Learn",
     "progress": "Progress",
     "profile": "Profile",
@@ -51,7 +59,13 @@
     "backHome": "Back to home",
     "pause": "Pause",
     "pausedTitle": "Paused",
-    "resume": "Resume"
+    "resume": "Resume",
+    "pausedAt": "Timer stopped at $time",
+    "loading": "Preparing your Sudoku…",
+    "restoreUnavailable": "This game could not be restored.",
+    "saveFailed": "Your game could not be saved.",
+    "retrySave": "Retry",
+    "completionStats": "$mistakes mistakes · $hints hints"
   },
   "learn": {
     "unavailable": "Technique lessons are coming later."

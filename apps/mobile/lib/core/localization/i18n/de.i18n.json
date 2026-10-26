@@ -25,6 +25,14 @@
   "home": {
     "title": "Dein Weg durch Sudoku",
     "game": "Spielen",
+    "continueGame": "Fortsetzen: Mittel",
+    "continueDetails": "Begonnen am $date · $progress % · $time",
+    "replaceTitle": "Neues Sudoku beginnen?",
+    "replaceBody": "Das unfertige Spiel wird ersetzt.",
+    "keepPlaying": "Weiterspielen",
+    "startNew": "Neues beginnen",
+    "storageUnavailable": "Gespeichertes Spiel nicht verfügbar. Später erneut versuchen.",
+    "loading": "Gespeichertes Spiel wird gesucht…",
     "learn": "Lernen",
     "progress": "Fortschritt",
     "profile": "Profil",
@@ -51,7 +59,13 @@
     "backHome": "Zur Startseite",
     "pause": "Pause",
     "pausedTitle": "Pausiert",
-    "resume": "Fortsetzen"
+    "resume": "Fortsetzen",
+    "pausedAt": "Timer angehalten bei $time",
+    "loading": "Sudoku wird vorbereitet…",
+    "restoreUnavailable": "Das Spiel konnte nicht wiederhergestellt werden.",
+    "saveFailed": "Das Spiel konnte nicht gespeichert werden.",
+    "retrySave": "Erneut versuchen",
+    "completionStats": "$mistakes Fehler · $hints Hinweise"
   },
   "learn": {
     "unavailable": "Techniklektionen kommen später."

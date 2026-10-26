@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:michi_mobile/app/app.dart';
@@ -7,13 +8,62 @@ import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
+import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
+import 'package:michi_mobile/features/game/data/game_database.dart';
+import 'package:michi_mobile/features/game/domain/game_repository.dart';
+
+final class _StartupRepository implements GameRepository {
+  StoredGame? active;
+
+  @override
+  Future<StoredGame?> loadActiveGame() async => active;
+
+  @override
+  Future<ActiveGameSummary?> loadActiveSummary() async {
+    final game = active;
+    if (game == null) return null;
+    return ActiveGameSummary(
+      gameId: game.gameId,
+      puzzleId: game.puzzleId,
+      correctEditableCells: game.correctEditableCells,
+      editableCells: game.editableCells,
+      elapsed: game.elapsedBeforeRun,
+      startedAt: game.startedAt,
+    );
+  }
+
+  @override
+  Future<void> saveActiveGame(StoredGame game) async => active = game;
+
+  @override
+  Future<void> deleteActiveGame(String gameId) async {
+    if (active?.gameId == gameId) active = null;
+  }
+
+  @override
+  Future<void> completeGame(CompletedGame game) async => active = null;
+
+  @override
+  Future<List<CompletedGame>> loadRecentCompletedGames({
+    int limit = 20,
+  }) async => const [];
+}
 
 void main() {
+  late _StartupRepository startupRepository;
+
+  setUpAll(bootstrap);
+  setUp(() async {
+    startupRepository = _StartupRepository();
+    await getIt.unregister<GameRepository>();
+    getIt.registerSingleton<GameRepository>(startupRepository);
+  });
+
   testWidgets('app boots and navigates from splash to welcome', (
     tester,
   ) async {
     LocaleSettings.setLocaleSync(AppLocale.uk);
-    bootstrap();
     final router = getIt<AppRouter>();
     addTearDown(router.dispose);
     await tester.pumpWidget(MichiApp(router: router));
@@ -36,15 +86,50 @@ void main() {
 
   testWidgets('home route opens the playable demo game', (tester) async {
     LocaleSettings.setLocaleSync(AppLocale.en);
+    final database = GameDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final repository = DriftGameRepository(database);
     final router = AppRouter();
     addTearDown(router.dispose);
     await tester.pumpWidget(MichiApp(router: router));
-    unawaited(router.push(const HomeRoute()));
+    unawaited(router.push(HomeRoute(repository: repository)));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Play'));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('cell-0')), findsOneWidget);
     expect(find.byKey(const ValueKey('hint-control')), findsOneWidget);
+    LocaleSettings.setLocaleSync(AppLocale.uk);
+  });
+
+  testWidgets('saved game bypasses onboarding at startup', (tester) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final now = DateTime.utc(2026, 10);
+    await startupRepository.saveActiveGame(
+      StoredGame(
+        gameId: 'startup-game',
+        puzzleId: DemoPuzzle.standard.id,
+        initialBoard: DemoPuzzle.standard.givens,
+        currentBoard: DemoPuzzle.standard.givens,
+        notes: const {},
+        undoHistory: const [],
+        mistakes: 0,
+        elapsedBeforeRun: const Duration(minutes: 2),
+        runningSince: null,
+        startedAt: now,
+        updatedAt: now,
+        isPaused: true,
+        hintsRequested: 0,
+        highestHintLevelUsed: 0,
+        correctEditableCells: 0,
+        editableCells: DemoPuzzle.standard.givens.emptyCellCount,
+      ),
+    );
+    final router = AppRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(MichiApp(router: router));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('continue-game')), findsOneWidget);
+    expect(find.text('Your path through Sudoku.'), findsNothing);
     LocaleSettings.setLocaleSync(AppLocale.uk);
   });
 }

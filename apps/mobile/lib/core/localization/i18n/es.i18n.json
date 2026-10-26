@@ -25,6 +25,14 @@
   "home": {
     "title": "Tu camino en el sudoku",
     "game": "Jugar",
+    "continueGame": "Continuar: medio",
+    "continueDetails": "Iniciado el $date · $progress % · $time",
+    "replaceTitle": "¿Empezar otro sudoku?",
+    "replaceBody": "Se reemplazará la partida sin terminar.",
+    "keepPlaying": "Seguir jugando",
+    "startNew": "Empezar uno nuevo",
+    "storageUnavailable": "La partida guardada no está disponible. Inténtalo más tarde.",
+    "loading": "Buscando la partida guardada…",
     "learn": "Aprender",
     "progress": "Progreso",
     "profile": "Perfil",
@@ -51,7 +59,13 @@
     "backHome": "Volver al inicio",
     "pause": "Pausar",
     "pausedTitle": "Pausado",
-    "resume": "Continuar"
+    "resume": "Continuar",
+    "pausedAt": "Temporizador detenido en $time",
+    "loading": "Preparando el sudoku…",
+    "restoreUnavailable": "No se pudo restaurar la partida.",
+    "saveFailed": "No se pudo guardar la partida.",
+    "retrySave": "Reintentar",
+    "completionStats": "$mistakes errores · $hints pistas"
   },
   "learn": {
     "unavailable": "Las lecciones de técnicas llegarán más adelante."

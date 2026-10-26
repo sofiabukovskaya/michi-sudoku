@@ -12,6 +12,6 @@ final class PlayerLevelPage extends StatelessWidget {
   Widget build(BuildContext context) => RoutePlaceholder(
     title: context.t.playerLevel.title,
     actionLabel: context.t.playerLevel.goToGame,
-    onAction: () => context.router.replaceAll([const HomeRoute()]),
+    onAction: () => context.router.replaceAll([HomeRoute()]),
   );
 }

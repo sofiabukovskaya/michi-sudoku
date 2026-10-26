@@ -128,6 +128,14 @@ class _Translations$home$cs extends Translations$home$uk {
 	// Translations
 	@override String get title => 'Tvoje cesta sudoku';
 	@override String get game => 'Hrát';
+	@override String get continueGame => 'Pokračovat: střední';
+	@override String continueDetails({required Object date, required Object progress, required Object time}) => 'Začátek ${date} · ${progress} % · ${time}';
+	@override String get replaceTitle => 'Začít nové sudoku?';
+	@override String get replaceBody => 'Nedokončená hra bude nahrazena.';
+	@override String get keepPlaying => 'Pokračovat ve hře';
+	@override String get startNew => 'Začít nové';
+	@override String get storageUnavailable => 'Uložená hra není dostupná. Zkus to později.';
+	@override String get loading => 'Hledáme uloženou hru…';
 	@override String get learn => 'Učení';
 	@override String get progress => 'Pokrok';
 	@override String get profile => 'Profil';
@@ -162,6 +170,12 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String get pause => 'Pozastavit';
 	@override String get pausedTitle => 'Pozastaveno';
 	@override String get resume => 'Pokračovat';
+	@override String pausedAt({required Object time}) => 'Čas se zastavil na ${time}';
+	@override String get loading => 'Připravujeme sudoku…';
+	@override String get restoreUnavailable => 'Hru se nepodařilo obnovit.';
+	@override String get saveFailed => 'Hru se nepodařilo uložit.';
+	@override String get retrySave => 'Zkusit znovu';
+	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} chyb · ${hints} nápověd';
 }
 
 // Path: learn
@@ -267,6 +281,14 @@ extension on TranslationsCs {
 			'auth.unavailable' => 'Synchronizace postupu přijde později.',
 			'home.title' => 'Tvoje cesta sudoku',
 			'home.game' => 'Hrát',
+			'home.continueGame' => 'Pokračovat: střední',
+			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Začátek ${date} · ${progress} % · ${time}',
+			'home.replaceTitle' => 'Začít nové sudoku?',
+			'home.replaceBody' => 'Nedokončená hra bude nahrazena.',
+			'home.keepPlaying' => 'Pokračovat ve hře',
+			'home.startNew' => 'Začít nové',
+			'home.storageUnavailable' => 'Uložená hra není dostupná. Zkus to později.',
+			'home.loading' => 'Hledáme uloženou hru…',
 			'home.learn' => 'Učení',
 			'home.progress' => 'Pokrok',
 			'home.profile' => 'Profil',
@@ -292,6 +314,12 @@ extension on TranslationsCs {
 			'game.pause' => 'Pozastavit',
 			'game.pausedTitle' => 'Pozastaveno',
 			'game.resume' => 'Pokračovat',
+			'game.pausedAt' => ({required Object time}) => 'Čas se zastavil na ${time}',
+			'game.loading' => 'Připravujeme sudoku…',
+			'game.restoreUnavailable' => 'Hru se nepodařilo obnovit.',
+			'game.saveFailed' => 'Hru se nepodařilo uložit.',
+			'game.retrySave' => 'Zkusit znovu',
+			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} chyb · ${hints} nápověd',
 			'learn.unavailable' => 'Lekce technik přijdou později.',
 			'progress.unavailable' => 'Přehled zvládnutých technik přijde později.',
 			'profile.unavailable' => 'Nastavení profilu přijde později.',

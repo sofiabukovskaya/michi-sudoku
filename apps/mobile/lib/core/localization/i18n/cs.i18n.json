@@ -25,6 +25,14 @@
   "home": {
     "title": "Tvoje cesta sudoku",
     "game": "Hrát",
+    "continueGame": "Pokračovat: střední",
+    "continueDetails": "Začátek $date · $progress % · $time",
+    "replaceTitle": "Začít nové sudoku?",
+    "replaceBody": "Nedokončená hra bude nahrazena.",
+    "keepPlaying": "Pokračovat ve hře",
+    "startNew": "Začít nové",
+    "storageUnavailable": "Uložená hra není dostupná. Zkus to později.",
+    "loading": "Hledáme uloženou hru…",
     "learn": "Učení",
     "progress": "Pokrok",
     "profile": "Profil",
@@ -51,7 +59,13 @@
     "backHome": "Zpět domů",
     "pause": "Pozastavit",
     "pausedTitle": "Pozastaveno",
-    "resume": "Pokračovat"
+    "resume": "Pokračovat",
+    "pausedAt": "Čas se zastavil na $time",
+    "loading": "Připravujeme sudoku…",
+    "restoreUnavailable": "Hru se nepodařilo obnovit.",
+    "saveFailed": "Hru se nepodařilo uložit.",
+    "retrySave": "Zkusit znovu",
+    "completionStats": "$mistakes chyb · $hints nápověd"
   },
   "learn": {
     "unavailable": "Lekce technik přijdou později."

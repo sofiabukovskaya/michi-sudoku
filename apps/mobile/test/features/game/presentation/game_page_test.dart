@@ -40,6 +40,21 @@ Future<void> _pumpGame(
 }
 
 void main() {
+  testWidgets('background lifecycle pauses and hides the board', (
+    tester,
+  ) async {
+    final cubit = _game();
+    addTearDown(cubit.close);
+    await _pumpGame(tester, cubit);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    await tester.pump();
+    expect(cubit.state.isPaused, isTrue);
+    expect(find.byType(SudokuBoardWidget), findsNothing);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pump();
+    expect(cubit.state.isPaused, isTrue);
+  });
+
   testWidgets('board taps select the correct zero-based cell', (tester) async {
     final cubit = _game();
     addTearDown(cubit.close);

@@ -9,6 +9,8 @@ resolution: workspace
 
 dependencies:
   auto_route: ^10.2.3
+  drift: ^2.31.0
+  drift_flutter: 0.2.8
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -32,6 +34,7 @@ dev_dependencies:
   bdd_widget_test: ^3.0.4
   bloc_test: ^10.0.0
   build_runner: ^2.10.5
+  drift_dev: 2.31.0
   flutter_test:
     sdk: flutter
   freezed: 3.2.3

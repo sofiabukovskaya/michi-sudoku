@@ -14,6 +14,10 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:michi_mobile/app/router/app_router.dart' as _i712;
 import 'package:michi_mobile/core/di/injection.dart' as _i857;
+import 'package:michi_mobile/core/time/game_clock.dart' as _i585;
+import 'package:michi_mobile/features/game/data/game_database.dart' as _i520;
+import 'package:michi_mobile/features/game/domain/game_repository.dart'
+    as _i263;
 import 'package:sudoku_engine/sudoku_engine.dart' as _i247;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -28,6 +32,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i247.ExactSolver>(() => appModule.exactSolver);
     gh.lazySingleton<_i247.HumanSolver>(() => appModule.humanSolver);
     gh.lazySingleton<_i247.CoachEngine>(() => appModule.coachEngine);
+    gh.lazySingleton<_i585.GameClock>(() => appModule.gameClock);
+    gh.lazySingleton<_i520.GameDatabase>(() => appModule.gameDatabase);
+    gh.lazySingleton<_i263.GameRepository>(
+      () => appModule.gameRepository(gh<_i520.GameDatabase>()),
+    );
     return this;
   }
 }

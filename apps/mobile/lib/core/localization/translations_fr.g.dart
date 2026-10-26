@@ -128,6 +128,14 @@ class _Translations$home$fr extends Translations$home$uk {
 	// Translations
 	@override String get title => 'Ton parcours dans le sudoku';
 	@override String get game => 'Jouer';
+	@override String get continueGame => 'Reprendre : moyen';
+	@override String continueDetails({required Object date, required Object progress, required Object time}) => 'Commencé le ${date} · ${progress} % · ${time}';
+	@override String get replaceTitle => 'Commencer un nouveau sudoku ?';
+	@override String get replaceBody => 'La partie en cours sera remplacée.';
+	@override String get keepPlaying => 'Continuer la partie';
+	@override String get startNew => 'Commencer un nouveau';
+	@override String get storageUnavailable => 'Partie sauvegardée indisponible. Réessayez plus tard.';
+	@override String get loading => 'Recherche de la partie sauvegardée…';
 	@override String get learn => 'Apprendre';
 	@override String get progress => 'Progression';
 	@override String get profile => 'Profil';
@@ -162,6 +170,12 @@ class _Translations$game$fr extends Translations$game$uk {
 	@override String get pause => 'Pause';
 	@override String get pausedTitle => 'En pause';
 	@override String get resume => 'Reprendre';
+	@override String pausedAt({required Object time}) => 'Chronomètre arrêté à ${time}';
+	@override String get loading => 'Préparation du sudoku…';
+	@override String get restoreUnavailable => 'Impossible de restaurer la partie.';
+	@override String get saveFailed => 'Impossible de sauvegarder la partie.';
+	@override String get retrySave => 'Réessayer';
+	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} erreurs · ${hints} indices';
 }
 
 // Path: learn
@@ -267,6 +281,14 @@ extension on TranslationsFr {
 			'auth.unavailable' => 'La synchronisation de la progression arrivera plus tard.',
 			'home.title' => 'Ton parcours dans le sudoku',
 			'home.game' => 'Jouer',
+			'home.continueGame' => 'Reprendre : moyen',
+			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Commencé le ${date} · ${progress} % · ${time}',
+			'home.replaceTitle' => 'Commencer un nouveau sudoku ?',
+			'home.replaceBody' => 'La partie en cours sera remplacée.',
+			'home.keepPlaying' => 'Continuer la partie',
+			'home.startNew' => 'Commencer un nouveau',
+			'home.storageUnavailable' => 'Partie sauvegardée indisponible. Réessayez plus tard.',
+			'home.loading' => 'Recherche de la partie sauvegardée…',
 			'home.learn' => 'Apprendre',
 			'home.progress' => 'Progression',
 			'home.profile' => 'Profil',
@@ -292,6 +314,12 @@ extension on TranslationsFr {
 			'game.pause' => 'Pause',
 			'game.pausedTitle' => 'En pause',
 			'game.resume' => 'Reprendre',
+			'game.pausedAt' => ({required Object time}) => 'Chronomètre arrêté à ${time}',
+			'game.loading' => 'Préparation du sudoku…',
+			'game.restoreUnavailable' => 'Impossible de restaurer la partie.',
+			'game.saveFailed' => 'Impossible de sauvegarder la partie.',
+			'game.retrySave' => 'Réessayer',
+			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} erreurs · ${hints} indices',
 			'learn.unavailable' => 'Les leçons sur les techniques arriveront plus tard.',
 			'progress.unavailable' => 'Le suivi des techniques maîtrisées arrivera plus tard.',
 			'profile.unavailable' => 'Les réglages du profil arriveront plus tard.',
