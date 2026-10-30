@@ -38,6 +38,18 @@ class $ActiveGamesTable extends ActiveGames
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _dailyChallengeKeyMeta = const VerificationMeta(
+    'dailyChallengeKey',
+  );
+  @override
+  late final GeneratedColumn<String> dailyChallengeKey =
+      GeneratedColumn<String>(
+        'daily_challenge_key',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _initialBoardMeta = const VerificationMeta(
     'initialBoard',
   );
@@ -172,6 +184,19 @@ class $ActiveGamesTable extends ActiveGames
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _techniqueHelpJsonMeta = const VerificationMeta(
+    'techniqueHelpJson',
+  );
+  @override
+  late final GeneratedColumn<String> techniqueHelpJson =
+      GeneratedColumn<String>(
+        'technique_help_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('{}'),
+      );
   static const VerificationMeta _correctEditableCellsMeta =
       const VerificationMeta('correctEditableCells');
   @override
@@ -198,6 +223,7 @@ class $ActiveGamesTable extends ActiveGames
     slot,
     gameId,
     puzzleId,
+    dailyChallengeKey,
     initialBoard,
     currentBoard,
     notesJson,
@@ -210,6 +236,7 @@ class $ActiveGamesTable extends ActiveGames
     isPaused,
     hintsRequested,
     highestHintLevelUsed,
+    techniqueHelpJson,
     correctEditableCells,
     editableCells,
   ];
@@ -246,6 +273,15 @@ class $ActiveGamesTable extends ActiveGames
       );
     } else if (isInserting) {
       context.missing(_puzzleIdMeta);
+    }
+    if (data.containsKey('daily_challenge_key')) {
+      context.handle(
+        _dailyChallengeKeyMeta,
+        dailyChallengeKey.isAcceptableOrUnknown(
+          data['daily_challenge_key']!,
+          _dailyChallengeKeyMeta,
+        ),
+      );
     }
     if (data.containsKey('initial_board')) {
       context.handle(
@@ -362,6 +398,15 @@ class $ActiveGamesTable extends ActiveGames
     } else if (isInserting) {
       context.missing(_highestHintLevelUsedMeta);
     }
+    if (data.containsKey('technique_help_json')) {
+      context.handle(
+        _techniqueHelpJsonMeta,
+        techniqueHelpJson.isAcceptableOrUnknown(
+          data['technique_help_json']!,
+          _techniqueHelpJsonMeta,
+        ),
+      );
+    }
     if (data.containsKey('correct_editable_cells')) {
       context.handle(
         _correctEditableCellsMeta,
@@ -405,6 +450,10 @@ class $ActiveGamesTable extends ActiveGames
         DriftSqlType.string,
         data['${effectivePrefix}puzzle_id'],
       )!,
+      dailyChallengeKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}daily_challenge_key'],
+      ),
       initialBoard: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}initial_board'],
@@ -453,6 +502,10 @@ class $ActiveGamesTable extends ActiveGames
         DriftSqlType.int,
         data['${effectivePrefix}highest_hint_level_used'],
       )!,
+      techniqueHelpJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}technique_help_json'],
+      )!,
       correctEditableCells: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}correct_editable_cells'],
@@ -474,6 +527,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
   final int slot;
   final String gameId;
   final String puzzleId;
+  final String? dailyChallengeKey;
   final String initialBoard;
   final String currentBoard;
   final String notesJson;
@@ -486,12 +540,14 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
   final bool isPaused;
   final int hintsRequested;
   final int highestHintLevelUsed;
+  final String techniqueHelpJson;
   final int correctEditableCells;
   final int editableCells;
   const ActiveGame({
     required this.slot,
     required this.gameId,
     required this.puzzleId,
+    this.dailyChallengeKey,
     required this.initialBoard,
     required this.currentBoard,
     required this.notesJson,
@@ -504,6 +560,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     required this.isPaused,
     required this.hintsRequested,
     required this.highestHintLevelUsed,
+    required this.techniqueHelpJson,
     required this.correctEditableCells,
     required this.editableCells,
   });
@@ -513,6 +570,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     map['slot'] = Variable<int>(slot);
     map['game_id'] = Variable<String>(gameId);
     map['puzzle_id'] = Variable<String>(puzzleId);
+    if (!nullToAbsent || dailyChallengeKey != null) {
+      map['daily_challenge_key'] = Variable<String>(dailyChallengeKey);
+    }
     map['initial_board'] = Variable<String>(initialBoard);
     map['current_board'] = Variable<String>(currentBoard);
     map['notes_json'] = Variable<String>(notesJson);
@@ -527,6 +587,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     map['is_paused'] = Variable<bool>(isPaused);
     map['hints_requested'] = Variable<int>(hintsRequested);
     map['highest_hint_level_used'] = Variable<int>(highestHintLevelUsed);
+    map['technique_help_json'] = Variable<String>(techniqueHelpJson);
     map['correct_editable_cells'] = Variable<int>(correctEditableCells);
     map['editable_cells'] = Variable<int>(editableCells);
     return map;
@@ -537,6 +598,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       slot: Value(slot),
       gameId: Value(gameId),
       puzzleId: Value(puzzleId),
+      dailyChallengeKey: dailyChallengeKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyChallengeKey),
       initialBoard: Value(initialBoard),
       currentBoard: Value(currentBoard),
       notesJson: Value(notesJson),
@@ -551,6 +615,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       isPaused: Value(isPaused),
       hintsRequested: Value(hintsRequested),
       highestHintLevelUsed: Value(highestHintLevelUsed),
+      techniqueHelpJson: Value(techniqueHelpJson),
       correctEditableCells: Value(correctEditableCells),
       editableCells: Value(editableCells),
     );
@@ -565,6 +630,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       slot: serializer.fromJson<int>(json['slot']),
       gameId: serializer.fromJson<String>(json['gameId']),
       puzzleId: serializer.fromJson<String>(json['puzzleId']),
+      dailyChallengeKey: serializer.fromJson<String?>(
+        json['dailyChallengeKey'],
+      ),
       initialBoard: serializer.fromJson<String>(json['initialBoard']),
       currentBoard: serializer.fromJson<String>(json['currentBoard']),
       notesJson: serializer.fromJson<String>(json['notesJson']),
@@ -579,6 +647,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       highestHintLevelUsed: serializer.fromJson<int>(
         json['highestHintLevelUsed'],
       ),
+      techniqueHelpJson: serializer.fromJson<String>(json['techniqueHelpJson']),
       correctEditableCells: serializer.fromJson<int>(
         json['correctEditableCells'],
       ),
@@ -592,6 +661,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       'slot': serializer.toJson<int>(slot),
       'gameId': serializer.toJson<String>(gameId),
       'puzzleId': serializer.toJson<String>(puzzleId),
+      'dailyChallengeKey': serializer.toJson<String?>(dailyChallengeKey),
       'initialBoard': serializer.toJson<String>(initialBoard),
       'currentBoard': serializer.toJson<String>(currentBoard),
       'notesJson': serializer.toJson<String>(notesJson),
@@ -604,6 +674,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       'isPaused': serializer.toJson<bool>(isPaused),
       'hintsRequested': serializer.toJson<int>(hintsRequested),
       'highestHintLevelUsed': serializer.toJson<int>(highestHintLevelUsed),
+      'techniqueHelpJson': serializer.toJson<String>(techniqueHelpJson),
       'correctEditableCells': serializer.toJson<int>(correctEditableCells),
       'editableCells': serializer.toJson<int>(editableCells),
     };
@@ -613,6 +684,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     int? slot,
     String? gameId,
     String? puzzleId,
+    Value<String?> dailyChallengeKey = const Value.absent(),
     String? initialBoard,
     String? currentBoard,
     String? notesJson,
@@ -625,12 +697,16 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     bool? isPaused,
     int? hintsRequested,
     int? highestHintLevelUsed,
+    String? techniqueHelpJson,
     int? correctEditableCells,
     int? editableCells,
   }) => ActiveGame(
     slot: slot ?? this.slot,
     gameId: gameId ?? this.gameId,
     puzzleId: puzzleId ?? this.puzzleId,
+    dailyChallengeKey: dailyChallengeKey.present
+        ? dailyChallengeKey.value
+        : this.dailyChallengeKey,
     initialBoard: initialBoard ?? this.initialBoard,
     currentBoard: currentBoard ?? this.currentBoard,
     notesJson: notesJson ?? this.notesJson,
@@ -645,6 +721,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     isPaused: isPaused ?? this.isPaused,
     hintsRequested: hintsRequested ?? this.hintsRequested,
     highestHintLevelUsed: highestHintLevelUsed ?? this.highestHintLevelUsed,
+    techniqueHelpJson: techniqueHelpJson ?? this.techniqueHelpJson,
     correctEditableCells: correctEditableCells ?? this.correctEditableCells,
     editableCells: editableCells ?? this.editableCells,
   );
@@ -653,6 +730,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       slot: data.slot.present ? data.slot.value : this.slot,
       gameId: data.gameId.present ? data.gameId.value : this.gameId,
       puzzleId: data.puzzleId.present ? data.puzzleId.value : this.puzzleId,
+      dailyChallengeKey: data.dailyChallengeKey.present
+          ? data.dailyChallengeKey.value
+          : this.dailyChallengeKey,
       initialBoard: data.initialBoard.present
           ? data.initialBoard.value
           : this.initialBoard,
@@ -679,6 +759,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       highestHintLevelUsed: data.highestHintLevelUsed.present
           ? data.highestHintLevelUsed.value
           : this.highestHintLevelUsed,
+      techniqueHelpJson: data.techniqueHelpJson.present
+          ? data.techniqueHelpJson.value
+          : this.techniqueHelpJson,
       correctEditableCells: data.correctEditableCells.present
           ? data.correctEditableCells.value
           : this.correctEditableCells,
@@ -694,6 +777,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
           ..write('slot: $slot, ')
           ..write('gameId: $gameId, ')
           ..write('puzzleId: $puzzleId, ')
+          ..write('dailyChallengeKey: $dailyChallengeKey, ')
           ..write('initialBoard: $initialBoard, ')
           ..write('currentBoard: $currentBoard, ')
           ..write('notesJson: $notesJson, ')
@@ -706,6 +790,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
           ..write('isPaused: $isPaused, ')
           ..write('hintsRequested: $hintsRequested, ')
           ..write('highestHintLevelUsed: $highestHintLevelUsed, ')
+          ..write('techniqueHelpJson: $techniqueHelpJson, ')
           ..write('correctEditableCells: $correctEditableCells, ')
           ..write('editableCells: $editableCells')
           ..write(')'))
@@ -717,6 +802,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     slot,
     gameId,
     puzzleId,
+    dailyChallengeKey,
     initialBoard,
     currentBoard,
     notesJson,
@@ -729,6 +815,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     isPaused,
     hintsRequested,
     highestHintLevelUsed,
+    techniqueHelpJson,
     correctEditableCells,
     editableCells,
   );
@@ -739,6 +826,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
           other.slot == this.slot &&
           other.gameId == this.gameId &&
           other.puzzleId == this.puzzleId &&
+          other.dailyChallengeKey == this.dailyChallengeKey &&
           other.initialBoard == this.initialBoard &&
           other.currentBoard == this.currentBoard &&
           other.notesJson == this.notesJson &&
@@ -751,6 +839,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
           other.isPaused == this.isPaused &&
           other.hintsRequested == this.hintsRequested &&
           other.highestHintLevelUsed == this.highestHintLevelUsed &&
+          other.techniqueHelpJson == this.techniqueHelpJson &&
           other.correctEditableCells == this.correctEditableCells &&
           other.editableCells == this.editableCells);
 }
@@ -759,6 +848,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
   final Value<int> slot;
   final Value<String> gameId;
   final Value<String> puzzleId;
+  final Value<String?> dailyChallengeKey;
   final Value<String> initialBoard;
   final Value<String> currentBoard;
   final Value<String> notesJson;
@@ -771,12 +861,14 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
   final Value<bool> isPaused;
   final Value<int> hintsRequested;
   final Value<int> highestHintLevelUsed;
+  final Value<String> techniqueHelpJson;
   final Value<int> correctEditableCells;
   final Value<int> editableCells;
   const ActiveGamesCompanion({
     this.slot = const Value.absent(),
     this.gameId = const Value.absent(),
     this.puzzleId = const Value.absent(),
+    this.dailyChallengeKey = const Value.absent(),
     this.initialBoard = const Value.absent(),
     this.currentBoard = const Value.absent(),
     this.notesJson = const Value.absent(),
@@ -789,6 +881,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     this.isPaused = const Value.absent(),
     this.hintsRequested = const Value.absent(),
     this.highestHintLevelUsed = const Value.absent(),
+    this.techniqueHelpJson = const Value.absent(),
     this.correctEditableCells = const Value.absent(),
     this.editableCells = const Value.absent(),
   });
@@ -796,6 +889,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     this.slot = const Value.absent(),
     required String gameId,
     required String puzzleId,
+    this.dailyChallengeKey = const Value.absent(),
     required String initialBoard,
     required String currentBoard,
     required String notesJson,
@@ -808,6 +902,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     required bool isPaused,
     required int hintsRequested,
     required int highestHintLevelUsed,
+    this.techniqueHelpJson = const Value.absent(),
     required int correctEditableCells,
     required int editableCells,
   }) : gameId = Value(gameId),
@@ -829,6 +924,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     Expression<int>? slot,
     Expression<String>? gameId,
     Expression<String>? puzzleId,
+    Expression<String>? dailyChallengeKey,
     Expression<String>? initialBoard,
     Expression<String>? currentBoard,
     Expression<String>? notesJson,
@@ -841,6 +937,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     Expression<bool>? isPaused,
     Expression<int>? hintsRequested,
     Expression<int>? highestHintLevelUsed,
+    Expression<String>? techniqueHelpJson,
     Expression<int>? correctEditableCells,
     Expression<int>? editableCells,
   }) {
@@ -848,6 +945,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
       if (slot != null) 'slot': slot,
       if (gameId != null) 'game_id': gameId,
       if (puzzleId != null) 'puzzle_id': puzzleId,
+      if (dailyChallengeKey != null) 'daily_challenge_key': dailyChallengeKey,
       if (initialBoard != null) 'initial_board': initialBoard,
       if (currentBoard != null) 'current_board': currentBoard,
       if (notesJson != null) 'notes_json': notesJson,
@@ -861,6 +959,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
       if (hintsRequested != null) 'hints_requested': hintsRequested,
       if (highestHintLevelUsed != null)
         'highest_hint_level_used': highestHintLevelUsed,
+      if (techniqueHelpJson != null) 'technique_help_json': techniqueHelpJson,
       if (correctEditableCells != null)
         'correct_editable_cells': correctEditableCells,
       if (editableCells != null) 'editable_cells': editableCells,
@@ -871,6 +970,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     Value<int>? slot,
     Value<String>? gameId,
     Value<String>? puzzleId,
+    Value<String?>? dailyChallengeKey,
     Value<String>? initialBoard,
     Value<String>? currentBoard,
     Value<String>? notesJson,
@@ -883,6 +983,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     Value<bool>? isPaused,
     Value<int>? hintsRequested,
     Value<int>? highestHintLevelUsed,
+    Value<String>? techniqueHelpJson,
     Value<int>? correctEditableCells,
     Value<int>? editableCells,
   }) {
@@ -890,6 +991,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
       slot: slot ?? this.slot,
       gameId: gameId ?? this.gameId,
       puzzleId: puzzleId ?? this.puzzleId,
+      dailyChallengeKey: dailyChallengeKey ?? this.dailyChallengeKey,
       initialBoard: initialBoard ?? this.initialBoard,
       currentBoard: currentBoard ?? this.currentBoard,
       notesJson: notesJson ?? this.notesJson,
@@ -902,6 +1004,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
       isPaused: isPaused ?? this.isPaused,
       hintsRequested: hintsRequested ?? this.hintsRequested,
       highestHintLevelUsed: highestHintLevelUsed ?? this.highestHintLevelUsed,
+      techniqueHelpJson: techniqueHelpJson ?? this.techniqueHelpJson,
       correctEditableCells: correctEditableCells ?? this.correctEditableCells,
       editableCells: editableCells ?? this.editableCells,
     );
@@ -918,6 +1021,9 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     }
     if (puzzleId.present) {
       map['puzzle_id'] = Variable<String>(puzzleId.value);
+    }
+    if (dailyChallengeKey.present) {
+      map['daily_challenge_key'] = Variable<String>(dailyChallengeKey.value);
     }
     if (initialBoard.present) {
       map['initial_board'] = Variable<String>(initialBoard.value);
@@ -957,6 +1063,9 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
         highestHintLevelUsed.value,
       );
     }
+    if (techniqueHelpJson.present) {
+      map['technique_help_json'] = Variable<String>(techniqueHelpJson.value);
+    }
     if (correctEditableCells.present) {
       map['correct_editable_cells'] = Variable<int>(correctEditableCells.value);
     }
@@ -972,6 +1081,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
           ..write('slot: $slot, ')
           ..write('gameId: $gameId, ')
           ..write('puzzleId: $puzzleId, ')
+          ..write('dailyChallengeKey: $dailyChallengeKey, ')
           ..write('initialBoard: $initialBoard, ')
           ..write('currentBoard: $currentBoard, ')
           ..write('notesJson: $notesJson, ')
@@ -984,6 +1094,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
           ..write('isPaused: $isPaused, ')
           ..write('hintsRequested: $hintsRequested, ')
           ..write('highestHintLevelUsed: $highestHintLevelUsed, ')
+          ..write('techniqueHelpJson: $techniqueHelpJson, ')
           ..write('correctEditableCells: $correctEditableCells, ')
           ..write('editableCells: $editableCells')
           ..write(')'))
@@ -1017,6 +1128,18 @@ class $CompletedGamesTable extends CompletedGames
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _dailyChallengeKeyMeta = const VerificationMeta(
+    'dailyChallengeKey',
+  );
+  @override
+  late final GeneratedColumn<String> dailyChallengeKey =
+      GeneratedColumn<String>(
+        'daily_challenge_key',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _initialBoardMeta = const VerificationMeta(
     'initialBoard',
   );
@@ -1104,10 +1227,24 @@ class $CompletedGamesTable extends CompletedGames
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _techniqueHelpJsonMeta = const VerificationMeta(
+    'techniqueHelpJson',
+  );
+  @override
+  late final GeneratedColumn<String> techniqueHelpJson =
+      GeneratedColumn<String>(
+        'technique_help_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('{}'),
+      );
   @override
   List<GeneratedColumn> get $columns => [
     gameId,
     puzzleId,
+    dailyChallengeKey,
     initialBoard,
     completedBoard,
     startedAtMs,
@@ -1116,6 +1253,7 @@ class $CompletedGamesTable extends CompletedGames
     mistakes,
     hintsRequested,
     highestHintLevelUsed,
+    techniqueHelpJson,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1144,6 +1282,15 @@ class $CompletedGamesTable extends CompletedGames
       );
     } else if (isInserting) {
       context.missing(_puzzleIdMeta);
+    }
+    if (data.containsKey('daily_challenge_key')) {
+      context.handle(
+        _dailyChallengeKeyMeta,
+        dailyChallengeKey.isAcceptableOrUnknown(
+          data['daily_challenge_key']!,
+          _dailyChallengeKeyMeta,
+        ),
+      );
     }
     if (data.containsKey('initial_board')) {
       context.handle(
@@ -1227,6 +1374,15 @@ class $CompletedGamesTable extends CompletedGames
     } else if (isInserting) {
       context.missing(_highestHintLevelUsedMeta);
     }
+    if (data.containsKey('technique_help_json')) {
+      context.handle(
+        _techniqueHelpJsonMeta,
+        techniqueHelpJson.isAcceptableOrUnknown(
+          data['technique_help_json']!,
+          _techniqueHelpJsonMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1244,6 +1400,10 @@ class $CompletedGamesTable extends CompletedGames
         DriftSqlType.string,
         data['${effectivePrefix}puzzle_id'],
       )!,
+      dailyChallengeKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}daily_challenge_key'],
+      ),
       initialBoard: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}initial_board'],
@@ -1276,6 +1436,10 @@ class $CompletedGamesTable extends CompletedGames
         DriftSqlType.int,
         data['${effectivePrefix}highest_hint_level_used'],
       )!,
+      techniqueHelpJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}technique_help_json'],
+      )!,
     );
   }
 
@@ -1289,6 +1453,7 @@ class CompletedGameRow extends DataClass
     implements Insertable<CompletedGameRow> {
   final String gameId;
   final String puzzleId;
+  final String? dailyChallengeKey;
   final String initialBoard;
   final String completedBoard;
   final int startedAtMs;
@@ -1297,9 +1462,11 @@ class CompletedGameRow extends DataClass
   final int mistakes;
   final int hintsRequested;
   final int highestHintLevelUsed;
+  final String techniqueHelpJson;
   const CompletedGameRow({
     required this.gameId,
     required this.puzzleId,
+    this.dailyChallengeKey,
     required this.initialBoard,
     required this.completedBoard,
     required this.startedAtMs,
@@ -1308,12 +1475,16 @@ class CompletedGameRow extends DataClass
     required this.mistakes,
     required this.hintsRequested,
     required this.highestHintLevelUsed,
+    required this.techniqueHelpJson,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['game_id'] = Variable<String>(gameId);
     map['puzzle_id'] = Variable<String>(puzzleId);
+    if (!nullToAbsent || dailyChallengeKey != null) {
+      map['daily_challenge_key'] = Variable<String>(dailyChallengeKey);
+    }
     map['initial_board'] = Variable<String>(initialBoard);
     map['completed_board'] = Variable<String>(completedBoard);
     map['started_at_ms'] = Variable<int>(startedAtMs);
@@ -1322,6 +1493,7 @@ class CompletedGameRow extends DataClass
     map['mistakes'] = Variable<int>(mistakes);
     map['hints_requested'] = Variable<int>(hintsRequested);
     map['highest_hint_level_used'] = Variable<int>(highestHintLevelUsed);
+    map['technique_help_json'] = Variable<String>(techniqueHelpJson);
     return map;
   }
 
@@ -1329,6 +1501,9 @@ class CompletedGameRow extends DataClass
     return CompletedGamesCompanion(
       gameId: Value(gameId),
       puzzleId: Value(puzzleId),
+      dailyChallengeKey: dailyChallengeKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyChallengeKey),
       initialBoard: Value(initialBoard),
       completedBoard: Value(completedBoard),
       startedAtMs: Value(startedAtMs),
@@ -1337,6 +1512,7 @@ class CompletedGameRow extends DataClass
       mistakes: Value(mistakes),
       hintsRequested: Value(hintsRequested),
       highestHintLevelUsed: Value(highestHintLevelUsed),
+      techniqueHelpJson: Value(techniqueHelpJson),
     );
   }
 
@@ -1348,6 +1524,9 @@ class CompletedGameRow extends DataClass
     return CompletedGameRow(
       gameId: serializer.fromJson<String>(json['gameId']),
       puzzleId: serializer.fromJson<String>(json['puzzleId']),
+      dailyChallengeKey: serializer.fromJson<String?>(
+        json['dailyChallengeKey'],
+      ),
       initialBoard: serializer.fromJson<String>(json['initialBoard']),
       completedBoard: serializer.fromJson<String>(json['completedBoard']),
       startedAtMs: serializer.fromJson<int>(json['startedAtMs']),
@@ -1358,6 +1537,7 @@ class CompletedGameRow extends DataClass
       highestHintLevelUsed: serializer.fromJson<int>(
         json['highestHintLevelUsed'],
       ),
+      techniqueHelpJson: serializer.fromJson<String>(json['techniqueHelpJson']),
     );
   }
   @override
@@ -1366,6 +1546,7 @@ class CompletedGameRow extends DataClass
     return <String, dynamic>{
       'gameId': serializer.toJson<String>(gameId),
       'puzzleId': serializer.toJson<String>(puzzleId),
+      'dailyChallengeKey': serializer.toJson<String?>(dailyChallengeKey),
       'initialBoard': serializer.toJson<String>(initialBoard),
       'completedBoard': serializer.toJson<String>(completedBoard),
       'startedAtMs': serializer.toJson<int>(startedAtMs),
@@ -1374,12 +1555,14 @@ class CompletedGameRow extends DataClass
       'mistakes': serializer.toJson<int>(mistakes),
       'hintsRequested': serializer.toJson<int>(hintsRequested),
       'highestHintLevelUsed': serializer.toJson<int>(highestHintLevelUsed),
+      'techniqueHelpJson': serializer.toJson<String>(techniqueHelpJson),
     };
   }
 
   CompletedGameRow copyWith({
     String? gameId,
     String? puzzleId,
+    Value<String?> dailyChallengeKey = const Value.absent(),
     String? initialBoard,
     String? completedBoard,
     int? startedAtMs,
@@ -1388,9 +1571,13 @@ class CompletedGameRow extends DataClass
     int? mistakes,
     int? hintsRequested,
     int? highestHintLevelUsed,
+    String? techniqueHelpJson,
   }) => CompletedGameRow(
     gameId: gameId ?? this.gameId,
     puzzleId: puzzleId ?? this.puzzleId,
+    dailyChallengeKey: dailyChallengeKey.present
+        ? dailyChallengeKey.value
+        : this.dailyChallengeKey,
     initialBoard: initialBoard ?? this.initialBoard,
     completedBoard: completedBoard ?? this.completedBoard,
     startedAtMs: startedAtMs ?? this.startedAtMs,
@@ -1399,11 +1586,15 @@ class CompletedGameRow extends DataClass
     mistakes: mistakes ?? this.mistakes,
     hintsRequested: hintsRequested ?? this.hintsRequested,
     highestHintLevelUsed: highestHintLevelUsed ?? this.highestHintLevelUsed,
+    techniqueHelpJson: techniqueHelpJson ?? this.techniqueHelpJson,
   );
   CompletedGameRow copyWithCompanion(CompletedGamesCompanion data) {
     return CompletedGameRow(
       gameId: data.gameId.present ? data.gameId.value : this.gameId,
       puzzleId: data.puzzleId.present ? data.puzzleId.value : this.puzzleId,
+      dailyChallengeKey: data.dailyChallengeKey.present
+          ? data.dailyChallengeKey.value
+          : this.dailyChallengeKey,
       initialBoard: data.initialBoard.present
           ? data.initialBoard.value
           : this.initialBoard,
@@ -1424,6 +1615,9 @@ class CompletedGameRow extends DataClass
       highestHintLevelUsed: data.highestHintLevelUsed.present
           ? data.highestHintLevelUsed.value
           : this.highestHintLevelUsed,
+      techniqueHelpJson: data.techniqueHelpJson.present
+          ? data.techniqueHelpJson.value
+          : this.techniqueHelpJson,
     );
   }
 
@@ -1432,6 +1626,7 @@ class CompletedGameRow extends DataClass
     return (StringBuffer('CompletedGameRow(')
           ..write('gameId: $gameId, ')
           ..write('puzzleId: $puzzleId, ')
+          ..write('dailyChallengeKey: $dailyChallengeKey, ')
           ..write('initialBoard: $initialBoard, ')
           ..write('completedBoard: $completedBoard, ')
           ..write('startedAtMs: $startedAtMs, ')
@@ -1439,7 +1634,8 @@ class CompletedGameRow extends DataClass
           ..write('elapsedMs: $elapsedMs, ')
           ..write('mistakes: $mistakes, ')
           ..write('hintsRequested: $hintsRequested, ')
-          ..write('highestHintLevelUsed: $highestHintLevelUsed')
+          ..write('highestHintLevelUsed: $highestHintLevelUsed, ')
+          ..write('techniqueHelpJson: $techniqueHelpJson')
           ..write(')'))
         .toString();
   }
@@ -1448,6 +1644,7 @@ class CompletedGameRow extends DataClass
   int get hashCode => Object.hash(
     gameId,
     puzzleId,
+    dailyChallengeKey,
     initialBoard,
     completedBoard,
     startedAtMs,
@@ -1456,6 +1653,7 @@ class CompletedGameRow extends DataClass
     mistakes,
     hintsRequested,
     highestHintLevelUsed,
+    techniqueHelpJson,
   );
   @override
   bool operator ==(Object other) =>
@@ -1463,6 +1661,7 @@ class CompletedGameRow extends DataClass
       (other is CompletedGameRow &&
           other.gameId == this.gameId &&
           other.puzzleId == this.puzzleId &&
+          other.dailyChallengeKey == this.dailyChallengeKey &&
           other.initialBoard == this.initialBoard &&
           other.completedBoard == this.completedBoard &&
           other.startedAtMs == this.startedAtMs &&
@@ -1470,12 +1669,14 @@ class CompletedGameRow extends DataClass
           other.elapsedMs == this.elapsedMs &&
           other.mistakes == this.mistakes &&
           other.hintsRequested == this.hintsRequested &&
-          other.highestHintLevelUsed == this.highestHintLevelUsed);
+          other.highestHintLevelUsed == this.highestHintLevelUsed &&
+          other.techniqueHelpJson == this.techniqueHelpJson);
 }
 
 class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
   final Value<String> gameId;
   final Value<String> puzzleId;
+  final Value<String?> dailyChallengeKey;
   final Value<String> initialBoard;
   final Value<String> completedBoard;
   final Value<int> startedAtMs;
@@ -1484,10 +1685,12 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
   final Value<int> mistakes;
   final Value<int> hintsRequested;
   final Value<int> highestHintLevelUsed;
+  final Value<String> techniqueHelpJson;
   final Value<int> rowid;
   const CompletedGamesCompanion({
     this.gameId = const Value.absent(),
     this.puzzleId = const Value.absent(),
+    this.dailyChallengeKey = const Value.absent(),
     this.initialBoard = const Value.absent(),
     this.completedBoard = const Value.absent(),
     this.startedAtMs = const Value.absent(),
@@ -1496,11 +1699,13 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
     this.mistakes = const Value.absent(),
     this.hintsRequested = const Value.absent(),
     this.highestHintLevelUsed = const Value.absent(),
+    this.techniqueHelpJson = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CompletedGamesCompanion.insert({
     required String gameId,
     required String puzzleId,
+    this.dailyChallengeKey = const Value.absent(),
     required String initialBoard,
     required String completedBoard,
     required int startedAtMs,
@@ -1509,6 +1714,7 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
     required int mistakes,
     required int hintsRequested,
     required int highestHintLevelUsed,
+    this.techniqueHelpJson = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : gameId = Value(gameId),
        puzzleId = Value(puzzleId),
@@ -1523,6 +1729,7 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
   static Insertable<CompletedGameRow> custom({
     Expression<String>? gameId,
     Expression<String>? puzzleId,
+    Expression<String>? dailyChallengeKey,
     Expression<String>? initialBoard,
     Expression<String>? completedBoard,
     Expression<int>? startedAtMs,
@@ -1531,11 +1738,13 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
     Expression<int>? mistakes,
     Expression<int>? hintsRequested,
     Expression<int>? highestHintLevelUsed,
+    Expression<String>? techniqueHelpJson,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (gameId != null) 'game_id': gameId,
       if (puzzleId != null) 'puzzle_id': puzzleId,
+      if (dailyChallengeKey != null) 'daily_challenge_key': dailyChallengeKey,
       if (initialBoard != null) 'initial_board': initialBoard,
       if (completedBoard != null) 'completed_board': completedBoard,
       if (startedAtMs != null) 'started_at_ms': startedAtMs,
@@ -1545,6 +1754,7 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
       if (hintsRequested != null) 'hints_requested': hintsRequested,
       if (highestHintLevelUsed != null)
         'highest_hint_level_used': highestHintLevelUsed,
+      if (techniqueHelpJson != null) 'technique_help_json': techniqueHelpJson,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1552,6 +1762,7 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
   CompletedGamesCompanion copyWith({
     Value<String>? gameId,
     Value<String>? puzzleId,
+    Value<String?>? dailyChallengeKey,
     Value<String>? initialBoard,
     Value<String>? completedBoard,
     Value<int>? startedAtMs,
@@ -1560,11 +1771,13 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
     Value<int>? mistakes,
     Value<int>? hintsRequested,
     Value<int>? highestHintLevelUsed,
+    Value<String>? techniqueHelpJson,
     Value<int>? rowid,
   }) {
     return CompletedGamesCompanion(
       gameId: gameId ?? this.gameId,
       puzzleId: puzzleId ?? this.puzzleId,
+      dailyChallengeKey: dailyChallengeKey ?? this.dailyChallengeKey,
       initialBoard: initialBoard ?? this.initialBoard,
       completedBoard: completedBoard ?? this.completedBoard,
       startedAtMs: startedAtMs ?? this.startedAtMs,
@@ -1573,6 +1786,7 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
       mistakes: mistakes ?? this.mistakes,
       hintsRequested: hintsRequested ?? this.hintsRequested,
       highestHintLevelUsed: highestHintLevelUsed ?? this.highestHintLevelUsed,
+      techniqueHelpJson: techniqueHelpJson ?? this.techniqueHelpJson,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1585,6 +1799,9 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
     }
     if (puzzleId.present) {
       map['puzzle_id'] = Variable<String>(puzzleId.value);
+    }
+    if (dailyChallengeKey.present) {
+      map['daily_challenge_key'] = Variable<String>(dailyChallengeKey.value);
     }
     if (initialBoard.present) {
       map['initial_board'] = Variable<String>(initialBoard.value);
@@ -1612,6 +1829,9 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
         highestHintLevelUsed.value,
       );
     }
+    if (techniqueHelpJson.present) {
+      map['technique_help_json'] = Variable<String>(techniqueHelpJson.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1623,6 +1843,7 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
     return (StringBuffer('CompletedGamesCompanion(')
           ..write('gameId: $gameId, ')
           ..write('puzzleId: $puzzleId, ')
+          ..write('dailyChallengeKey: $dailyChallengeKey, ')
           ..write('initialBoard: $initialBoard, ')
           ..write('completedBoard: $completedBoard, ')
           ..write('startedAtMs: $startedAtMs, ')
@@ -1631,6 +1852,686 @@ class CompletedGamesCompanion extends UpdateCompanion<CompletedGameRow> {
           ..write('mistakes: $mistakes, ')
           ..write('hintsRequested: $hintsRequested, ')
           ..write('highestHintLevelUsed: $highestHintLevelUsed, ')
+          ..write('techniqueHelpJson: $techniqueHelpJson, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TechniqueProgressEntriesTable extends TechniqueProgressEntries
+    with TableInfo<$TechniqueProgressEntriesTable, TechniqueProgressRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TechniqueProgressEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _techniqueIdMeta = const VerificationMeta(
+    'techniqueId',
+  );
+  @override
+  late final GeneratedColumn<String> techniqueId = GeneratedColumn<String>(
+    'technique_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _correctAttemptsMeta = const VerificationMeta(
+    'correctAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> correctAttempts = GeneratedColumn<int>(
+    'correct_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _firstTryCorrectMeta = const VerificationMeta(
+    'firstTryCorrect',
+  );
+  @override
+  late final GeneratedColumn<int> firstTryCorrect = GeneratedColumn<int>(
+    'first_try_correct',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _independentStreakMeta = const VerificationMeta(
+    'independentStreak',
+  );
+  @override
+  late final GeneratedColumn<int> independentStreak = GeneratedColumn<int>(
+    'independent_streak',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _directionHintSuccessesMeta =
+      const VerificationMeta('directionHintSuccesses');
+  @override
+  late final GeneratedColumn<int> directionHintSuccesses = GeneratedColumn<int>(
+    'direction_hint_successes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _focusHintSuccessesMeta =
+      const VerificationMeta('focusHintSuccesses');
+  @override
+  late final GeneratedColumn<int> focusHintSuccesses = GeneratedColumn<int>(
+    'focus_hint_successes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reasoningHintSuccessesMeta =
+      const VerificationMeta('reasoningHintSuccesses');
+  @override
+  late final GeneratedColumn<int> reasoningHintSuccesses = GeneratedColumn<int>(
+    'reasoning_hint_successes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _resultHintSuccessesMeta =
+      const VerificationMeta('resultHintSuccesses');
+  @override
+  late final GeneratedColumn<int> resultHintSuccesses = GeneratedColumn<int>(
+    'result_hint_successes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastPracticedAtMsMeta = const VerificationMeta(
+    'lastPracticedAtMs',
+  );
+  @override
+  late final GeneratedColumn<int> lastPracticedAtMs = GeneratedColumn<int>(
+    'last_practiced_at_ms',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    techniqueId,
+    attempts,
+    correctAttempts,
+    firstTryCorrect,
+    independentStreak,
+    directionHintSuccesses,
+    focusHintSuccesses,
+    reasoningHintSuccesses,
+    resultHintSuccesses,
+    lastPracticedAtMs,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'technique_progress_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TechniqueProgressRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('technique_id')) {
+      context.handle(
+        _techniqueIdMeta,
+        techniqueId.isAcceptableOrUnknown(
+          data['technique_id']!,
+          _techniqueIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_techniqueIdMeta);
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_attemptsMeta);
+    }
+    if (data.containsKey('correct_attempts')) {
+      context.handle(
+        _correctAttemptsMeta,
+        correctAttempts.isAcceptableOrUnknown(
+          data['correct_attempts']!,
+          _correctAttemptsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_correctAttemptsMeta);
+    }
+    if (data.containsKey('first_try_correct')) {
+      context.handle(
+        _firstTryCorrectMeta,
+        firstTryCorrect.isAcceptableOrUnknown(
+          data['first_try_correct']!,
+          _firstTryCorrectMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_firstTryCorrectMeta);
+    }
+    if (data.containsKey('independent_streak')) {
+      context.handle(
+        _independentStreakMeta,
+        independentStreak.isAcceptableOrUnknown(
+          data['independent_streak']!,
+          _independentStreakMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_independentStreakMeta);
+    }
+    if (data.containsKey('direction_hint_successes')) {
+      context.handle(
+        _directionHintSuccessesMeta,
+        directionHintSuccesses.isAcceptableOrUnknown(
+          data['direction_hint_successes']!,
+          _directionHintSuccessesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_directionHintSuccessesMeta);
+    }
+    if (data.containsKey('focus_hint_successes')) {
+      context.handle(
+        _focusHintSuccessesMeta,
+        focusHintSuccesses.isAcceptableOrUnknown(
+          data['focus_hint_successes']!,
+          _focusHintSuccessesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_focusHintSuccessesMeta);
+    }
+    if (data.containsKey('reasoning_hint_successes')) {
+      context.handle(
+        _reasoningHintSuccessesMeta,
+        reasoningHintSuccesses.isAcceptableOrUnknown(
+          data['reasoning_hint_successes']!,
+          _reasoningHintSuccessesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_reasoningHintSuccessesMeta);
+    }
+    if (data.containsKey('result_hint_successes')) {
+      context.handle(
+        _resultHintSuccessesMeta,
+        resultHintSuccesses.isAcceptableOrUnknown(
+          data['result_hint_successes']!,
+          _resultHintSuccessesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_resultHintSuccessesMeta);
+    }
+    if (data.containsKey('last_practiced_at_ms')) {
+      context.handle(
+        _lastPracticedAtMsMeta,
+        lastPracticedAtMs.isAcceptableOrUnknown(
+          data['last_practiced_at_ms']!,
+          _lastPracticedAtMsMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {techniqueId};
+  @override
+  TechniqueProgressRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TechniqueProgressRow(
+      techniqueId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}technique_id'],
+      )!,
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      correctAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}correct_attempts'],
+      )!,
+      firstTryCorrect: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}first_try_correct'],
+      )!,
+      independentStreak: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}independent_streak'],
+      )!,
+      directionHintSuccesses: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}direction_hint_successes'],
+      )!,
+      focusHintSuccesses: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}focus_hint_successes'],
+      )!,
+      reasoningHintSuccesses: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}reasoning_hint_successes'],
+      )!,
+      resultHintSuccesses: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}result_hint_successes'],
+      )!,
+      lastPracticedAtMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}last_practiced_at_ms'],
+      ),
+    );
+  }
+
+  @override
+  $TechniqueProgressEntriesTable createAlias(String alias) {
+    return $TechniqueProgressEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class TechniqueProgressRow extends DataClass
+    implements Insertable<TechniqueProgressRow> {
+  final String techniqueId;
+  final int attempts;
+  final int correctAttempts;
+  final int firstTryCorrect;
+  final int independentStreak;
+  final int directionHintSuccesses;
+  final int focusHintSuccesses;
+  final int reasoningHintSuccesses;
+  final int resultHintSuccesses;
+  final int? lastPracticedAtMs;
+  const TechniqueProgressRow({
+    required this.techniqueId,
+    required this.attempts,
+    required this.correctAttempts,
+    required this.firstTryCorrect,
+    required this.independentStreak,
+    required this.directionHintSuccesses,
+    required this.focusHintSuccesses,
+    required this.reasoningHintSuccesses,
+    required this.resultHintSuccesses,
+    this.lastPracticedAtMs,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['technique_id'] = Variable<String>(techniqueId);
+    map['attempts'] = Variable<int>(attempts);
+    map['correct_attempts'] = Variable<int>(correctAttempts);
+    map['first_try_correct'] = Variable<int>(firstTryCorrect);
+    map['independent_streak'] = Variable<int>(independentStreak);
+    map['direction_hint_successes'] = Variable<int>(directionHintSuccesses);
+    map['focus_hint_successes'] = Variable<int>(focusHintSuccesses);
+    map['reasoning_hint_successes'] = Variable<int>(reasoningHintSuccesses);
+    map['result_hint_successes'] = Variable<int>(resultHintSuccesses);
+    if (!nullToAbsent || lastPracticedAtMs != null) {
+      map['last_practiced_at_ms'] = Variable<int>(lastPracticedAtMs);
+    }
+    return map;
+  }
+
+  TechniqueProgressEntriesCompanion toCompanion(bool nullToAbsent) {
+    return TechniqueProgressEntriesCompanion(
+      techniqueId: Value(techniqueId),
+      attempts: Value(attempts),
+      correctAttempts: Value(correctAttempts),
+      firstTryCorrect: Value(firstTryCorrect),
+      independentStreak: Value(independentStreak),
+      directionHintSuccesses: Value(directionHintSuccesses),
+      focusHintSuccesses: Value(focusHintSuccesses),
+      reasoningHintSuccesses: Value(reasoningHintSuccesses),
+      resultHintSuccesses: Value(resultHintSuccesses),
+      lastPracticedAtMs: lastPracticedAtMs == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastPracticedAtMs),
+    );
+  }
+
+  factory TechniqueProgressRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TechniqueProgressRow(
+      techniqueId: serializer.fromJson<String>(json['techniqueId']),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      correctAttempts: serializer.fromJson<int>(json['correctAttempts']),
+      firstTryCorrect: serializer.fromJson<int>(json['firstTryCorrect']),
+      independentStreak: serializer.fromJson<int>(json['independentStreak']),
+      directionHintSuccesses: serializer.fromJson<int>(
+        json['directionHintSuccesses'],
+      ),
+      focusHintSuccesses: serializer.fromJson<int>(json['focusHintSuccesses']),
+      reasoningHintSuccesses: serializer.fromJson<int>(
+        json['reasoningHintSuccesses'],
+      ),
+      resultHintSuccesses: serializer.fromJson<int>(
+        json['resultHintSuccesses'],
+      ),
+      lastPracticedAtMs: serializer.fromJson<int?>(json['lastPracticedAtMs']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'techniqueId': serializer.toJson<String>(techniqueId),
+      'attempts': serializer.toJson<int>(attempts),
+      'correctAttempts': serializer.toJson<int>(correctAttempts),
+      'firstTryCorrect': serializer.toJson<int>(firstTryCorrect),
+      'independentStreak': serializer.toJson<int>(independentStreak),
+      'directionHintSuccesses': serializer.toJson<int>(directionHintSuccesses),
+      'focusHintSuccesses': serializer.toJson<int>(focusHintSuccesses),
+      'reasoningHintSuccesses': serializer.toJson<int>(reasoningHintSuccesses),
+      'resultHintSuccesses': serializer.toJson<int>(resultHintSuccesses),
+      'lastPracticedAtMs': serializer.toJson<int?>(lastPracticedAtMs),
+    };
+  }
+
+  TechniqueProgressRow copyWith({
+    String? techniqueId,
+    int? attempts,
+    int? correctAttempts,
+    int? firstTryCorrect,
+    int? independentStreak,
+    int? directionHintSuccesses,
+    int? focusHintSuccesses,
+    int? reasoningHintSuccesses,
+    int? resultHintSuccesses,
+    Value<int?> lastPracticedAtMs = const Value.absent(),
+  }) => TechniqueProgressRow(
+    techniqueId: techniqueId ?? this.techniqueId,
+    attempts: attempts ?? this.attempts,
+    correctAttempts: correctAttempts ?? this.correctAttempts,
+    firstTryCorrect: firstTryCorrect ?? this.firstTryCorrect,
+    independentStreak: independentStreak ?? this.independentStreak,
+    directionHintSuccesses:
+        directionHintSuccesses ?? this.directionHintSuccesses,
+    focusHintSuccesses: focusHintSuccesses ?? this.focusHintSuccesses,
+    reasoningHintSuccesses:
+        reasoningHintSuccesses ?? this.reasoningHintSuccesses,
+    resultHintSuccesses: resultHintSuccesses ?? this.resultHintSuccesses,
+    lastPracticedAtMs: lastPracticedAtMs.present
+        ? lastPracticedAtMs.value
+        : this.lastPracticedAtMs,
+  );
+  TechniqueProgressRow copyWithCompanion(
+    TechniqueProgressEntriesCompanion data,
+  ) {
+    return TechniqueProgressRow(
+      techniqueId: data.techniqueId.present
+          ? data.techniqueId.value
+          : this.techniqueId,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      correctAttempts: data.correctAttempts.present
+          ? data.correctAttempts.value
+          : this.correctAttempts,
+      firstTryCorrect: data.firstTryCorrect.present
+          ? data.firstTryCorrect.value
+          : this.firstTryCorrect,
+      independentStreak: data.independentStreak.present
+          ? data.independentStreak.value
+          : this.independentStreak,
+      directionHintSuccesses: data.directionHintSuccesses.present
+          ? data.directionHintSuccesses.value
+          : this.directionHintSuccesses,
+      focusHintSuccesses: data.focusHintSuccesses.present
+          ? data.focusHintSuccesses.value
+          : this.focusHintSuccesses,
+      reasoningHintSuccesses: data.reasoningHintSuccesses.present
+          ? data.reasoningHintSuccesses.value
+          : this.reasoningHintSuccesses,
+      resultHintSuccesses: data.resultHintSuccesses.present
+          ? data.resultHintSuccesses.value
+          : this.resultHintSuccesses,
+      lastPracticedAtMs: data.lastPracticedAtMs.present
+          ? data.lastPracticedAtMs.value
+          : this.lastPracticedAtMs,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TechniqueProgressRow(')
+          ..write('techniqueId: $techniqueId, ')
+          ..write('attempts: $attempts, ')
+          ..write('correctAttempts: $correctAttempts, ')
+          ..write('firstTryCorrect: $firstTryCorrect, ')
+          ..write('independentStreak: $independentStreak, ')
+          ..write('directionHintSuccesses: $directionHintSuccesses, ')
+          ..write('focusHintSuccesses: $focusHintSuccesses, ')
+          ..write('reasoningHintSuccesses: $reasoningHintSuccesses, ')
+          ..write('resultHintSuccesses: $resultHintSuccesses, ')
+          ..write('lastPracticedAtMs: $lastPracticedAtMs')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    techniqueId,
+    attempts,
+    correctAttempts,
+    firstTryCorrect,
+    independentStreak,
+    directionHintSuccesses,
+    focusHintSuccesses,
+    reasoningHintSuccesses,
+    resultHintSuccesses,
+    lastPracticedAtMs,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TechniqueProgressRow &&
+          other.techniqueId == this.techniqueId &&
+          other.attempts == this.attempts &&
+          other.correctAttempts == this.correctAttempts &&
+          other.firstTryCorrect == this.firstTryCorrect &&
+          other.independentStreak == this.independentStreak &&
+          other.directionHintSuccesses == this.directionHintSuccesses &&
+          other.focusHintSuccesses == this.focusHintSuccesses &&
+          other.reasoningHintSuccesses == this.reasoningHintSuccesses &&
+          other.resultHintSuccesses == this.resultHintSuccesses &&
+          other.lastPracticedAtMs == this.lastPracticedAtMs);
+}
+
+class TechniqueProgressEntriesCompanion
+    extends UpdateCompanion<TechniqueProgressRow> {
+  final Value<String> techniqueId;
+  final Value<int> attempts;
+  final Value<int> correctAttempts;
+  final Value<int> firstTryCorrect;
+  final Value<int> independentStreak;
+  final Value<int> directionHintSuccesses;
+  final Value<int> focusHintSuccesses;
+  final Value<int> reasoningHintSuccesses;
+  final Value<int> resultHintSuccesses;
+  final Value<int?> lastPracticedAtMs;
+  final Value<int> rowid;
+  const TechniqueProgressEntriesCompanion({
+    this.techniqueId = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.correctAttempts = const Value.absent(),
+    this.firstTryCorrect = const Value.absent(),
+    this.independentStreak = const Value.absent(),
+    this.directionHintSuccesses = const Value.absent(),
+    this.focusHintSuccesses = const Value.absent(),
+    this.reasoningHintSuccesses = const Value.absent(),
+    this.resultHintSuccesses = const Value.absent(),
+    this.lastPracticedAtMs = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TechniqueProgressEntriesCompanion.insert({
+    required String techniqueId,
+    required int attempts,
+    required int correctAttempts,
+    required int firstTryCorrect,
+    required int independentStreak,
+    required int directionHintSuccesses,
+    required int focusHintSuccesses,
+    required int reasoningHintSuccesses,
+    required int resultHintSuccesses,
+    this.lastPracticedAtMs = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : techniqueId = Value(techniqueId),
+       attempts = Value(attempts),
+       correctAttempts = Value(correctAttempts),
+       firstTryCorrect = Value(firstTryCorrect),
+       independentStreak = Value(independentStreak),
+       directionHintSuccesses = Value(directionHintSuccesses),
+       focusHintSuccesses = Value(focusHintSuccesses),
+       reasoningHintSuccesses = Value(reasoningHintSuccesses),
+       resultHintSuccesses = Value(resultHintSuccesses);
+  static Insertable<TechniqueProgressRow> custom({
+    Expression<String>? techniqueId,
+    Expression<int>? attempts,
+    Expression<int>? correctAttempts,
+    Expression<int>? firstTryCorrect,
+    Expression<int>? independentStreak,
+    Expression<int>? directionHintSuccesses,
+    Expression<int>? focusHintSuccesses,
+    Expression<int>? reasoningHintSuccesses,
+    Expression<int>? resultHintSuccesses,
+    Expression<int>? lastPracticedAtMs,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (techniqueId != null) 'technique_id': techniqueId,
+      if (attempts != null) 'attempts': attempts,
+      if (correctAttempts != null) 'correct_attempts': correctAttempts,
+      if (firstTryCorrect != null) 'first_try_correct': firstTryCorrect,
+      if (independentStreak != null) 'independent_streak': independentStreak,
+      if (directionHintSuccesses != null)
+        'direction_hint_successes': directionHintSuccesses,
+      if (focusHintSuccesses != null)
+        'focus_hint_successes': focusHintSuccesses,
+      if (reasoningHintSuccesses != null)
+        'reasoning_hint_successes': reasoningHintSuccesses,
+      if (resultHintSuccesses != null)
+        'result_hint_successes': resultHintSuccesses,
+      if (lastPracticedAtMs != null) 'last_practiced_at_ms': lastPracticedAtMs,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TechniqueProgressEntriesCompanion copyWith({
+    Value<String>? techniqueId,
+    Value<int>? attempts,
+    Value<int>? correctAttempts,
+    Value<int>? firstTryCorrect,
+    Value<int>? independentStreak,
+    Value<int>? directionHintSuccesses,
+    Value<int>? focusHintSuccesses,
+    Value<int>? reasoningHintSuccesses,
+    Value<int>? resultHintSuccesses,
+    Value<int?>? lastPracticedAtMs,
+    Value<int>? rowid,
+  }) {
+    return TechniqueProgressEntriesCompanion(
+      techniqueId: techniqueId ?? this.techniqueId,
+      attempts: attempts ?? this.attempts,
+      correctAttempts: correctAttempts ?? this.correctAttempts,
+      firstTryCorrect: firstTryCorrect ?? this.firstTryCorrect,
+      independentStreak: independentStreak ?? this.independentStreak,
+      directionHintSuccesses:
+          directionHintSuccesses ?? this.directionHintSuccesses,
+      focusHintSuccesses: focusHintSuccesses ?? this.focusHintSuccesses,
+      reasoningHintSuccesses:
+          reasoningHintSuccesses ?? this.reasoningHintSuccesses,
+      resultHintSuccesses: resultHintSuccesses ?? this.resultHintSuccesses,
+      lastPracticedAtMs: lastPracticedAtMs ?? this.lastPracticedAtMs,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (techniqueId.present) {
+      map['technique_id'] = Variable<String>(techniqueId.value);
+    }
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
+    }
+    if (correctAttempts.present) {
+      map['correct_attempts'] = Variable<int>(correctAttempts.value);
+    }
+    if (firstTryCorrect.present) {
+      map['first_try_correct'] = Variable<int>(firstTryCorrect.value);
+    }
+    if (independentStreak.present) {
+      map['independent_streak'] = Variable<int>(independentStreak.value);
+    }
+    if (directionHintSuccesses.present) {
+      map['direction_hint_successes'] = Variable<int>(
+        directionHintSuccesses.value,
+      );
+    }
+    if (focusHintSuccesses.present) {
+      map['focus_hint_successes'] = Variable<int>(focusHintSuccesses.value);
+    }
+    if (reasoningHintSuccesses.present) {
+      map['reasoning_hint_successes'] = Variable<int>(
+        reasoningHintSuccesses.value,
+      );
+    }
+    if (resultHintSuccesses.present) {
+      map['result_hint_successes'] = Variable<int>(resultHintSuccesses.value);
+    }
+    if (lastPracticedAtMs.present) {
+      map['last_practiced_at_ms'] = Variable<int>(lastPracticedAtMs.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TechniqueProgressEntriesCompanion(')
+          ..write('techniqueId: $techniqueId, ')
+          ..write('attempts: $attempts, ')
+          ..write('correctAttempts: $correctAttempts, ')
+          ..write('firstTryCorrect: $firstTryCorrect, ')
+          ..write('independentStreak: $independentStreak, ')
+          ..write('directionHintSuccesses: $directionHintSuccesses, ')
+          ..write('focusHintSuccesses: $focusHintSuccesses, ')
+          ..write('reasoningHintSuccesses: $reasoningHintSuccesses, ')
+          ..write('resultHintSuccesses: $resultHintSuccesses, ')
+          ..write('lastPracticedAtMs: $lastPracticedAtMs, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1642,6 +2543,8 @@ abstract class _$GameDatabase extends GeneratedDatabase {
   $GameDatabaseManager get managers => $GameDatabaseManager(this);
   late final $ActiveGamesTable activeGames = $ActiveGamesTable(this);
   late final $CompletedGamesTable completedGames = $CompletedGamesTable(this);
+  late final $TechniqueProgressEntriesTable techniqueProgressEntries =
+      $TechniqueProgressEntriesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1649,6 +2552,7 @@ abstract class _$GameDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     activeGames,
     completedGames,
+    techniqueProgressEntries,
   ];
 }
 
@@ -1657,6 +2561,7 @@ typedef $$ActiveGamesTableCreateCompanionBuilder =
       Value<int> slot,
       required String gameId,
       required String puzzleId,
+      Value<String?> dailyChallengeKey,
       required String initialBoard,
       required String currentBoard,
       required String notesJson,
@@ -1669,6 +2574,7 @@ typedef $$ActiveGamesTableCreateCompanionBuilder =
       required bool isPaused,
       required int hintsRequested,
       required int highestHintLevelUsed,
+      Value<String> techniqueHelpJson,
       required int correctEditableCells,
       required int editableCells,
     });
@@ -1677,6 +2583,7 @@ typedef $$ActiveGamesTableUpdateCompanionBuilder =
       Value<int> slot,
       Value<String> gameId,
       Value<String> puzzleId,
+      Value<String?> dailyChallengeKey,
       Value<String> initialBoard,
       Value<String> currentBoard,
       Value<String> notesJson,
@@ -1689,6 +2596,7 @@ typedef $$ActiveGamesTableUpdateCompanionBuilder =
       Value<bool> isPaused,
       Value<int> hintsRequested,
       Value<int> highestHintLevelUsed,
+      Value<String> techniqueHelpJson,
       Value<int> correctEditableCells,
       Value<int> editableCells,
     });
@@ -1714,6 +2622,11 @@ class $$ActiveGamesTableFilterComposer
 
   ColumnFilters<String> get puzzleId => $composableBuilder(
     column: $table.puzzleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dailyChallengeKey => $composableBuilder(
+    column: $table.dailyChallengeKey,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1777,6 +2690,11 @@ class $$ActiveGamesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get techniqueHelpJson => $composableBuilder(
+    column: $table.techniqueHelpJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get correctEditableCells => $composableBuilder(
     column: $table.correctEditableCells,
     builder: (column) => ColumnFilters(column),
@@ -1809,6 +2727,11 @@ class $$ActiveGamesTableOrderingComposer
 
   ColumnOrderings<String> get puzzleId => $composableBuilder(
     column: $table.puzzleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dailyChallengeKey => $composableBuilder(
+    column: $table.dailyChallengeKey,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1872,6 +2795,11 @@ class $$ActiveGamesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get techniqueHelpJson => $composableBuilder(
+    column: $table.techniqueHelpJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get correctEditableCells => $composableBuilder(
     column: $table.correctEditableCells,
     builder: (column) => ColumnOrderings(column),
@@ -1900,6 +2828,11 @@ class $$ActiveGamesTableAnnotationComposer
 
   GeneratedColumn<String> get puzzleId =>
       $composableBuilder(column: $table.puzzleId, builder: (column) => column);
+
+  GeneratedColumn<String> get dailyChallengeKey => $composableBuilder(
+    column: $table.dailyChallengeKey,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get initialBoard => $composableBuilder(
     column: $table.initialBoard,
@@ -1951,6 +2884,11 @@ class $$ActiveGamesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get techniqueHelpJson => $composableBuilder(
+    column: $table.techniqueHelpJson,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<int> get correctEditableCells => $composableBuilder(
     column: $table.correctEditableCells,
     builder: (column) => column,
@@ -1996,6 +2934,7 @@ class $$ActiveGamesTableTableManager
                 Value<int> slot = const Value.absent(),
                 Value<String> gameId = const Value.absent(),
                 Value<String> puzzleId = const Value.absent(),
+                Value<String?> dailyChallengeKey = const Value.absent(),
                 Value<String> initialBoard = const Value.absent(),
                 Value<String> currentBoard = const Value.absent(),
                 Value<String> notesJson = const Value.absent(),
@@ -2008,12 +2947,14 @@ class $$ActiveGamesTableTableManager
                 Value<bool> isPaused = const Value.absent(),
                 Value<int> hintsRequested = const Value.absent(),
                 Value<int> highestHintLevelUsed = const Value.absent(),
+                Value<String> techniqueHelpJson = const Value.absent(),
                 Value<int> correctEditableCells = const Value.absent(),
                 Value<int> editableCells = const Value.absent(),
               }) => ActiveGamesCompanion(
                 slot: slot,
                 gameId: gameId,
                 puzzleId: puzzleId,
+                dailyChallengeKey: dailyChallengeKey,
                 initialBoard: initialBoard,
                 currentBoard: currentBoard,
                 notesJson: notesJson,
@@ -2026,6 +2967,7 @@ class $$ActiveGamesTableTableManager
                 isPaused: isPaused,
                 hintsRequested: hintsRequested,
                 highestHintLevelUsed: highestHintLevelUsed,
+                techniqueHelpJson: techniqueHelpJson,
                 correctEditableCells: correctEditableCells,
                 editableCells: editableCells,
               ),
@@ -2034,6 +2976,7 @@ class $$ActiveGamesTableTableManager
                 Value<int> slot = const Value.absent(),
                 required String gameId,
                 required String puzzleId,
+                Value<String?> dailyChallengeKey = const Value.absent(),
                 required String initialBoard,
                 required String currentBoard,
                 required String notesJson,
@@ -2046,12 +2989,14 @@ class $$ActiveGamesTableTableManager
                 required bool isPaused,
                 required int hintsRequested,
                 required int highestHintLevelUsed,
+                Value<String> techniqueHelpJson = const Value.absent(),
                 required int correctEditableCells,
                 required int editableCells,
               }) => ActiveGamesCompanion.insert(
                 slot: slot,
                 gameId: gameId,
                 puzzleId: puzzleId,
+                dailyChallengeKey: dailyChallengeKey,
                 initialBoard: initialBoard,
                 currentBoard: currentBoard,
                 notesJson: notesJson,
@@ -2064,6 +3009,7 @@ class $$ActiveGamesTableTableManager
                 isPaused: isPaused,
                 hintsRequested: hintsRequested,
                 highestHintLevelUsed: highestHintLevelUsed,
+                techniqueHelpJson: techniqueHelpJson,
                 correctEditableCells: correctEditableCells,
                 editableCells: editableCells,
               ),
@@ -2096,6 +3042,7 @@ typedef $$CompletedGamesTableCreateCompanionBuilder =
     CompletedGamesCompanion Function({
       required String gameId,
       required String puzzleId,
+      Value<String?> dailyChallengeKey,
       required String initialBoard,
       required String completedBoard,
       required int startedAtMs,
@@ -2104,12 +3051,14 @@ typedef $$CompletedGamesTableCreateCompanionBuilder =
       required int mistakes,
       required int hintsRequested,
       required int highestHintLevelUsed,
+      Value<String> techniqueHelpJson,
       Value<int> rowid,
     });
 typedef $$CompletedGamesTableUpdateCompanionBuilder =
     CompletedGamesCompanion Function({
       Value<String> gameId,
       Value<String> puzzleId,
+      Value<String?> dailyChallengeKey,
       Value<String> initialBoard,
       Value<String> completedBoard,
       Value<int> startedAtMs,
@@ -2118,6 +3067,7 @@ typedef $$CompletedGamesTableUpdateCompanionBuilder =
       Value<int> mistakes,
       Value<int> hintsRequested,
       Value<int> highestHintLevelUsed,
+      Value<String> techniqueHelpJson,
       Value<int> rowid,
     });
 
@@ -2137,6 +3087,11 @@ class $$CompletedGamesTableFilterComposer
 
   ColumnFilters<String> get puzzleId => $composableBuilder(
     column: $table.puzzleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get dailyChallengeKey => $composableBuilder(
+    column: $table.dailyChallengeKey,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2179,6 +3134,11 @@ class $$CompletedGamesTableFilterComposer
     column: $table.highestHintLevelUsed,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnFilters<String> get techniqueHelpJson => $composableBuilder(
+    column: $table.techniqueHelpJson,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$CompletedGamesTableOrderingComposer
@@ -2197,6 +3157,11 @@ class $$CompletedGamesTableOrderingComposer
 
   ColumnOrderings<String> get puzzleId => $composableBuilder(
     column: $table.puzzleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get dailyChallengeKey => $composableBuilder(
+    column: $table.dailyChallengeKey,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2239,6 +3204,11 @@ class $$CompletedGamesTableOrderingComposer
     column: $table.highestHintLevelUsed,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get techniqueHelpJson => $composableBuilder(
+    column: $table.techniqueHelpJson,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CompletedGamesTableAnnotationComposer
@@ -2255,6 +3225,11 @@ class $$CompletedGamesTableAnnotationComposer
 
   GeneratedColumn<String> get puzzleId =>
       $composableBuilder(column: $table.puzzleId, builder: (column) => column);
+
+  GeneratedColumn<String> get dailyChallengeKey => $composableBuilder(
+    column: $table.dailyChallengeKey,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get initialBoard => $composableBuilder(
     column: $table.initialBoard,
@@ -2289,6 +3264,11 @@ class $$CompletedGamesTableAnnotationComposer
 
   GeneratedColumn<int> get highestHintLevelUsed => $composableBuilder(
     column: $table.highestHintLevelUsed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get techniqueHelpJson => $composableBuilder(
+    column: $table.techniqueHelpJson,
     builder: (column) => column,
   );
 }
@@ -2332,6 +3312,7 @@ class $$CompletedGamesTableTableManager
               ({
                 Value<String> gameId = const Value.absent(),
                 Value<String> puzzleId = const Value.absent(),
+                Value<String?> dailyChallengeKey = const Value.absent(),
                 Value<String> initialBoard = const Value.absent(),
                 Value<String> completedBoard = const Value.absent(),
                 Value<int> startedAtMs = const Value.absent(),
@@ -2340,10 +3321,12 @@ class $$CompletedGamesTableTableManager
                 Value<int> mistakes = const Value.absent(),
                 Value<int> hintsRequested = const Value.absent(),
                 Value<int> highestHintLevelUsed = const Value.absent(),
+                Value<String> techniqueHelpJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CompletedGamesCompanion(
                 gameId: gameId,
                 puzzleId: puzzleId,
+                dailyChallengeKey: dailyChallengeKey,
                 initialBoard: initialBoard,
                 completedBoard: completedBoard,
                 startedAtMs: startedAtMs,
@@ -2352,12 +3335,14 @@ class $$CompletedGamesTableTableManager
                 mistakes: mistakes,
                 hintsRequested: hintsRequested,
                 highestHintLevelUsed: highestHintLevelUsed,
+                techniqueHelpJson: techniqueHelpJson,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String gameId,
                 required String puzzleId,
+                Value<String?> dailyChallengeKey = const Value.absent(),
                 required String initialBoard,
                 required String completedBoard,
                 required int startedAtMs,
@@ -2366,10 +3351,12 @@ class $$CompletedGamesTableTableManager
                 required int mistakes,
                 required int hintsRequested,
                 required int highestHintLevelUsed,
+                Value<String> techniqueHelpJson = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CompletedGamesCompanion.insert(
                 gameId: gameId,
                 puzzleId: puzzleId,
+                dailyChallengeKey: dailyChallengeKey,
                 initialBoard: initialBoard,
                 completedBoard: completedBoard,
                 startedAtMs: startedAtMs,
@@ -2378,6 +3365,7 @@ class $$CompletedGamesTableTableManager
                 mistakes: mistakes,
                 hintsRequested: hintsRequested,
                 highestHintLevelUsed: highestHintLevelUsed,
+                techniqueHelpJson: techniqueHelpJson,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -2405,6 +3393,338 @@ typedef $$CompletedGamesTableProcessedTableManager =
       CompletedGameRow,
       PrefetchHooks Function()
     >;
+typedef $$TechniqueProgressEntriesTableCreateCompanionBuilder =
+    TechniqueProgressEntriesCompanion Function({
+      required String techniqueId,
+      required int attempts,
+      required int correctAttempts,
+      required int firstTryCorrect,
+      required int independentStreak,
+      required int directionHintSuccesses,
+      required int focusHintSuccesses,
+      required int reasoningHintSuccesses,
+      required int resultHintSuccesses,
+      Value<int?> lastPracticedAtMs,
+      Value<int> rowid,
+    });
+typedef $$TechniqueProgressEntriesTableUpdateCompanionBuilder =
+    TechniqueProgressEntriesCompanion Function({
+      Value<String> techniqueId,
+      Value<int> attempts,
+      Value<int> correctAttempts,
+      Value<int> firstTryCorrect,
+      Value<int> independentStreak,
+      Value<int> directionHintSuccesses,
+      Value<int> focusHintSuccesses,
+      Value<int> reasoningHintSuccesses,
+      Value<int> resultHintSuccesses,
+      Value<int?> lastPracticedAtMs,
+      Value<int> rowid,
+    });
+
+class $$TechniqueProgressEntriesTableFilterComposer
+    extends Composer<_$GameDatabase, $TechniqueProgressEntriesTable> {
+  $$TechniqueProgressEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get techniqueId => $composableBuilder(
+    column: $table.techniqueId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get correctAttempts => $composableBuilder(
+    column: $table.correctAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get firstTryCorrect => $composableBuilder(
+    column: $table.firstTryCorrect,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get independentStreak => $composableBuilder(
+    column: $table.independentStreak,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get directionHintSuccesses => $composableBuilder(
+    column: $table.directionHintSuccesses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get focusHintSuccesses => $composableBuilder(
+    column: $table.focusHintSuccesses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reasoningHintSuccesses => $composableBuilder(
+    column: $table.reasoningHintSuccesses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get resultHintSuccesses => $composableBuilder(
+    column: $table.resultHintSuccesses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lastPracticedAtMs => $composableBuilder(
+    column: $table.lastPracticedAtMs,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TechniqueProgressEntriesTableOrderingComposer
+    extends Composer<_$GameDatabase, $TechniqueProgressEntriesTable> {
+  $$TechniqueProgressEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get techniqueId => $composableBuilder(
+    column: $table.techniqueId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get correctAttempts => $composableBuilder(
+    column: $table.correctAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get firstTryCorrect => $composableBuilder(
+    column: $table.firstTryCorrect,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get independentStreak => $composableBuilder(
+    column: $table.independentStreak,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get directionHintSuccesses => $composableBuilder(
+    column: $table.directionHintSuccesses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get focusHintSuccesses => $composableBuilder(
+    column: $table.focusHintSuccesses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reasoningHintSuccesses => $composableBuilder(
+    column: $table.reasoningHintSuccesses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get resultHintSuccesses => $composableBuilder(
+    column: $table.resultHintSuccesses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lastPracticedAtMs => $composableBuilder(
+    column: $table.lastPracticedAtMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TechniqueProgressEntriesTableAnnotationComposer
+    extends Composer<_$GameDatabase, $TechniqueProgressEntriesTable> {
+  $$TechniqueProgressEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get techniqueId => $composableBuilder(
+    column: $table.techniqueId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
+
+  GeneratedColumn<int> get correctAttempts => $composableBuilder(
+    column: $table.correctAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get firstTryCorrect => $composableBuilder(
+    column: $table.firstTryCorrect,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get independentStreak => $composableBuilder(
+    column: $table.independentStreak,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get directionHintSuccesses => $composableBuilder(
+    column: $table.directionHintSuccesses,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get focusHintSuccesses => $composableBuilder(
+    column: $table.focusHintSuccesses,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get reasoningHintSuccesses => $composableBuilder(
+    column: $table.reasoningHintSuccesses,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get resultHintSuccesses => $composableBuilder(
+    column: $table.resultHintSuccesses,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get lastPracticedAtMs => $composableBuilder(
+    column: $table.lastPracticedAtMs,
+    builder: (column) => column,
+  );
+}
+
+class $$TechniqueProgressEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$GameDatabase,
+          $TechniqueProgressEntriesTable,
+          TechniqueProgressRow,
+          $$TechniqueProgressEntriesTableFilterComposer,
+          $$TechniqueProgressEntriesTableOrderingComposer,
+          $$TechniqueProgressEntriesTableAnnotationComposer,
+          $$TechniqueProgressEntriesTableCreateCompanionBuilder,
+          $$TechniqueProgressEntriesTableUpdateCompanionBuilder,
+          (
+            TechniqueProgressRow,
+            BaseReferences<
+              _$GameDatabase,
+              $TechniqueProgressEntriesTable,
+              TechniqueProgressRow
+            >,
+          ),
+          TechniqueProgressRow,
+          PrefetchHooks Function()
+        > {
+  $$TechniqueProgressEntriesTableTableManager(
+    _$GameDatabase db,
+    $TechniqueProgressEntriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TechniqueProgressEntriesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$TechniqueProgressEntriesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$TechniqueProgressEntriesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> techniqueId = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<int> correctAttempts = const Value.absent(),
+                Value<int> firstTryCorrect = const Value.absent(),
+                Value<int> independentStreak = const Value.absent(),
+                Value<int> directionHintSuccesses = const Value.absent(),
+                Value<int> focusHintSuccesses = const Value.absent(),
+                Value<int> reasoningHintSuccesses = const Value.absent(),
+                Value<int> resultHintSuccesses = const Value.absent(),
+                Value<int?> lastPracticedAtMs = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TechniqueProgressEntriesCompanion(
+                techniqueId: techniqueId,
+                attempts: attempts,
+                correctAttempts: correctAttempts,
+                firstTryCorrect: firstTryCorrect,
+                independentStreak: independentStreak,
+                directionHintSuccesses: directionHintSuccesses,
+                focusHintSuccesses: focusHintSuccesses,
+                reasoningHintSuccesses: reasoningHintSuccesses,
+                resultHintSuccesses: resultHintSuccesses,
+                lastPracticedAtMs: lastPracticedAtMs,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String techniqueId,
+                required int attempts,
+                required int correctAttempts,
+                required int firstTryCorrect,
+                required int independentStreak,
+                required int directionHintSuccesses,
+                required int focusHintSuccesses,
+                required int reasoningHintSuccesses,
+                required int resultHintSuccesses,
+                Value<int?> lastPracticedAtMs = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TechniqueProgressEntriesCompanion.insert(
+                techniqueId: techniqueId,
+                attempts: attempts,
+                correctAttempts: correctAttempts,
+                firstTryCorrect: firstTryCorrect,
+                independentStreak: independentStreak,
+                directionHintSuccesses: directionHintSuccesses,
+                focusHintSuccesses: focusHintSuccesses,
+                reasoningHintSuccesses: reasoningHintSuccesses,
+                resultHintSuccesses: resultHintSuccesses,
+                lastPracticedAtMs: lastPracticedAtMs,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TechniqueProgressEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$GameDatabase,
+      $TechniqueProgressEntriesTable,
+      TechniqueProgressRow,
+      $$TechniqueProgressEntriesTableFilterComposer,
+      $$TechniqueProgressEntriesTableOrderingComposer,
+      $$TechniqueProgressEntriesTableAnnotationComposer,
+      $$TechniqueProgressEntriesTableCreateCompanionBuilder,
+      $$TechniqueProgressEntriesTableUpdateCompanionBuilder,
+      (
+        TechniqueProgressRow,
+        BaseReferences<
+          _$GameDatabase,
+          $TechniqueProgressEntriesTable,
+          TechniqueProgressRow
+        >,
+      ),
+      TechniqueProgressRow,
+      PrefetchHooks Function()
+    >;
 
 class $GameDatabaseManager {
   final _$GameDatabase _db;
@@ -2413,4 +3733,9 @@ class $GameDatabaseManager {
       $$ActiveGamesTableTableManager(_db, _db.activeGames);
   $$CompletedGamesTableTableManager get completedGames =>
       $$CompletedGamesTableTableManager(_db, _db.completedGames);
+  $$TechniqueProgressEntriesTableTableManager get techniqueProgressEntries =>
+      $$TechniqueProgressEntriesTableTableManager(
+        _db,
+        _db.techniqueProgressEntries,
+      );
 }

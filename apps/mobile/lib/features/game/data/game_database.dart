@@ -7,6 +7,7 @@ class ActiveGames extends Table {
   IntColumn get slot => integer()();
   TextColumn get gameId => text()();
   TextColumn get puzzleId => text()();
+  TextColumn get dailyChallengeKey => text().nullable()();
   TextColumn get initialBoard => text()();
   TextColumn get currentBoard => text()();
   TextColumn get notesJson => text()();
@@ -19,6 +20,8 @@ class ActiveGames extends Table {
   BoolColumn get isPaused => boolean()();
   IntColumn get hintsRequested => integer()();
   IntColumn get highestHintLevelUsed => integer()();
+  TextColumn get techniqueHelpJson =>
+      text().withDefault(const Constant('{}'))();
   IntColumn get correctEditableCells => integer()();
   IntColumn get editableCells => integer()();
 
@@ -30,6 +33,7 @@ class ActiveGames extends Table {
 class CompletedGames extends Table {
   TextColumn get gameId => text()();
   TextColumn get puzzleId => text()();
+  TextColumn get dailyChallengeKey => text().nullable()();
   TextColumn get initialBoard => text()();
   TextColumn get completedBoard => text()();
   IntColumn get startedAtMs => integer()();
@@ -38,12 +42,31 @@ class CompletedGames extends Table {
   IntColumn get mistakes => integer()();
   IntColumn get hintsRequested => integer()();
   IntColumn get highestHintLevelUsed => integer()();
+  TextColumn get techniqueHelpJson =>
+      text().withDefault(const Constant('{}'))();
 
   @override
   Set<Column> get primaryKey => {gameId};
 }
 
-@DriftDatabase(tables: [ActiveGames, CompletedGames])
+@DataClassName('TechniqueProgressRow')
+class TechniqueProgressEntries extends Table {
+  TextColumn get techniqueId => text()();
+  IntColumn get attempts => integer()();
+  IntColumn get correctAttempts => integer()();
+  IntColumn get firstTryCorrect => integer()();
+  IntColumn get independentStreak => integer()();
+  IntColumn get directionHintSuccesses => integer()();
+  IntColumn get focusHintSuccesses => integer()();
+  IntColumn get reasoningHintSuccesses => integer()();
+  IntColumn get resultHintSuccesses => integer()();
+  IntColumn get lastPracticedAtMs => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {techniqueId};
+}
+
+@DriftDatabase(tables: [ActiveGames, CompletedGames, TechniqueProgressEntries])
 final class GameDatabase extends _$GameDatabase {
   GameDatabase(super.e);
 
@@ -51,14 +74,27 @@ final class GameDatabase extends _$GameDatabase {
       GameDatabase(driftDatabase(name: 'michi_games'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (migrator) => migrator.createAll(),
-    // Future schema versions get explicit, non-destructive steps here.
     onUpgrade: (migrator, from, to) async {
-      throw StateError('No migration registered from $from to $to.');
+      if (from == 1 && to >= 2) {
+        await migrator.addColumn(activeGames, activeGames.dailyChallengeKey);
+        await migrator.addColumn(
+          completedGames,
+          completedGames.dailyChallengeKey,
+        );
+      }
+      if (from <= 2 && to >= 3) {
+        await migrator.addColumn(activeGames, activeGames.techniqueHelpJson);
+        await migrator.addColumn(
+          completedGames,
+          completedGames.techniqueHelpJson,
+        );
+        await migrator.createTable(techniqueProgressEntries);
+      }
     },
   );
 }

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "puzzles": [
+    {"id":"classic_easy_0001","board":"306020000000015000900004850700000009090000040002000600000000316008002000061007000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0002","board":"190306000030000000000020740040090108005008000000000060350000014800000507200000800","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0003","board":"600058301000007500070060090347000960900000410080000000410003050000000080000020700","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0004","board":"100400260000002307800003040600000000000030005004705000006000000200001090439000000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0005","board":"900000040006070100005200000004016008000800796000009400000650027000002001080300000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0006","board":"351400000004001300800002060000200500000000040492070001600300702000000000048006000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0007","board":"000000900034050076670000000045000000360000000000700100010007820050200000400008350","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0008","board":"000000310207080000006007020601900000000600930400210060900806050030001000000004000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0009","board":"000100700890000100070000680900000000100080352060300000000002060200004830000806007","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0010","board":"700006200605030400000010708000000600300100000086000090007485000000007035000000000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0011","board":"600800000850100040700006900010000000065003009000040057100090006000000400000230000","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_easy_0012","board":"000000746002009100800000000004060000906000070500730000000000900000570002305400600","difficulty":"easy","requiredTechniques":["nakedSingle","hiddenSingle"],"dailyEligible":true},
+    {"id":"classic_medium_0001","board":"000000000500091020140078000000000060000400019060209005000000080028040000790080450","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair"],"dailyEligible":true},
+    {"id":"classic_medium_0002","board":"000000006005000080000920004100008009084002060500070000060001042000060000300059007","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair"],"dailyEligible":true},
+    {"id":"classic_medium_0003","board":"021000000840500000000010096370081400000007000000020000000003047200070009000060035","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair"],"dailyEligible":true},
+    {"id":"classic_medium_0004","board":"095040700003000060000000950021008000007003640300907000000700200010000003004390000","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair","pointingPair"],"dailyEligible":true},
+    {"id":"classic_medium_0005","board":"004907610000000000050100007000860000010000400680000500005000700200030005700005031","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair","pointingPair"],"dailyEligible":true},
+    {"id":"classic_medium_0006","board":"809000000005102000300000100200070000000090507050006000000903006620700008900400010","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair"],"dailyEligible":true},
+    {"id":"classic_medium_0007","board":"050000006400060300002070040000200010800000005000004900000007651061009003000800009","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair"],"dailyEligible":true},
+    {"id":"classic_medium_0008","board":"900004006060000025403000000000906017080000002600031000300005900000103000000060080","difficulty":"medium","requiredTechniques":["nakedSingle","hiddenSingle","nakedPair"],"dailyEligible":true}
+  ]
+}

@@ -17,7 +17,7 @@ final class SudokuBoardWidget extends StatelessWidget {
 
   final BoardViewState view;
   final double cellSize;
-  final ValueChanged<CellRef> onCellTap;
+  final ValueChanged<CellRef>? onCellTap;
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +73,14 @@ final class SudokuBoardWidget extends StatelessWidget {
       rect: geometry.rectFor(cell),
       child: Semantics(
         label: parts.join(', '),
-        button: true,
+        button: onCellTap != null,
         selected: view.selectedCell == cell,
-        onTap: () => onCellTap(cell),
+        onTap: onCellTap == null ? null : () => onCellTap!(cell),
         child: GestureDetector(
           key: ValueKey('cell-${cell.index}'),
           behavior: HitTestBehavior.opaque,
           excludeFromSemantics: true,
-          onTap: () => onCellTap(cell),
+          onTap: onCellTap == null ? null : () => onCellTap!(cell),
           child: const SizedBox.expand(),
         ),
       ),

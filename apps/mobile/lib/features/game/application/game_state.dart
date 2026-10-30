@@ -46,6 +46,7 @@ final class GameState {
     required this.board,
     required Map<CellRef, CandidateMask> notes,
     required List<GameSnapshot> history,
+    this.dailyChallengeKey,
     this.selectedCell,
     this.notesMode = false,
     this.mistakes = 0,
@@ -53,15 +54,18 @@ final class GameState {
     this.isPaused = false,
     this.hintsRequested = 0,
     this.highestHintLevelUsed = 0,
+    Map<SudokuTechnique, int> techniqueHelp = const {},
     this.storageFailure,
     this.coach,
     this.hintUnavailable,
-  }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
+  }) : techniqueHelp = Map<SudokuTechnique, int>.unmodifiable(techniqueHelp),
+       notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
        history = List<GameSnapshot>.unmodifiable(history);
 
   final String gameId;
   final DateTime startedAt;
   final SudokuPuzzle puzzle;
+  final String? dailyChallengeKey;
   final SudokuBoard solution;
   final SudokuBoard board;
   final Map<CellRef, CandidateMask> notes;
@@ -73,6 +77,7 @@ final class GameState {
   final bool isPaused;
   final int hintsRequested;
   final int highestHintLevelUsed;
+  final Map<SudokuTechnique, int> techniqueHelp;
   final StorageFailure? storageFailure;
   final ActiveCoachSession? coach;
   final HintUnavailableReason? hintUnavailable;
@@ -130,6 +135,7 @@ final class GameState {
     bool? isPaused,
     int? hintsRequested,
     int? highestHintLevelUsed,
+    Map<SudokuTechnique, int>? techniqueHelp,
     StorageFailure? storageFailure,
     bool keepStorageFailure = true,
     ActiveCoachSession? coach,
@@ -140,6 +146,7 @@ final class GameState {
     gameId: gameId,
     startedAt: startedAt,
     puzzle: puzzle,
+    dailyChallengeKey: dailyChallengeKey,
     solution: solution,
     board: board ?? this.board,
     notes: notes ?? this.notes,
@@ -153,6 +160,7 @@ final class GameState {
     isPaused: isPaused ?? this.isPaused,
     hintsRequested: hintsRequested ?? this.hintsRequested,
     highestHintLevelUsed: highestHintLevelUsed ?? this.highestHintLevelUsed,
+    techniqueHelp: techniqueHelp ?? this.techniqueHelp,
     storageFailure: keepStorageFailure
         ? storageFailure ?? this.storageFailure
         : storageFailure,

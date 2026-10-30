@@ -29,6 +29,7 @@ StoredGame _active({String id = 'game-1'}) {
     isPaused: true,
     hintsRequested: 1,
     highestHintLevelUsed: 2,
+    techniqueHelp: const {SudokuTechnique.nakedPair: 2},
     correctEditableCells: 0,
     editableCells: givens.emptyCellCount,
   );
@@ -47,6 +48,7 @@ CompletedGame _completed(String id, DateTime at) => CompletedGame(
   mistakes: 2,
   hintsRequested: 1,
   highestHintLevelUsed: 2,
+  techniqueHelp: const {SudokuTechnique.nakedPair: 2},
 );
 
 void main() {
@@ -59,8 +61,8 @@ void main() {
   });
   tearDown(() async => database.close());
 
-  test('schema version 1 initializes both tables without data loss', () async {
-    expect(database.schemaVersion, 1);
+  test('schema version 3 initializes all tables without data loss', () async {
+    expect(database.schemaVersion, 3);
     await repository.saveActiveGame(_active());
     final tables = await database
         .customSelect(
@@ -69,7 +71,11 @@ void main() {
         .get();
     expect(
       tables.map((row) => row.read<String>('name')),
-      containsAll(['active_games', 'completed_games']),
+      containsAll([
+        'active_games',
+        'completed_games',
+        'technique_progress_entries',
+      ]),
     );
     expect(await repository.loadActiveGame(), isNotNull);
   });
@@ -89,6 +95,7 @@ void main() {
     expect(loaded.isPaused, isTrue);
     expect(loaded.hintsRequested, 1);
     expect(loaded.highestHintLevelUsed, 2);
+    expect(loaded.techniqueHelp, {SudokuTechnique.nakedPair: 2});
     expect((await repository.loadActiveSummary())!.progress, 0);
   });
 
@@ -113,6 +120,7 @@ void main() {
     expect(history, hasLength(1));
     expect(history.single.completedBoard, result.completedBoard);
     expect(history.single.mistakes, 2);
+    expect(history.single.techniqueHelp, {SudokuTechnique.nakedPair: 2});
   });
 
   test('recent history is newest first and respects limit', () async {

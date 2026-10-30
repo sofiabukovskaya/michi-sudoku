@@ -9,8 +9,14 @@ abstract final class CoachPresenter {
   static CoachHintUiModel present(
     Translations translations,
     ActiveCoachSession session,
+  ) => presentPlan(translations, session.plan, session.hintIndex);
+
+  static CoachHintUiModel presentPlan(
+    Translations translations,
+    CoachPlan plan,
+    int hintIndex,
   ) {
-    final hint = session.hint;
+    final hint = plan.hints[hintIndex];
     final unit = hint.focusUnits.firstOrNull;
     final unitLabel = unit == null ? '' : _unitLabel(translations, unit);
     final placement = hint.revealedPlacements.singleOrNull;
@@ -41,24 +47,24 @@ abstract final class CoachPresenter {
     };
     final isResult = hint.level == CoachHintLevel.result;
     return CoachHintUiModel(
-      stepLabel: translations.coach.step(step: session.hintIndex + 1),
-      stepIndex: session.hintIndex,
+      stepLabel: translations.coach.step(step: hintIndex + 1),
+      stepIndex: hintIndex,
       instruction: instruction,
       primaryActionLabel: isResult
           ? placement == null
                 ? translations.coach.close
                 : translations.coach.place(digit: placement.digit)
-          : session.hintIndex == 0
+          : hintIndex == 0
           ? translations.coach.show
           : translations.coach.more,
       secondaryActionLabel: isResult
           ? null
-          : session.hintIndex == 0
+          : hintIndex == 0
           ? translations.coach.kTry
           : translations.coach.see,
       techniqueLabel: isResult
           ? translations.coach.technique(
-              name: _techniqueName(translations, session.plan.technique),
+              name: _techniqueName(translations, plan.technique),
             )
           : null,
       placementDigit: placement?.digit,

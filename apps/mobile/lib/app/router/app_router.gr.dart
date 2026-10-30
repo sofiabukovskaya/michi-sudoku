@@ -31,6 +31,8 @@ class AuthRoute extends PageRouteInfo<void> {
 class GameRoute extends PageRouteInfo<GameRouteArgs> {
   GameRoute({
     SudokuPuzzle? puzzle,
+    PuzzleDefinition? definition,
+    String? dailyChallengeKey,
     GameCubit? cubit,
     GameRepository? repository,
     GameClock? clock,
@@ -41,6 +43,8 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
          GameRoute.name,
          args: GameRouteArgs(
            puzzle: puzzle,
+           definition: definition,
+           dailyChallengeKey: dailyChallengeKey,
            cubit: cubit,
            repository: repository,
            clock: clock,
@@ -60,6 +64,8 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
       );
       return GamePage(
         puzzle: args.puzzle,
+        definition: args.definition,
+        dailyChallengeKey: args.dailyChallengeKey,
         cubit: args.cubit,
         repository: args.repository,
         clock: args.clock,
@@ -73,6 +79,8 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
 class GameRouteArgs {
   const GameRouteArgs({
     this.puzzle,
+    this.definition,
+    this.dailyChallengeKey,
     this.cubit,
     this.repository,
     this.clock,
@@ -81,6 +89,10 @@ class GameRouteArgs {
   });
 
   final SudokuPuzzle? puzzle;
+
+  final PuzzleDefinition? definition;
+
+  final String? dailyChallengeKey;
 
   final GameCubit? cubit;
 
@@ -94,7 +106,7 @@ class GameRouteArgs {
 
   @override
   String toString() {
-    return 'GameRouteArgs{puzzle: $puzzle, cubit: $cubit, repository: $repository, clock: $clock, restore: $restore, key: $key}';
+    return 'GameRouteArgs{puzzle: $puzzle, definition: $definition, dailyChallengeKey: $dailyChallengeKey, cubit: $cubit, repository: $repository, clock: $clock, restore: $restore, key: $key}';
   }
 
   @override
@@ -102,6 +114,8 @@ class GameRouteArgs {
     if (identical(this, other)) return true;
     if (other is! GameRouteArgs) return false;
     return puzzle == other.puzzle &&
+        definition == other.definition &&
+        dailyChallengeKey == other.dailyChallengeKey &&
         cubit == other.cubit &&
         repository == other.repository &&
         clock == other.clock &&
@@ -112,6 +126,8 @@ class GameRouteArgs {
   @override
   int get hashCode =>
       puzzle.hashCode ^
+      definition.hashCode ^
+      dailyChallengeKey.hashCode ^
       cubit.hashCode ^
       repository.hashCode ^
       clock.hashCode ^
@@ -124,11 +140,18 @@ class GameRouteArgs {
 class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
   HomeRoute({
     GameRepository? repository,
+    PuzzleRepository? puzzleRepository,
+    GameClock? clock,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          HomeRoute.name,
-         args: HomeRouteArgs(repository: repository, key: key),
+         args: HomeRouteArgs(
+           repository: repository,
+           puzzleRepository: puzzleRepository,
+           clock: clock,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -140,48 +163,105 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
       final args = data.argsAs<HomeRouteArgs>(
         orElse: () => const HomeRouteArgs(),
       );
-      return HomePage(repository: args.repository, key: args.key);
+      return HomePage(
+        repository: args.repository,
+        puzzleRepository: args.puzzleRepository,
+        clock: args.clock,
+        key: args.key,
+      );
     },
   );
 }
 
 class HomeRouteArgs {
-  const HomeRouteArgs({this.repository, this.key});
+  const HomeRouteArgs({
+    this.repository,
+    this.puzzleRepository,
+    this.clock,
+    this.key,
+  });
 
   final GameRepository? repository;
+
+  final PuzzleRepository? puzzleRepository;
+
+  final GameClock? clock;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'HomeRouteArgs{repository: $repository, key: $key}';
+    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! HomeRouteArgs) return false;
-    return repository == other.repository && key == other.key;
+    return repository == other.repository &&
+        puzzleRepository == other.puzzleRepository &&
+        clock == other.clock &&
+        key == other.key;
   }
 
   @override
-  int get hashCode => repository.hashCode ^ key.hashCode;
+  int get hashCode =>
+      repository.hashCode ^
+      puzzleRepository.hashCode ^
+      clock.hashCode ^
+      key.hashCode;
 }
 
 /// generated route for
 /// [LearnPage]
-class LearnRoute extends PageRouteInfo<void> {
-  const LearnRoute({List<PageRouteInfo>? children})
-    : super(LearnRoute.name, initialChildren: children);
+class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
+  LearnRoute({
+    TechniqueProgressRepository? progressRepository,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         LearnRoute.name,
+         args: LearnRouteArgs(progressRepository: progressRepository, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'LearnRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LearnPage();
+      final args = data.argsAs<LearnRouteArgs>(
+        orElse: () => const LearnRouteArgs(),
+      );
+      return LearnPage(
+        progressRepository: args.progressRepository,
+        key: args.key,
+      );
     },
   );
+}
+
+class LearnRouteArgs {
+  const LearnRouteArgs({this.progressRepository, this.key});
+
+  final TechniqueProgressRepository? progressRepository;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LearnRouteArgs{progressRepository: $progressRepository, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LearnRouteArgs) return false;
+    return progressRepository == other.progressRepository && key == other.key;
+  }
+
+  @override
+  int get hashCode => progressRepository.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -214,6 +294,97 @@ class PlayerLevelRoute extends PageRouteInfo<void> {
       return const PlayerLevelPage();
     },
   );
+}
+
+/// generated route for
+/// [PracticePage]
+class PracticeRoute extends PageRouteInfo<PracticeRouteArgs> {
+  PracticeRoute({
+    required SudokuTechnique technique,
+    LocalPracticeCatalog? catalog,
+    TechniqueProgressRepository? progressRepository,
+    HumanSolver? humanSolver,
+    CoachEngine? coachEngine,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PracticeRoute.name,
+         args: PracticeRouteArgs(
+           technique: technique,
+           catalog: catalog,
+           progressRepository: progressRepository,
+           humanSolver: humanSolver,
+           coachEngine: coachEngine,
+           key: key,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'PracticeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<PracticeRouteArgs>();
+      return PracticePage(
+        technique: args.technique,
+        catalog: args.catalog,
+        progressRepository: args.progressRepository,
+        humanSolver: args.humanSolver,
+        coachEngine: args.coachEngine,
+        key: args.key,
+      );
+    },
+  );
+}
+
+class PracticeRouteArgs {
+  const PracticeRouteArgs({
+    required this.technique,
+    this.catalog,
+    this.progressRepository,
+    this.humanSolver,
+    this.coachEngine,
+    this.key,
+  });
+
+  final SudokuTechnique technique;
+
+  final LocalPracticeCatalog? catalog;
+
+  final TechniqueProgressRepository? progressRepository;
+
+  final HumanSolver? humanSolver;
+
+  final CoachEngine? coachEngine;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'PracticeRouteArgs{technique: $technique, catalog: $catalog, progressRepository: $progressRepository, humanSolver: $humanSolver, coachEngine: $coachEngine, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PracticeRouteArgs) return false;
+    return technique == other.technique &&
+        catalog == other.catalog &&
+        progressRepository == other.progressRepository &&
+        humanSolver == other.humanSolver &&
+        coachEngine == other.coachEngine &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode =>
+      technique.hashCode ^
+      catalog.hashCode ^
+      progressRepository.hashCode ^
+      humanSolver.hashCode ^
+      coachEngine.hashCode ^
+      key.hashCode;
 }
 
 /// generated route for
@@ -311,6 +482,97 @@ class SplashRouteArgs {
 
   @override
   int get hashCode => repository.hashCode ^ key.hashCode;
+}
+
+/// generated route for
+/// [TechniqueLessonPage]
+class TechniqueLessonRoute extends PageRouteInfo<TechniqueLessonRouteArgs> {
+  TechniqueLessonRoute({
+    required SudokuTechnique technique,
+    LocalPracticeCatalog? catalog,
+    TechniqueProgressRepository? progressRepository,
+    HumanSolver? humanSolver,
+    CoachEngine? coachEngine,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         TechniqueLessonRoute.name,
+         args: TechniqueLessonRouteArgs(
+           technique: technique,
+           catalog: catalog,
+           progressRepository: progressRepository,
+           humanSolver: humanSolver,
+           coachEngine: coachEngine,
+           key: key,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'TechniqueLessonRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<TechniqueLessonRouteArgs>();
+      return TechniqueLessonPage(
+        technique: args.technique,
+        catalog: args.catalog,
+        progressRepository: args.progressRepository,
+        humanSolver: args.humanSolver,
+        coachEngine: args.coachEngine,
+        key: args.key,
+      );
+    },
+  );
+}
+
+class TechniqueLessonRouteArgs {
+  const TechniqueLessonRouteArgs({
+    required this.technique,
+    this.catalog,
+    this.progressRepository,
+    this.humanSolver,
+    this.coachEngine,
+    this.key,
+  });
+
+  final SudokuTechnique technique;
+
+  final LocalPracticeCatalog? catalog;
+
+  final TechniqueProgressRepository? progressRepository;
+
+  final HumanSolver? humanSolver;
+
+  final CoachEngine? coachEngine;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'TechniqueLessonRouteArgs{technique: $technique, catalog: $catalog, progressRepository: $progressRepository, humanSolver: $humanSolver, coachEngine: $coachEngine, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! TechniqueLessonRouteArgs) return false;
+    return technique == other.technique &&
+        catalog == other.catalog &&
+        progressRepository == other.progressRepository &&
+        humanSolver == other.humanSolver &&
+        coachEngine == other.coachEngine &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode =>
+      technique.hashCode ^
+      catalog.hashCode ^
+      progressRepository.hashCode ^
+      humanSolver.hashCode ^
+      coachEngine.hashCode ^
+      key.hashCode;
 }
 
 /// generated route for

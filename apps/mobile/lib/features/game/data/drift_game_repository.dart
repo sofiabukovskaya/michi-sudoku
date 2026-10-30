@@ -36,6 +36,7 @@ final class DriftGameRepository implements GameRepository {
       final game = StoredGame(
         gameId: row.gameId,
         puzzleId: row.puzzleId,
+        dailyChallengeKey: row.dailyChallengeKey,
         initialBoard: GameCodec.parseBoard(row.initialBoard),
         currentBoard: GameCodec.parseBoard(row.currentBoard),
         notes: GameCodec.parseNotes(
@@ -62,6 +63,7 @@ final class DriftGameRepository implements GameRepository {
         isPaused: row.isPaused,
         hintsRequested: row.hintsRequested,
         highestHintLevelUsed: row.highestHintLevelUsed,
+        techniqueHelp: GameCodec.parseTechniqueHelp(row.techniqueHelpJson),
         correctEditableCells: row.correctEditableCells,
         editableCells: row.editableCells,
       );
@@ -86,6 +88,7 @@ final class DriftGameRepository implements GameRepository {
     return ActiveGameSummary(
       gameId: game.gameId,
       puzzleId: game.puzzleId,
+      dailyChallengeKey: game.dailyChallengeKey,
       correctEditableCells: game.correctEditableCells,
       editableCells: game.editableCells,
       elapsed: game.elapsedBeforeRun,
@@ -103,6 +106,7 @@ final class DriftGameRepository implements GameRepository {
             slot: const Value(1),
             gameId: game.gameId,
             puzzleId: game.puzzleId,
+            dailyChallengeKey: Value(game.dailyChallengeKey),
             initialBoard: GameCodec.board(game.initialBoard),
             currentBoard: GameCodec.board(game.currentBoard),
             notesJson: GameCodec.notes(game.notes),
@@ -115,6 +119,9 @@ final class DriftGameRepository implements GameRepository {
             isPaused: game.isPaused,
             hintsRequested: game.hintsRequested,
             highestHintLevelUsed: game.highestHintLevelUsed,
+            techniqueHelpJson: Value(
+              GameCodec.techniqueHelp(game.techniqueHelp),
+            ),
             correctEditableCells: game.correctEditableCells,
             editableCells: game.editableCells,
           ),
@@ -137,6 +144,7 @@ final class DriftGameRepository implements GameRepository {
             CompletedGamesCompanion.insert(
               gameId: game.gameId,
               puzzleId: game.puzzleId,
+              dailyChallengeKey: Value(game.dailyChallengeKey),
               initialBoard: GameCodec.board(game.initialBoard),
               completedBoard: GameCodec.board(game.completedBoard),
               startedAtMs: game.startedAt.millisecondsSinceEpoch,
@@ -145,6 +153,9 @@ final class DriftGameRepository implements GameRepository {
               mistakes: game.mistakes,
               hintsRequested: game.hintsRequested,
               highestHintLevelUsed: game.highestHintLevelUsed,
+              techniqueHelpJson: Value(
+                GameCodec.techniqueHelp(game.techniqueHelp),
+              ),
             ),
             mode: InsertMode.insertOrIgnore,
           );
@@ -171,6 +182,7 @@ final class DriftGameRepository implements GameRepository {
         CompletedGame(
           gameId: row.gameId,
           puzzleId: row.puzzleId,
+          dailyChallengeKey: row.dailyChallengeKey,
           initialBoard: GameCodec.parseBoard(row.initialBoard),
           completedBoard: GameCodec.parseBoard(row.completedBoard),
           startedAt: DateTime.fromMillisecondsSinceEpoch(
@@ -185,7 +197,37 @@ final class DriftGameRepository implements GameRepository {
           mistakes: row.mistakes,
           hintsRequested: row.hintsRequested,
           highestHintLevelUsed: row.highestHintLevelUsed,
+          techniqueHelp: GameCodec.parseTechniqueHelp(row.techniqueHelpJson),
         ),
     ];
+  }
+
+  @override
+  Future<List<String>> recentCompletedPuzzleIds({int limit = 20}) async {
+    RangeError.checkValueInInterval(limit, 1, 1000, 'limit');
+    await _writeTail;
+    final query = database.selectOnly(database.completedGames)
+      ..addColumns([database.completedGames.puzzleId])
+      ..orderBy([
+        OrderingTerm.desc(database.completedGames.completedAtMs),
+        OrderingTerm.desc(database.completedGames.gameId),
+      ])
+      ..limit(limit);
+    final rows = await query.get();
+    return [
+      for (final row in rows) row.read(database.completedGames.puzzleId)!,
+    ];
+  }
+
+  @override
+  Future<bool> isDailyCompleted(String challengeKey) async {
+    if (challengeKey.isEmpty) throw ArgumentError.value(challengeKey);
+    await _writeTail;
+    final row =
+        await (database.select(database.completedGames)
+              ..where((table) => table.dailyChallengeKey.equals(challengeKey))
+              ..limit(1))
+            .getSingleOrNull();
+    return row != null;
   }
 }

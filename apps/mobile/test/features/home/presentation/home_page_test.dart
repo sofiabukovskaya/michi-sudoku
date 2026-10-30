@@ -4,11 +4,57 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:michi_mobile/app/app.dart';
 import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/theme/app_theme.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/home/presentation/home_page.dart';
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart';
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
+import 'package:michi_mobile/features/puzzle/domain/daily_puzzle.dart';
+import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
+import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
+import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
+import 'package:sudoku_engine/sudoku_engine.dart';
+
+final class _MutableClock implements GameClock {
+  DateTime wall = DateTime(2026, 10, 26, 12);
+
+  @override
+  DateTime now() => wall;
+
+  @override
+  Duration monotonic() => Duration.zero;
+}
+
+final class _DailyTestPuzzles implements PuzzleRepository {
+  final PuzzleDefinition definition = PuzzleDefinition(
+    id: 'date-test',
+    initialBoard: DemoPuzzle.standard.givens,
+    difficulty: PuzzleDifficulty.easy,
+    requiredTechniques: const {SudokuTechnique.nakedSingle},
+    contentVersion: 1,
+    dailyEligible: true,
+  );
+
+  @override
+  Future<DailyPuzzle> getDailyPuzzle(LocalDate date) async => DailyPuzzle(
+    date: date,
+    challengeKey: '$date|catalog-v1',
+    puzzle: definition,
+  );
+
+  @override
+  Future<PuzzleDefinition> getPuzzle(String id) async => definition;
+
+  @override
+  Future<PuzzleDefinition> selectPuzzle({
+    required PuzzleDifficulty difficulty,
+  }) async => definition;
+}
 
 void main() {
   setUpAll(bootstrap);
@@ -23,7 +69,17 @@ void main() {
     final router = AppRouter();
     addTearDown(router.dispose);
     await tester.pumpWidget(MichiApp(router: router));
-    router.push(HomeRoute(repository: repository)).ignore();
+    router
+        .push(
+          HomeRoute(
+            repository: repository,
+            puzzleRepository: LocalPuzzleRepository(
+              LocalPuzzleCatalogLoader(),
+              repository,
+            ),
+          ),
+        )
+        .ignore();
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('continue-game')), findsNothing);
 
@@ -55,9 +111,42 @@ void main() {
 
     await tester.tap(find.text('Play'));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('difficulty-easy')));
+    await tester.pumpAndSettle();
     expect(find.textContaining('replace'), findsWidgets);
     await tester.tap(find.text('Keep playing'));
     await tester.pumpAndSettle();
     expect((await repository.loadActiveGame())!.gameId, 'saved');
+  });
+
+  testWidgets('Home refreshes the local Daily after midnight on resume', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final database = GameDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    final games = DriftGameRepository(database);
+    final puzzles = _DailyTestPuzzles();
+    final clock = _MutableClock();
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          theme: AppTheme.light,
+          home: HomePage(
+            repository: games,
+            puzzleRepository: puzzles,
+            clock: clock,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('2026-10-26'), findsOneWidget);
+
+    clock.wall = DateTime(2026, 10, 27, 12);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle();
+    expect(find.textContaining('2026-10-27'), findsOneWidget);
+    expect(find.textContaining('2026-10-26'), findsNothing);
   });
 }

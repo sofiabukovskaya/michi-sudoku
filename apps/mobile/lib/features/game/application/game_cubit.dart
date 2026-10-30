@@ -16,6 +16,7 @@ final class GameCubit extends Cubit<GameState> {
     required ExactSolver exactSolver,
     required HumanSolver humanSolver,
     required CoachEngine coachEngine,
+    String? dailyChallengeKey,
     GameRepository? repository,
     GameClock? clock,
   }) {
@@ -28,6 +29,7 @@ final class GameCubit extends Cubit<GameState> {
             '${Random.secure().nextInt(0x7fffffff)}',
         startedAt: now,
         puzzle: puzzle,
+        dailyChallengeKey: dailyChallengeKey,
         solution: _solve(puzzle, exactSolver),
         board: puzzle.givens,
         notes: const {},
@@ -66,6 +68,7 @@ final class GameCubit extends Cubit<GameState> {
         gameId: stored.gameId,
         startedAt: stored.startedAt,
         puzzle: puzzle,
+        dailyChallengeKey: stored.dailyChallengeKey,
         solution: solution,
         board: stored.currentBoard,
         notes: stored.notes,
@@ -77,6 +80,7 @@ final class GameCubit extends Cubit<GameState> {
         isPaused: true,
         hintsRequested: stored.hintsRequested,
         highestHintLevelUsed: stored.highestHintLevelUsed,
+        techniqueHelp: stored.techniqueHelp,
       ),
       timer: GameTimer.restore(
         clock: gameClock,
@@ -284,11 +288,18 @@ final class GameCubit extends Cubit<GameState> {
       return;
     }
     final plan = _coachEngine.createPlan(deduction);
+    final help = Map<SudokuTechnique, int>.of(state.techniqueHelp)
+      ..update(
+        deduction.technique,
+        (level) => level < 1 ? 1 : level,
+        ifAbsent: () => 1,
+      );
     emit(
       state.copyWith(
         coach: ActiveCoachSession(plan: plan, hintIndex: 0),
         keepHintUnavailable: false,
         hintsRequested: state.hintsRequested + 1,
+        techniqueHelp: help,
         highestHintLevelUsed: state.highestHintLevelUsed < 1
             ? 1
             : state.highestHintLevelUsed,
@@ -302,9 +313,17 @@ final class GameCubit extends Cubit<GameState> {
     if (state.isPaused || current == null) return;
     final next = current.next();
     if (next.hintIndex == current.hintIndex) return;
+    final level = next.hintIndex + 1;
+    final help = Map<SudokuTechnique, int>.of(state.techniqueHelp)
+      ..update(
+        current.plan.technique,
+        (previous) => previous < level ? level : previous,
+        ifAbsent: () => level,
+      );
     emit(
       state.copyWith(
         coach: next,
+        techniqueHelp: help,
         highestHintLevelUsed: next.hintIndex + 1 > state.highestHintLevelUsed
             ? next.hintIndex + 1
             : state.highestHintLevelUsed,
@@ -395,6 +414,7 @@ final class GameCubit extends Cubit<GameState> {
     final game = StoredGame(
       gameId: snapshot.gameId,
       puzzleId: snapshot.puzzle.id,
+      dailyChallengeKey: snapshot.dailyChallengeKey,
       initialBoard: snapshot.puzzle.givens,
       currentBoard: snapshot.board,
       notes: snapshot.notes,
@@ -410,6 +430,7 @@ final class GameCubit extends Cubit<GameState> {
       isPaused: timer.isPaused,
       hintsRequested: snapshot.hintsRequested,
       highestHintLevelUsed: snapshot.highestHintLevelUsed,
+      techniqueHelp: snapshot.techniqueHelp,
       correctEditableCells: snapshot.correctEditableCells,
       editableCells: snapshot.editableCells,
     );
@@ -423,6 +444,7 @@ final class GameCubit extends Cubit<GameState> {
     final completed = CompletedGame(
       gameId: snapshot.gameId,
       puzzleId: snapshot.puzzle.id,
+      dailyChallengeKey: snapshot.dailyChallengeKey,
       initialBoard: snapshot.puzzle.givens,
       completedBoard: snapshot.board,
       startedAt: snapshot.startedAt,
@@ -431,6 +453,7 @@ final class GameCubit extends Cubit<GameState> {
       mistakes: snapshot.mistakes,
       hintsRequested: snapshot.hintsRequested,
       highestHintLevelUsed: snapshot.highestHintLevelUsed,
+      techniqueHelp: snapshot.techniqueHelp,
     );
     _enqueue(() => repository.completeGame(completed));
   }

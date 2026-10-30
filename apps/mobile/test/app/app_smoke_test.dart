@@ -12,6 +12,10 @@ import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/home/presentation/home_page.dart';
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart';
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
+import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 
 final class _StartupRepository implements GameRepository {
   StoredGame? active;
@@ -48,6 +52,12 @@ final class _StartupRepository implements GameRepository {
   Future<List<CompletedGame>> loadRecentCompletedGames({
     int limit = 20,
   }) async => const [];
+
+  @override
+  Future<List<String>> recentCompletedPuzzleIds({int limit = 20}) async => [];
+
+  @override
+  Future<bool> isDailyCompleted(String challengeKey) async => false;
 }
 
 void main() {
@@ -58,6 +68,10 @@ void main() {
     startupRepository = _StartupRepository();
     await getIt.unregister<GameRepository>();
     getIt.registerSingleton<GameRepository>(startupRepository);
+    await getIt.unregister<PuzzleRepository>();
+    getIt.registerSingleton<PuzzleRepository>(
+      LocalPuzzleRepository(LocalPuzzleCatalogLoader(), startupRepository),
+    );
   });
 
   testWidgets('app boots and navigates from splash to welcome', (
@@ -84,7 +98,7 @@ void main() {
     LocaleSettings.setLocaleSync(AppLocale.uk);
   });
 
-  testWidgets('home route opens the playable demo game', (tester) async {
+  testWidgets('home route opens a playable catalog game', (tester) async {
     LocaleSettings.setLocaleSync(AppLocale.en);
     final database = GameDatabase(NativeDatabase.memory());
     addTearDown(database.close);
@@ -95,6 +109,8 @@ void main() {
     unawaited(router.push(HomeRoute(repository: repository)));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Play'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('difficulty-easy')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('cell-0')), findsOneWidget);
     expect(find.byKey(const ValueKey('hint-control')), findsOneWidget);
@@ -128,6 +144,14 @@ void main() {
     addTearDown(router.dispose);
     await tester.pumpWidget(MichiApp(router: router));
     await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pumpAndSettle();
+    expect(find.text('Your path through Sudoku'), findsOneWidget);
+    expect(
+      tester.widget<HomePage>(find.byType(HomePage)).repository,
+      same(startupRepository),
+    );
+    expect(await startupRepository.loadActiveSummary(), isNotNull);
     expect(find.byKey(const ValueKey('continue-game')), findsOneWidget);
     expect(find.text('Your path through Sudoku.'), findsNothing);
     LocaleSettings.setLocaleSync(AppLocale.uk);

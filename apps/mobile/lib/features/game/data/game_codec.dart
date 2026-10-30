@@ -50,6 +50,35 @@ abstract final class GameCodec {
       {'board': board(snapshot.board), 'notes': notes(snapshot.notes)},
   ]);
 
+  static String techniqueHelp(Map<SudokuTechnique, int> value) {
+    for (final level in value.values) {
+      if (level < 1 || level > 4) {
+        throw const FormatException('Invalid Coach level.');
+      }
+    }
+    return jsonEncode({
+      for (final technique in SudokuTechnique.values)
+        if (value.containsKey(technique)) technique.name: value[technique],
+    });
+  }
+
+  static Map<SudokuTechnique, int> parseTechniqueHelp(String value) {
+    final decoded = jsonDecode(value);
+    if (decoded is! Map<String, dynamic>) {
+      throw const FormatException('Invalid technique help record.');
+    }
+    final result = <SudokuTechnique, int>{};
+    for (final entry in decoded.entries) {
+      final technique = SudokuTechnique.values.byName(entry.key);
+      final level = entry.value;
+      if (level is! int || level < 1 || level > 4) {
+        throw const FormatException('Invalid Coach level.');
+      }
+      result[technique] = level;
+    }
+    return Map<SudokuTechnique, int>.unmodifiable(result);
+  }
+
   static List<StoredGameSnapshot> parseHistory(String value) {
     final decoded = jsonDecode(value);
     if (decoded is! List<dynamic> || decoded.length > 100) {
@@ -91,6 +120,7 @@ abstract final class GameCodec {
       _checkGivens(game.initialBoard, snapshot.board);
     }
     parseNotes(notes(game.notes), game.currentBoard);
+    techniqueHelp(game.techniqueHelp);
   }
 
   static void _checkGivens(SudokuBoard givens, SudokuBoard board) {

@@ -128,7 +128,7 @@ class _Translations$home$en extends Translations$home$uk {
 	// Translations
 	@override String get title => 'Your path through Sudoku';
 	@override String get game => 'Play';
-	@override String get continueGame => 'Continue: Medium';
+	@override String get continueGame => 'Continue game';
 	@override String continueDetails({required Object date, required Object progress, required Object time}) => 'Started ${date} · ${progress}% · ${time}';
 	@override String get replaceTitle => 'Start a new puzzle?';
 	@override String get replaceBody => 'Your unfinished game will be replaced.';
@@ -140,6 +140,14 @@ class _Translations$home$en extends Translations$home$uk {
 	@override String get progress => 'Progress';
 	@override String get profile => 'Profile';
 	@override String get scanner => 'Scanner';
+	@override String get chooseDifficulty => 'Choose a difficulty';
+	@override String get easy => 'Easy';
+	@override String get medium => 'Medium';
+	@override String get dailyTitle => 'Sudoku of the Day';
+	@override String get dailyStart => 'Start today’s Sudoku';
+	@override String get dailyContinue => 'Continue today’s Sudoku';
+	@override String get dailyCompleted => 'Completed today';
+	@override String get contentUnavailable => 'Puzzle content is unavailable. Please try again.';
 }
 
 // Path: game
@@ -176,6 +184,8 @@ class _Translations$game$en extends Translations$game$uk {
 	@override String get saveFailed => 'Your game could not be saved.';
 	@override String get retrySave => 'Retry';
 	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} mistakes · ${hints} hints';
+	@override String get standardTitle => 'Sudoku';
+	@override String get dailyTitle => 'Daily Sudoku';
 }
 
 // Path: learn
@@ -185,7 +195,45 @@ class _Translations$learn$en extends Translations$learn$uk {
 	final TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Technique lessons are coming later.';
+	@override String get title => 'Learn';
+	@override String get intro => 'A clear next step, one technique at a time.';
+	@override String get newLabel => 'New';
+	@override String get learningLabel => 'Learning';
+	@override String get practicingLabel => 'Practicing';
+	@override String get masteredLabel => 'Mastered';
+	@override String get planTitle => 'Lesson plan';
+	@override String get lessonStart => 'Start lesson';
+	@override String get next => 'Next';
+	@override String get practiceStart => 'Start practice';
+	@override String get concept => 'Concept';
+	@override String get lookFor => 'Look for';
+	@override String get reasoning => 'Why it works';
+	@override String get example => 'Example';
+	@override String get tryIt => 'Try it';
+	@override String exercise({required Object current, required Object total}) => 'Exercise ${current} of ${total}';
+	@override String get placementPrompt => 'Select a cell and a digit.';
+	@override String get eliminationPrompt => 'Select a cell, then mark every candidate to remove.';
+	@override String get checkAnswer => 'Check answer';
+	@override String get correctTitle => 'Well spotted';
+	@override String get incorrectTitle => 'Not quite';
+	@override String get tryAgain => 'Try again';
+	@override String get askMichi => 'Ask MICHI';
+	@override String get nextScenario => 'Next exercise';
+	@override String get sessionSummary => 'Practice complete';
+	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} correct · ${attempts} attempts';
+	@override String hintsUsed({required Object count}) => '${count} with MICHI';
+	@override String get done => 'Done';
+	@override String get loading => 'Preparing your lesson…';
+	@override String get unavailable => 'Learning content is unavailable. Please try again.';
+	@override String get noScenarios => 'No practice exercises are available yet.';
+	@override String get saveFailed => 'Progress could not be saved. Try again.';
+	@override String get selectedForElimination => 'Selected for removal';
+	@override String get requiredTechniques => 'Techniques in this puzzle';
+	@override String get helpedTechniques => 'MICHI helped with';
+	@override String get noHints => 'No hints used';
+	@override String get practiceTitle => 'Practice';
+	@override String get continueLesson => 'Continue lesson';
+	@override late final _Translations$learn$lessons$en lessons = _Translations$learn$lessons$en._(_root);
 }
 
 // Path: progress
@@ -260,6 +308,79 @@ class _Translations$coach$en extends Translations$coach$uk {
 	@override String get stuckBody => 'MICHI cannot explain the next step with the techniques currently available.';
 }
 
+// Path: learn.lessons
+class _Translations$learn$lessons$en extends Translations$learn$lessons$uk {
+	_Translations$learn$lessons$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override late final _Translations$learn$lessons$nakedSingle$en nakedSingle = _Translations$learn$lessons$nakedSingle$en._(_root);
+	@override late final _Translations$learn$lessons$hiddenSingle$en hiddenSingle = _Translations$learn$lessons$hiddenSingle$en._(_root);
+	@override late final _Translations$learn$lessons$nakedPair$en nakedPair = _Translations$learn$lessons$nakedPair$en._(_root);
+	@override late final _Translations$learn$lessons$pointingPair$en pointingPair = _Translations$learn$lessons$pointingPair$en._(_root);
+}
+
+// Path: learn.lessons.nakedSingle
+class _Translations$learn$lessons$nakedSingle$en extends Translations$learn$lessons$nakedSingle$uk {
+	_Translations$learn$lessons$nakedSingle$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'One empty cell has just one possible digit.';
+	@override String get concept => 'Candidates are the digits that can still fit in an empty cell.';
+	@override String get lookFor => 'Find a cell where the row, column and box rule out every digit but one.';
+	@override String get reasoning => 'Only one candidate remains, so that digit must go in this cell.';
+	@override String get example => 'The highlighted cell has one legal candidate. Notice what its peers exclude.';
+	@override String get tryIt => 'Choose that cell and place its remaining digit.';
+}
+
+// Path: learn.lessons.hiddenSingle
+class _Translations$learn$lessons$hiddenSingle$en extends Translations$learn$lessons$hiddenSingle$uk {
+	_Translations$learn$lessons$hiddenSingle$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'A digit has only one possible position in a row, column or box.';
+	@override String get concept => 'Look at one digit across a unit, rather than all digits in one cell.';
+	@override String get lookFor => 'Find the only empty position where that digit is still allowed.';
+	@override String get reasoning => 'Other cells may have several candidates, but this digit has just one home in the unit.';
+	@override String get example => 'The highlighted unit leaves one position for the target digit.';
+	@override String get tryIt => 'Choose the unique position and place that digit.';
+}
+
+// Path: learn.lessons.nakedPair
+class _Translations$learn$lessons$nakedPair$en extends Translations$learn$lessons$nakedPair$uk {
+	_Translations$learn$lessons$nakedPair$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Two cells in one unit have the same pair of candidates.';
+	@override String get concept => 'A pair reserves its two digits for those two cells.';
+	@override String get lookFor => 'Find two cells in the same row, column or box with exactly the same two candidates.';
+	@override String get reasoning => 'Those digits cannot appear elsewhere in that unit, so eliminate them there.';
+	@override String get example => 'The highlighted pair removes candidates from other cells in its unit.';
+	@override String get tryIt => 'Mark every candidate the pair eliminates. No digit is placed yet.';
+}
+
+// Path: learn.lessons.pointingPair
+class _Translations$learn$lessons$pointingPair$en extends Translations$learn$lessons$pointingPair$uk {
+	_Translations$learn$lessons$pointingPair$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Two candidate positions in a box align on one row or column.';
+	@override String get concept => 'A box can confine a digit to one line.';
+	@override String get lookFor => 'Find exactly two positions for a digit inside a box on the same row or column.';
+	@override String get reasoning => 'The digit must stay in that box, so remove it elsewhere on the shared line.';
+	@override String get example => 'Follow the highlighted line outside the box to see the eliminations.';
+	@override String get tryIt => 'Mark every candidate removed outside the box.';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -281,7 +402,7 @@ extension on TranslationsEn {
 			'auth.unavailable' => 'Progress sync is coming later.',
 			'home.title' => 'Your path through Sudoku',
 			'home.game' => 'Play',
-			'home.continueGame' => 'Continue: Medium',
+			'home.continueGame' => 'Continue game',
 			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Started ${date} · ${progress}% · ${time}',
 			'home.replaceTitle' => 'Start a new puzzle?',
 			'home.replaceBody' => 'Your unfinished game will be replaced.',
@@ -293,6 +414,14 @@ extension on TranslationsEn {
 			'home.progress' => 'Progress',
 			'home.profile' => 'Profile',
 			'home.scanner' => 'Scanner',
+			'home.chooseDifficulty' => 'Choose a difficulty',
+			'home.easy' => 'Easy',
+			'home.medium' => 'Medium',
+			'home.dailyTitle' => 'Sudoku of the Day',
+			'home.dailyStart' => 'Start today’s Sudoku',
+			'home.dailyContinue' => 'Continue today’s Sudoku',
+			'home.dailyCompleted' => 'Completed today',
+			'home.contentUnavailable' => 'Puzzle content is unavailable. Please try again.',
 			'game.title' => 'Daily Sudoku · Medium',
 			'game.undo' => 'Undo',
 			'game.erase' => 'Erase',
@@ -320,7 +449,70 @@ extension on TranslationsEn {
 			'game.saveFailed' => 'Your game could not be saved.',
 			'game.retrySave' => 'Retry',
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} mistakes · ${hints} hints',
-			'learn.unavailable' => 'Technique lessons are coming later.',
+			'game.standardTitle' => 'Sudoku',
+			'game.dailyTitle' => 'Daily Sudoku',
+			'learn.title' => 'Learn',
+			'learn.intro' => 'A clear next step, one technique at a time.',
+			'learn.newLabel' => 'New',
+			'learn.learningLabel' => 'Learning',
+			'learn.practicingLabel' => 'Practicing',
+			'learn.masteredLabel' => 'Mastered',
+			'learn.planTitle' => 'Lesson plan',
+			'learn.lessonStart' => 'Start lesson',
+			'learn.next' => 'Next',
+			'learn.practiceStart' => 'Start practice',
+			'learn.concept' => 'Concept',
+			'learn.lookFor' => 'Look for',
+			'learn.reasoning' => 'Why it works',
+			'learn.example' => 'Example',
+			'learn.tryIt' => 'Try it',
+			'learn.exercise' => ({required Object current, required Object total}) => 'Exercise ${current} of ${total}',
+			'learn.placementPrompt' => 'Select a cell and a digit.',
+			'learn.eliminationPrompt' => 'Select a cell, then mark every candidate to remove.',
+			'learn.checkAnswer' => 'Check answer',
+			'learn.correctTitle' => 'Well spotted',
+			'learn.incorrectTitle' => 'Not quite',
+			'learn.tryAgain' => 'Try again',
+			'learn.askMichi' => 'Ask MICHI',
+			'learn.nextScenario' => 'Next exercise',
+			'learn.sessionSummary' => 'Practice complete',
+			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} correct · ${attempts} attempts',
+			'learn.hintsUsed' => ({required Object count}) => '${count} with MICHI',
+			'learn.done' => 'Done',
+			'learn.loading' => 'Preparing your lesson…',
+			'learn.unavailable' => 'Learning content is unavailable. Please try again.',
+			'learn.noScenarios' => 'No practice exercises are available yet.',
+			'learn.saveFailed' => 'Progress could not be saved. Try again.',
+			'learn.selectedForElimination' => 'Selected for removal',
+			'learn.requiredTechniques' => 'Techniques in this puzzle',
+			'learn.helpedTechniques' => 'MICHI helped with',
+			'learn.noHints' => 'No hints used',
+			'learn.practiceTitle' => 'Practice',
+			'learn.continueLesson' => 'Continue lesson',
+			'learn.lessons.nakedSingle.description' => 'One empty cell has just one possible digit.',
+			'learn.lessons.nakedSingle.concept' => 'Candidates are the digits that can still fit in an empty cell.',
+			'learn.lessons.nakedSingle.lookFor' => 'Find a cell where the row, column and box rule out every digit but one.',
+			'learn.lessons.nakedSingle.reasoning' => 'Only one candidate remains, so that digit must go in this cell.',
+			'learn.lessons.nakedSingle.example' => 'The highlighted cell has one legal candidate. Notice what its peers exclude.',
+			'learn.lessons.nakedSingle.tryIt' => 'Choose that cell and place its remaining digit.',
+			'learn.lessons.hiddenSingle.description' => 'A digit has only one possible position in a row, column or box.',
+			'learn.lessons.hiddenSingle.concept' => 'Look at one digit across a unit, rather than all digits in one cell.',
+			'learn.lessons.hiddenSingle.lookFor' => 'Find the only empty position where that digit is still allowed.',
+			'learn.lessons.hiddenSingle.reasoning' => 'Other cells may have several candidates, but this digit has just one home in the unit.',
+			'learn.lessons.hiddenSingle.example' => 'The highlighted unit leaves one position for the target digit.',
+			'learn.lessons.hiddenSingle.tryIt' => 'Choose the unique position and place that digit.',
+			'learn.lessons.nakedPair.description' => 'Two cells in one unit have the same pair of candidates.',
+			'learn.lessons.nakedPair.concept' => 'A pair reserves its two digits for those two cells.',
+			'learn.lessons.nakedPair.lookFor' => 'Find two cells in the same row, column or box with exactly the same two candidates.',
+			'learn.lessons.nakedPair.reasoning' => 'Those digits cannot appear elsewhere in that unit, so eliminate them there.',
+			'learn.lessons.nakedPair.example' => 'The highlighted pair removes candidates from other cells in its unit.',
+			'learn.lessons.nakedPair.tryIt' => 'Mark every candidate the pair eliminates. No digit is placed yet.',
+			'learn.lessons.pointingPair.description' => 'Two candidate positions in a box align on one row or column.',
+			'learn.lessons.pointingPair.concept' => 'A box can confine a digit to one line.',
+			'learn.lessons.pointingPair.lookFor' => 'Find exactly two positions for a digit inside a box on the same row or column.',
+			'learn.lessons.pointingPair.reasoning' => 'The digit must stay in that box, so remove it elsewhere on the shared line.',
+			'learn.lessons.pointingPair.example' => 'Follow the highlighted line outside the box to see the eliminations.',
+			'learn.lessons.pointingPair.tryIt' => 'Mark every candidate removed outside the box.',
 			'progress.unavailable' => 'Technique mastery is coming later.',
 			'profile.unavailable' => 'Profile settings are coming later.',
 			'scanner.unavailable' => 'Camera import will follow the core game.',

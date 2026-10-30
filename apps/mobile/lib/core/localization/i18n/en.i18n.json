@@ -25,7 +25,7 @@
   "home": {
     "title": "Your path through Sudoku",
     "game": "Play",
-    "continueGame": "Continue: Medium",
+    "continueGame": "Continue game",
     "continueDetails": "Started $date · $progress% · $time",
     "replaceTitle": "Start a new puzzle?",
     "replaceBody": "Your unfinished game will be replaced.",
@@ -36,7 +36,15 @@
     "learn": "Learn",
     "progress": "Progress",
     "profile": "Profile",
-    "scanner": "Scanner"
+    "scanner": "Scanner",
+    "chooseDifficulty": "Choose a difficulty",
+    "easy": "Easy",
+    "medium": "Medium",
+    "dailyTitle": "Sudoku of the Day",
+    "dailyStart": "Start today’s Sudoku",
+    "dailyContinue": "Continue today’s Sudoku",
+    "dailyCompleted": "Completed today",
+    "contentUnavailable": "Puzzle content is unavailable. Please try again."
   },
   "game": {
     "title": "Daily Sudoku · Medium",
@@ -65,10 +73,83 @@
     "restoreUnavailable": "This game could not be restored.",
     "saveFailed": "Your game could not be saved.",
     "retrySave": "Retry",
-    "completionStats": "$mistakes mistakes · $hints hints"
+    "completionStats": "$mistakes mistakes · $hints hints",
+    "standardTitle": "Sudoku",
+    "dailyTitle": "Daily Sudoku"
   },
   "learn": {
-    "unavailable": "Technique lessons are coming later."
+    "title": "Learn",
+    "intro": "A clear next step, one technique at a time.",
+    "newLabel": "New",
+    "learningLabel": "Learning",
+    "practicingLabel": "Practicing",
+    "masteredLabel": "Mastered",
+    "planTitle": "Lesson plan",
+    "lessonStart": "Start lesson",
+    "next": "Next",
+    "practiceStart": "Start practice",
+    "concept": "Concept",
+    "lookFor": "Look for",
+    "reasoning": "Why it works",
+    "example": "Example",
+    "tryIt": "Try it",
+    "exercise": "Exercise $current of $total",
+    "placementPrompt": "Select a cell and a digit.",
+    "eliminationPrompt": "Select a cell, then mark every candidate to remove.",
+    "checkAnswer": "Check answer",
+    "correctTitle": "Well spotted",
+    "incorrectTitle": "Not quite",
+    "tryAgain": "Try again",
+    "askMichi": "Ask MICHI",
+    "nextScenario": "Next exercise",
+    "sessionSummary": "Practice complete",
+    "summaryStats": "$correct correct · $attempts attempts",
+    "hintsUsed": "$count with MICHI",
+    "done": "Done",
+    "loading": "Preparing your lesson…",
+    "unavailable": "Learning content is unavailable. Please try again.",
+    "noScenarios": "No practice exercises are available yet.",
+    "saveFailed": "Progress could not be saved. Try again.",
+    "selectedForElimination": "Selected for removal",
+    "requiredTechniques": "Techniques in this puzzle",
+    "helpedTechniques": "MICHI helped with",
+    "noHints": "No hints used",
+    "practiceTitle": "Practice",
+    "continueLesson": "Continue lesson",
+    "lessons": {
+      "nakedSingle": {
+        "description": "One empty cell has just one possible digit.",
+        "concept": "Candidates are the digits that can still fit in an empty cell.",
+        "lookFor": "Find a cell where the row, column and box rule out every digit but one.",
+        "reasoning": "Only one candidate remains, so that digit must go in this cell.",
+        "example": "The highlighted cell has one legal candidate. Notice what its peers exclude.",
+        "tryIt": "Choose that cell and place its remaining digit."
+      },
+      "hiddenSingle": {
+        "description": "A digit has only one possible position in a row, column or box.",
+        "concept": "Look at one digit across a unit, rather than all digits in one cell.",
+        "lookFor": "Find the only empty position where that digit is still allowed.",
+        "reasoning": "Other cells may have several candidates, but this digit has just one home in the unit.",
+        "example": "The highlighted unit leaves one position for the target digit.",
+        "tryIt": "Choose the unique position and place that digit."
+      },
+      "nakedPair": {
+        "description": "Two cells in one unit have the same pair of candidates.",
+        "concept": "A pair reserves its two digits for those two cells.",
+        "lookFor": "Find two cells in the same row, column or box with exactly the same two candidates.",
+        "reasoning": "Those digits cannot appear elsewhere in that unit, so eliminate them there.",
+        "example": "The highlighted pair removes candidates from other cells in its unit.",
+        "tryIt": "Mark every candidate the pair eliminates. No digit is placed yet."
+      },
+      "pointingPair": {
+        "description": "Two candidate positions in a box align on one row or column.",
+        "concept": "A box can confine a digit to one line.",
+        "lookFor": "Find exactly two positions for a digit inside a box on the same row or column.",
+        "reasoning": "The digit must stay in that box, so remove it elsewhere on the shared line.",
+        "example": "Follow the highlighted line outside the box to see the eliminations.",
+        "tryIt": "Mark every candidate removed outside the box."
+      }
+    }
   },
   "progress": {
     "unavailable": "Technique mastery is coming later."

@@ -12,21 +12,25 @@ import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
-import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_controls.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_top_bar.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/post_game_technique_feedback.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_geometry.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_keypad.dart';
+import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
+import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
 final class GamePage extends StatefulWidget {
   const GamePage({
     this.puzzle,
+    this.definition,
+    this.dailyChallengeKey,
     this.cubit,
     this.repository,
     this.clock,
@@ -34,8 +38,10 @@ final class GamePage extends StatefulWidget {
     super.key,
   });
 
-  /// Optional input keeps the route ready for future puzzle sources.
+  /// Legacy test fixture input. Production routes pass [definition].
   final SudokuPuzzle? puzzle;
+  final PuzzleDefinition? definition;
+  final String? dailyChallengeKey;
 
   /// Supplied by widget tests; normal navigation uses the composition root.
   final GameCubit? cubit;
@@ -52,11 +58,15 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   Timer? _ticker;
   bool _loading = true;
   bool _loadFailed = false;
+  PuzzleDifficulty? _difficulty;
+  bool _isDaily = false;
+  PuzzleDefinition? _definition;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _definition = widget.definition;
     if (widget.cubit case final cubit?) {
       _attach(cubit);
     } else {
@@ -83,8 +93,15 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
       final clock = widget.clock ?? getIt<GameClock>();
       final GameCubit cubit;
       if (stored == null) {
+        final puzzle = widget.definition?.puzzle ?? widget.puzzle;
+        if (puzzle == null) {
+          throw StateError('A new game requires a selected puzzle.');
+        }
+        _difficulty = widget.definition?.difficulty;
+        _isDaily = widget.dailyChallengeKey != null;
         cubit = GameCubit(
-          puzzle: widget.puzzle ?? DemoPuzzle.standard,
+          puzzle: puzzle,
+          dailyChallengeKey: widget.dailyChallengeKey,
           exactSolver: exactSolver,
           humanSolver: humanSolver,
           coachEngine: coachEngine,
@@ -92,6 +109,15 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
           clock: clock,
         );
       } else {
+        _isDaily = stored.dailyChallengeKey != null;
+        try {
+          _definition = await getIt<PuzzleRepository>().getPuzzle(
+            stored.puzzleId,
+          );
+          _difficulty = _definition?.difficulty;
+        } on Object {
+          // Legacy or removed catalog content remains restorable.
+        }
         try {
           cubit = GameCubit.restore(
             stored: stored,
@@ -239,6 +265,9 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                       return _CompletedSurface(
                         state: state,
                         elapsed: cubit.elapsed,
+                        requiredTechniques: _isDaily
+                            ? const {}
+                            : _definition?.requiredTechniques ?? const {},
                         onHome: () async {
                           await cubit.flushPersistence();
                           if (context.mounted &&
@@ -264,6 +293,7 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                             horizontal: MichiSpacing.sm,
                           ),
                           child: GameTopBar(
+                            title: _gameTitle(context),
                             elapsed: cubit.elapsed,
                             paused: state.isPaused,
                             onBack: () async {
@@ -330,6 +360,18 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  String _gameTitle(BuildContext context) {
+    final kind = _isDaily
+        ? context.t.game.dailyTitle
+        : context.t.game.standardTitle;
+    final difficulty = switch (_difficulty) {
+      PuzzleDifficulty.easy => context.t.home.easy,
+      PuzzleDifficulty.medium => context.t.home.medium,
+      null => null,
+    };
+    return difficulty == null ? kind : '$kind · $difficulty';
   }
 }
 
@@ -425,11 +467,13 @@ final class _CompletedSurface extends StatelessWidget {
   const _CompletedSurface({
     required this.state,
     required this.elapsed,
+    required this.requiredTechniques,
     required this.onHome,
   });
 
   final GameState state;
   final Duration elapsed;
+  final Set<SudokuTechnique> requiredTechniques;
   final VoidCallback onHome;
 
   @override
@@ -500,6 +544,11 @@ final class _CompletedSurface extends StatelessWidget {
                     hints: state.hintsRequested,
                   ),
                   style: MichiTypography.secondary,
+                ),
+                const SizedBox(height: MichiSpacing.xl),
+                PostGameTechniqueFeedback(
+                  requiredTechniques: requiredTechniques,
+                  techniqueHelp: state.techniqueHelp,
                 ),
                 const SizedBox(height: MichiSpacing.xl),
                 MichiButton(label: context.t.game.backHome, onPressed: onHome),

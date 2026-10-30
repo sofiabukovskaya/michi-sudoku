@@ -5,6 +5,7 @@ import 'package:michi_mobile/core/localization/translations.g.dart';
 final class GameTopBar extends StatelessWidget {
   const GameTopBar({
     required this.elapsed,
+    required this.title,
     required this.paused,
     required this.onBack,
     required this.onPause,
@@ -12,6 +13,7 @@ final class GameTopBar extends StatelessWidget {
   });
 
   final Duration elapsed;
+  final String title;
   final bool paused;
   final VoidCallback onBack;
   final VoidCallback onPause;
@@ -40,7 +42,7 @@ final class GameTopBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  context.t.game.title,
+                  title,
                   style: MichiTypography.meta,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

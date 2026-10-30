@@ -25,7 +25,7 @@
   "home": {
     "title": "Ton parcours dans le sudoku",
     "game": "Jouer",
-    "continueGame": "Reprendre : moyen",
+    "continueGame": "Continuer la partie",
     "continueDetails": "Commencé le $date · $progress % · $time",
     "replaceTitle": "Commencer un nouveau sudoku ?",
     "replaceBody": "La partie en cours sera remplacée.",
@@ -36,7 +36,15 @@
     "learn": "Apprendre",
     "progress": "Progression",
     "profile": "Profil",
-    "scanner": "Scanner"
+    "scanner": "Scanner",
+    "chooseDifficulty": "Choisissez une difficulté",
+    "easy": "Facile",
+    "medium": "Moyen",
+    "dailyTitle": "Sudoku du jour",
+    "dailyStart": "Commencer le sudoku du jour",
+    "dailyContinue": "Reprendre le sudoku du jour",
+    "dailyCompleted": "Terminé aujourd’hui",
+    "contentUnavailable": "Les grilles sont indisponibles. Réessayez."
   },
   "game": {
     "title": "Sudoku du jour · Moyen",
@@ -65,10 +73,83 @@
     "restoreUnavailable": "Impossible de restaurer la partie.",
     "saveFailed": "Impossible de sauvegarder la partie.",
     "retrySave": "Réessayer",
-    "completionStats": "$mistakes erreurs · $hints indices"
+    "completionStats": "$mistakes erreurs · $hints indices",
+    "standardTitle": "Sudoku",
+    "dailyTitle": "Sudoku du jour"
   },
   "learn": {
-    "unavailable": "Les leçons sur les techniques arriveront plus tard."
+    "title": "Apprendre",
+    "intro": "Une technique, une étape claire à la fois.",
+    "newLabel": "Nouveau",
+    "learningLabel": "En cours",
+    "practicingLabel": "En pratique",
+    "masteredLabel": "Maîtrisé",
+    "planTitle": "Plan de la leçon",
+    "lessonStart": "Commencer la leçon",
+    "next": "Suivant",
+    "practiceStart": "Commencer la pratique",
+    "concept": "Concept",
+    "lookFor": "À repérer",
+    "reasoning": "Pourquoi ça marche",
+    "example": "Exemple",
+    "tryIt": "À toi de jouer",
+    "exercise": "Exercice $current sur $total",
+    "placementPrompt": "Choisis une case et un chiffre.",
+    "eliminationPrompt": "Choisis une case puis marque tous les candidats à éliminer.",
+    "checkAnswer": "Vérifier",
+    "correctTitle": "Bien vu",
+    "incorrectTitle": "Pas tout à fait",
+    "tryAgain": "Réessayer",
+    "askMichi": "Demander à MICHI",
+    "nextScenario": "Exercice suivant",
+    "sessionSummary": "Pratique terminée",
+    "summaryStats": "$correct corrects · $attempts essais",
+    "hintsUsed": "$count avec MICHI",
+    "done": "Terminé",
+    "loading": "Préparation de la leçon…",
+    "unavailable": "Le contenu est indisponible. Réessaie.",
+    "noScenarios": "Aucun exercice disponible pour le moment.",
+    "saveFailed": "Impossible d’enregistrer la progression. Réessaie.",
+    "selectedForElimination": "Sélectionné pour élimination",
+    "requiredTechniques": "Techniques de cette grille",
+    "helpedTechniques": "MICHI a aidé avec",
+    "noHints": "Aucun indice utilisé",
+    "practiceTitle": "Pratique",
+    "continueLesson": "Continuer la leçon",
+    "lessons": {
+      "nakedSingle": {
+        "description": "Une case vide n’admet plus qu’un seul chiffre.",
+        "concept": "Les candidats sont les chiffres encore possibles dans une case vide.",
+        "lookFor": "Repère une case où ligne, colonne et bloc excluent tous les chiffres sauf un.",
+        "reasoning": "Il reste un candidat : ce chiffre doit aller dans cette case.",
+        "example": "La case surlignée n’a qu’un candidat possible.",
+        "tryIt": "Choisis la case et place le chiffre restant."
+      },
+      "hiddenSingle": {
+        "description": "Un chiffre n’a qu’une seule position dans une ligne, colonne ou bloc.",
+        "concept": "Observe un chiffre dans toute une unité, pas tous les candidats d’une case.",
+        "lookFor": "Trouve la seule position où ce chiffre peut encore aller.",
+        "reasoning": "La case peut avoir plusieurs candidats, mais ce chiffre n’a qu’une place.",
+        "example": "L’unité surlignée laisse une seule position pour le chiffre.",
+        "tryIt": "Choisis cette position et place le chiffre."
+      },
+      "nakedPair": {
+        "description": "Deux cases d’une unité ont les mêmes deux candidats.",
+        "concept": "La paire réserve ces deux chiffres à ces deux cases.",
+        "lookFor": "Repère deux cases d’une même unité avec exactement les mêmes deux candidats.",
+        "reasoning": "Ces chiffres sont impossibles ailleurs dans l’unité : élimine-les.",
+        "example": "La paire surlignée élimine des candidats dans d’autres cases.",
+        "tryIt": "Marque tous les candidats éliminés. Aucun chiffre n’est encore placé."
+      },
+      "pointingPair": {
+        "description": "Deux positions d’un candidat dans un bloc partagent une ligne ou colonne.",
+        "concept": "Un bloc peut limiter un chiffre à une seule ligne.",
+        "lookFor": "Trouve exactement deux positions alignées pour ce chiffre dans le bloc.",
+        "reasoning": "Le chiffre reste dans le bloc : élimine-le hors du bloc sur la même ligne.",
+        "example": "Suis la ligne surlignée hors du bloc.",
+        "tryIt": "Marque tous les candidats éliminés hors du bloc."
+      }
+    }
   },
   "progress": {
     "unavailable": "Le suivi des techniques maîtrisées arrivera plus tard."

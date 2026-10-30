@@ -57,6 +57,14 @@ final class _FailOnceRepository implements GameRepository {
   @override
   Future<List<CompletedGame>> loadRecentCompletedGames({int limit = 20}) =>
       delegate.loadRecentCompletedGames(limit: limit);
+
+  @override
+  Future<List<String>> recentCompletedPuzzleIds({int limit = 20}) =>
+      delegate.recentCompletedPuzzleIds(limit: limit);
+
+  @override
+  Future<bool> isDailyCompleted(String challengeKey) =>
+      delegate.isDailyCompleted(challengeKey);
 }
 
 void main() {
@@ -203,4 +211,56 @@ void main() {
     expect(await repository.loadActiveGame(), isNull);
     expect(await repository.loadRecentCompletedGames(), hasLength(1));
   });
+
+  test(
+    'Daily identity survives restoration and the completion transaction',
+    () async {
+      const key = '2026-10-26|catalog-v1';
+      final solution = exact.solve(DemoPuzzle.standard.givens)!;
+      final last = CellRef(row: 0, column: 0);
+      final puzzle = SudokuPuzzle(
+        id: 'daily-content-puzzle',
+        givens: solution.withValue(last, 0),
+      );
+      final game = GameCubit(
+        puzzle: puzzle,
+        dailyChallengeKey: key,
+        exactSolver: exact,
+        humanSolver: human,
+        coachEngine: coach,
+        repository: repository,
+        clock: clock,
+      );
+      await game.flushPersistence();
+      final stored = (await repository.loadActiveGame())!;
+      expect(stored.dailyChallengeKey, key);
+      expect(stored.gameId, isNot(stored.puzzleId));
+      await game.close();
+
+      final restored = GameCubit.restore(
+        stored: stored,
+        exactSolver: exact,
+        humanSolver: human,
+        coachEngine: coach,
+        repository: repository,
+        clock: clock,
+      );
+      addTearDown(restored.close);
+      expect(restored.state.dailyChallengeKey, key);
+      restored
+        ..resume()
+        ..selectCell(last)
+        ..enterDigit(5);
+      await restored.flushPersistence();
+      expect(await repository.isDailyCompleted(key), isTrue);
+      expect(
+        await repository.isDailyCompleted('2026-10-27|catalog-v1'),
+        isFalse,
+      );
+      expect(
+        (await repository.loadRecentCompletedGames()).single.puzzleId,
+        'daily-content-puzzle',
+      );
+    },
+  );
 }

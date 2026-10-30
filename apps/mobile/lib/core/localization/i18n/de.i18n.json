@@ -25,7 +25,7 @@
   "home": {
     "title": "Dein Weg durch Sudoku",
     "game": "Spielen",
-    "continueGame": "Fortsetzen: Mittel",
+    "continueGame": "Spiel fortsetzen",
     "continueDetails": "Begonnen am $date · $progress % · $time",
     "replaceTitle": "Neues Sudoku beginnen?",
     "replaceBody": "Das unfertige Spiel wird ersetzt.",
@@ -36,7 +36,15 @@
     "learn": "Lernen",
     "progress": "Fortschritt",
     "profile": "Profil",
-    "scanner": "Scanner"
+    "scanner": "Scanner",
+    "chooseDifficulty": "Schwierigkeit wählen",
+    "easy": "Einfach",
+    "medium": "Mittel",
+    "dailyTitle": "Sudoku des Tages",
+    "dailyStart": "Heutiges Sudoku starten",
+    "dailyContinue": "Heutiges Sudoku fortsetzen",
+    "dailyCompleted": "Heute abgeschlossen",
+    "contentUnavailable": "Rätsel sind nicht verfügbar. Bitte erneut versuchen."
   },
   "game": {
     "title": "Tägliches Sudoku · Mittel",
@@ -65,10 +73,83 @@
     "restoreUnavailable": "Das Spiel konnte nicht wiederhergestellt werden.",
     "saveFailed": "Das Spiel konnte nicht gespeichert werden.",
     "retrySave": "Erneut versuchen",
-    "completionStats": "$mistakes Fehler · $hints Hinweise"
+    "completionStats": "$mistakes Fehler · $hints Hinweise",
+    "standardTitle": "Sudoku",
+    "dailyTitle": "Sudoku des Tages"
   },
   "learn": {
-    "unavailable": "Techniklektionen kommen später."
+    "title": "Lernen",
+    "intro": "Eine Technik und ein klarer Schritt nach dem anderen.",
+    "newLabel": "Neu",
+    "learningLabel": "Lerne ich",
+    "practicingLabel": "Übe ich",
+    "masteredLabel": "Gemeistert",
+    "planTitle": "Lektionsplan",
+    "lessonStart": "Lektion starten",
+    "next": "Weiter",
+    "practiceStart": "Übung starten",
+    "concept": "Grundidee",
+    "lookFor": "Worauf du achtest",
+    "reasoning": "Warum es funktioniert",
+    "example": "Beispiel",
+    "tryIt": "Versuch es",
+    "exercise": "Aufgabe $current von $total",
+    "placementPrompt": "Wähle ein Feld und eine Zahl.",
+    "eliminationPrompt": "Wähle ein Feld und markiere alle Kandidaten zum Entfernen.",
+    "checkAnswer": "Antwort prüfen",
+    "correctTitle": "Gut erkannt",
+    "incorrectTitle": "Noch nicht ganz",
+    "tryAgain": "Erneut versuchen",
+    "askMichi": "MICHI fragen",
+    "nextScenario": "Nächste Aufgabe",
+    "sessionSummary": "Übung abgeschlossen",
+    "summaryStats": "$correct richtig · $attempts Versuche",
+    "hintsUsed": "$count mit MICHI",
+    "done": "Fertig",
+    "loading": "Lektion wird vorbereitet…",
+    "unavailable": "Lerninhalte sind nicht verfügbar. Versuch es erneut.",
+    "noScenarios": "Noch keine Übungen verfügbar.",
+    "saveFailed": "Fortschritt konnte nicht gespeichert werden. Versuch es erneut.",
+    "selectedForElimination": "Zum Entfernen markiert",
+    "requiredTechniques": "Techniken in diesem Sudoku",
+    "helpedTechniques": "MICHI half bei",
+    "noHints": "Keine Hinweise genutzt",
+    "practiceTitle": "Übung",
+    "continueLesson": "Lektion fortsetzen",
+    "lessons": {
+      "nakedSingle": {
+        "description": "In einem leeren Feld bleibt nur eine mögliche Zahl.",
+        "concept": "Kandidaten sind Zahlen, die noch in ein leeres Feld passen.",
+        "lookFor": "Finde ein Feld, in dem Zeile, Spalte und Block alle Zahlen bis auf eine ausschließen.",
+        "reasoning": "Ein Kandidat bleibt übrig, also gehört diese Zahl in das Feld.",
+        "example": "Das markierte Feld hat nur einen erlaubten Kandidaten.",
+        "tryIt": "Wähle das Feld und trage die verbleibende Zahl ein."
+      },
+      "hiddenSingle": {
+        "description": "Eine Zahl hat in einer Zeile, Spalte oder einem Block nur einen Platz.",
+        "concept": "Betrachte eine Zahl in der ganzen Einheit statt alle Kandidaten eines Felds.",
+        "lookFor": "Finde die einzige freie Position, an der die Zahl noch stehen darf.",
+        "reasoning": "Das Feld kann mehrere Kandidaten haben, aber diese Zahl nur einen Platz.",
+        "example": "In der markierten Einheit bleibt ein Platz für die Zahl.",
+        "tryIt": "Wähle diesen Platz und trage die Zahl ein."
+      },
+      "nakedPair": {
+        "description": "Zwei Felder einer Einheit haben dieselben zwei Kandidaten.",
+        "concept": "Das Paar reserviert diese Zahlen für beide Felder.",
+        "lookFor": "Finde zwei Felder in derselben Einheit mit genau denselben Kandidaten.",
+        "reasoning": "Anderswo in der Einheit sind diese Zahlen ausgeschlossen: entferne sie dort.",
+        "example": "Das markierte Paar entfernt Kandidaten aus anderen Feldern.",
+        "tryIt": "Markiere alle entfernten Kandidaten. Noch keine Zahl eintragen."
+      },
+      "pointingPair": {
+        "description": "Zwei Kandidatenpositionen in einem Block liegen in derselben Zeile oder Spalte.",
+        "concept": "Ein Block kann eine Zahl auf eine Linie beschränken.",
+        "lookFor": "Finde genau zwei ausgerichtete Positionen für die Zahl im Block.",
+        "reasoning": "Die Zahl bleibt im Block; entferne sie außerhalb auf derselben Linie.",
+        "example": "Folge der markierten Linie aus dem Block heraus.",
+        "tryIt": "Markiere alle außerhalb des Blocks entfernten Kandidaten."
+      }
+    }
   },
   "progress": {
     "unavailable": "Die Übersicht deiner Techniken kommt später."

@@ -18,6 +18,16 @@ import 'package:michi_mobile/core/time/game_clock.dart' as _i585;
 import 'package:michi_mobile/features/game/data/game_database.dart' as _i520;
 import 'package:michi_mobile/features/game/domain/game_repository.dart'
     as _i263;
+import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart'
+    as _i426;
+import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart'
+    as _i56;
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart'
+    as _i936;
+import 'package:michi_mobile/features/puzzle/domain/puzzle_analyzer.dart'
+    as _i150;
+import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart'
+    as _i769;
 import 'package:sudoku_engine/sudoku_engine.dart' as _i247;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -34,8 +44,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i247.CoachEngine>(() => appModule.coachEngine);
     gh.lazySingleton<_i585.GameClock>(() => appModule.gameClock);
     gh.lazySingleton<_i520.GameDatabase>(() => appModule.gameDatabase);
+    gh.lazySingleton<_i936.LocalPuzzleCatalogLoader>(
+      () => appModule.puzzleCatalogLoader,
+    );
+    gh.lazySingleton<_i56.LocalPracticeCatalog>(
+      () => appModule.practiceCatalog,
+    );
+    gh.lazySingleton<_i150.PuzzleAnalyzer>(
+      () => appModule.puzzleAnalyzer(
+        gh<_i247.ExactSolver>(),
+        gh<_i247.HumanSolver>(),
+      ),
+    );
     gh.lazySingleton<_i263.GameRepository>(
       () => appModule.gameRepository(gh<_i520.GameDatabase>()),
+    );
+    gh.lazySingleton<_i426.TechniqueProgressRepository>(
+      () => appModule.techniqueProgressRepository(gh<_i520.GameDatabase>()),
+    );
+    gh.lazySingleton<_i769.PuzzleRepository>(
+      () => appModule.puzzleRepository(
+        gh<_i936.LocalPuzzleCatalogLoader>(),
+        gh<_i263.GameRepository>(),
+      ),
     );
     return this;
   }

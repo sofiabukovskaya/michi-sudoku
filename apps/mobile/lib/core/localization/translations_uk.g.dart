@@ -158,8 +158,8 @@ class Translations$home$uk {
 	/// uk: 'Гра'
 	String get game => 'Гра';
 
-	/// uk: 'Продовжити: середній'
-	String get continueGame => 'Продовжити: середній';
+	/// uk: 'Продовжити гру'
+	String get continueGame => 'Продовжити гру';
 
 	/// uk: 'Розпочато $date · $progress% · $time'
 	String continueDetails({required Object date, required Object progress, required Object time}) => 'Розпочато ${date} · ${progress}% · ${time}';
@@ -193,6 +193,30 @@ class Translations$home$uk {
 
 	/// uk: 'Сканер'
 	String get scanner => 'Сканер';
+
+	/// uk: 'Оберіть складність'
+	String get chooseDifficulty => 'Оберіть складність';
+
+	/// uk: 'Легкий'
+	String get easy => 'Легкий';
+
+	/// uk: 'Середній'
+	String get medium => 'Середній';
+
+	/// uk: 'Судоку дня'
+	String get dailyTitle => 'Судоку дня';
+
+	/// uk: 'Почати судоку дня'
+	String get dailyStart => 'Почати судоку дня';
+
+	/// uk: 'Продовжити судоку дня'
+	String get dailyContinue => 'Продовжити судоку дня';
+
+	/// uk: 'Сьогодні виконано'
+	String get dailyCompleted => 'Сьогодні виконано';
+
+	/// uk: 'Набір головоломок недоступний. Спробуйте ще раз.'
+	String get contentUnavailable => 'Набір головоломок недоступний. Спробуйте ще раз.';
 }
 
 // Path: game
@@ -283,6 +307,12 @@ class Translations$game$uk {
 
 	/// uk: '$mistakes помилок · $hints підказок'
 	String completionStats({required Object mistakes, required Object hints}) => '${mistakes} помилок · ${hints} підказок';
+
+	/// uk: 'Судоку'
+	String get standardTitle => 'Судоку';
+
+	/// uk: 'Судоку дня'
+	String get dailyTitle => 'Судоку дня';
 }
 
 // Path: learn
@@ -293,8 +323,121 @@ class Translations$learn$uk {
 
 	// Translations
 
-	/// uk: 'Уроки технік з’являться пізніше.'
-	String get unavailable => 'Уроки технік з’являться пізніше.';
+	/// uk: 'Навчання'
+	String get title => 'Навчання';
+
+	/// uk: 'Крок за кроком до розуміння технік.'
+	String get intro => 'Крок за кроком до розуміння технік.';
+
+	/// uk: 'Нове'
+	String get newLabel => 'Нове';
+
+	/// uk: 'Вивчаєш'
+	String get learningLabel => 'Вивчаєш';
+
+	/// uk: 'Практикуєш'
+	String get practicingLabel => 'Практикуєш';
+
+	/// uk: 'Опановано'
+	String get masteredLabel => 'Опановано';
+
+	/// uk: 'План уроку'
+	String get planTitle => 'План уроку';
+
+	/// uk: 'Почати урок'
+	String get lessonStart => 'Почати урок';
+
+	/// uk: 'Далі'
+	String get next => 'Далі';
+
+	/// uk: 'Почати практику'
+	String get practiceStart => 'Почати практику';
+
+	/// uk: 'Ідея'
+	String get concept => 'Ідея';
+
+	/// uk: 'На що дивитися'
+	String get lookFor => 'На що дивитися';
+
+	/// uk: 'Чому це працює'
+	String get reasoning => 'Чому це працює';
+
+	/// uk: 'Приклад'
+	String get example => 'Приклад';
+
+	/// uk: 'Спробуй самостійно'
+	String get tryIt => 'Спробуй самостійно';
+
+	/// uk: 'Завдання $current з $total'
+	String exercise({required Object current, required Object total}) => 'Завдання ${current} з ${total}';
+
+	/// uk: 'Обери клітинку та цифру.'
+	String get placementPrompt => 'Обери клітинку та цифру.';
+
+	/// uk: 'Обери клітинку й познач усіх кандидатів, яких можна прибрати.'
+	String get eliminationPrompt => 'Обери клітинку й познач усіх кандидатів, яких можна прибрати.';
+
+	/// uk: 'Перевірити'
+	String get checkAnswer => 'Перевірити';
+
+	/// uk: 'Чудово помічено'
+	String get correctTitle => 'Чудово помічено';
+
+	/// uk: 'Не зовсім'
+	String get incorrectTitle => 'Не зовсім';
+
+	/// uk: 'Ще раз'
+	String get tryAgain => 'Ще раз';
+
+	/// uk: 'Запитати MICHI'
+	String get askMichi => 'Запитати MICHI';
+
+	/// uk: 'Наступне завдання'
+	String get nextScenario => 'Наступне завдання';
+
+	/// uk: 'Практику завершено'
+	String get sessionSummary => 'Практику завершено';
+
+	/// uk: '$correct правильно · $attempts спроб'
+	String summaryStats({required Object correct, required Object attempts}) => '${correct} правильно · ${attempts} спроб';
+
+	/// uk: '$count з MICHI'
+	String hintsUsed({required Object count}) => '${count} з MICHI';
+
+	/// uk: 'Готово'
+	String get done => 'Готово';
+
+	/// uk: 'Готуємо урок…'
+	String get loading => 'Готуємо урок…';
+
+	/// uk: 'Навчальні матеріали недоступні. Спробуй ще раз.'
+	String get unavailable => 'Навчальні матеріали недоступні. Спробуй ще раз.';
+
+	/// uk: 'Наразі немає завдань для практики.'
+	String get noScenarios => 'Наразі немає завдань для практики.';
+
+	/// uk: 'Не вдалося зберегти прогрес. Спробуй ще раз.'
+	String get saveFailed => 'Не вдалося зберегти прогрес. Спробуй ще раз.';
+
+	/// uk: 'Позначено для викреслення'
+	String get selectedForElimination => 'Позначено для викреслення';
+
+	/// uk: 'Техніки цієї головоломки'
+	String get requiredTechniques => 'Техніки цієї головоломки';
+
+	/// uk: 'MICHI допоміг із'
+	String get helpedTechniques => 'MICHI допоміг із';
+
+	/// uk: 'Підказок не було'
+	String get noHints => 'Підказок не було';
+
+	/// uk: 'Практика'
+	String get practiceTitle => 'Практика';
+
+	/// uk: 'Продовжити урок'
+	String get continueLesson => 'Продовжити урок';
+
+	late final Translations$learn$lessons$uk lessons = Translations$learn$lessons$uk.internal(_root);
 }
 
 // Path: progress
@@ -441,6 +584,127 @@ class Translations$coach$uk {
 	String get stuckBody => 'MICHI поки не може пояснити наступний хід доступними техніками.';
 }
 
+// Path: learn.lessons
+class Translations$learn$lessons$uk {
+	Translations$learn$lessons$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final Translations$learn$lessons$nakedSingle$uk nakedSingle = Translations$learn$lessons$nakedSingle$uk.internal(_root);
+	late final Translations$learn$lessons$hiddenSingle$uk hiddenSingle = Translations$learn$lessons$hiddenSingle$uk.internal(_root);
+	late final Translations$learn$lessons$nakedPair$uk nakedPair = Translations$learn$lessons$nakedPair$uk.internal(_root);
+	late final Translations$learn$lessons$pointingPair$uk pointingPair = Translations$learn$lessons$pointingPair$uk.internal(_root);
+}
+
+// Path: learn.lessons.nakedSingle
+class Translations$learn$lessons$nakedSingle$uk {
+	Translations$learn$lessons$nakedSingle$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'У порожній клітинці залишилася лише одна можлива цифра.'
+	String get description => 'У порожній клітинці залишилася лише одна можлива цифра.';
+
+	/// uk: 'Кандидати — цифри, які ще можуть стояти в порожній клітинці.'
+	String get concept => 'Кандидати — цифри, які ще можуть стояти в порожній клітинці.';
+
+	/// uk: 'Знайди клітинку, де рядок, стовпець і блок виключають усі цифри, крім однієї.'
+	String get lookFor => 'Знайди клітинку, де рядок, стовпець і блок виключають усі цифри, крім однієї.';
+
+	/// uk: 'Залишився один кандидат, отже його потрібно поставити в цю клітинку.'
+	String get reasoning => 'Залишився один кандидат, отже його потрібно поставити в цю клітинку.';
+
+	/// uk: 'У виділеній клітинці один допустимий кандидат. Подивись, що виключають сусідні клітинки.'
+	String get example => 'У виділеній клітинці один допустимий кандидат. Подивись, що виключають сусідні клітинки.';
+
+	/// uk: 'Обери цю клітинку й постав останню можливу цифру.'
+	String get tryIt => 'Обери цю клітинку й постав останню можливу цифру.';
+}
+
+// Path: learn.lessons.hiddenSingle
+class Translations$learn$lessons$hiddenSingle$uk {
+	Translations$learn$lessons$hiddenSingle$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Для цифри є лише одне можливе місце в рядку, стовпці або блоці.'
+	String get description => 'Для цифри є лише одне можливе місце в рядку, стовпці або блоці.';
+
+	/// uk: 'Дивись на одну цифру в групі, а не на всі кандидати однієї клітинки.'
+	String get concept => 'Дивись на одну цифру в групі, а не на всі кандидати однієї клітинки.';
+
+	/// uk: 'Знайди єдине порожнє місце, де цю цифру ще можна поставити.'
+	String get lookFor => 'Знайди єдине порожнє місце, де цю цифру ще можна поставити.';
+
+	/// uk: 'У клітинці може бути кілька кандидатів, але ця цифра має лише одне місце в групі.'
+	String get reasoning => 'У клітинці може бути кілька кандидатів, але ця цифра має лише одне місце в групі.';
+
+	/// uk: 'У виділеній групі для потрібної цифри лишилося одне місце.'
+	String get example => 'У виділеній групі для потрібної цифри лишилося одне місце.';
+
+	/// uk: 'Обери єдине місце й постав цифру.'
+	String get tryIt => 'Обери єдине місце й постав цифру.';
+}
+
+// Path: learn.lessons.nakedPair
+class Translations$learn$lessons$nakedPair$uk {
+	Translations$learn$lessons$nakedPair$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Дві клітинки в групі мають ту саму пару кандидатів.'
+	String get description => 'Дві клітинки в групі мають ту саму пару кандидатів.';
+
+	/// uk: 'Пара резервує дві цифри для цих клітинок.'
+	String get concept => 'Пара резервує дві цифри для цих клітинок.';
+
+	/// uk: 'Знайди дві клітинки в одному рядку, стовпці чи блоці з однаковими двома кандидатами.'
+	String get lookFor => 'Знайди дві клітинки в одному рядку, стовпці чи блоці з однаковими двома кандидатами.';
+
+	/// uk: 'Ці цифри не можуть бути в інших клітинках групи — викресли їх там.'
+	String get reasoning => 'Ці цифри не можуть бути в інших клітинках групи — викресли їх там.';
+
+	/// uk: 'Виділена пара прибирає кандидатів з інших клітинок групи.'
+	String get example => 'Виділена пара прибирає кандидатів з інших клітинок групи.';
+
+	/// uk: 'Познач усіх кандидатів, яких виключає пара. Цифру поки не став.'
+	String get tryIt => 'Познач усіх кандидатів, яких виключає пара. Цифру поки не став.';
+}
+
+// Path: learn.lessons.pointingPair
+class Translations$learn$lessons$pointingPair$uk {
+	Translations$learn$lessons$pointingPair$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Дві позиції кандидата в блоці лежать на одному рядку чи стовпці.'
+	String get description => 'Дві позиції кандидата в блоці лежать на одному рядку чи стовпці.';
+
+	/// uk: 'Блок може обмежити цифру однією лінією.'
+	String get concept => 'Блок може обмежити цифру однією лінією.';
+
+	/// uk: 'Знайди рівно дві позиції цифри в блоці на одному рядку чи стовпці.'
+	String get lookFor => 'Знайди рівно дві позиції цифри в блоці на одному рядку чи стовпці.';
+
+	/// uk: 'Цифра залишиться в цьому блоці, тому прибери її поза блоком на спільній лінії.'
+	String get reasoning => 'Цифра залишиться в цьому блоці, тому прибери її поза блоком на спільній лінії.';
+
+	/// uk: 'Простеж за виділеною лінією поза блоком.'
+	String get example => 'Простеж за виділеною лінією поза блоком.';
+
+	/// uk: 'Познач усіх кандидатів, яких можна прибрати поза блоком.'
+	String get tryIt => 'Познач усіх кандидатів, яких можна прибрати поза блоком.';
+}
+
 /// The flat map containing all translations for locale <uk>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -462,7 +726,7 @@ extension on Translations {
 			'auth.unavailable' => 'Синхронізація прогресу з’явиться пізніше.',
 			'home.title' => 'Твій шлях у судоку',
 			'home.game' => 'Гра',
-			'home.continueGame' => 'Продовжити: середній',
+			'home.continueGame' => 'Продовжити гру',
 			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Розпочато ${date} · ${progress}% · ${time}',
 			'home.replaceTitle' => 'Почати нову головоломку?',
 			'home.replaceBody' => 'Незавершену гру буде замінено.',
@@ -474,6 +738,14 @@ extension on Translations {
 			'home.progress' => 'Прогрес',
 			'home.profile' => 'Профіль',
 			'home.scanner' => 'Сканер',
+			'home.chooseDifficulty' => 'Оберіть складність',
+			'home.easy' => 'Легкий',
+			'home.medium' => 'Середній',
+			'home.dailyTitle' => 'Судоку дня',
+			'home.dailyStart' => 'Почати судоку дня',
+			'home.dailyContinue' => 'Продовжити судоку дня',
+			'home.dailyCompleted' => 'Сьогодні виконано',
+			'home.contentUnavailable' => 'Набір головоломок недоступний. Спробуйте ще раз.',
 			'game.title' => 'Судоку дня · Середній',
 			'game.undo' => 'Скасувати',
 			'game.erase' => 'Стерти',
@@ -501,7 +773,70 @@ extension on Translations {
 			'game.saveFailed' => 'Не вдалося зберегти гру.',
 			'game.retrySave' => 'Повторити',
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} помилок · ${hints} підказок',
-			'learn.unavailable' => 'Уроки технік з’являться пізніше.',
+			'game.standardTitle' => 'Судоку',
+			'game.dailyTitle' => 'Судоку дня',
+			'learn.title' => 'Навчання',
+			'learn.intro' => 'Крок за кроком до розуміння технік.',
+			'learn.newLabel' => 'Нове',
+			'learn.learningLabel' => 'Вивчаєш',
+			'learn.practicingLabel' => 'Практикуєш',
+			'learn.masteredLabel' => 'Опановано',
+			'learn.planTitle' => 'План уроку',
+			'learn.lessonStart' => 'Почати урок',
+			'learn.next' => 'Далі',
+			'learn.practiceStart' => 'Почати практику',
+			'learn.concept' => 'Ідея',
+			'learn.lookFor' => 'На що дивитися',
+			'learn.reasoning' => 'Чому це працює',
+			'learn.example' => 'Приклад',
+			'learn.tryIt' => 'Спробуй самостійно',
+			'learn.exercise' => ({required Object current, required Object total}) => 'Завдання ${current} з ${total}',
+			'learn.placementPrompt' => 'Обери клітинку та цифру.',
+			'learn.eliminationPrompt' => 'Обери клітинку й познач усіх кандидатів, яких можна прибрати.',
+			'learn.checkAnswer' => 'Перевірити',
+			'learn.correctTitle' => 'Чудово помічено',
+			'learn.incorrectTitle' => 'Не зовсім',
+			'learn.tryAgain' => 'Ще раз',
+			'learn.askMichi' => 'Запитати MICHI',
+			'learn.nextScenario' => 'Наступне завдання',
+			'learn.sessionSummary' => 'Практику завершено',
+			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} правильно · ${attempts} спроб',
+			'learn.hintsUsed' => ({required Object count}) => '${count} з MICHI',
+			'learn.done' => 'Готово',
+			'learn.loading' => 'Готуємо урок…',
+			'learn.unavailable' => 'Навчальні матеріали недоступні. Спробуй ще раз.',
+			'learn.noScenarios' => 'Наразі немає завдань для практики.',
+			'learn.saveFailed' => 'Не вдалося зберегти прогрес. Спробуй ще раз.',
+			'learn.selectedForElimination' => 'Позначено для викреслення',
+			'learn.requiredTechniques' => 'Техніки цієї головоломки',
+			'learn.helpedTechniques' => 'MICHI допоміг із',
+			'learn.noHints' => 'Підказок не було',
+			'learn.practiceTitle' => 'Практика',
+			'learn.continueLesson' => 'Продовжити урок',
+			'learn.lessons.nakedSingle.description' => 'У порожній клітинці залишилася лише одна можлива цифра.',
+			'learn.lessons.nakedSingle.concept' => 'Кандидати — цифри, які ще можуть стояти в порожній клітинці.',
+			'learn.lessons.nakedSingle.lookFor' => 'Знайди клітинку, де рядок, стовпець і блок виключають усі цифри, крім однієї.',
+			'learn.lessons.nakedSingle.reasoning' => 'Залишився один кандидат, отже його потрібно поставити в цю клітинку.',
+			'learn.lessons.nakedSingle.example' => 'У виділеній клітинці один допустимий кандидат. Подивись, що виключають сусідні клітинки.',
+			'learn.lessons.nakedSingle.tryIt' => 'Обери цю клітинку й постав останню можливу цифру.',
+			'learn.lessons.hiddenSingle.description' => 'Для цифри є лише одне можливе місце в рядку, стовпці або блоці.',
+			'learn.lessons.hiddenSingle.concept' => 'Дивись на одну цифру в групі, а не на всі кандидати однієї клітинки.',
+			'learn.lessons.hiddenSingle.lookFor' => 'Знайди єдине порожнє місце, де цю цифру ще можна поставити.',
+			'learn.lessons.hiddenSingle.reasoning' => 'У клітинці може бути кілька кандидатів, але ця цифра має лише одне місце в групі.',
+			'learn.lessons.hiddenSingle.example' => 'У виділеній групі для потрібної цифри лишилося одне місце.',
+			'learn.lessons.hiddenSingle.tryIt' => 'Обери єдине місце й постав цифру.',
+			'learn.lessons.nakedPair.description' => 'Дві клітинки в групі мають ту саму пару кандидатів.',
+			'learn.lessons.nakedPair.concept' => 'Пара резервує дві цифри для цих клітинок.',
+			'learn.lessons.nakedPair.lookFor' => 'Знайди дві клітинки в одному рядку, стовпці чи блоці з однаковими двома кандидатами.',
+			'learn.lessons.nakedPair.reasoning' => 'Ці цифри не можуть бути в інших клітинках групи — викресли їх там.',
+			'learn.lessons.nakedPair.example' => 'Виділена пара прибирає кандидатів з інших клітинок групи.',
+			'learn.lessons.nakedPair.tryIt' => 'Познач усіх кандидатів, яких виключає пара. Цифру поки не став.',
+			'learn.lessons.pointingPair.description' => 'Дві позиції кандидата в блоці лежать на одному рядку чи стовпці.',
+			'learn.lessons.pointingPair.concept' => 'Блок може обмежити цифру однією лінією.',
+			'learn.lessons.pointingPair.lookFor' => 'Знайди рівно дві позиції цифри в блоці на одному рядку чи стовпці.',
+			'learn.lessons.pointingPair.reasoning' => 'Цифра залишиться в цьому блоці, тому прибери її поза блоком на спільній лінії.',
+			'learn.lessons.pointingPair.example' => 'Простеж за виділеною лінією поза блоком.',
+			'learn.lessons.pointingPair.tryIt' => 'Познач усіх кандидатів, яких можна прибрати поза блоком.',
 			'progress.unavailable' => 'Майстерність технік з’явиться пізніше.',
 			'profile.unavailable' => 'Налаштування профілю з’являться пізніше.',
 			'scanner.unavailable' => 'Імпорт із камери з’явиться після основної гри.',

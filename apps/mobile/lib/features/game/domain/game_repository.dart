@@ -30,11 +30,15 @@ final class StoredGame {
     required this.highestHintLevelUsed,
     required this.correctEditableCells,
     required this.editableCells,
-  }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
+    this.dailyChallengeKey,
+    Map<SudokuTechnique, int> techniqueHelp = const {},
+  }) : techniqueHelp = Map<SudokuTechnique, int>.unmodifiable(techniqueHelp),
+       notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
        undoHistory = List<StoredGameSnapshot>.unmodifiable(undoHistory);
 
   final String gameId;
   final String puzzleId;
+  final String? dailyChallengeKey;
   final SudokuBoard initialBoard;
   final SudokuBoard currentBoard;
   final Map<CellRef, CandidateMask> notes;
@@ -47,6 +51,7 @@ final class StoredGame {
   final bool isPaused;
   final int hintsRequested;
   final int highestHintLevelUsed;
+  final Map<SudokuTechnique, int> techniqueHelp;
   final int correctEditableCells;
   final int editableCells;
 }
@@ -59,10 +64,12 @@ final class ActiveGameSummary {
     required this.editableCells,
     required this.elapsed,
     required this.startedAt,
+    this.dailyChallengeKey,
   });
 
   final String gameId;
   final String puzzleId;
+  final String? dailyChallengeKey;
   final int correctEditableCells;
   final int editableCells;
   final Duration elapsed;
@@ -74,7 +81,7 @@ final class ActiveGameSummary {
 }
 
 final class CompletedGame {
-  const CompletedGame({
+  CompletedGame({
     required this.gameId,
     required this.puzzleId,
     required this.initialBoard,
@@ -85,10 +92,13 @@ final class CompletedGame {
     required this.mistakes,
     required this.hintsRequested,
     required this.highestHintLevelUsed,
-  });
+    this.dailyChallengeKey,
+    Map<SudokuTechnique, int> techniqueHelp = const {},
+  }) : techniqueHelp = Map<SudokuTechnique, int>.unmodifiable(techniqueHelp);
 
   final String gameId;
   final String puzzleId;
+  final String? dailyChallengeKey;
   final SudokuBoard initialBoard;
   final SudokuBoard completedBoard;
   final DateTime startedAt;
@@ -97,6 +107,7 @@ final class CompletedGame {
   final int mistakes;
   final int hintsRequested;
   final int highestHintLevelUsed;
+  final Map<SudokuTechnique, int> techniqueHelp;
 }
 
 /// The application-facing local game boundary. One unfinished game is active.
@@ -114,4 +125,9 @@ abstract interface class GameRepository {
   Future<void> completeGame(CompletedGame game);
 
   Future<List<CompletedGame>> loadRecentCompletedGames({int limit = 20});
+
+  /// Newest first; reads IDs only to support catalog rotation.
+  Future<List<String>> recentCompletedPuzzleIds({int limit = 20});
+
+  Future<bool> isDailyCompleted(String challengeKey);
 }

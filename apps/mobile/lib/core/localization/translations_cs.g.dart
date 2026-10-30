@@ -128,7 +128,7 @@ class _Translations$home$cs extends Translations$home$uk {
 	// Translations
 	@override String get title => 'Tvoje cesta sudoku';
 	@override String get game => 'Hrát';
-	@override String get continueGame => 'Pokračovat: střední';
+	@override String get continueGame => 'Pokračovat ve hře';
 	@override String continueDetails({required Object date, required Object progress, required Object time}) => 'Začátek ${date} · ${progress} % · ${time}';
 	@override String get replaceTitle => 'Začít nové sudoku?';
 	@override String get replaceBody => 'Nedokončená hra bude nahrazena.';
@@ -140,6 +140,14 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get progress => 'Pokrok';
 	@override String get profile => 'Profil';
 	@override String get scanner => 'Skener';
+	@override String get chooseDifficulty => 'Vyberte obtížnost';
+	@override String get easy => 'Lehká';
+	@override String get medium => 'Střední';
+	@override String get dailyTitle => 'Sudoku dne';
+	@override String get dailyStart => 'Začít dnešní sudoku';
+	@override String get dailyContinue => 'Pokračovat v dnešním sudoku';
+	@override String get dailyCompleted => 'Dnes dokončeno';
+	@override String get contentUnavailable => 'Úlohy nejsou dostupné. Zkuste to znovu.';
 }
 
 // Path: game
@@ -176,6 +184,8 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String get saveFailed => 'Hru se nepodařilo uložit.';
 	@override String get retrySave => 'Zkusit znovu';
 	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} chyb · ${hints} nápověd';
+	@override String get standardTitle => 'Sudoku';
+	@override String get dailyTitle => 'Sudoku dne';
 }
 
 // Path: learn
@@ -185,7 +195,45 @@ class _Translations$learn$cs extends Translations$learn$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Lekce technik přijdou později.';
+	@override String get title => 'Učení';
+	@override String get intro => 'Jedna technika, jeden jasný krok.';
+	@override String get newLabel => 'Nové';
+	@override String get learningLabel => 'Učím se';
+	@override String get practicingLabel => 'Procvičuji';
+	@override String get masteredLabel => 'Zvládnuto';
+	@override String get planTitle => 'Plán lekce';
+	@override String get lessonStart => 'Začít lekci';
+	@override String get next => 'Dále';
+	@override String get practiceStart => 'Začít cvičení';
+	@override String get concept => 'Princip';
+	@override String get lookFor => 'Čeho si všimnout';
+	@override String get reasoning => 'Proč to funguje';
+	@override String get example => 'Příklad';
+	@override String get tryIt => 'Zkus to';
+	@override String exercise({required Object current, required Object total}) => 'Úloha ${current} z ${total}';
+	@override String get placementPrompt => 'Vyber políčko a číslici.';
+	@override String get eliminationPrompt => 'Vyber políčko a označ všechny kandidáty k odstranění.';
+	@override String get checkAnswer => 'Zkontrolovat';
+	@override String get correctTitle => 'Správně';
+	@override String get incorrectTitle => 'Ještě ne';
+	@override String get tryAgain => 'Zkusit znovu';
+	@override String get askMichi => 'Zeptat se MICHI';
+	@override String get nextScenario => 'Další úloha';
+	@override String get sessionSummary => 'Cvičení dokončeno';
+	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} správně · ${attempts} pokusů';
+	@override String hintsUsed({required Object count}) => '${count} s MICHI';
+	@override String get done => 'Hotovo';
+	@override String get loading => 'Připravuji lekci…';
+	@override String get unavailable => 'Výukový obsah není dostupný. Zkus to znovu.';
+	@override String get noScenarios => 'Zatím nejsou dostupné žádné úlohy.';
+	@override String get saveFailed => 'Pokrok se nepodařilo uložit. Zkus to znovu.';
+	@override String get selectedForElimination => 'Označeno k odstranění';
+	@override String get requiredTechniques => 'Techniky v tomto sudoku';
+	@override String get helpedTechniques => 'MICHI pomohl s';
+	@override String get noHints => 'Bez nápověd';
+	@override String get practiceTitle => 'Cvičení';
+	@override String get continueLesson => 'Pokračovat v lekci';
+	@override late final _Translations$learn$lessons$cs lessons = _Translations$learn$lessons$cs._(_root);
 }
 
 // Path: progress
@@ -260,6 +308,79 @@ class _Translations$coach$cs extends Translations$coach$uk {
 	@override String get stuckBody => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.';
 }
 
+// Path: learn.lessons
+class _Translations$learn$lessons$cs extends Translations$learn$lessons$uk {
+	_Translations$learn$lessons$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override late final _Translations$learn$lessons$nakedSingle$cs nakedSingle = _Translations$learn$lessons$nakedSingle$cs._(_root);
+	@override late final _Translations$learn$lessons$hiddenSingle$cs hiddenSingle = _Translations$learn$lessons$hiddenSingle$cs._(_root);
+	@override late final _Translations$learn$lessons$nakedPair$cs nakedPair = _Translations$learn$lessons$nakedPair$cs._(_root);
+	@override late final _Translations$learn$lessons$pointingPair$cs pointingPair = _Translations$learn$lessons$pointingPair$cs._(_root);
+}
+
+// Path: learn.lessons.nakedSingle
+class _Translations$learn$lessons$nakedSingle$cs extends Translations$learn$lessons$nakedSingle$uk {
+	_Translations$learn$lessons$nakedSingle$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'V prázdném políčku zbývá jediná možná číslice.';
+	@override String get concept => 'Kandidáti jsou číslice, které ještě mohou do prázdného políčka.';
+	@override String get lookFor => 'Najdi políčko, v němž řádek, sloupec a blok vyloučí vše kromě jedné číslice.';
+	@override String get reasoning => 'Zbývá jeden kandidát, proto patří právě sem.';
+	@override String get example => 'Ve zvýrazněném políčku zbývá jediný kandidát.';
+	@override String get tryIt => 'Vyber políčko a dosaď zbývající číslici.';
+}
+
+// Path: learn.lessons.hiddenSingle
+class _Translations$learn$lessons$hiddenSingle$cs extends Translations$learn$lessons$hiddenSingle$uk {
+	_Translations$learn$lessons$hiddenSingle$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Číslice má v řádku, sloupci nebo bloku jediné možné místo.';
+	@override String get concept => 'Sleduj jednu číslici v celé skupině, ne všechny kandidáty jednoho políčka.';
+	@override String get lookFor => 'Najdi jediné prázdné místo, kam číslice ještě může patřit.';
+	@override String get reasoning => 'Políčko může mít více kandidátů, ale tato číslice má ve skupině jediný domov.';
+	@override String get example => 'Ve zvýrazněné skupině zbývá jediné místo pro danou číslici.';
+	@override String get tryIt => 'Vyber jediné místo a dosaď číslici.';
+}
+
+// Path: learn.lessons.nakedPair
+class _Translations$learn$lessons$nakedPair$cs extends Translations$learn$lessons$nakedPair$uk {
+	_Translations$learn$lessons$nakedPair$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dvě políčka ve skupině mají stejnou dvojici kandidátů.';
+	@override String get concept => 'Dvojice si tyto dvě číslice vyhrazuje.';
+	@override String get lookFor => 'Najdi dvě políčka ve stejné skupině se stejnými dvěma kandidáty.';
+	@override String get reasoning => 'Tyto číslice už nemohou být jinde ve skupině, proto je tam odstraň.';
+	@override String get example => 'Zvýrazněná dvojice odstraňuje kandidáty z dalších políček.';
+	@override String get tryIt => 'Označ všechny kandidáty k odstranění. Zatím nic nedosazuj.';
+}
+
+// Path: learn.lessons.pointingPair
+class _Translations$learn$lessons$pointingPair$cs extends Translations$learn$lessons$pointingPair$uk {
+	_Translations$learn$lessons$pointingPair$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dvě pozice kandidáta v bloku leží na stejném řádku či sloupci.';
+	@override String get concept => 'Blok může číslici omezit na jednu linii.';
+	@override String get lookFor => 'Najdi právě dvě pozice pro číslici v bloku na společné linii.';
+	@override String get reasoning => 'Číslice zůstane v bloku, proto ji odstraň mimo blok na stejné linii.';
+	@override String get example => 'Sleduj zvýrazněnou linii mimo blok.';
+	@override String get tryIt => 'Označ všechny kandidáty odstraněné mimo blok.';
+}
+
 /// The flat map containing all translations for locale <cs>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -281,7 +402,7 @@ extension on TranslationsCs {
 			'auth.unavailable' => 'Synchronizace postupu přijde později.',
 			'home.title' => 'Tvoje cesta sudoku',
 			'home.game' => 'Hrát',
-			'home.continueGame' => 'Pokračovat: střední',
+			'home.continueGame' => 'Pokračovat ve hře',
 			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Začátek ${date} · ${progress} % · ${time}',
 			'home.replaceTitle' => 'Začít nové sudoku?',
 			'home.replaceBody' => 'Nedokončená hra bude nahrazena.',
@@ -293,6 +414,14 @@ extension on TranslationsCs {
 			'home.progress' => 'Pokrok',
 			'home.profile' => 'Profil',
 			'home.scanner' => 'Skener',
+			'home.chooseDifficulty' => 'Vyberte obtížnost',
+			'home.easy' => 'Lehká',
+			'home.medium' => 'Střední',
+			'home.dailyTitle' => 'Sudoku dne',
+			'home.dailyStart' => 'Začít dnešní sudoku',
+			'home.dailyContinue' => 'Pokračovat v dnešním sudoku',
+			'home.dailyCompleted' => 'Dnes dokončeno',
+			'home.contentUnavailable' => 'Úlohy nejsou dostupné. Zkuste to znovu.',
 			'game.title' => 'Denní sudoku · Střední',
 			'game.undo' => 'Zpět',
 			'game.erase' => 'Smazat',
@@ -320,7 +449,70 @@ extension on TranslationsCs {
 			'game.saveFailed' => 'Hru se nepodařilo uložit.',
 			'game.retrySave' => 'Zkusit znovu',
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} chyb · ${hints} nápověd',
-			'learn.unavailable' => 'Lekce technik přijdou později.',
+			'game.standardTitle' => 'Sudoku',
+			'game.dailyTitle' => 'Sudoku dne',
+			'learn.title' => 'Učení',
+			'learn.intro' => 'Jedna technika, jeden jasný krok.',
+			'learn.newLabel' => 'Nové',
+			'learn.learningLabel' => 'Učím se',
+			'learn.practicingLabel' => 'Procvičuji',
+			'learn.masteredLabel' => 'Zvládnuto',
+			'learn.planTitle' => 'Plán lekce',
+			'learn.lessonStart' => 'Začít lekci',
+			'learn.next' => 'Dále',
+			'learn.practiceStart' => 'Začít cvičení',
+			'learn.concept' => 'Princip',
+			'learn.lookFor' => 'Čeho si všimnout',
+			'learn.reasoning' => 'Proč to funguje',
+			'learn.example' => 'Příklad',
+			'learn.tryIt' => 'Zkus to',
+			'learn.exercise' => ({required Object current, required Object total}) => 'Úloha ${current} z ${total}',
+			'learn.placementPrompt' => 'Vyber políčko a číslici.',
+			'learn.eliminationPrompt' => 'Vyber políčko a označ všechny kandidáty k odstranění.',
+			'learn.checkAnswer' => 'Zkontrolovat',
+			'learn.correctTitle' => 'Správně',
+			'learn.incorrectTitle' => 'Ještě ne',
+			'learn.tryAgain' => 'Zkusit znovu',
+			'learn.askMichi' => 'Zeptat se MICHI',
+			'learn.nextScenario' => 'Další úloha',
+			'learn.sessionSummary' => 'Cvičení dokončeno',
+			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} správně · ${attempts} pokusů',
+			'learn.hintsUsed' => ({required Object count}) => '${count} s MICHI',
+			'learn.done' => 'Hotovo',
+			'learn.loading' => 'Připravuji lekci…',
+			'learn.unavailable' => 'Výukový obsah není dostupný. Zkus to znovu.',
+			'learn.noScenarios' => 'Zatím nejsou dostupné žádné úlohy.',
+			'learn.saveFailed' => 'Pokrok se nepodařilo uložit. Zkus to znovu.',
+			'learn.selectedForElimination' => 'Označeno k odstranění',
+			'learn.requiredTechniques' => 'Techniky v tomto sudoku',
+			'learn.helpedTechniques' => 'MICHI pomohl s',
+			'learn.noHints' => 'Bez nápověd',
+			'learn.practiceTitle' => 'Cvičení',
+			'learn.continueLesson' => 'Pokračovat v lekci',
+			'learn.lessons.nakedSingle.description' => 'V prázdném políčku zbývá jediná možná číslice.',
+			'learn.lessons.nakedSingle.concept' => 'Kandidáti jsou číslice, které ještě mohou do prázdného políčka.',
+			'learn.lessons.nakedSingle.lookFor' => 'Najdi políčko, v němž řádek, sloupec a blok vyloučí vše kromě jedné číslice.',
+			'learn.lessons.nakedSingle.reasoning' => 'Zbývá jeden kandidát, proto patří právě sem.',
+			'learn.lessons.nakedSingle.example' => 'Ve zvýrazněném políčku zbývá jediný kandidát.',
+			'learn.lessons.nakedSingle.tryIt' => 'Vyber políčko a dosaď zbývající číslici.',
+			'learn.lessons.hiddenSingle.description' => 'Číslice má v řádku, sloupci nebo bloku jediné možné místo.',
+			'learn.lessons.hiddenSingle.concept' => 'Sleduj jednu číslici v celé skupině, ne všechny kandidáty jednoho políčka.',
+			'learn.lessons.hiddenSingle.lookFor' => 'Najdi jediné prázdné místo, kam číslice ještě může patřit.',
+			'learn.lessons.hiddenSingle.reasoning' => 'Políčko může mít více kandidátů, ale tato číslice má ve skupině jediný domov.',
+			'learn.lessons.hiddenSingle.example' => 'Ve zvýrazněné skupině zbývá jediné místo pro danou číslici.',
+			'learn.lessons.hiddenSingle.tryIt' => 'Vyber jediné místo a dosaď číslici.',
+			'learn.lessons.nakedPair.description' => 'Dvě políčka ve skupině mají stejnou dvojici kandidátů.',
+			'learn.lessons.nakedPair.concept' => 'Dvojice si tyto dvě číslice vyhrazuje.',
+			'learn.lessons.nakedPair.lookFor' => 'Najdi dvě políčka ve stejné skupině se stejnými dvěma kandidáty.',
+			'learn.lessons.nakedPair.reasoning' => 'Tyto číslice už nemohou být jinde ve skupině, proto je tam odstraň.',
+			'learn.lessons.nakedPair.example' => 'Zvýrazněná dvojice odstraňuje kandidáty z dalších políček.',
+			'learn.lessons.nakedPair.tryIt' => 'Označ všechny kandidáty k odstranění. Zatím nic nedosazuj.',
+			'learn.lessons.pointingPair.description' => 'Dvě pozice kandidáta v bloku leží na stejném řádku či sloupci.',
+			'learn.lessons.pointingPair.concept' => 'Blok může číslici omezit na jednu linii.',
+			'learn.lessons.pointingPair.lookFor' => 'Najdi právě dvě pozice pro číslici v bloku na společné linii.',
+			'learn.lessons.pointingPair.reasoning' => 'Číslice zůstane v bloku, proto ji odstraň mimo blok na stejné linii.',
+			'learn.lessons.pointingPair.example' => 'Sleduj zvýrazněnou linii mimo blok.',
+			'learn.lessons.pointingPair.tryIt' => 'Označ všechny kandidáty odstraněné mimo blok.',
 			'progress.unavailable' => 'Přehled zvládnutých technik přijde později.',
 			'profile.unavailable' => 'Nastavení profilu přijde později.',
 			'scanner.unavailable' => 'Import z fotoaparátu přijde po základní hře.',

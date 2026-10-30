@@ -128,7 +128,7 @@ class _Translations$home$es extends Translations$home$uk {
 	// Translations
 	@override String get title => 'Tu camino en el sudoku';
 	@override String get game => 'Jugar';
-	@override String get continueGame => 'Continuar: medio';
+	@override String get continueGame => 'Continuar partida';
 	@override String continueDetails({required Object date, required Object progress, required Object time}) => 'Iniciado el ${date} · ${progress} % · ${time}';
 	@override String get replaceTitle => '¿Empezar otro sudoku?';
 	@override String get replaceBody => 'Se reemplazará la partida sin terminar.';
@@ -140,6 +140,14 @@ class _Translations$home$es extends Translations$home$uk {
 	@override String get progress => 'Progreso';
 	@override String get profile => 'Perfil';
 	@override String get scanner => 'Escáner';
+	@override String get chooseDifficulty => 'Elige la dificultad';
+	@override String get easy => 'Fácil';
+	@override String get medium => 'Media';
+	@override String get dailyTitle => 'Sudoku del día';
+	@override String get dailyStart => 'Empezar el sudoku de hoy';
+	@override String get dailyContinue => 'Continuar el sudoku de hoy';
+	@override String get dailyCompleted => 'Completado hoy';
+	@override String get contentUnavailable => 'Los sudokus no están disponibles. Inténtalo de nuevo.';
 }
 
 // Path: game
@@ -176,6 +184,8 @@ class _Translations$game$es extends Translations$game$uk {
 	@override String get saveFailed => 'No se pudo guardar la partida.';
 	@override String get retrySave => 'Reintentar';
 	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} errores · ${hints} pistas';
+	@override String get standardTitle => 'Sudoku';
+	@override String get dailyTitle => 'Sudoku del día';
 }
 
 // Path: learn
@@ -185,7 +195,45 @@ class _Translations$learn$es extends Translations$learn$uk {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Las lecciones de técnicas llegarán más adelante.';
+	@override String get title => 'Aprender';
+	@override String get intro => 'Una técnica y un paso claro cada vez.';
+	@override String get newLabel => 'Nuevo';
+	@override String get learningLabel => 'Aprendiendo';
+	@override String get practicingLabel => 'Practicando';
+	@override String get masteredLabel => 'Dominado';
+	@override String get planTitle => 'Plan de la lección';
+	@override String get lessonStart => 'Empezar lección';
+	@override String get next => 'Siguiente';
+	@override String get practiceStart => 'Empezar práctica';
+	@override String get concept => 'Concepto';
+	@override String get lookFor => 'Qué buscar';
+	@override String get reasoning => 'Por qué funciona';
+	@override String get example => 'Ejemplo';
+	@override String get tryIt => 'Inténtalo';
+	@override String exercise({required Object current, required Object total}) => 'Ejercicio ${current} de ${total}';
+	@override String get placementPrompt => 'Elige una casilla y un número.';
+	@override String get eliminationPrompt => 'Elige una casilla y marca todos los candidatos que se pueden eliminar.';
+	@override String get checkAnswer => 'Comprobar';
+	@override String get correctTitle => 'Bien visto';
+	@override String get incorrectTitle => 'Todavía no';
+	@override String get tryAgain => 'Intentar de nuevo';
+	@override String get askMichi => 'Preguntar a MICHI';
+	@override String get nextScenario => 'Siguiente ejercicio';
+	@override String get sessionSummary => 'Práctica completada';
+	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} correctos · ${attempts} intentos';
+	@override String hintsUsed({required Object count}) => '${count} con MICHI';
+	@override String get done => 'Listo';
+	@override String get loading => 'Preparando la lección…';
+	@override String get unavailable => 'El contenido no está disponible. Inténtalo de nuevo.';
+	@override String get noScenarios => 'Aún no hay ejercicios disponibles.';
+	@override String get saveFailed => 'No se pudo guardar el progreso. Inténtalo de nuevo.';
+	@override String get selectedForElimination => 'Marcado para eliminar';
+	@override String get requiredTechniques => 'Técnicas de este sudoku';
+	@override String get helpedTechniques => 'MICHI ayudó con';
+	@override String get noHints => 'Sin pistas';
+	@override String get practiceTitle => 'Práctica';
+	@override String get continueLesson => 'Continuar lección';
+	@override late final _Translations$learn$lessons$es lessons = _Translations$learn$lessons$es._(_root);
 }
 
 // Path: progress
@@ -260,6 +308,79 @@ class _Translations$coach$es extends Translations$coach$uk {
 	@override String get stuckBody => 'MICHI todavía no puede explicar el siguiente paso con las técnicas disponibles.';
 }
 
+// Path: learn.lessons
+class _Translations$learn$lessons$es extends Translations$learn$lessons$uk {
+	_Translations$learn$lessons$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override late final _Translations$learn$lessons$nakedSingle$es nakedSingle = _Translations$learn$lessons$nakedSingle$es._(_root);
+	@override late final _Translations$learn$lessons$hiddenSingle$es hiddenSingle = _Translations$learn$lessons$hiddenSingle$es._(_root);
+	@override late final _Translations$learn$lessons$nakedPair$es nakedPair = _Translations$learn$lessons$nakedPair$es._(_root);
+	@override late final _Translations$learn$lessons$pointingPair$es pointingPair = _Translations$learn$lessons$pointingPair$es._(_root);
+}
+
+// Path: learn.lessons.nakedSingle
+class _Translations$learn$lessons$nakedSingle$es extends Translations$learn$lessons$nakedSingle$uk {
+	_Translations$learn$lessons$nakedSingle$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Una casilla vacía solo admite un número.';
+	@override String get concept => 'Los candidatos son los números que aún pueden ir en una casilla vacía.';
+	@override String get lookFor => 'Busca una casilla donde fila, columna y bloque descarten todos menos uno.';
+	@override String get reasoning => 'Queda un candidato, así que ese número debe ir allí.';
+	@override String get example => 'La casilla resaltada tiene un solo candidato legal.';
+	@override String get tryIt => 'Elige la casilla y coloca el número restante.';
+}
+
+// Path: learn.lessons.hiddenSingle
+class _Translations$learn$lessons$hiddenSingle$es extends Translations$learn$lessons$hiddenSingle$uk {
+	_Translations$learn$lessons$hiddenSingle$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Un número solo tiene una posición en una fila, columna o bloque.';
+	@override String get concept => 'Observa un número en toda la unidad, no todos los candidatos de una casilla.';
+	@override String get lookFor => 'Busca la única posición donde aún cabe ese número.';
+	@override String get reasoning => 'La casilla puede tener varios candidatos, pero el número solo tiene un lugar.';
+	@override String get example => 'La unidad resaltada deja una única posición para ese número.';
+	@override String get tryIt => 'Elige la posición única y coloca el número.';
+}
+
+// Path: learn.lessons.nakedPair
+class _Translations$learn$lessons$nakedPair$es extends Translations$learn$lessons$nakedPair$uk {
+	_Translations$learn$lessons$nakedPair$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dos casillas de una unidad comparten los mismos dos candidatos.';
+	@override String get concept => 'La pareja reserva esos dos números para ambas casillas.';
+	@override String get lookFor => 'Busca dos casillas de la misma unidad con los mismos dos candidatos.';
+	@override String get reasoning => 'Esos números no pueden estar en otras casillas de la unidad: elimínalos.';
+	@override String get example => 'La pareja resaltada elimina candidatos en otras casillas.';
+	@override String get tryIt => 'Marca todos los candidatos eliminados. Aún no coloques ningún número.';
+}
+
+// Path: learn.lessons.pointingPair
+class _Translations$learn$lessons$pointingPair$es extends Translations$learn$lessons$pointingPair$uk {
+	_Translations$learn$lessons$pointingPair$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dos posiciones de un candidato en un bloque comparten fila o columna.';
+	@override String get concept => 'El bloque puede restringir un número a una sola línea.';
+	@override String get lookFor => 'Busca exactamente dos posiciones del número alineadas dentro del bloque.';
+	@override String get reasoning => 'El número queda dentro del bloque; elimínalo fuera del bloque en la misma línea.';
+	@override String get example => 'Sigue la línea resaltada fuera del bloque.';
+	@override String get tryIt => 'Marca todos los candidatos eliminados fuera del bloque.';
+}
+
 /// The flat map containing all translations for locale <es>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -281,7 +402,7 @@ extension on TranslationsEs {
 			'auth.unavailable' => 'La sincronización del progreso llegará más adelante.',
 			'home.title' => 'Tu camino en el sudoku',
 			'home.game' => 'Jugar',
-			'home.continueGame' => 'Continuar: medio',
+			'home.continueGame' => 'Continuar partida',
 			'home.continueDetails' => ({required Object date, required Object progress, required Object time}) => 'Iniciado el ${date} · ${progress} % · ${time}',
 			'home.replaceTitle' => '¿Empezar otro sudoku?',
 			'home.replaceBody' => 'Se reemplazará la partida sin terminar.',
@@ -293,6 +414,14 @@ extension on TranslationsEs {
 			'home.progress' => 'Progreso',
 			'home.profile' => 'Perfil',
 			'home.scanner' => 'Escáner',
+			'home.chooseDifficulty' => 'Elige la dificultad',
+			'home.easy' => 'Fácil',
+			'home.medium' => 'Media',
+			'home.dailyTitle' => 'Sudoku del día',
+			'home.dailyStart' => 'Empezar el sudoku de hoy',
+			'home.dailyContinue' => 'Continuar el sudoku de hoy',
+			'home.dailyCompleted' => 'Completado hoy',
+			'home.contentUnavailable' => 'Los sudokus no están disponibles. Inténtalo de nuevo.',
 			'game.title' => 'Sudoku diario · Intermedio',
 			'game.undo' => 'Deshacer',
 			'game.erase' => 'Borrar',
@@ -320,7 +449,70 @@ extension on TranslationsEs {
 			'game.saveFailed' => 'No se pudo guardar la partida.',
 			'game.retrySave' => 'Reintentar',
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} errores · ${hints} pistas',
-			'learn.unavailable' => 'Las lecciones de técnicas llegarán más adelante.',
+			'game.standardTitle' => 'Sudoku',
+			'game.dailyTitle' => 'Sudoku del día',
+			'learn.title' => 'Aprender',
+			'learn.intro' => 'Una técnica y un paso claro cada vez.',
+			'learn.newLabel' => 'Nuevo',
+			'learn.learningLabel' => 'Aprendiendo',
+			'learn.practicingLabel' => 'Practicando',
+			'learn.masteredLabel' => 'Dominado',
+			'learn.planTitle' => 'Plan de la lección',
+			'learn.lessonStart' => 'Empezar lección',
+			'learn.next' => 'Siguiente',
+			'learn.practiceStart' => 'Empezar práctica',
+			'learn.concept' => 'Concepto',
+			'learn.lookFor' => 'Qué buscar',
+			'learn.reasoning' => 'Por qué funciona',
+			'learn.example' => 'Ejemplo',
+			'learn.tryIt' => 'Inténtalo',
+			'learn.exercise' => ({required Object current, required Object total}) => 'Ejercicio ${current} de ${total}',
+			'learn.placementPrompt' => 'Elige una casilla y un número.',
+			'learn.eliminationPrompt' => 'Elige una casilla y marca todos los candidatos que se pueden eliminar.',
+			'learn.checkAnswer' => 'Comprobar',
+			'learn.correctTitle' => 'Bien visto',
+			'learn.incorrectTitle' => 'Todavía no',
+			'learn.tryAgain' => 'Intentar de nuevo',
+			'learn.askMichi' => 'Preguntar a MICHI',
+			'learn.nextScenario' => 'Siguiente ejercicio',
+			'learn.sessionSummary' => 'Práctica completada',
+			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} correctos · ${attempts} intentos',
+			'learn.hintsUsed' => ({required Object count}) => '${count} con MICHI',
+			'learn.done' => 'Listo',
+			'learn.loading' => 'Preparando la lección…',
+			'learn.unavailable' => 'El contenido no está disponible. Inténtalo de nuevo.',
+			'learn.noScenarios' => 'Aún no hay ejercicios disponibles.',
+			'learn.saveFailed' => 'No se pudo guardar el progreso. Inténtalo de nuevo.',
+			'learn.selectedForElimination' => 'Marcado para eliminar',
+			'learn.requiredTechniques' => 'Técnicas de este sudoku',
+			'learn.helpedTechniques' => 'MICHI ayudó con',
+			'learn.noHints' => 'Sin pistas',
+			'learn.practiceTitle' => 'Práctica',
+			'learn.continueLesson' => 'Continuar lección',
+			'learn.lessons.nakedSingle.description' => 'Una casilla vacía solo admite un número.',
+			'learn.lessons.nakedSingle.concept' => 'Los candidatos son los números que aún pueden ir en una casilla vacía.',
+			'learn.lessons.nakedSingle.lookFor' => 'Busca una casilla donde fila, columna y bloque descarten todos menos uno.',
+			'learn.lessons.nakedSingle.reasoning' => 'Queda un candidato, así que ese número debe ir allí.',
+			'learn.lessons.nakedSingle.example' => 'La casilla resaltada tiene un solo candidato legal.',
+			'learn.lessons.nakedSingle.tryIt' => 'Elige la casilla y coloca el número restante.',
+			'learn.lessons.hiddenSingle.description' => 'Un número solo tiene una posición en una fila, columna o bloque.',
+			'learn.lessons.hiddenSingle.concept' => 'Observa un número en toda la unidad, no todos los candidatos de una casilla.',
+			'learn.lessons.hiddenSingle.lookFor' => 'Busca la única posición donde aún cabe ese número.',
+			'learn.lessons.hiddenSingle.reasoning' => 'La casilla puede tener varios candidatos, pero el número solo tiene un lugar.',
+			'learn.lessons.hiddenSingle.example' => 'La unidad resaltada deja una única posición para ese número.',
+			'learn.lessons.hiddenSingle.tryIt' => 'Elige la posición única y coloca el número.',
+			'learn.lessons.nakedPair.description' => 'Dos casillas de una unidad comparten los mismos dos candidatos.',
+			'learn.lessons.nakedPair.concept' => 'La pareja reserva esos dos números para ambas casillas.',
+			'learn.lessons.nakedPair.lookFor' => 'Busca dos casillas de la misma unidad con los mismos dos candidatos.',
+			'learn.lessons.nakedPair.reasoning' => 'Esos números no pueden estar en otras casillas de la unidad: elimínalos.',
+			'learn.lessons.nakedPair.example' => 'La pareja resaltada elimina candidatos en otras casillas.',
+			'learn.lessons.nakedPair.tryIt' => 'Marca todos los candidatos eliminados. Aún no coloques ningún número.',
+			'learn.lessons.pointingPair.description' => 'Dos posiciones de un candidato en un bloque comparten fila o columna.',
+			'learn.lessons.pointingPair.concept' => 'El bloque puede restringir un número a una sola línea.',
+			'learn.lessons.pointingPair.lookFor' => 'Busca exactamente dos posiciones del número alineadas dentro del bloque.',
+			'learn.lessons.pointingPair.reasoning' => 'El número queda dentro del bloque; elimínalo fuera del bloque en la misma línea.',
+			'learn.lessons.pointingPair.example' => 'Sigue la línea resaltada fuera del bloque.',
+			'learn.lessons.pointingPair.tryIt' => 'Marca todos los candidatos eliminados fuera del bloque.',
 			'progress.unavailable' => 'El dominio de las técnicas llegará más adelante.',
 			'profile.unavailable' => 'La configuración del perfil llegará más adelante.',
 			'scanner.unavailable' => 'La importación con cámara llegará después del juego principal.',

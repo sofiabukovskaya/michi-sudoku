@@ -112,13 +112,29 @@ final class SudokuBoardPainter extends CustomPainter {
             canvas,
             '$note',
             noteRect,
-            const TextStyle(
+            TextStyle(
               fontFamily: MichiTypography.functionalFamily,
               fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: MichiColors.boardCandidate,
+              color:
+                  view.selectedEliminations.contains(
+                    CandidateElimination(cell, note),
+                  )
+                  ? MichiColors.coralText
+                  : MichiColors.boardCandidate,
             ),
           );
+          if (view.selectedEliminations.contains(
+            CandidateElimination(cell, note),
+          )) {
+            canvas.drawLine(
+              Offset(noteRect.left + 2, noteRect.center.dy),
+              Offset(noteRect.right - 2, noteRect.center.dy),
+              Paint()
+                ..color = MichiColors.coralText
+                ..strokeWidth = 1.5,
+            );
+          }
         }
       }
     }

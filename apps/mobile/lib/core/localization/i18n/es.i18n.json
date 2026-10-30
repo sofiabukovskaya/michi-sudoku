@@ -25,7 +25,7 @@
   "home": {
     "title": "Tu camino en el sudoku",
     "game": "Jugar",
-    "continueGame": "Continuar: medio",
+    "continueGame": "Continuar partida",
     "continueDetails": "Iniciado el $date · $progress % · $time",
     "replaceTitle": "¿Empezar otro sudoku?",
     "replaceBody": "Se reemplazará la partida sin terminar.",
@@ -36,7 +36,15 @@
     "learn": "Aprender",
     "progress": "Progreso",
     "profile": "Perfil",
-    "scanner": "Escáner"
+    "scanner": "Escáner",
+    "chooseDifficulty": "Elige la dificultad",
+    "easy": "Fácil",
+    "medium": "Media",
+    "dailyTitle": "Sudoku del día",
+    "dailyStart": "Empezar el sudoku de hoy",
+    "dailyContinue": "Continuar el sudoku de hoy",
+    "dailyCompleted": "Completado hoy",
+    "contentUnavailable": "Los sudokus no están disponibles. Inténtalo de nuevo."
   },
   "game": {
     "title": "Sudoku diario · Intermedio",
@@ -65,10 +73,83 @@
     "restoreUnavailable": "No se pudo restaurar la partida.",
     "saveFailed": "No se pudo guardar la partida.",
     "retrySave": "Reintentar",
-    "completionStats": "$mistakes errores · $hints pistas"
+    "completionStats": "$mistakes errores · $hints pistas",
+    "standardTitle": "Sudoku",
+    "dailyTitle": "Sudoku del día"
   },
   "learn": {
-    "unavailable": "Las lecciones de técnicas llegarán más adelante."
+    "title": "Aprender",
+    "intro": "Una técnica y un paso claro cada vez.",
+    "newLabel": "Nuevo",
+    "learningLabel": "Aprendiendo",
+    "practicingLabel": "Practicando",
+    "masteredLabel": "Dominado",
+    "planTitle": "Plan de la lección",
+    "lessonStart": "Empezar lección",
+    "next": "Siguiente",
+    "practiceStart": "Empezar práctica",
+    "concept": "Concepto",
+    "lookFor": "Qué buscar",
+    "reasoning": "Por qué funciona",
+    "example": "Ejemplo",
+    "tryIt": "Inténtalo",
+    "exercise": "Ejercicio $current de $total",
+    "placementPrompt": "Elige una casilla y un número.",
+    "eliminationPrompt": "Elige una casilla y marca todos los candidatos que se pueden eliminar.",
+    "checkAnswer": "Comprobar",
+    "correctTitle": "Bien visto",
+    "incorrectTitle": "Todavía no",
+    "tryAgain": "Intentar de nuevo",
+    "askMichi": "Preguntar a MICHI",
+    "nextScenario": "Siguiente ejercicio",
+    "sessionSummary": "Práctica completada",
+    "summaryStats": "$correct correctos · $attempts intentos",
+    "hintsUsed": "$count con MICHI",
+    "done": "Listo",
+    "loading": "Preparando la lección…",
+    "unavailable": "El contenido no está disponible. Inténtalo de nuevo.",
+    "noScenarios": "Aún no hay ejercicios disponibles.",
+    "saveFailed": "No se pudo guardar el progreso. Inténtalo de nuevo.",
+    "selectedForElimination": "Marcado para eliminar",
+    "requiredTechniques": "Técnicas de este sudoku",
+    "helpedTechniques": "MICHI ayudó con",
+    "noHints": "Sin pistas",
+    "practiceTitle": "Práctica",
+    "continueLesson": "Continuar lección",
+    "lessons": {
+      "nakedSingle": {
+        "description": "Una casilla vacía solo admite un número.",
+        "concept": "Los candidatos son los números que aún pueden ir en una casilla vacía.",
+        "lookFor": "Busca una casilla donde fila, columna y bloque descarten todos menos uno.",
+        "reasoning": "Queda un candidato, así que ese número debe ir allí.",
+        "example": "La casilla resaltada tiene un solo candidato legal.",
+        "tryIt": "Elige la casilla y coloca el número restante."
+      },
+      "hiddenSingle": {
+        "description": "Un número solo tiene una posición en una fila, columna o bloque.",
+        "concept": "Observa un número en toda la unidad, no todos los candidatos de una casilla.",
+        "lookFor": "Busca la única posición donde aún cabe ese número.",
+        "reasoning": "La casilla puede tener varios candidatos, pero el número solo tiene un lugar.",
+        "example": "La unidad resaltada deja una única posición para ese número.",
+        "tryIt": "Elige la posición única y coloca el número."
+      },
+      "nakedPair": {
+        "description": "Dos casillas de una unidad comparten los mismos dos candidatos.",
+        "concept": "La pareja reserva esos dos números para ambas casillas.",
+        "lookFor": "Busca dos casillas de la misma unidad con los mismos dos candidatos.",
+        "reasoning": "Esos números no pueden estar en otras casillas de la unidad: elimínalos.",
+        "example": "La pareja resaltada elimina candidatos en otras casillas.",
+        "tryIt": "Marca todos los candidatos eliminados. Aún no coloques ningún número."
+      },
+      "pointingPair": {
+        "description": "Dos posiciones de un candidato en un bloque comparten fila o columna.",
+        "concept": "El bloque puede restringir un número a una sola línea.",
+        "lookFor": "Busca exactamente dos posiciones del número alineadas dentro del bloque.",
+        "reasoning": "El número queda dentro del bloque; elimínalo fuera del bloque en la misma línea.",
+        "example": "Sigue la línea resaltada fuera del bloque.",
+        "tryIt": "Marca todos los candidatos eliminados fuera del bloque."
+      }
+    }
   },
   "progress": {
     "unavailable": "El dominio de las técnicas llegará más adelante."

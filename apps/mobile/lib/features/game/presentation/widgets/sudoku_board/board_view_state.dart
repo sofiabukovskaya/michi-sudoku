@@ -13,7 +13,23 @@ final class BoardViewState {
     required this.notes,
     required this.selectedCell,
     required this.coachHint,
+    this.selectedEliminations = const {},
   });
+
+  factory BoardViewState.educational({
+    required HumanSolverState state,
+    CellRef? selectedCell,
+    CoachHint? coachHint,
+    Set<CandidateElimination> selectedEliminations = const {},
+  }) => BoardViewState(
+    givens: state.board,
+    board: state.board,
+    solution: state.board,
+    notes: state.candidates,
+    selectedCell: selectedCell,
+    coachHint: coachHint,
+    selectedEliminations: selectedEliminations,
+  );
 
   factory BoardViewState.fromGame(GameState game) => BoardViewState(
     givens: game.puzzle.givens,
@@ -30,6 +46,7 @@ final class BoardViewState {
   final Map<CellRef, CandidateMask> notes;
   final CellRef? selectedCell;
   final CoachHint? coachHint;
+  final Set<CandidateElimination> selectedEliminations;
 
   bool isGiven(CellRef cell) => givens.isFilled(cell);
   bool isWrong(CellRef cell) =>
@@ -45,6 +62,7 @@ final class BoardViewState {
       solution == other.solution &&
       selectedCell == other.selectedCell &&
       coachHint == other.coachHint &&
+      setEquals(selectedEliminations, other.selectedEliminations) &&
       mapEquals(notes, other.notes);
 
   @override
@@ -54,6 +72,7 @@ final class BoardViewState {
     solution,
     selectedCell,
     coachHint,
+    Object.hashAllUnordered(selectedEliminations),
     Object.hashAllUnordered(
       notes.entries.map((entry) => Object.hash(entry.key, entry.value)),
     ),
