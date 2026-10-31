@@ -10,8 +10,8 @@ void main() {
     'every bundled scenario is valid, actionable and Coach-compatible',
     () async {
       final scenarios = await LocalPracticeCatalog().load();
-      expect(scenarios, hasLength(20));
-      expect(scenarios.map((item) => item.id).toSet(), hasLength(20));
+      expect(scenarios, hasLength(40));
+      expect(scenarios.map((item) => item.id).toSet(), hasLength(40));
       const exact = BacktrackingExactSolver();
       const human = DeterministicHumanSolver();
       const coach = StructuredCoachEngine();
@@ -22,7 +22,7 @@ void main() {
         );
       }
       for (final scenario in scenarios) {
-        expect(scenario.contentVersion, 1, reason: scenario.id);
+        expect(scenario.contentVersion, 2, reason: scenario.id);
         expect(
           SudokuConstraints.validate(scenario.board).isValid,
           isTrue,
@@ -33,16 +33,41 @@ void main() {
           1,
           reason: scenario.id,
         );
-        final state = HumanSolverState.initial(scenario.board);
+        final solution = exact.solve(scenario.board)!;
+        final state = scenario.initialState;
         expect(state.hasContradiction, isFalse, reason: scenario.id);
+        for (var index = 0; index < 81; index++) {
+          final cell = CellRef.fromIndex(index);
+          if (scenario.board.isEmpty(cell)) {
+            expect(
+              state.candidatesFor(cell).contains(solution.valueAt(cell)),
+              isTrue,
+              reason: '${scenario.id}: candidate at $cell',
+            );
+          }
+        }
         final deduction = human.findNextDeduction(state);
         expect(deduction, isNotNull, reason: scenario.id);
         expect(deduction!.technique, scenario.technique, reason: scenario.id);
         if (techniqueIsPlacement(scenario.technique)) {
           expect(deduction.placements, isNotEmpty, reason: scenario.id);
+          for (final move in deduction.placements) {
+            expect(
+              solution.valueAt(move.cell),
+              move.digit,
+              reason: scenario.id,
+            );
+          }
         } else {
           expect(deduction.eliminations, isNotEmpty, reason: scenario.id);
           expect(deduction.placements, isEmpty, reason: scenario.id);
+          for (final move in deduction.eliminations) {
+            expect(
+              solution.valueAt(move.cell),
+              isNot(move.digit),
+              reason: scenario.id,
+            );
+          }
         }
         final plan = coach.createPlan(deduction);
         expect(plan.length, 4, reason: scenario.id);

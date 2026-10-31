@@ -8,15 +8,36 @@
     "subtitle": "Nauč se vidět další tah."
   },
   "welcome": {
-    "title": "Tvoje cesta sudoku."
+    "title": "Najdi svou cestu logikou.",
+    "subtitle": "Sudoku s průvodcem, který napoví, ale nevyřeší vše za tebe.",
+    "guest": "Začít bez účtu"
   },
   "onboarding": {
     "title": "Tady začíná tvoje učení.",
-    "chooseLevel": "Vybrat úroveň"
+    "chooseLevel": "Vybrat úroveň",
+    "skip": "Přeskočit",
+    "next": "Dále",
+    "seeTitle": "Sudoku je snazší, když víš, na co se dívat.",
+    "seeBody": "MICHI vysvětluje logiku každého tahu.",
+    "hintsTitle": "Nápovědy, které učí.",
+    "hintsBody": "Začni jemnou nápovědou. O další požádej, když chceš.",
+    "patternsTitle": "Uč se vzory, ne odpovědi.",
+    "patternsBody": "Skryté jednotlivosti, dvojice, X-Wing — vlastním tempem.",
+    "pathTitle": "Tvoje cesta sudoku.",
+    "pathBody": "MICHI pozná, co je pro tebe těžké, a navrhne procvičení."
   },
   "playerLevel": {
     "title": "Jak dobře znáš sudoku?",
-    "goToGame": "Začít hrát"
+    "goToGame": "Začít hrát",
+    "subtitle": "Podle toho vybereme první lekci a obtížnost. Změnit to můžeš kdykoli.",
+    "beginner": "Teprve začínám",
+    "beginnerDetail": "Pravidla a první tahy",
+    "basics": "Znám základy",
+    "basicsDetail": "Jednotlivá čísla a kandidáti",
+    "regular": "Hraji pravidelně",
+    "regularDetail": "Dvojice a ukazující dvojice",
+    "advanced": "Chci výzvu",
+    "advancedDetail": "X-Wing a dál"
   },
   "auth": {
     "title": "Účet",
@@ -44,7 +65,14 @@
     "dailyStart": "Začít dnešní sudoku",
     "dailyContinue": "Pokračovat v dnešním sudoku",
     "dailyCompleted": "Dnes dokončeno",
-    "contentUnavailable": "Úlohy nejsou dostupné. Zkuste to znovu."
+    "contentUnavailable": "Úlohy nejsou dostupné. Zkuste to znovu.",
+    "advanced": "Pokročilé",
+    "expert": "Expertní",
+    "greeting": "Dobré ráno",
+    "newPuzzle": "Další sudoku",
+    "weekTitle": "Tento týden",
+    "weekDetails": "Podrobnosti",
+    "weekdaysShort": "Po|Út|St|Čt|Pá|So|Ne"
   },
   "game": {
     "title": "Denní sudoku · Střední",
@@ -75,7 +103,10 @@
     "retrySave": "Zkusit znovu",
     "completionStats": "$mistakes chyb · $hints nápověd",
     "standardTitle": "Sudoku",
-    "dailyTitle": "Sudoku dne"
+    "dailyTitle": "Sudoku dne",
+    "completionLogic": "vyřešená políčka",
+    "completionMistakes": "chyby",
+    "completionHints": "nápovědy"
   },
   "learn": {
     "title": "Učení",
@@ -148,8 +179,48 @@
         "reasoning": "Číslice zůstane v bloku, proto ji odstraň mimo blok na stejné linii.",
         "example": "Sleduj zvýrazněnou linii mimo blok.",
         "tryIt": "Označ všechny kandidáty odstraněné mimo blok."
+      },
+      "hiddenPair": {
+        "description": "Dvě číslice se skrývají ve stejných dvou polích.",
+        "concept": "Skrytou dvojici najdeš sledováním číslic, ne shodných kandidátů.",
+        "lookFor": "Najdi dvě číslice, které se v jednotce vyskytují jen ve stejných dvou polích.",
+        "reasoning": "Obě číslice patří do těchto polí; ostatní kandidáti mohou pryč.",
+        "example": "Zvýrazněná pole jsou jediná místa pro obě číslice.",
+        "tryIt": "Odstraň nadbytečné kandidáty z těchto dvou polí."
+      },
+      "boxLineReduction": {
+        "description": "Řádek či sloupec omezuje číslici na jeden blok.",
+        "concept": "Řádek může uzamknout číslici v bloku.",
+        "lookFor": "Najdi dvě nebo tři pozice číslice v jednom řádku, všechny v jednom bloku.",
+        "reasoning": "Číslice musí být v bloku na tomto řádku; jinde v bloku ji odstraň.",
+        "example": "Sleduj zvýrazněný řádek do bloku a najdi kandidáty mimo něj.",
+        "tryIt": "Odstraň číslici z ostatních polí bloku."
+      },
+      "nakedTriple": {
+        "description": "Tři pole sdílejí pouze tři možné číslice.",
+        "concept": "Trojice rezervuje tři číslice pro tři pole v jednotce.",
+        "lookFor": "Najdi tři pole, jejichž kandidáti dohromady tvoří přesně tři číslice.",
+        "reasoning": "Tři číslice tato pole obsadí, i když se jejich kandidáti liší.",
+        "example": "Zvýrazněná pole mají různé dvojice, ale dohromady tři číslice.",
+        "tryIt": "Odstraň tyto číslice z ostatních polí jednotky."
+      },
+      "xWing": {
+        "description": "Dva řádky mají číslici ve stejných dvou průsečících.",
+        "concept": "X-Wing spojuje dva řádky nebo sloupce jednou číslicí.",
+        "lookFor": "Najdi dva řádky, kde je číslice právě dvakrát ve stejných pozicích.",
+        "reasoning": "Čtyři průsečíky rezervují číslici; jinde na protínajících řádcích ji odstraň.",
+        "example": "Sleduj čtyři zvýrazněné pozice a dva protínající řádky.",
+        "tryIt": "Odstraň číslici mimo čtyři pole vzoru."
       }
-    }
+    },
+    "basicsGroup": "Základy",
+    "intermediateGroup": "Střední úroveň",
+    "advancedGroup": "Pokročilá úroveň",
+    "nowLabel": "Nyní",
+    "groupProgress": "$completed z $total",
+    "extraElimination": "Jeden vybraný kandidát se tímto vzorem neodstraňuje. Zkontroluj zvýrazněná pole.",
+    "missingElimination": "Je třeba odstranit další kandidáty. Sleduj zvýrazněnou jednotku.",
+    "wrongPlacement": "Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici."
   },
   "progress": {
     "unavailable": "Přehled zvládnutých technik přijde později."
@@ -193,6 +264,14 @@
     "wrongTitle": "Nejdřív opravte chybu.",
     "wrongBody": "Dokud je na desce chybná číslice, nelze určit logický další krok.",
     "stuckTitle": "Zatím žádný podporovaný krok.",
-    "stuckBody": "MICHI zatím neumí vysvětlit další krok dostupnými technikami."
+    "stuckBody": "MICHI zatím neumí vysvětlit další krok dostupnými technikami.",
+    "hiddenPair": "Skrytá dvojice",
+    "boxLineReduction": "Redukce řádek–blok",
+    "nakedTriple": "Otevřená trojice",
+    "xWing": "X-Wing",
+    "identifyHiddenPair": "Dvě číslice jsou možné jen ve stejných dvou polích. Odstraň ostatní kandidáty.",
+    "understandBoxLine": "Číslice je v řádku omezena na jeden blok. Odstraň ji jinde v bloku.",
+    "understandTriple": "Tři pole sdílejí přesně tři číslice. Odstraň je z dalších polí jednotky.",
+    "understandXWing": "Ve dvou řádcích má číslice stejné dva průsečíky. Odstraň ji jinde v protínajících řádcích."
   }
 }

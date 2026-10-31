@@ -9,12 +9,20 @@ void main() {
 
   test('bundled production pack is valid and fully coachable', () async {
     final catalog = await LocalPuzzleCatalogLoader().load();
-    expect(catalog.version, 1);
-    expect(catalog.puzzles, hasLength(20));
-    expect(catalog.puzzles.map((puzzle) => puzzle.id).toSet(), hasLength(20));
+    expect(catalog.version, 2);
+    expect(catalog.puzzles, hasLength(35));
+    expect(
+      catalog.puzzles.map((puzzle) => puzzle.id).toSet(),
+      hasLength(35),
+    );
     expect(catalog.puzzlesByDifficulty(PuzzleDifficulty.easy), hasLength(12));
     expect(catalog.puzzlesByDifficulty(PuzzleDifficulty.medium), hasLength(8));
-    expect(catalog.dailyEligible, hasLength(20));
+    expect(
+      catalog.puzzlesByDifficulty(PuzzleDifficulty.advanced),
+      hasLength(12),
+    );
+    expect(catalog.puzzlesByDifficulty(PuzzleDifficulty.expert), hasLength(3));
+    expect(catalog.dailyEligible, hasLength(32));
 
     const analyzer = PuzzleAnalyzer(
       BacktrackingExactSolver(),

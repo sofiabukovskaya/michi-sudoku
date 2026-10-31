@@ -83,7 +83,9 @@ class _Translations$welcome$cs extends Translations$welcome$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Tvoje cesta sudoku.';
+	@override String get title => 'Najdi svou cestu logikou.';
+	@override String get subtitle => 'Sudoku s průvodcem, který napoví, ale nevyřeší vše za tebe.';
+	@override String get guest => 'Začít bez účtu';
 }
 
 // Path: onboarding
@@ -95,6 +97,16 @@ class _Translations$onboarding$cs extends Translations$onboarding$uk {
 	// Translations
 	@override String get title => 'Tady začíná tvoje učení.';
 	@override String get chooseLevel => 'Vybrat úroveň';
+	@override String get skip => 'Přeskočit';
+	@override String get next => 'Dále';
+	@override String get seeTitle => 'Sudoku je snazší, když víš, na co se dívat.';
+	@override String get seeBody => 'MICHI vysvětluje logiku každého tahu.';
+	@override String get hintsTitle => 'Nápovědy, které učí.';
+	@override String get hintsBody => 'Začni jemnou nápovědou. O další požádej, když chceš.';
+	@override String get patternsTitle => 'Uč se vzory, ne odpovědi.';
+	@override String get patternsBody => 'Skryté jednotlivosti, dvojice, X-Wing — vlastním tempem.';
+	@override String get pathTitle => 'Tvoje cesta sudoku.';
+	@override String get pathBody => 'MICHI pozná, co je pro tebe těžké, a navrhne procvičení.';
 }
 
 // Path: playerLevel
@@ -106,6 +118,15 @@ class _Translations$playerLevel$cs extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => 'Jak dobře znáš sudoku?';
 	@override String get goToGame => 'Začít hrát';
+	@override String get subtitle => 'Podle toho vybereme první lekci a obtížnost. Změnit to můžeš kdykoli.';
+	@override String get beginner => 'Teprve začínám';
+	@override String get beginnerDetail => 'Pravidla a první tahy';
+	@override String get basics => 'Znám základy';
+	@override String get basicsDetail => 'Jednotlivá čísla a kandidáti';
+	@override String get regular => 'Hraji pravidelně';
+	@override String get regularDetail => 'Dvojice a ukazující dvojice';
+	@override String get advanced => 'Chci výzvu';
+	@override String get advancedDetail => 'X-Wing a dál';
 }
 
 // Path: auth
@@ -148,6 +169,13 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get dailyContinue => 'Pokračovat v dnešním sudoku';
 	@override String get dailyCompleted => 'Dnes dokončeno';
 	@override String get contentUnavailable => 'Úlohy nejsou dostupné. Zkuste to znovu.';
+	@override String get advanced => 'Pokročilé';
+	@override String get expert => 'Expertní';
+	@override String get greeting => 'Dobré ráno';
+	@override String get newPuzzle => 'Další sudoku';
+	@override String get weekTitle => 'Tento týden';
+	@override String get weekDetails => 'Podrobnosti';
+	@override String get weekdaysShort => 'Po|Út|St|Čt|Pá|So|Ne';
 }
 
 // Path: game
@@ -186,6 +214,9 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} chyb · ${hints} nápověd';
 	@override String get standardTitle => 'Sudoku';
 	@override String get dailyTitle => 'Sudoku dne';
+	@override String get completionLogic => 'vyřešená políčka';
+	@override String get completionMistakes => 'chyby';
+	@override String get completionHints => 'nápovědy';
 }
 
 // Path: learn
@@ -234,6 +265,14 @@ class _Translations$learn$cs extends Translations$learn$uk {
 	@override String get practiceTitle => 'Cvičení';
 	@override String get continueLesson => 'Pokračovat v lekci';
 	@override late final _Translations$learn$lessons$cs lessons = _Translations$learn$lessons$cs._(_root);
+	@override String get basicsGroup => 'Základy';
+	@override String get intermediateGroup => 'Střední úroveň';
+	@override String get advancedGroup => 'Pokročilá úroveň';
+	@override String get nowLabel => 'Nyní';
+	@override String groupProgress({required Object completed, required Object total}) => '${completed} z ${total}';
+	@override String get extraElimination => 'Jeden vybraný kandidát se tímto vzorem neodstraňuje. Zkontroluj zvýrazněná pole.';
+	@override String get missingElimination => 'Je třeba odstranit další kandidáty. Sleduj zvýrazněnou jednotku.';
+	@override String get wrongPlacement => 'Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici.';
 }
 
 // Path: progress
@@ -306,6 +345,14 @@ class _Translations$coach$cs extends Translations$coach$uk {
 	@override String get wrongBody => 'Dokud je na desce chybná číslice, nelze určit logický další krok.';
 	@override String get stuckTitle => 'Zatím žádný podporovaný krok.';
 	@override String get stuckBody => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.';
+	@override String get hiddenPair => 'Skrytá dvojice';
+	@override String get boxLineReduction => 'Redukce řádek–blok';
+	@override String get nakedTriple => 'Otevřená trojice';
+	@override String get xWing => 'X-Wing';
+	@override String get identifyHiddenPair => 'Dvě číslice jsou možné jen ve stejných dvou polích. Odstraň ostatní kandidáty.';
+	@override String get understandBoxLine => 'Číslice je v řádku omezena na jeden blok. Odstraň ji jinde v bloku.';
+	@override String get understandTriple => 'Tři pole sdílejí přesně tři číslice. Odstraň je z dalších polí jednotky.';
+	@override String get understandXWing => 'Ve dvou řádcích má číslice stejné dva průsečíky. Odstraň ji jinde v protínajících řádcích.';
 }
 
 // Path: learn.lessons
@@ -319,6 +366,10 @@ class _Translations$learn$lessons$cs extends Translations$learn$lessons$uk {
 	@override late final _Translations$learn$lessons$hiddenSingle$cs hiddenSingle = _Translations$learn$lessons$hiddenSingle$cs._(_root);
 	@override late final _Translations$learn$lessons$nakedPair$cs nakedPair = _Translations$learn$lessons$nakedPair$cs._(_root);
 	@override late final _Translations$learn$lessons$pointingPair$cs pointingPair = _Translations$learn$lessons$pointingPair$cs._(_root);
+	@override late final _Translations$learn$lessons$hiddenPair$cs hiddenPair = _Translations$learn$lessons$hiddenPair$cs._(_root);
+	@override late final _Translations$learn$lessons$boxLineReduction$cs boxLineReduction = _Translations$learn$lessons$boxLineReduction$cs._(_root);
+	@override late final _Translations$learn$lessons$nakedTriple$cs nakedTriple = _Translations$learn$lessons$nakedTriple$cs._(_root);
+	@override late final _Translations$learn$lessons$xWing$cs xWing = _Translations$learn$lessons$xWing$cs._(_root);
 }
 
 // Path: learn.lessons.nakedSingle
@@ -381,6 +432,66 @@ class _Translations$learn$lessons$pointingPair$cs extends Translations$learn$les
 	@override String get tryIt => 'Označ všechny kandidáty odstraněné mimo blok.';
 }
 
+// Path: learn.lessons.hiddenPair
+class _Translations$learn$lessons$hiddenPair$cs extends Translations$learn$lessons$hiddenPair$uk {
+	_Translations$learn$lessons$hiddenPair$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dvě číslice se skrývají ve stejných dvou polích.';
+	@override String get concept => 'Skrytou dvojici najdeš sledováním číslic, ne shodných kandidátů.';
+	@override String get lookFor => 'Najdi dvě číslice, které se v jednotce vyskytují jen ve stejných dvou polích.';
+	@override String get reasoning => 'Obě číslice patří do těchto polí; ostatní kandidáti mohou pryč.';
+	@override String get example => 'Zvýrazněná pole jsou jediná místa pro obě číslice.';
+	@override String get tryIt => 'Odstraň nadbytečné kandidáty z těchto dvou polí.';
+}
+
+// Path: learn.lessons.boxLineReduction
+class _Translations$learn$lessons$boxLineReduction$cs extends Translations$learn$lessons$boxLineReduction$uk {
+	_Translations$learn$lessons$boxLineReduction$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Řádek či sloupec omezuje číslici na jeden blok.';
+	@override String get concept => 'Řádek může uzamknout číslici v bloku.';
+	@override String get lookFor => 'Najdi dvě nebo tři pozice číslice v jednom řádku, všechny v jednom bloku.';
+	@override String get reasoning => 'Číslice musí být v bloku na tomto řádku; jinde v bloku ji odstraň.';
+	@override String get example => 'Sleduj zvýrazněný řádek do bloku a najdi kandidáty mimo něj.';
+	@override String get tryIt => 'Odstraň číslici z ostatních polí bloku.';
+}
+
+// Path: learn.lessons.nakedTriple
+class _Translations$learn$lessons$nakedTriple$cs extends Translations$learn$lessons$nakedTriple$uk {
+	_Translations$learn$lessons$nakedTriple$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Tři pole sdílejí pouze tři možné číslice.';
+	@override String get concept => 'Trojice rezervuje tři číslice pro tři pole v jednotce.';
+	@override String get lookFor => 'Najdi tři pole, jejichž kandidáti dohromady tvoří přesně tři číslice.';
+	@override String get reasoning => 'Tři číslice tato pole obsadí, i když se jejich kandidáti liší.';
+	@override String get example => 'Zvýrazněná pole mají různé dvojice, ale dohromady tři číslice.';
+	@override String get tryIt => 'Odstraň tyto číslice z ostatních polí jednotky.';
+}
+
+// Path: learn.lessons.xWing
+class _Translations$learn$lessons$xWing$cs extends Translations$learn$lessons$xWing$uk {
+	_Translations$learn$lessons$xWing$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dva řádky mají číslici ve stejných dvou průsečících.';
+	@override String get concept => 'X-Wing spojuje dva řádky nebo sloupce jednou číslicí.';
+	@override String get lookFor => 'Najdi dva řádky, kde je číslice právě dvakrát ve stejných pozicích.';
+	@override String get reasoning => 'Čtyři průsečíky rezervují číslici; jinde na protínajících řádcích ji odstraň.';
+	@override String get example => 'Sleduj čtyři zvýrazněné pozice a dva protínající řádky.';
+	@override String get tryIt => 'Odstraň číslici mimo čtyři pole vzoru.';
+}
+
 /// The flat map containing all translations for locale <cs>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -393,11 +504,32 @@ extension on TranslationsCs {
 			'common.continueLabel' => 'Pokračovat',
 			'common.start' => 'Začít',
 			'splash.subtitle' => 'Nauč se vidět další tah.',
-			'welcome.title' => 'Tvoje cesta sudoku.',
+			'welcome.title' => 'Najdi svou cestu logikou.',
+			'welcome.subtitle' => 'Sudoku s průvodcem, který napoví, ale nevyřeší vše za tebe.',
+			'welcome.guest' => 'Začít bez účtu',
 			'onboarding.title' => 'Tady začíná tvoje učení.',
 			'onboarding.chooseLevel' => 'Vybrat úroveň',
+			'onboarding.skip' => 'Přeskočit',
+			'onboarding.next' => 'Dále',
+			'onboarding.seeTitle' => 'Sudoku je snazší, když víš, na co se dívat.',
+			'onboarding.seeBody' => 'MICHI vysvětluje logiku každého tahu.',
+			'onboarding.hintsTitle' => 'Nápovědy, které učí.',
+			'onboarding.hintsBody' => 'Začni jemnou nápovědou. O další požádej, když chceš.',
+			'onboarding.patternsTitle' => 'Uč se vzory, ne odpovědi.',
+			'onboarding.patternsBody' => 'Skryté jednotlivosti, dvojice, X-Wing — vlastním tempem.',
+			'onboarding.pathTitle' => 'Tvoje cesta sudoku.',
+			'onboarding.pathBody' => 'MICHI pozná, co je pro tebe těžké, a navrhne procvičení.',
 			'playerLevel.title' => 'Jak dobře znáš sudoku?',
 			'playerLevel.goToGame' => 'Začít hrát',
+			'playerLevel.subtitle' => 'Podle toho vybereme první lekci a obtížnost. Změnit to můžeš kdykoli.',
+			'playerLevel.beginner' => 'Teprve začínám',
+			'playerLevel.beginnerDetail' => 'Pravidla a první tahy',
+			'playerLevel.basics' => 'Znám základy',
+			'playerLevel.basicsDetail' => 'Jednotlivá čísla a kandidáti',
+			'playerLevel.regular' => 'Hraji pravidelně',
+			'playerLevel.regularDetail' => 'Dvojice a ukazující dvojice',
+			'playerLevel.advanced' => 'Chci výzvu',
+			'playerLevel.advancedDetail' => 'X-Wing a dál',
 			'auth.title' => 'Účet',
 			'auth.unavailable' => 'Synchronizace postupu přijde později.',
 			'home.title' => 'Tvoje cesta sudoku',
@@ -422,6 +554,13 @@ extension on TranslationsCs {
 			'home.dailyContinue' => 'Pokračovat v dnešním sudoku',
 			'home.dailyCompleted' => 'Dnes dokončeno',
 			'home.contentUnavailable' => 'Úlohy nejsou dostupné. Zkuste to znovu.',
+			'home.advanced' => 'Pokročilé',
+			'home.expert' => 'Expertní',
+			'home.greeting' => 'Dobré ráno',
+			'home.newPuzzle' => 'Další sudoku',
+			'home.weekTitle' => 'Tento týden',
+			'home.weekDetails' => 'Podrobnosti',
+			'home.weekdaysShort' => 'Po|Út|St|Čt|Pá|So|Ne',
 			'game.title' => 'Denní sudoku · Střední',
 			'game.undo' => 'Zpět',
 			'game.erase' => 'Smazat',
@@ -451,6 +590,9 @@ extension on TranslationsCs {
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} chyb · ${hints} nápověd',
 			'game.standardTitle' => 'Sudoku',
 			'game.dailyTitle' => 'Sudoku dne',
+			'game.completionLogic' => 'vyřešená políčka',
+			'game.completionMistakes' => 'chyby',
+			'game.completionHints' => 'nápovědy',
 			'learn.title' => 'Učení',
 			'learn.intro' => 'Jedna technika, jeden jasný krok.',
 			'learn.newLabel' => 'Nové',
@@ -513,6 +655,38 @@ extension on TranslationsCs {
 			'learn.lessons.pointingPair.reasoning' => 'Číslice zůstane v bloku, proto ji odstraň mimo blok na stejné linii.',
 			'learn.lessons.pointingPair.example' => 'Sleduj zvýrazněnou linii mimo blok.',
 			'learn.lessons.pointingPair.tryIt' => 'Označ všechny kandidáty odstraněné mimo blok.',
+			'learn.lessons.hiddenPair.description' => 'Dvě číslice se skrývají ve stejných dvou polích.',
+			'learn.lessons.hiddenPair.concept' => 'Skrytou dvojici najdeš sledováním číslic, ne shodných kandidátů.',
+			'learn.lessons.hiddenPair.lookFor' => 'Najdi dvě číslice, které se v jednotce vyskytují jen ve stejných dvou polích.',
+			'learn.lessons.hiddenPair.reasoning' => 'Obě číslice patří do těchto polí; ostatní kandidáti mohou pryč.',
+			'learn.lessons.hiddenPair.example' => 'Zvýrazněná pole jsou jediná místa pro obě číslice.',
+			'learn.lessons.hiddenPair.tryIt' => 'Odstraň nadbytečné kandidáty z těchto dvou polí.',
+			'learn.lessons.boxLineReduction.description' => 'Řádek či sloupec omezuje číslici na jeden blok.',
+			'learn.lessons.boxLineReduction.concept' => 'Řádek může uzamknout číslici v bloku.',
+			'learn.lessons.boxLineReduction.lookFor' => 'Najdi dvě nebo tři pozice číslice v jednom řádku, všechny v jednom bloku.',
+			'learn.lessons.boxLineReduction.reasoning' => 'Číslice musí být v bloku na tomto řádku; jinde v bloku ji odstraň.',
+			'learn.lessons.boxLineReduction.example' => 'Sleduj zvýrazněný řádek do bloku a najdi kandidáty mimo něj.',
+			'learn.lessons.boxLineReduction.tryIt' => 'Odstraň číslici z ostatních polí bloku.',
+			'learn.lessons.nakedTriple.description' => 'Tři pole sdílejí pouze tři možné číslice.',
+			'learn.lessons.nakedTriple.concept' => 'Trojice rezervuje tři číslice pro tři pole v jednotce.',
+			'learn.lessons.nakedTriple.lookFor' => 'Najdi tři pole, jejichž kandidáti dohromady tvoří přesně tři číslice.',
+			'learn.lessons.nakedTriple.reasoning' => 'Tři číslice tato pole obsadí, i když se jejich kandidáti liší.',
+			'learn.lessons.nakedTriple.example' => 'Zvýrazněná pole mají různé dvojice, ale dohromady tři číslice.',
+			'learn.lessons.nakedTriple.tryIt' => 'Odstraň tyto číslice z ostatních polí jednotky.',
+			'learn.lessons.xWing.description' => 'Dva řádky mají číslici ve stejných dvou průsečících.',
+			'learn.lessons.xWing.concept' => 'X-Wing spojuje dva řádky nebo sloupce jednou číslicí.',
+			'learn.lessons.xWing.lookFor' => 'Najdi dva řádky, kde je číslice právě dvakrát ve stejných pozicích.',
+			'learn.lessons.xWing.reasoning' => 'Čtyři průsečíky rezervují číslici; jinde na protínajících řádcích ji odstraň.',
+			'learn.lessons.xWing.example' => 'Sleduj čtyři zvýrazněné pozice a dva protínající řádky.',
+			'learn.lessons.xWing.tryIt' => 'Odstraň číslici mimo čtyři pole vzoru.',
+			'learn.basicsGroup' => 'Základy',
+			'learn.intermediateGroup' => 'Střední úroveň',
+			'learn.advancedGroup' => 'Pokročilá úroveň',
+			'learn.nowLabel' => 'Nyní',
+			'learn.groupProgress' => ({required Object completed, required Object total}) => '${completed} z ${total}',
+			'learn.extraElimination' => 'Jeden vybraný kandidát se tímto vzorem neodstraňuje. Zkontroluj zvýrazněná pole.',
+			'learn.missingElimination' => 'Je třeba odstranit další kandidáty. Sleduj zvýrazněnou jednotku.',
+			'learn.wrongPlacement' => 'Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici.',
 			'progress.unavailable' => 'Přehled zvládnutých technik přijde později.',
 			'profile.unavailable' => 'Nastavení profilu přijde později.',
 			'scanner.unavailable' => 'Import z fotoaparátu přijde po základní hře.',
@@ -549,6 +723,14 @@ extension on TranslationsCs {
 			'coach.wrongBody' => 'Dokud je na desce chybná číslice, nelze určit logický další krok.',
 			'coach.stuckTitle' => 'Zatím žádný podporovaný krok.',
 			'coach.stuckBody' => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.',
+			'coach.hiddenPair' => 'Skrytá dvojice',
+			'coach.boxLineReduction' => 'Redukce řádek–blok',
+			'coach.nakedTriple' => 'Otevřená trojice',
+			'coach.xWing' => 'X-Wing',
+			'coach.identifyHiddenPair' => 'Dvě číslice jsou možné jen ve stejných dvou polích. Odstraň ostatní kandidáty.',
+			'coach.understandBoxLine' => 'Číslice je v řádku omezena na jeden blok. Odstraň ji jinde v bloku.',
+			'coach.understandTriple' => 'Tři pole sdílejí přesně tři číslice. Odstraň je z dalších polí jednotky.',
+			'coach.understandXWing' => 'Ve dvou řádcích má číslice stejné dva průsečíky. Odstraň ji jinde v protínajících řádcích.',
 			_ => null,
 		};
 	}

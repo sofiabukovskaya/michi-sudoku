@@ -47,7 +47,7 @@ void main() {
       ]) {
         expect(find.byKey(ValueKey('learn-${technique.name}')), findsOneWidget);
       }
-      expect(find.text('New'), findsNWidgets(4));
+      expect(find.text('Now'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
@@ -89,8 +89,6 @@ void main() {
     await tester.pumpAndSettle();
     for (final step in [
       'concept',
-      'lookFor',
-      'reasoning',
       'example',
       'tryIt',
     ]) {

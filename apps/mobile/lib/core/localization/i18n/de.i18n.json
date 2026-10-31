@@ -8,15 +8,36 @@
     "subtitle": "Lerne, den nächsten Zug zu erkennen."
   },
   "welcome": {
-    "title": "Dein Weg durch Sudoku."
+    "title": "Finde deinen Weg durch Logik.",
+    "subtitle": "Sudoku mit einem Coach, der dir hilft, statt für dich zu lösen.",
+    "guest": "Ohne Konto starten"
   },
   "onboarding": {
     "title": "Hier beginnt dein Lernweg.",
-    "chooseLevel": "Niveau wählen"
+    "chooseLevel": "Niveau wählen",
+    "skip": "Überspringen",
+    "next": "Weiter",
+    "seeTitle": "Sudoku ist leichter, wenn du weißt, worauf du achten musst.",
+    "seeBody": "MICHI erklärt die Logik hinter jedem Zug.",
+    "hintsTitle": "Hinweise, die etwas beibringen.",
+    "hintsBody": "Beginne mit einem kleinen Hinweis. Frage bei Bedarf nach mehr.",
+    "patternsTitle": "Lerne Muster statt Antworten.",
+    "patternsBody": "Versteckte Singles, Paare, X-Wing — in deinem Tempo.",
+    "pathTitle": "Dein Weg durch Sudoku.",
+    "pathBody": "MICHI erkennt, was dir schwerfällt, und schlägt Übungen vor."
   },
   "playerLevel": {
     "title": "Wie gut kennst du Sudoku?",
-    "goToGame": "Jetzt spielen"
+    "goToGame": "Jetzt spielen",
+    "subtitle": "Davon hängen die erste Lektion und der Schwierigkeitsgrad ab. Du kannst es später ändern.",
+    "beginner": "Ich fange gerade an",
+    "beginnerDetail": "Regeln und erste Züge",
+    "basics": "Ich kenne die Grundlagen",
+    "basicsDetail": "Singles und Kandidaten",
+    "regular": "Ich spiele regelmäßig",
+    "regularDetail": "Paare und Zeigepaare",
+    "advanced": "Ich suche eine Herausforderung",
+    "advancedDetail": "X-Wing und mehr"
   },
   "auth": {
     "title": "Konto",
@@ -44,7 +65,14 @@
     "dailyStart": "Heutiges Sudoku starten",
     "dailyContinue": "Heutiges Sudoku fortsetzen",
     "dailyCompleted": "Heute abgeschlossen",
-    "contentUnavailable": "Rätsel sind nicht verfügbar. Bitte erneut versuchen."
+    "contentUnavailable": "Rätsel sind nicht verfügbar. Bitte erneut versuchen.",
+    "advanced": "Fortgeschritten",
+    "expert": "Experte",
+    "greeting": "Guten Morgen",
+    "newPuzzle": "Ein weiteres Sudoku",
+    "weekTitle": "Diese Woche",
+    "weekDetails": "Details",
+    "weekdaysShort": "Mo|Di|Mi|Do|Fr|Sa|So"
   },
   "game": {
     "title": "Tägliches Sudoku · Mittel",
@@ -75,7 +103,10 @@
     "retrySave": "Erneut versuchen",
     "completionStats": "$mistakes Fehler · $hints Hinweise",
     "standardTitle": "Sudoku",
-    "dailyTitle": "Sudoku des Tages"
+    "dailyTitle": "Sudoku des Tages",
+    "completionLogic": "gelöste Felder",
+    "completionMistakes": "Fehler",
+    "completionHints": "Hinweise"
   },
   "learn": {
     "title": "Lernen",
@@ -148,8 +179,48 @@
         "reasoning": "Die Zahl bleibt im Block; entferne sie außerhalb auf derselben Linie.",
         "example": "Folge der markierten Linie aus dem Block heraus.",
         "tryIt": "Markiere alle außerhalb des Blocks entfernten Kandidaten."
+      },
+      "hiddenPair": {
+        "description": "Zwei Ziffern verbergen sich in denselben zwei Feldern.",
+        "concept": "Suche ein verstecktes Paar nach Ziffern, nicht nach gleichen Kandidatenlisten.",
+        "lookFor": "Finde zwei Ziffern, die in einer Einheit nur in denselben zwei Feldern vorkommen.",
+        "reasoning": "Beide gehören in diese Felder; andere Kandidaten können dort weg.",
+        "example": "Die markierten Felder sind die einzigen Plätze für beide Ziffern.",
+        "tryIt": "Entferne zusätzliche Kandidaten aus diesen zwei Feldern."
+      },
+      "boxLineReduction": {
+        "description": "Eine Zeile oder Spalte begrenzt eine Ziffer auf einen Block.",
+        "concept": "Eine Linie kann eine Ziffer innerhalb eines Blocks festlegen.",
+        "lookFor": "Finde zwei oder drei Plätze einer Ziffer in einer Linie, alle im selben Block.",
+        "reasoning": "Die Ziffer liegt in diesem Block auf der Linie; entferne sie sonst im Block.",
+        "example": "Folge der markierten Linie in den Block und finde Kandidaten außerhalb.",
+        "tryIt": "Entferne die Ziffer aus den anderen Feldern des Blocks."
+      },
+      "nakedTriple": {
+        "description": "Drei Felder teilen nur drei mögliche Ziffern.",
+        "concept": "Ein Drilling reserviert drei Ziffern für drei Felder einer Einheit.",
+        "lookFor": "Finde drei Felder, deren Kandidaten zusammen genau drei Ziffern ergeben.",
+        "reasoning": "Diese Ziffern füllen die Felder, auch wenn ihre Listen verschieden sind.",
+        "example": "Die markierten Felder haben verschiedene Paare, aber insgesamt drei Ziffern.",
+        "tryIt": "Entferne diese Ziffern aus den anderen Feldern der Einheit."
+      },
+      "xWing": {
+        "description": "Zwei Linien richten eine Ziffer an zwei Kreuzungen aus.",
+        "concept": "Ein X-Wing verbindet zwei Zeilen oder Spalten über eine Ziffer.",
+        "lookFor": "Finde zwei Linien, in denen die Ziffer zweimal an gleichen Positionen vorkommt.",
+        "reasoning": "Die vier Kreuzungen reservieren die Ziffer; entferne sie sonst auf den Kreuzlinien.",
+        "example": "Verfolge die vier markierten Plätze und die zwei Kreuzlinien.",
+        "tryIt": "Entferne die Ziffer außerhalb der vier Musterfelder."
       }
-    }
+    },
+    "basicsGroup": "Grundlagen",
+    "intermediateGroup": "Mittelstufe",
+    "advancedGroup": "Fortgeschritten",
+    "nowLabel": "Jetzt",
+    "groupProgress": "$completed von $total",
+    "extraElimination": "Dieses Muster entfernt einen der gewählten Kandidaten nicht. Prüfe die markierten Felder.",
+    "missingElimination": "Weitere Kandidaten müssen entfernt werden. Folge der markierten Einheit.",
+    "wrongPlacement": "Dieses Feld oder diese Ziffer passt nicht zum Schluss. Prüfe die markierte Position."
   },
   "progress": {
     "unavailable": "Die Übersicht deiner Techniken kommt später."
@@ -193,6 +264,14 @@
     "wrongTitle": "Korrigiere zuerst den Fehler.",
     "wrongBody": "Solange eine falsche Zahl auf dem Brett steht, ist kein logischer nächster Schritt möglich.",
     "stuckTitle": "Noch kein unterstützter Schritt.",
-    "stuckBody": "MICHI kann den nächsten Schritt mit den verfügbaren Techniken noch nicht erklären."
+    "stuckBody": "MICHI kann den nächsten Schritt mit den verfügbaren Techniken noch nicht erklären.",
+    "hiddenPair": "Verstecktes Paar",
+    "boxLineReduction": "Linien-Block-Reduktion",
+    "nakedTriple": "Nackter Drilling",
+    "xWing": "X-Wing",
+    "identifyHiddenPair": "Zwei Ziffern passen nur in dieselben zwei Felder. Entferne dort andere Kandidaten.",
+    "understandBoxLine": "Diese Ziffer ist in einer Linie auf einen Block beschränkt. Entferne sie sonst im Block.",
+    "understandTriple": "Drei Felder teilen genau drei Ziffern. Entferne sie aus den anderen Feldern der Einheit.",
+    "understandXWing": "Zwei Linien haben diese Ziffer an denselben zwei Kreuzungen. Entferne sie sonst auf den Kreuzlinien."
   }
 }

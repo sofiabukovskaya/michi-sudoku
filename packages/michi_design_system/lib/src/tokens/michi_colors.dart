@@ -13,6 +13,8 @@ abstract final class MichiColors {
   static const coral = Color(0xFFD9826B);
   static const coralText = Color(0xFF9C4F3B);
   static const success = Color(0xFF56663F);
+  static const almostText = Color(0xFF86642A);
+  static const almostTint = Color(0xFFF7EDDB);
   static const error = Color(0xFFA8554C);
   static const disabledBackground = Color(0xFFD9D1C3);
   static const disabledText = Color(0xFF77736B);

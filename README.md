@@ -5,7 +5,9 @@ Coach teaches the reasoning behind a move through progressive hints.
 Phases 1–9 are implemented: the workspace foundation, Sudoku domain rules,
 exact mathematical solver, initial human reasoning, progressive Coach planning,
 playable Game and Coach, local game restoration, bundled puzzle content, and
-the first Learn and Practice loop.
+the first Learn and Practice loop. Phase 10 adds four advanced techniques and
+their content. Its [design audit](docs/phase10_design_audit.md) records the
+visual corrections and remaining parity work.
 
 ## Workspace
 
@@ -86,11 +88,14 @@ difficulty, required `SudokuTechnique` values, pack version and Daily
 eligibility. It contains no player progress. `PuzzleCatalog` loads
 `apps/mobile/assets/puzzles/classic_v1.json` once and checks its schema.
 `PuzzleAnalyzer` uses the ExactSolver for uniqueness and the HumanSolver for a
-complete deduction trace, required techniques, clue count and Easy/Medium
-classification. The actual bundled pack is a test gate: all 20 internally
-authored puzzles must have a unique solution, be solved by the current
-HumanSolver, and match their stored metadata. Easy uses singles; Medium needs
-Naked Pair or Pointing Pair. Harder labels wait for supported techniques.
+complete deduction trace, required techniques, clue count and
+Easy/Medium/Advanced/Expert classification. The bundled pack is a test gate:
+all 35 puzzles must have a unique solution, be solved by the supported HumanSolver,
+and match their stored metadata. The current pack contains 12 Easy, 8 Medium,
+12 Advanced and 3 Expert puzzles. Expert puzzles are excluded from Daily.
+Advanced source puzzles were curated from [Peter Norvig's top95 corpus](https://www.norvig.com/top95.txt)
+and checked against the exact solver and human trace. Distribution rights for
+that source should be confirmed before a public release.
 
 `PuzzleRepository` keeps Home and Game independent of JSON. The bundled
 `LocalPuzzleRepository` selects by difficulty, excludes the active puzzle and
@@ -108,14 +113,16 @@ may change when a published backend Daily challenge is introduced.
 
 ## Learn and technique practice
 
-`TechniqueLesson` defines static, semantic five-step content for Naked Single,
-Hidden Single, Naked Pair, and Pointing Pair. Slang owns all six-language copy;
+`TechniqueLesson` defines three semantic lesson steps and a Practice action for
+Naked Single, Hidden Single, Naked Pair, Pointing Pair, Hidden Pair, Box-Line
+Reduction, Naked Triple and X-Wing. Slang owns all six-language copy;
 the pure-Dart engine remains responsible for deduction truth. Lesson examples
 reuse the structured Sudoku board renderer in a read-only educational mode.
 
 `TechniquePracticeScenario` stores a stable ID, target `SudokuTechnique`, board,
-and content version. The local `practice_v1.json` pack contains five scenarios
-per technique. A production-catalog test parses every board, checks constraints
+optional candidate snapshot and content version. The local `practice_v1.json`
+pack contains five scenarios per technique, 40 total. A production-catalog test
+parses every board, checks constraints
 and solution uniqueness, verifies that the first `HumanSolver` deduction is the
 target technique with a meaningful placement or elimination, and builds all
 four `StructuredCoachEngine` hint levels. `PracticeCubit` runs a five-exercise
@@ -140,7 +147,7 @@ no recommendation algorithm is included yet.
 
 ## Setup
 
-Tested with Flutter 3.41.6, Dart 3.11.4 and the native Android/iOS toolchains.
+Tested with Flutter 3.47.8, Dart 3.13.7 and the native Android/iOS toolchains.
 Use the Dart SDK bundled with that Flutter installation if another `dart`
 launcher on your `PATH` reports an older SDK.
 
@@ -184,8 +191,8 @@ BDD tests under `apps/mobile/test/features/`.
   until a production application identifier is chosen.
 
 The engine supports constraints, candidates, exact solving, structured human
-deductions for four techniques, and four-level semantic Coach plans.
+deductions for eight techniques, and four-level semantic Coach plans.
 See [the engine README](packages/sudoku_engine/README.md) for the APIs and
 responsibility boundaries. Firebase, scanning, ML, streaks, leaderboards,
-subscriptions, advanced techniques, and unrelated visual screens remain
+subscriptions, XY-Wing, Swordfish, and unrelated visual screens remain
 future work.

@@ -112,6 +112,10 @@ void main() {
   for (final technique in [
     SudokuTechnique.nakedPair,
     SudokuTechnique.pointingPair,
+    SudokuTechnique.hiddenPair,
+    SudokuTechnique.boxLineReduction,
+    SudokuTechnique.nakedTriple,
+    SudokuTechnique.xWing,
   ]) {
     test('$technique requires the exact elimination set', () async {
       final cubit = cubitFor(technique);
@@ -143,6 +147,29 @@ void main() {
       }
       await cubit.checkAnswer();
       expect(cubit.state.status, PracticeStatus.correct);
+    });
+  }
+
+  for (final technique in [
+    SudokuTechnique.hiddenPair,
+    SudokuTechnique.boxLineReduction,
+    SudokuTechnique.nakedTriple,
+    SudokuTechnique.xWing,
+  ]) {
+    test('$technique preserves progressive Coach disclosure', () {
+      final cubit = cubitFor(technique);
+      addTearDown(cubit.close);
+      for (final level in CoachHintLevel.values) {
+        cubit.requestHint();
+        expect(cubit.state.visibleHint?.level, level);
+        if (level != CoachHintLevel.result) {
+          expect(cubit.state.visibleHint?.revealedEliminations, isEmpty);
+        }
+      }
+      expect(
+        cubit.state.visibleHint?.revealedEliminations,
+        cubit.state.deduction.eliminations,
+      );
     });
   }
 

@@ -254,7 +254,7 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                     .floor()
                     .clamp(36, 44)
                     .toDouble();
-                final heightCell = ((constraints.maxHeight - 220) / 9)
+                final heightCell = ((constraints.maxHeight - 260) / 9)
                     .floor()
                     .clamp(36, 44)
                     .toDouble();
@@ -265,6 +265,7 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                       return _CompletedSurface(
                         state: state,
                         elapsed: cubit.elapsed,
+                        puzzleTitle: _gameTitle(context),
                         requiredTechniques: _isDaily
                             ? const {}
                             : _definition?.requiredTechniques ?? const {},
@@ -369,6 +370,8 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     final difficulty = switch (_difficulty) {
       PuzzleDifficulty.easy => context.t.home.easy,
       PuzzleDifficulty.medium => context.t.home.medium,
+      PuzzleDifficulty.advanced => context.t.home.advanced,
+      PuzzleDifficulty.expert => context.t.home.expert,
       null => null,
     };
     return difficulty == null ? kind : '$kind · $difficulty';
@@ -467,12 +470,14 @@ final class _CompletedSurface extends StatelessWidget {
   const _CompletedSurface({
     required this.state,
     required this.elapsed,
+    required this.puzzleTitle,
     required this.requiredTechniques,
     required this.onHome,
   });
 
   final GameState state;
   final Duration elapsed;
+  final String puzzleTitle;
   final Set<SudokuTechnique> requiredTechniques;
   final VoidCallback onHome;
 
@@ -489,28 +494,33 @@ final class _CompletedSurface extends StatelessWidget {
                 bottom: Radius.circular(MichiRadius.hero),
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(MichiSpacing.xl),
-              child: SizedBox(
-                height: math.max(260, constraints.maxHeight * 0.45),
+            child: SizedBox(
+              height: math.max(320, constraints.maxHeight * 0.49),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        tooltip: context.t.game.backHome,
-                        onPressed: onHome,
-                        icon: const Icon(Icons.close, color: MichiColors.ivory),
-                      ),
+                    IconButton(
+                      tooltip: context.t.game.backHome,
+                      onPressed: onHome,
+                      icon: const Icon(Icons.close, color: MichiColors.ivory),
                     ),
                     const Spacer(),
-                    Align(
-                      child: Image.asset(
-                        'assets/images/coach_mascot.png',
-                        height: 130,
-                        excludeFromSemantics: true,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CustomPaint(
+                          size: Size.square(130),
+                          painter: _CompletedGridPainter(),
+                        ),
+                        const SizedBox(width: MichiSpacing.lg),
+                        Image.asset(
+                          'assets/images/coach_mascot.png',
+                          height: 148,
+                          excludeFromSemantics: true,
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     Text(
@@ -520,11 +530,24 @@ final class _CompletedSurface extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: MichiSpacing.sm),
-                    Text(
-                      _formatElapsed(elapsed),
-                      style: MichiTypography.heading.copyWith(
-                        color: MichiColors.ivory,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          _formatElapsed(elapsed),
+                          style: MichiTypography.heading.copyWith(
+                            color: MichiColors.ivory,
+                          ),
+                        ),
+                        const SizedBox(width: MichiSpacing.md),
+                        Expanded(
+                          child: Text(
+                            puzzleTitle,
+                            style: MichiTypography.secondary.copyWith(
+                              color: MichiColors.ivory,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -532,19 +555,28 @@ final class _CompletedSurface extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(MichiSpacing.xl),
+            padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(context.t.game.completeBody, style: MichiTypography.body),
-                const SizedBox(height: MichiSpacing.xl),
-                Text(
-                  context.t.game.completionStats(
-                    mistakes: state.mistakes,
-                    hints: state.hintsRequested,
-                  ),
-                  style: MichiTypography.secondary,
+                Row(
+                  children: [
+                    _CompletionMetric(
+                      value: state.correctEditableCells,
+                      label: context.t.game.completionLogic,
+                    ),
+                    _CompletionMetric(
+                      value: state.mistakes,
+                      label: context.t.game.completionMistakes,
+                    ),
+                    _CompletionMetric(
+                      value: state.hintsRequested,
+                      label: context.t.game.completionHints,
+                    ),
+                  ],
                 ),
+                const Divider(height: MichiSpacing.xxl),
+                Text(context.t.game.completeBody, style: MichiTypography.body),
                 const SizedBox(height: MichiSpacing.xl),
                 PostGameTechniqueFeedback(
                   requiredTechniques: requiredTechniques,
@@ -559,6 +591,65 @@ final class _CompletedSurface extends StatelessWidget {
       ),
     ),
   );
+}
+
+final class _CompletionMetric extends StatelessWidget {
+  const _CompletionMetric({required this.value, required this.label});
+
+  final int value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('$value', style: MichiTypography.functionalTitle),
+        Text(label, style: MichiTypography.secondary),
+      ],
+    ),
+  );
+}
+
+final class _CompletedGridPainter extends CustomPainter {
+  const _CompletedGridPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas
+      ..save()
+      ..rotate(-0.08);
+    final rect = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      const Radius.circular(8),
+    );
+    canvas.drawRRect(rect, Paint()..color = MichiColors.ivory);
+    final line = Paint()
+      ..color = MichiColors.boardBoxLine
+      ..strokeWidth = 1;
+    for (var part = 1; part < 3; part++) {
+      final position = size.width * part / 3;
+      canvas
+        ..drawLine(Offset(position, 0), Offset(position, size.height), line)
+        ..drawLine(Offset(0, position), Offset(size.width, position), line);
+    }
+    for (var row = 0; row < 9; row++) {
+      for (var column = 0; column < 9; column++) {
+        canvas.drawCircle(
+          Offset(
+            (column + 0.5) * size.width / 9,
+            (row + 0.5) * size.height / 9,
+          ),
+          1.8,
+          Paint()..color = MichiColors.indigo,
+        );
+      }
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _CompletedGridPainter oldDelegate) => false;
 }
 
 String _formatElapsed(Duration elapsed) =>

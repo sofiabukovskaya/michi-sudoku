@@ -20,7 +20,7 @@ final class LearningDriver {
 
   static LearningDriver? current;
   static bool _bootstrapped = false;
-  static final catalog = LocalPracticeCatalog(bundle: _PracticeAssetBundle());
+  static late LocalPracticeCatalog catalog;
 
   final GameDatabase database;
   final DriftTechniqueProgressRepository progress;
@@ -41,6 +41,7 @@ final class LearningDriver {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final database = GameDatabase(NativeDatabase.memory());
+    catalog = LocalPracticeCatalog(bundle: _PracticeAssetBundle());
     final progress = DriftTechniqueProgressRepository(database);
     await getIt.unregister<TechniqueProgressRepository>();
     getIt.registerSingleton<TechniqueProgressRepository>(progress);
@@ -58,7 +59,7 @@ final class LearningDriver {
     await tester.pumpWidget(MichiApp(router: router));
     router.replaceAll([
       if (practice == null)
-        LearnRoute()
+        LearnRoute(catalog: catalog)
       else
         PracticeRoute(technique: practice, catalog: catalog),
     ]).ignore();
@@ -85,7 +86,7 @@ final class LearningDriver {
   Future<DigitPlacement> placement(SudokuTechnique technique) async {
     final scenario = (await catalog.forTechnique(technique)).first;
     return const DeterministicHumanSolver()
-        .findNextDeduction(HumanSolverState.initial(scenario.board))!
+        .findNextDeduction(scenario.initialState)!
         .placements
         .single;
   }
@@ -95,7 +96,7 @@ final class LearningDriver {
   ) async {
     final scenario = (await catalog.forTechnique(technique)).first;
     return const DeterministicHumanSolver()
-        .findNextDeduction(HumanSolverState.initial(scenario.board))!
+        .findNextDeduction(scenario.initialState)!
         .eliminations
         .toSet();
   }

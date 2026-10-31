@@ -75,11 +75,16 @@ void main() {
         }
       }
     }
-    expect(seenTechniques, {
-      SudokuTechnique.nakedSingle,
-      SudokuTechnique.hiddenSingle,
-      SudokuTechnique.nakedPair,
-      SudokuTechnique.pointingPair,
-    });
+    expect(
+      seenTechniques,
+      containsAll({
+        SudokuTechnique.nakedSingle,
+        SudokuTechnique.hiddenSingle,
+        SudokuTechnique.nakedPair,
+        SudokuTechnique.pointingPair,
+        SudokuTechnique.hiddenPair,
+        SudokuTechnique.nakedTriple,
+      }),
+    );
   });
 }

@@ -7,6 +7,7 @@ import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/focused_unit_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/learn/data/drift_technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
@@ -113,8 +114,8 @@ void main() {
     expect(candidate, findsOneWidget);
     await tester.tap(candidate);
     await tester.pumpAndSettle();
-    final board = tester.widget<SudokuBoardWidget>(
-      find.byType(SudokuBoardWidget),
+    final board = tester.widget<FocusedUnitWidget>(
+      find.byType(FocusedUnitWidget),
     );
     expect(board.view.selectedEliminations, contains(elimination));
     await tester.tap(find.byKey(const ValueKey('practice-check')));
@@ -132,6 +133,13 @@ void main() {
     }
     expect(tester.takeException(), isNull);
     semantics.dispose();
+  });
+
+  testWidgets('row-based Hidden Pair keeps full board context', (tester) async {
+    await pumpPractice(tester, SudokuTechnique.hiddenPair);
+    expect(find.byType(SudokuBoardWidget), findsOneWidget);
+    expect(find.byType(FocusedUnitWidget), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('five Hidden Single exercises show a saved summary', (

@@ -38,6 +38,11 @@ abstract final class CoachPresenter {
       CoachHintIntent.understandPairRestriction =>
         translations.coach.pairRestriction(unit: unitLabel),
       CoachHintIntent.understandAlignment => translations.coach.alignment,
+      CoachHintIntent.identifyHiddenPair =>
+        translations.coach.identifyHiddenPair,
+      CoachHintIntent.understandBoxLine => translations.coach.understandBoxLine,
+      CoachHintIntent.understandTriple => translations.coach.understandTriple,
+      CoachHintIntent.understandXWing => translations.coach.understandXWing,
       CoachHintIntent.revealPlacement => translations.coach.resultPlacement(
         digit: placement!.digit,
       ),
@@ -88,6 +93,10 @@ abstract final class CoachPresenter {
     SudokuTechnique.hiddenSingle => translations.coach.hiddenSingle,
     SudokuTechnique.nakedPair => translations.coach.nakedPair,
     SudokuTechnique.pointingPair => translations.coach.pointingPair,
+    SudokuTechnique.hiddenPair => translations.coach.hiddenPair,
+    SudokuTechnique.boxLineReduction => translations.coach.boxLineReduction,
+    SudokuTechnique.nakedTriple => translations.coach.nakedTriple,
+    SudokuTechnique.xWing => translations.coach.xWing,
     _ => technique.name,
   };
 }

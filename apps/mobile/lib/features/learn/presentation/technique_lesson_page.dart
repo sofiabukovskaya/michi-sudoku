@@ -7,6 +7,7 @@ import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/focused_unit_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
@@ -55,7 +56,7 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
     final scenarios = await catalog.forTechnique(widget.technique);
     if (scenarios.isEmpty) throw StateError('No lesson example available.');
     final scenario = scenarios.first;
-    final engineState = HumanSolverState.initial(scenario.board);
+    final engineState = scenario.initialState;
     final deduction = (widget.humanSolver ?? getIt<HumanSolver>())
         .findNextDeduction(engineState);
     if (deduction?.technique != widget.technique) {
@@ -78,7 +79,9 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
       backgroundColor: MichiColors.paper,
       appBar: AppBar(
         backgroundColor: MichiColors.paper,
-        title: Text(TechniqueCopy.name(context.t, widget.technique)),
+        title: _step < 0
+            ? null
+            : Text(TechniqueCopy.name(context.t, widget.technique)),
       ),
       body: SafeArea(
         child: FutureBuilder<_LessonData>(
@@ -147,12 +150,56 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
     TechniqueLesson lesson,
     _LessonData data,
   ) => [
-    Align(
-      alignment: Alignment.centerRight,
-      child: Image.asset(
-        'assets/images/coach_mascot.png',
-        height: 140,
-        excludeFromSemantics: true,
+    SizedBox(
+      height: 180,
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                for (final cell in data.plan.deduction.focusCells.take(
+                  widget.technique == SudokuTechnique.nakedTriple ? 3 : 2,
+                )) ...[
+                  Transform.rotate(
+                    angle: -0.06,
+                    child: Container(
+                      width: widget.technique == SudokuTechnique.nakedTriple
+                          ? 50
+                          : 64,
+                      height: widget.technique == SudokuTechnique.nakedTriple
+                          ? 50
+                          : 64,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: MichiColors.ivory,
+                        border: Border.all(
+                          color: MichiColors.textPrimary,
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          MichiRadius.control,
+                        ),
+                      ),
+                      child: Text(
+                        _overviewDigits(data, cell),
+                        style: MichiTypography.heading.copyWith(
+                          color: MichiColors.coralText,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: MichiSpacing.sm),
+                ],
+              ],
+            ),
+          ),
+          Image.asset(
+            'assets/images/coach_mascot.png',
+            height: 180,
+            width: 150,
+            excludeFromSemantics: true,
+          ),
+        ],
       ),
     ),
     Text(
@@ -165,34 +212,68 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
       style: MichiTypography.body,
     ),
     const SizedBox(height: MichiSpacing.lg),
-    Text(
-      TechniqueCopy.mastery(context.t, data.progress.mastery),
-      style: MichiTypography.meta.copyWith(color: MichiColors.coralText),
+    Row(
+      children: [
+        Text(
+          '${TechniqueCopy.mastery(context.t, data.progress.mastery)} '
+          '${data.progress.masteryPercent}%',
+          style: MichiTypography.meta,
+        ),
+        const SizedBox(width: MichiSpacing.md),
+        Expanded(
+          child: MichiProgressBar(
+            value: data.progress.masteryPercent / 100,
+          ),
+        ),
+      ],
     ),
     const SizedBox(height: MichiSpacing.xl),
     Text(context.t.learn.planTitle, style: MichiTypography.heading),
     const SizedBox(height: MichiSpacing.sm),
-    for (var index = 0; index < lesson.steps.length; index++)
+    for (var index = 0; index <= lesson.steps.length; index++) ...[
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: MichiSpacing.sm),
+        padding: const EdgeInsets.symmetric(vertical: MichiSpacing.md),
         child: Row(
           children: [
             CircleAvatar(
-              radius: 16,
+              radius: 14,
               backgroundColor: index == 0
                   ? MichiColors.coral
                   : MichiColors.cream,
               child: Text('${index + 1}'),
             ),
             const SizedBox(width: MichiSpacing.md),
+            Expanded(
+              child: Text(
+                index == lesson.steps.length
+                    ? context.t.learn.practiceTitle
+                    : TechniqueCopy.stepLabel(context.t, lesson.steps[index]),
+                style: MichiTypography.body.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
             Text(
-              TechniqueCopy.stepLabel(context.t, lesson.steps[index]),
-              style: MichiTypography.body,
+              index == lesson.steps.length ? '5' : '2',
+              style: MichiTypography.meta,
             ),
           ],
         ),
       ),
+      const Divider(height: 1, color: MichiColors.hairline),
+    ],
   ];
+
+  String _overviewDigits(_LessonData data, CellRef cell) {
+    if (widget.technique == SudokuTechnique.hiddenPair) {
+      return data.plan.deduction.evidence
+          .whereType<UnitCandidateEvidence>()
+          .map((item) => item.digit)
+          .take(2)
+          .join(' ');
+    }
+    return data.engineState.candidatesFor(cell).digits.take(3).join(' ');
+  }
 
   List<Widget> _lessonStep(
     BuildContext context,
@@ -207,10 +288,23 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
       _ => data.plan.hints[0],
     };
     return [
-      LinearProgressIndicator(
-        value: (_step + 1) / lesson.steps.length,
-        color: MichiColors.indigo,
-        backgroundColor: MichiColors.cream,
+      Row(
+        children: [
+          for (var index = 0; index <= lesson.steps.length; index++) ...[
+            if (index > 0) const SizedBox(width: MichiSpacing.xs),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: index <= _step ? 1 : 0,
+                  minHeight: 4,
+                  color: MichiColors.indigo,
+                  backgroundColor: MichiColors.cream,
+                ),
+              ),
+            ),
+          ],
+        ],
       ),
       const SizedBox(height: MichiSpacing.lg),
       Text(
@@ -223,16 +317,29 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
         style: MichiTypography.display,
       ),
       const SizedBox(height: MichiSpacing.lg),
-      Center(
-        child: SudokuBoardWidget(
-          view: BoardViewState.educational(
-            state: data.engineState,
-            coachHint: hint,
+      if (FocusedUnitWidget.unitFor(data.plan.deduction) case final unit?)
+        SizedBox(
+          height: math.min(MediaQuery.sizeOf(context).width - 48, 310),
+          child: FocusedUnitWidget(
+            unit: unit,
+            view: BoardViewState.educational(
+              state: data.engineState,
+              coachHint: hint,
+            ),
+            onCellTap: null,
           ),
-          cellSize: cellSize,
-          onCellTap: null,
+        )
+      else
+        Center(
+          child: SudokuBoardWidget(
+            view: BoardViewState.educational(
+              state: data.engineState,
+              coachHint: hint,
+            ),
+            cellSize: cellSize,
+            onCellTap: null,
+          ),
         ),
-      ),
       const SizedBox(height: MichiSpacing.xl),
       Text(
         TechniqueCopy.step(context.t, widget.technique, kind),

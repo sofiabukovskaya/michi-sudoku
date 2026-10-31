@@ -8,15 +8,36 @@
     "subtitle": "Apprends à voir le prochain coup."
   },
   "welcome": {
-    "title": "Ton parcours dans le sudoku."
+    "title": "Trouve ton chemin grâce à la logique.",
+    "subtitle": "Un sudoku avec un guide qui t’aide sans résoudre à ta place.",
+    "guest": "Commencer sans compte"
   },
   "onboarding": {
     "title": "Ton apprentissage commence ici.",
-    "chooseLevel": "Choisir ton niveau"
+    "chooseLevel": "Choisir ton niveau",
+    "skip": "Passer",
+    "next": "Suivant",
+    "seeTitle": "Le sudoku devient plus simple quand tu sais où regarder.",
+    "seeBody": "MICHI explique la logique de chaque coup.",
+    "hintsTitle": "Des indices qui enseignent.",
+    "hintsBody": "Commence par une légère piste. Demande plus si besoin.",
+    "patternsTitle": "Apprends les motifs, pas les réponses.",
+    "patternsBody": "Simples cachés, paires, X-Wing : à ton rythme.",
+    "pathTitle": "Ton chemin dans le sudoku.",
+    "pathBody": "MICHI repère tes difficultés et te suggère quoi travailler."
   },
   "playerLevel": {
     "title": "Connais-tu bien le sudoku ?",
-    "goToGame": "Commencer à jouer"
+    "goToGame": "Commencer à jouer",
+    "subtitle": "Cela détermine ta première leçon et la difficulté. Tu peux changer plus tard.",
+    "beginner": "Je débute",
+    "beginnerDetail": "Règles et premiers coups",
+    "basics": "Je connais les bases",
+    "basicsDetail": "Simples et candidats",
+    "regular": "Je joue régulièrement",
+    "regularDetail": "Paires et paires pointantes",
+    "advanced": "Je veux un défi",
+    "advancedDetail": "X-Wing et au-delà"
   },
   "auth": {
     "title": "Compte",
@@ -44,7 +65,14 @@
     "dailyStart": "Commencer le sudoku du jour",
     "dailyContinue": "Reprendre le sudoku du jour",
     "dailyCompleted": "Terminé aujourd’hui",
-    "contentUnavailable": "Les grilles sont indisponibles. Réessayez."
+    "contentUnavailable": "Les grilles sont indisponibles. Réessayez.",
+    "advanced": "Avancé",
+    "expert": "Expert",
+    "greeting": "Bonjour",
+    "newPuzzle": "Un autre sudoku",
+    "weekTitle": "Cette semaine",
+    "weekDetails": "Détails",
+    "weekdaysShort": "Lu|Ma|Me|Je|Ve|Sa|Di"
   },
   "game": {
     "title": "Sudoku du jour · Moyen",
@@ -75,7 +103,10 @@
     "retrySave": "Réessayer",
     "completionStats": "$mistakes erreurs · $hints indices",
     "standardTitle": "Sudoku",
-    "dailyTitle": "Sudoku du jour"
+    "dailyTitle": "Sudoku du jour",
+    "completionLogic": "cases résolues",
+    "completionMistakes": "erreurs",
+    "completionHints": "indices"
   },
   "learn": {
     "title": "Apprendre",
@@ -148,8 +179,48 @@
         "reasoning": "Le chiffre reste dans le bloc : élimine-le hors du bloc sur la même ligne.",
         "example": "Suis la ligne surlignée hors du bloc.",
         "tryIt": "Marque tous les candidats éliminés hors du bloc."
+      },
+      "hiddenPair": {
+        "description": "Deux chiffres se cachent dans les mêmes deux cases.",
+        "concept": "Cherche une paire cachée par chiffre, pas par listes identiques.",
+        "lookFor": "Trouve deux chiffres possibles uniquement dans les mêmes deux cases d’une unité.",
+        "reasoning": "Ces chiffres occupent ces cases ; les autres candidats peuvent être retirés.",
+        "example": "Les cases surlignées sont les seules positions des deux chiffres.",
+        "tryIt": "Retire les candidats supplémentaires de ces deux cases."
+      },
+      "boxLineReduction": {
+        "description": "Une ligne ou colonne limite un chiffre à un bloc.",
+        "concept": "Une ligne peut fixer un chiffre dans un bloc.",
+        "lookFor": "Trouve deux ou trois positions d’un chiffre sur une ligne, toutes dans un bloc.",
+        "reasoning": "Le chiffre est dans ce bloc sur la ligne ; retire-le ailleurs dans le bloc.",
+        "example": "Suis la ligne surlignée dans le bloc et repère les candidats à l’extérieur.",
+        "tryIt": "Retire le chiffre des autres cases du bloc."
+      },
+      "nakedTriple": {
+        "description": "Trois cases partagent seulement trois chiffres candidats.",
+        "concept": "Un triplet réserve trois chiffres à trois cases d’une unité.",
+        "lookFor": "Trouve trois cases dont l’union des candidats contient exactement trois chiffres.",
+        "reasoning": "Ces chiffres remplissent les cases, même si leurs listes diffèrent.",
+        "example": "Les cases surlignées ont des paires différentes mais trois chiffres en tout.",
+        "tryIt": "Retire ces chiffres des autres cases de l’unité."
+      },
+      "xWing": {
+        "description": "Deux lignes alignent un chiffre sur deux intersections.",
+        "concept": "Le X-Wing lie deux lignes ou colonnes par un chiffre candidat.",
+        "lookFor": "Trouve deux lignes où le chiffre apparaît deux fois aux mêmes positions.",
+        "reasoning": "Les quatre intersections réservent le chiffre ; retire-le ailleurs sur les lignes croisées.",
+        "example": "Suis les quatre positions surlignées et les deux lignes croisées.",
+        "tryIt": "Retire le chiffre hors des quatre cases du motif."
       }
-    }
+    },
+    "basicsGroup": "Bases",
+    "intermediateGroup": "Niveau intermédiaire",
+    "advancedGroup": "Niveau avancé",
+    "nowLabel": "Maintenant",
+    "groupProgress": "$completed sur $total",
+    "extraElimination": "Ce motif ne retire pas l’un des candidats choisis. Vérifie les cases surlignées.",
+    "missingElimination": "Il reste des candidats à retirer. Suis l’unité surlignée.",
+    "wrongPlacement": "Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position."
   },
   "progress": {
     "unavailable": "Le suivi des techniques maîtrisées arrivera plus tard."
@@ -193,6 +264,14 @@
     "wrongTitle": "Corrigez d’abord l’erreur.",
     "wrongBody": "Impossible de trouver une étape logique tant qu’un chiffre est incorrect.",
     "stuckTitle": "Aucune étape prise en charge.",
-    "stuckBody": "MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles."
+    "stuckBody": "MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles.",
+    "hiddenPair": "Paire cachée",
+    "boxLineReduction": "Réduction ligne-bloc",
+    "nakedTriple": "Triplet nu",
+    "xWing": "X-Wing",
+    "identifyHiddenPair": "Deux chiffres ne sont possibles que dans les mêmes deux cases. Retire les autres candidats.",
+    "understandBoxLine": "La ligne limite ce chiffre à un bloc. Retire-le ailleurs dans ce bloc.",
+    "understandTriple": "Trois cases partagent exactement trois chiffres. Retire-les des autres cases de l’unité.",
+    "understandXWing": "Deux lignes ont ce chiffre aux mêmes deux intersections. Retire-le ailleurs sur les lignes croisées."
   }
 }

@@ -17,6 +17,15 @@ import './step/naked_pair_practice_is_open.dart';
 import './step/i_ask_michi_and_advance_through_coach.dart';
 import './step/the_result_shows_candidate_eliminations.dart';
 import './step/hint_assisted_practice_is_not_independent.dart';
+import './step/i_select_xwing.dart';
+import './step/the_xwing_technique_screen_is_shown.dart';
+import './step/i_open_the_xwing_lesson.dart';
+import './step/the_xwing_lesson_shows_the_pattern_and_practice_action.dart';
+import './step/xwing_practice_is_open.dart';
+import './step/i_select_exactly_the_xwing_eliminations.dart';
+import './step/xwing_practice_is_correct_and_progress_is_saved.dart';
+import './step/i_advance_xwing_coach_to_result.dart';
+import './step/result_reveals_exactly_the_xwing_eliminations.dart';
 
 void main() {
   group('''Learn and practice Sudoku techniques''', () {
@@ -39,6 +48,23 @@ void main() {
       await iAskMichiAndAdvanceThroughCoach(tester);
       await theResultShowsCandidateEliminations(tester);
       await hintAssistedPracticeIsNotIndependent(tester);
+    });
+    testWidgets('''Learn X-Wing''', (tester) async {
+      await theLearnScreenIsOpen(tester);
+      await iSelectXwing(tester);
+      await theXwingTechniqueScreenIsShown(tester);
+      await iOpenTheXwingLesson(tester);
+      await theXwingLessonShowsThePatternAndPracticeAction(tester);
+    });
+    testWidgets('''Solve X-Wing eliminations independently''', (tester) async {
+      await xwingPracticeIsOpen(tester);
+      await iSelectExactlyTheXwingEliminations(tester);
+      await xwingPracticeIsCorrectAndProgressIsSaved(tester);
+    });
+    testWidgets('''Ask Coach for X-Wing''', (tester) async {
+      await xwingPracticeIsOpen(tester);
+      await iAdvanceXwingCoachToResult(tester);
+      await resultRevealsExactlyTheXwingEliminations(tester);
     });
   });
 }

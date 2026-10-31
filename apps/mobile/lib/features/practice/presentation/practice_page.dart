@@ -10,6 +10,7 @@ import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/focused_unit_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
@@ -124,6 +125,9 @@ final class _PracticePageState extends State<PracticePage> {
                             math.max(25, (constraints.maxHeight - 270) / 9),
                           )
                           .toDouble();
+                      final focusedUnit = FocusedUnitWidget.unitFor(
+                        state.deduction,
+                      );
                       return Column(
                         children: [
                           Padding(
@@ -159,16 +163,33 @@ final class _PracticePageState extends State<PracticePage> {
                             ),
                           ),
                           const SizedBox(height: MichiSpacing.sm),
-                          SudokuBoardWidget(
-                            view: BoardViewState.educational(
-                              state: state.engineState,
-                              selectedCell: state.selectedCell,
-                              coachHint: state.visibleHint,
-                              selectedEliminations: state.selectedEliminations,
+                          if (focusedUnit case final unit?)
+                            SizedBox(
+                              height: math.min(constraints.maxWidth - 32, 310),
+                              child: FocusedUnitWidget(
+                                unit: unit,
+                                view: BoardViewState.educational(
+                                  state: state.engineState,
+                                  selectedCell: state.selectedCell,
+                                  coachHint: state.visibleHint,
+                                  selectedEliminations:
+                                      state.selectedEliminations,
+                                ),
+                                onCellTap: cubit.selectCell,
+                              ),
+                            )
+                          else
+                            SudokuBoardWidget(
+                              view: BoardViewState.educational(
+                                state: state.engineState,
+                                selectedCell: state.selectedCell,
+                                coachHint: state.visibleHint,
+                                selectedEliminations:
+                                    state.selectedEliminations,
+                              ),
+                              cellSize: cellSize,
+                              onCellTap: cubit.selectCell,
                             ),
-                            cellSize: cellSize,
-                            onCellTap: cubit.selectCell,
-                          ),
                           const SizedBox(height: MichiSpacing.sm),
                           Expanded(
                             child: state.visibleHint != null
@@ -352,7 +373,7 @@ final class _PracticeControls extends StatelessWidget {
     final correct = state.status == PracticeStatus.correct;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: correct ? MichiColors.successTint : MichiColors.cream,
+        color: correct ? MichiColors.successTint : MichiColors.almostTint,
         borderRadius: BorderRadius.circular(MichiRadius.card),
       ),
       child: Padding(
@@ -361,20 +382,41 @@ final class _PracticeControls extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                correct
-                    ? context.t.learn.correctTitle
-                    : context.t.learn.incorrectTitle,
-                key: ValueKey(correct ? 'practice-correct' : 'practice-wrong'),
-                style: MichiTypography.heading,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      correct
+                          ? context.t.learn.correctTitle
+                          : context.t.learn.incorrectTitle,
+                      key: ValueKey(
+                        correct ? 'practice-correct' : 'practice-wrong',
+                      ),
+                      style: MichiTypography.heading.copyWith(
+                        color: correct
+                            ? MichiColors.success
+                            : MichiColors.almostText,
+                      ),
+                    ),
+                  ),
+                  if (correct)
+                    Image.asset(
+                      'assets/images/coach_mascot.png',
+                      width: 64,
+                      height: 64,
+                      excludeFromSemantics: true,
+                    ),
+                ],
               ),
               const SizedBox(height: MichiSpacing.sm),
               Text(
-                TechniqueCopy.step(
-                  context.t,
-                  state.scenario.technique,
-                  correct ? LessonStepKind.reasoning : LessonStepKind.lookFor,
-                ),
+                correct
+                    ? TechniqueCopy.step(
+                        context.t,
+                        state.scenario.technique,
+                        LessonStepKind.reasoning,
+                      )
+                    : _incorrectExplanation(context),
                 style: MichiTypography.body,
               ),
               if (!correct) ...[
@@ -390,6 +432,15 @@ final class _PracticeControls extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _incorrectExplanation(BuildContext context) {
+    if (state.isPlacement) return context.t.learn.wrongPlacement;
+    final expected = state.deduction.eliminations.toSet();
+    if (state.selectedEliminations.difference(expected).isNotEmpty) {
+      return context.t.learn.extraElimination;
+    }
+    return context.t.learn.missingElimination;
   }
 }
 

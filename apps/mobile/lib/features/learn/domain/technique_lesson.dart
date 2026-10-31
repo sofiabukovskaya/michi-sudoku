@@ -11,12 +11,7 @@ final class TechniqueLesson {
 }
 
 abstract final class TechniqueLessons {
-  static const supported = <SudokuTechnique>[
-    SudokuTechnique.nakedSingle,
-    SudokuTechnique.hiddenSingle,
-    SudokuTechnique.nakedPair,
-    SudokuTechnique.pointingPair,
-  ];
+  static const List<SudokuTechnique> supported = SudokuTechniqueOrder.supported;
 
   static TechniqueLesson forTechnique(SudokuTechnique technique) {
     if (!supported.contains(technique)) {
@@ -24,7 +19,11 @@ abstract final class TechniqueLessons {
     }
     return TechniqueLesson(
       technique: technique,
-      steps: LessonStepKind.values,
+      steps: const [
+        LessonStepKind.concept,
+        LessonStepKind.example,
+        LessonStepKind.tryIt,
+      ],
     );
   }
 }

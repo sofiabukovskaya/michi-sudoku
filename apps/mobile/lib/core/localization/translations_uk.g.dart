@@ -95,8 +95,14 @@ class Translations$welcome$uk {
 
 	// Translations
 
-	/// uk: 'Твій шлях у судоку.'
-	String get title => 'Твій шлях у судоку.';
+	/// uk: 'Знайди свій шлях крізь логіку.'
+	String get title => 'Знайди свій шлях крізь логіку.';
+
+	/// uk: 'Судоку з наставником, який підказує — а не розв’язує за тебе.'
+	String get subtitle => 'Судоку з наставником, який підказує — а не розв’язує за тебе.';
+
+	/// uk: 'Почати без акаунта'
+	String get guest => 'Почати без акаунта';
 }
 
 // Path: onboarding
@@ -112,6 +118,36 @@ class Translations$onboarding$uk {
 
 	/// uk: 'Обрати рівень'
 	String get chooseLevel => 'Обрати рівень';
+
+	/// uk: 'Пропустити'
+	String get skip => 'Пропустити';
+
+	/// uk: 'Далі'
+	String get next => 'Далі';
+
+	/// uk: 'Судоку легше, коли знаєш, на що дивитися.'
+	String get seeTitle => 'Судоку легше, коли знаєш, на що дивитися.';
+
+	/// uk: 'MICHI пояснює логіку кожного ходу.'
+	String get seeBody => 'MICHI пояснює логіку кожного ходу.';
+
+	/// uk: 'Підказки, які вчать.'
+	String get hintsTitle => 'Підказки, які вчать.';
+
+	/// uk: 'Спершу — легкий натяк. Більше — лише коли попросиш.'
+	String get hintsBody => 'Спершу — легкий натяк. Більше — лише коли попросиш.';
+
+	/// uk: 'Вчи патерни, а не відповіді.'
+	String get patternsTitle => 'Вчи патерни, а не відповіді.';
+
+	/// uk: 'Приховані одинаки, пари, X-Wing — у власному темпі.'
+	String get patternsBody => 'Приховані одинаки, пари, X-Wing — у власному темпі.';
+
+	/// uk: 'Твій шлях у судоку.'
+	String get pathTitle => 'Твій шлях у судоку.';
+
+	/// uk: 'MICHI бачить, де тобі складно, і пропонує, що потренувати.'
+	String get pathBody => 'MICHI бачить, де тобі складно, і пропонує, що потренувати.';
 }
 
 // Path: playerLevel
@@ -127,6 +163,33 @@ class Translations$playerLevel$uk {
 
 	/// uk: 'До гри'
 	String get goToGame => 'До гри';
+
+	/// uk: 'Від цього залежать перший урок і складність. Змінити можна будь-коли.'
+	String get subtitle => 'Від цього залежать перший урок і складність. Змінити можна будь-коли.';
+
+	/// uk: 'Тільки починаю'
+	String get beginner => 'Тільки починаю';
+
+	/// uk: 'Правила й перші ходи'
+	String get beginnerDetail => 'Правила й перші ходи';
+
+	/// uk: 'Знаю основи'
+	String get basics => 'Знаю основи';
+
+	/// uk: 'Одинаки й кандидати'
+	String get basicsDetail => 'Одинаки й кандидати';
+
+	/// uk: 'Розв’язую регулярно'
+	String get regular => 'Розв’язую регулярно';
+
+	/// uk: 'Пари й вказівні пари'
+	String get regularDetail => 'Пари й вказівні пари';
+
+	/// uk: 'Хочу складніших задач'
+	String get advanced => 'Хочу складніших задач';
+
+	/// uk: 'X-Wing і далі'
+	String get advancedDetail => 'X-Wing і далі';
 }
 
 // Path: auth
@@ -217,6 +280,27 @@ class Translations$home$uk {
 
 	/// uk: 'Набір головоломок недоступний. Спробуйте ще раз.'
 	String get contentUnavailable => 'Набір головоломок недоступний. Спробуйте ще раз.';
+
+	/// uk: 'Складний'
+	String get advanced => 'Складний';
+
+	/// uk: 'Експертний'
+	String get expert => 'Експертний';
+
+	/// uk: 'Доброго ранку'
+	String get greeting => 'Доброго ранку';
+
+	/// uk: 'Ще одна головоломка'
+	String get newPuzzle => 'Ще одна головоломка';
+
+	/// uk: 'Цей тиждень'
+	String get weekTitle => 'Цей тиждень';
+
+	/// uk: 'Детальніше'
+	String get weekDetails => 'Детальніше';
+
+	/// uk: 'Пн|Вт|Ср|Чт|Пт|Сб|Нд'
+	String get weekdaysShort => 'Пн|Вт|Ср|Чт|Пт|Сб|Нд';
 }
 
 // Path: game
@@ -313,6 +397,15 @@ class Translations$game$uk {
 
 	/// uk: 'Судоку дня'
 	String get dailyTitle => 'Судоку дня';
+
+	/// uk: 'розв’язані клітинки'
+	String get completionLogic => 'розв’язані клітинки';
+
+	/// uk: 'помилки'
+	String get completionMistakes => 'помилки';
+
+	/// uk: 'підказки'
+	String get completionHints => 'підказки';
 }
 
 // Path: learn
@@ -438,6 +531,30 @@ class Translations$learn$uk {
 	String get continueLesson => 'Продовжити урок';
 
 	late final Translations$learn$lessons$uk lessons = Translations$learn$lessons$uk.internal(_root);
+
+	/// uk: 'Основи'
+	String get basicsGroup => 'Основи';
+
+	/// uk: 'Середній рівень'
+	String get intermediateGroup => 'Середній рівень';
+
+	/// uk: 'Просунутий рівень'
+	String get advancedGroup => 'Просунутий рівень';
+
+	/// uk: 'Зараз'
+	String get nowLabel => 'Зараз';
+
+	/// uk: '$completed з $total'
+	String groupProgress({required Object completed, required Object total}) => '${completed} з ${total}';
+
+	/// uk: 'Один вибраний кандидат цей прийом не виключає. Перевір підсвічені клітинки.'
+	String get extraElimination => 'Один вибраний кандидат цей прийом не виключає. Перевір підсвічені клітинки.';
+
+	/// uk: 'Є ще кандидати, які треба викреслити. Простеж підсвічену групу.'
+	String get missingElimination => 'Є ще кандидати, які треба викреслити. Простеж підсвічену групу.';
+
+	/// uk: 'Ця клітинка або цифра не відповідає висновку. Перевір підсвічену позицію.'
+	String get wrongPlacement => 'Ця клітинка або цифра не відповідає висновку. Перевір підсвічену позицію.';
 }
 
 // Path: progress
@@ -582,6 +699,30 @@ class Translations$coach$uk {
 
 	/// uk: 'MICHI поки не може пояснити наступний хід доступними техніками.'
 	String get stuckBody => 'MICHI поки не може пояснити наступний хід доступними техніками.';
+
+	/// uk: 'Прихована пара'
+	String get hiddenPair => 'Прихована пара';
+
+	/// uk: 'Лінія в блоці'
+	String get boxLineReduction => 'Лінія в блоці';
+
+	/// uk: 'Відкрита трійка'
+	String get nakedTriple => 'Відкрита трійка';
+
+	/// uk: 'X-Wing'
+	String get xWing => 'X-Wing';
+
+	/// uk: 'Дві цифри можливі лише в тих самих двох клітинках. Прибери інші кандидати.'
+	String get identifyHiddenPair => 'Дві цифри можливі лише в тих самих двох клітинках. Прибери інші кандидати.';
+
+	/// uk: 'У цій лінії цифра обмежена одним блоком. Прибери її в решті блоку.'
+	String get understandBoxLine => 'У цій лінії цифра обмежена одним блоком. Прибери її в решті блоку.';
+
+	/// uk: 'Три клітинки ділять рівно три цифри. Прибери їх з інших клітинок групи.'
+	String get understandTriple => 'Три клітинки ділять рівно три цифри. Прибери їх з інших клітинок групи.';
+
+	/// uk: 'У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній.'
+	String get understandXWing => 'У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній.';
 }
 
 // Path: learn.lessons
@@ -595,6 +736,10 @@ class Translations$learn$lessons$uk {
 	late final Translations$learn$lessons$hiddenSingle$uk hiddenSingle = Translations$learn$lessons$hiddenSingle$uk.internal(_root);
 	late final Translations$learn$lessons$nakedPair$uk nakedPair = Translations$learn$lessons$nakedPair$uk.internal(_root);
 	late final Translations$learn$lessons$pointingPair$uk pointingPair = Translations$learn$lessons$pointingPair$uk.internal(_root);
+	late final Translations$learn$lessons$hiddenPair$uk hiddenPair = Translations$learn$lessons$hiddenPair$uk.internal(_root);
+	late final Translations$learn$lessons$boxLineReduction$uk boxLineReduction = Translations$learn$lessons$boxLineReduction$uk.internal(_root);
+	late final Translations$learn$lessons$nakedTriple$uk nakedTriple = Translations$learn$lessons$nakedTriple$uk.internal(_root);
+	late final Translations$learn$lessons$xWing$uk xWing = Translations$learn$lessons$xWing$uk.internal(_root);
 }
 
 // Path: learn.lessons.nakedSingle
@@ -705,6 +850,114 @@ class Translations$learn$lessons$pointingPair$uk {
 	String get tryIt => 'Познач усіх кандидатів, яких можна прибрати поза блоком.';
 }
 
+// Path: learn.lessons.hiddenPair
+class Translations$learn$lessons$hiddenPair$uk {
+	Translations$learn$lessons$hiddenPair$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Дві цифри приховані в тих самих двох клітинках.'
+	String get description => 'Дві цифри приховані в тих самих двох клітинках.';
+
+	/// uk: 'Приховану пару шукаємо за цифрами, а не за однаковими наборами кандидатів.'
+	String get concept => 'Приховану пару шукаємо за цифрами, а не за однаковими наборами кандидатів.';
+
+	/// uk: 'Знайди дві цифри, кожна з яких можлива лише в тих самих двох клітинках групи.'
+	String get lookFor => 'Знайди дві цифри, кожна з яких можлива лише в тих самих двох клітинках групи.';
+
+	/// uk: 'Обидві цифри належать цим клітинкам; решту кандидатів у них можна прибрати.'
+	String get reasoning => 'Обидві цифри належать цим клітинкам; решту кандидатів у них можна прибрати.';
+
+	/// uk: 'Підсвічені клітинки — єдині місця для обох цифр.'
+	String get example => 'Підсвічені клітинки — єдині місця для обох цифр.';
+
+	/// uk: 'Прибери зайвих кандидатів із цих двох клітинок.'
+	String get tryIt => 'Прибери зайвих кандидатів із цих двох клітинок.';
+}
+
+// Path: learn.lessons.boxLineReduction
+class Translations$learn$lessons$boxLineReduction$uk {
+	Translations$learn$lessons$boxLineReduction$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Рядок або стовпець обмежує цифру одним блоком.'
+	String get description => 'Рядок або стовпець обмежує цифру одним блоком.';
+
+	/// uk: 'Лінія може замкнути цифру всередині блоку.'
+	String get concept => 'Лінія може замкнути цифру всередині блоку.';
+
+	/// uk: 'Знайди два чи три місця для цифри в одній лінії, усі в одному блоці.'
+	String get lookFor => 'Знайди два чи три місця для цифри в одній лінії, усі в одному блоці.';
+
+	/// uk: 'Цифра мусить бути в цьому блоці на лінії, тож прибери її поза лінією.'
+	String get reasoning => 'Цифра мусить бути в цьому блоці на лінії, тож прибери її поза лінією.';
+
+	/// uk: 'Простеж підсвічену лінію в блоці та знайди кандидати поза нею.'
+	String get example => 'Простеж підсвічену лінію в блоці та знайди кандидати поза нею.';
+
+	/// uk: 'Прибери цифру з інших клітинок блоку.'
+	String get tryIt => 'Прибери цифру з інших клітинок блоку.';
+}
+
+// Path: learn.lessons.nakedTriple
+class Translations$learn$lessons$nakedTriple$uk {
+	Translations$learn$lessons$nakedTriple$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Три клітинки ділять лише три цифри-кандидати.'
+	String get description => 'Три клітинки ділять лише три цифри-кандидати.';
+
+	/// uk: 'Трійка резервує три цифри для трьох клітинок однієї групи.'
+	String get concept => 'Трійка резервує три цифри для трьох клітинок однієї групи.';
+
+	/// uk: 'Знайди три клітинки, у яких разом рівно три кандидати.'
+	String get lookFor => 'Знайди три клітинки, у яких разом рівно три кандидати.';
+
+	/// uk: 'Ці три цифри заповнять клітинки, навіть якщо набори кандидатів різні.'
+	String get reasoning => 'Ці три цифри заповнять клітинки, навіть якщо набори кандидатів різні.';
+
+	/// uk: 'Підсвічені клітинки мають різні пари, але разом лише три цифри.'
+	String get example => 'Підсвічені клітинки мають різні пари, але разом лише три цифри.';
+
+	/// uk: 'Прибери ці цифри з решти клітинок групи.'
+	String get tryIt => 'Прибери ці цифри з решти клітинок групи.';
+}
+
+// Path: learn.lessons.xWing
+class Translations$learn$lessons$xWing$uk {
+	Translations$learn$lessons$xWing$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Дві лінії вирівнюють одну цифру у двох перетинах.'
+	String get description => 'Дві лінії вирівнюють одну цифру у двох перетинах.';
+
+	/// uk: 'X-Wing пов’язує два рядки або два стовпці одним кандидатом.'
+	String get concept => 'X-Wing пов’язує два рядки або два стовпці одним кандидатом.';
+
+	/// uk: 'Знайди дві лінії, де цифра можлива рівно двічі в однакових позиціях.'
+	String get lookFor => 'Знайди дві лінії, де цифра можлива рівно двічі в однакових позиціях.';
+
+	/// uk: 'Чотири перетини резервують цифру; прибери її в решті перехресних ліній.'
+	String get reasoning => 'Чотири перетини резервують цифру; прибери її в решті перехресних ліній.';
+
+	/// uk: 'Простеж чотири підсвічені позиції та дві перехресні лінії.'
+	String get example => 'Простеж чотири підсвічені позиції та дві перехресні лінії.';
+
+	/// uk: 'Прибери цифру поза чотирма клітинками візерунка.'
+	String get tryIt => 'Прибери цифру поза чотирма клітинками візерунка.';
+}
+
 /// The flat map containing all translations for locale <uk>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -717,11 +970,32 @@ extension on Translations {
 			'common.continueLabel' => 'Продовжити',
 			'common.start' => 'Почати',
 			'splash.subtitle' => 'Вчися бачити наступний хід.',
-			'welcome.title' => 'Твій шлях у судоку.',
+			'welcome.title' => 'Знайди свій шлях крізь логіку.',
+			'welcome.subtitle' => 'Судоку з наставником, який підказує — а не розв’язує за тебе.',
+			'welcome.guest' => 'Почати без акаунта',
 			'onboarding.title' => 'Навчання починається тут.',
 			'onboarding.chooseLevel' => 'Обрати рівень',
+			'onboarding.skip' => 'Пропустити',
+			'onboarding.next' => 'Далі',
+			'onboarding.seeTitle' => 'Судоку легше, коли знаєш, на що дивитися.',
+			'onboarding.seeBody' => 'MICHI пояснює логіку кожного ходу.',
+			'onboarding.hintsTitle' => 'Підказки, які вчать.',
+			'onboarding.hintsBody' => 'Спершу — легкий натяк. Більше — лише коли попросиш.',
+			'onboarding.patternsTitle' => 'Вчи патерни, а не відповіді.',
+			'onboarding.patternsBody' => 'Приховані одинаки, пари, X-Wing — у власному темпі.',
+			'onboarding.pathTitle' => 'Твій шлях у судоку.',
+			'onboarding.pathBody' => 'MICHI бачить, де тобі складно, і пропонує, що потренувати.',
 			'playerLevel.title' => 'Як добре ти знаєш судоку?',
 			'playerLevel.goToGame' => 'До гри',
+			'playerLevel.subtitle' => 'Від цього залежать перший урок і складність. Змінити можна будь-коли.',
+			'playerLevel.beginner' => 'Тільки починаю',
+			'playerLevel.beginnerDetail' => 'Правила й перші ходи',
+			'playerLevel.basics' => 'Знаю основи',
+			'playerLevel.basicsDetail' => 'Одинаки й кандидати',
+			'playerLevel.regular' => 'Розв’язую регулярно',
+			'playerLevel.regularDetail' => 'Пари й вказівні пари',
+			'playerLevel.advanced' => 'Хочу складніших задач',
+			'playerLevel.advancedDetail' => 'X-Wing і далі',
 			'auth.title' => 'Акаунт',
 			'auth.unavailable' => 'Синхронізація прогресу з’явиться пізніше.',
 			'home.title' => 'Твій шлях у судоку',
@@ -746,6 +1020,13 @@ extension on Translations {
 			'home.dailyContinue' => 'Продовжити судоку дня',
 			'home.dailyCompleted' => 'Сьогодні виконано',
 			'home.contentUnavailable' => 'Набір головоломок недоступний. Спробуйте ще раз.',
+			'home.advanced' => 'Складний',
+			'home.expert' => 'Експертний',
+			'home.greeting' => 'Доброго ранку',
+			'home.newPuzzle' => 'Ще одна головоломка',
+			'home.weekTitle' => 'Цей тиждень',
+			'home.weekDetails' => 'Детальніше',
+			'home.weekdaysShort' => 'Пн|Вт|Ср|Чт|Пт|Сб|Нд',
 			'game.title' => 'Судоку дня · Середній',
 			'game.undo' => 'Скасувати',
 			'game.erase' => 'Стерти',
@@ -775,6 +1056,9 @@ extension on Translations {
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} помилок · ${hints} підказок',
 			'game.standardTitle' => 'Судоку',
 			'game.dailyTitle' => 'Судоку дня',
+			'game.completionLogic' => 'розв’язані клітинки',
+			'game.completionMistakes' => 'помилки',
+			'game.completionHints' => 'підказки',
 			'learn.title' => 'Навчання',
 			'learn.intro' => 'Крок за кроком до розуміння технік.',
 			'learn.newLabel' => 'Нове',
@@ -837,6 +1121,38 @@ extension on Translations {
 			'learn.lessons.pointingPair.reasoning' => 'Цифра залишиться в цьому блоці, тому прибери її поза блоком на спільній лінії.',
 			'learn.lessons.pointingPair.example' => 'Простеж за виділеною лінією поза блоком.',
 			'learn.lessons.pointingPair.tryIt' => 'Познач усіх кандидатів, яких можна прибрати поза блоком.',
+			'learn.lessons.hiddenPair.description' => 'Дві цифри приховані в тих самих двох клітинках.',
+			'learn.lessons.hiddenPair.concept' => 'Приховану пару шукаємо за цифрами, а не за однаковими наборами кандидатів.',
+			'learn.lessons.hiddenPair.lookFor' => 'Знайди дві цифри, кожна з яких можлива лише в тих самих двох клітинках групи.',
+			'learn.lessons.hiddenPair.reasoning' => 'Обидві цифри належать цим клітинкам; решту кандидатів у них можна прибрати.',
+			'learn.lessons.hiddenPair.example' => 'Підсвічені клітинки — єдині місця для обох цифр.',
+			'learn.lessons.hiddenPair.tryIt' => 'Прибери зайвих кандидатів із цих двох клітинок.',
+			'learn.lessons.boxLineReduction.description' => 'Рядок або стовпець обмежує цифру одним блоком.',
+			'learn.lessons.boxLineReduction.concept' => 'Лінія може замкнути цифру всередині блоку.',
+			'learn.lessons.boxLineReduction.lookFor' => 'Знайди два чи три місця для цифри в одній лінії, усі в одному блоці.',
+			'learn.lessons.boxLineReduction.reasoning' => 'Цифра мусить бути в цьому блоці на лінії, тож прибери її поза лінією.',
+			'learn.lessons.boxLineReduction.example' => 'Простеж підсвічену лінію в блоці та знайди кандидати поза нею.',
+			'learn.lessons.boxLineReduction.tryIt' => 'Прибери цифру з інших клітинок блоку.',
+			'learn.lessons.nakedTriple.description' => 'Три клітинки ділять лише три цифри-кандидати.',
+			'learn.lessons.nakedTriple.concept' => 'Трійка резервує три цифри для трьох клітинок однієї групи.',
+			'learn.lessons.nakedTriple.lookFor' => 'Знайди три клітинки, у яких разом рівно три кандидати.',
+			'learn.lessons.nakedTriple.reasoning' => 'Ці три цифри заповнять клітинки, навіть якщо набори кандидатів різні.',
+			'learn.lessons.nakedTriple.example' => 'Підсвічені клітинки мають різні пари, але разом лише три цифри.',
+			'learn.lessons.nakedTriple.tryIt' => 'Прибери ці цифри з решти клітинок групи.',
+			'learn.lessons.xWing.description' => 'Дві лінії вирівнюють одну цифру у двох перетинах.',
+			'learn.lessons.xWing.concept' => 'X-Wing пов’язує два рядки або два стовпці одним кандидатом.',
+			'learn.lessons.xWing.lookFor' => 'Знайди дві лінії, де цифра можлива рівно двічі в однакових позиціях.',
+			'learn.lessons.xWing.reasoning' => 'Чотири перетини резервують цифру; прибери її в решті перехресних ліній.',
+			'learn.lessons.xWing.example' => 'Простеж чотири підсвічені позиції та дві перехресні лінії.',
+			'learn.lessons.xWing.tryIt' => 'Прибери цифру поза чотирма клітинками візерунка.',
+			'learn.basicsGroup' => 'Основи',
+			'learn.intermediateGroup' => 'Середній рівень',
+			'learn.advancedGroup' => 'Просунутий рівень',
+			'learn.nowLabel' => 'Зараз',
+			'learn.groupProgress' => ({required Object completed, required Object total}) => '${completed} з ${total}',
+			'learn.extraElimination' => 'Один вибраний кандидат цей прийом не виключає. Перевір підсвічені клітинки.',
+			'learn.missingElimination' => 'Є ще кандидати, які треба викреслити. Простеж підсвічену групу.',
+			'learn.wrongPlacement' => 'Ця клітинка або цифра не відповідає висновку. Перевір підсвічену позицію.',
 			'progress.unavailable' => 'Майстерність технік з’явиться пізніше.',
 			'profile.unavailable' => 'Налаштування профілю з’являться пізніше.',
 			'scanner.unavailable' => 'Імпорт із камери з’явиться після основної гри.',
@@ -873,6 +1189,14 @@ extension on Translations {
 			'coach.wrongBody' => 'З неправильною цифрою на дошці логічний хід знайти неможливо.',
 			'coach.stuckTitle' => 'Поки немає відомого кроку.',
 			'coach.stuckBody' => 'MICHI поки не може пояснити наступний хід доступними техніками.',
+			'coach.hiddenPair' => 'Прихована пара',
+			'coach.boxLineReduction' => 'Лінія в блоці',
+			'coach.nakedTriple' => 'Відкрита трійка',
+			'coach.xWing' => 'X-Wing',
+			'coach.identifyHiddenPair' => 'Дві цифри можливі лише в тих самих двох клітинках. Прибери інші кандидати.',
+			'coach.understandBoxLine' => 'У цій лінії цифра обмежена одним блоком. Прибери її в решті блоку.',
+			'coach.understandTriple' => 'Три клітинки ділять рівно три цифри. Прибери їх з інших клітинок групи.',
+			'coach.understandXWing' => 'У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній.',
 			_ => null,
 		};
 	}

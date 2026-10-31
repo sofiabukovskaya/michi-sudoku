@@ -83,7 +83,9 @@ class _Translations$welcome$fr extends Translations$welcome$uk {
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Ton parcours dans le sudoku.';
+	@override String get title => 'Trouve ton chemin grâce à la logique.';
+	@override String get subtitle => 'Un sudoku avec un guide qui t’aide sans résoudre à ta place.';
+	@override String get guest => 'Commencer sans compte';
 }
 
 // Path: onboarding
@@ -95,6 +97,16 @@ class _Translations$onboarding$fr extends Translations$onboarding$uk {
 	// Translations
 	@override String get title => 'Ton apprentissage commence ici.';
 	@override String get chooseLevel => 'Choisir ton niveau';
+	@override String get skip => 'Passer';
+	@override String get next => 'Suivant';
+	@override String get seeTitle => 'Le sudoku devient plus simple quand tu sais où regarder.';
+	@override String get seeBody => 'MICHI explique la logique de chaque coup.';
+	@override String get hintsTitle => 'Des indices qui enseignent.';
+	@override String get hintsBody => 'Commence par une légère piste. Demande plus si besoin.';
+	@override String get patternsTitle => 'Apprends les motifs, pas les réponses.';
+	@override String get patternsBody => 'Simples cachés, paires, X-Wing : à ton rythme.';
+	@override String get pathTitle => 'Ton chemin dans le sudoku.';
+	@override String get pathBody => 'MICHI repère tes difficultés et te suggère quoi travailler.';
 }
 
 // Path: playerLevel
@@ -106,6 +118,15 @@ class _Translations$playerLevel$fr extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => 'Connais-tu bien le sudoku ?';
 	@override String get goToGame => 'Commencer à jouer';
+	@override String get subtitle => 'Cela détermine ta première leçon et la difficulté. Tu peux changer plus tard.';
+	@override String get beginner => 'Je débute';
+	@override String get beginnerDetail => 'Règles et premiers coups';
+	@override String get basics => 'Je connais les bases';
+	@override String get basicsDetail => 'Simples et candidats';
+	@override String get regular => 'Je joue régulièrement';
+	@override String get regularDetail => 'Paires et paires pointantes';
+	@override String get advanced => 'Je veux un défi';
+	@override String get advancedDetail => 'X-Wing et au-delà';
 }
 
 // Path: auth
@@ -148,6 +169,13 @@ class _Translations$home$fr extends Translations$home$uk {
 	@override String get dailyContinue => 'Reprendre le sudoku du jour';
 	@override String get dailyCompleted => 'Terminé aujourd’hui';
 	@override String get contentUnavailable => 'Les grilles sont indisponibles. Réessayez.';
+	@override String get advanced => 'Avancé';
+	@override String get expert => 'Expert';
+	@override String get greeting => 'Bonjour';
+	@override String get newPuzzle => 'Un autre sudoku';
+	@override String get weekTitle => 'Cette semaine';
+	@override String get weekDetails => 'Détails';
+	@override String get weekdaysShort => 'Lu|Ma|Me|Je|Ve|Sa|Di';
 }
 
 // Path: game
@@ -186,6 +214,9 @@ class _Translations$game$fr extends Translations$game$uk {
 	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} erreurs · ${hints} indices';
 	@override String get standardTitle => 'Sudoku';
 	@override String get dailyTitle => 'Sudoku du jour';
+	@override String get completionLogic => 'cases résolues';
+	@override String get completionMistakes => 'erreurs';
+	@override String get completionHints => 'indices';
 }
 
 // Path: learn
@@ -234,6 +265,14 @@ class _Translations$learn$fr extends Translations$learn$uk {
 	@override String get practiceTitle => 'Pratique';
 	@override String get continueLesson => 'Continuer la leçon';
 	@override late final _Translations$learn$lessons$fr lessons = _Translations$learn$lessons$fr._(_root);
+	@override String get basicsGroup => 'Bases';
+	@override String get intermediateGroup => 'Niveau intermédiaire';
+	@override String get advancedGroup => 'Niveau avancé';
+	@override String get nowLabel => 'Maintenant';
+	@override String groupProgress({required Object completed, required Object total}) => '${completed} sur ${total}';
+	@override String get extraElimination => 'Ce motif ne retire pas l’un des candidats choisis. Vérifie les cases surlignées.';
+	@override String get missingElimination => 'Il reste des candidats à retirer. Suis l’unité surlignée.';
+	@override String get wrongPlacement => 'Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position.';
 }
 
 // Path: progress
@@ -306,6 +345,14 @@ class _Translations$coach$fr extends Translations$coach$uk {
 	@override String get wrongBody => 'Impossible de trouver une étape logique tant qu’un chiffre est incorrect.';
 	@override String get stuckTitle => 'Aucune étape prise en charge.';
 	@override String get stuckBody => 'MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles.';
+	@override String get hiddenPair => 'Paire cachée';
+	@override String get boxLineReduction => 'Réduction ligne-bloc';
+	@override String get nakedTriple => 'Triplet nu';
+	@override String get xWing => 'X-Wing';
+	@override String get identifyHiddenPair => 'Deux chiffres ne sont possibles que dans les mêmes deux cases. Retire les autres candidats.';
+	@override String get understandBoxLine => 'La ligne limite ce chiffre à un bloc. Retire-le ailleurs dans ce bloc.';
+	@override String get understandTriple => 'Trois cases partagent exactement trois chiffres. Retire-les des autres cases de l’unité.';
+	@override String get understandXWing => 'Deux lignes ont ce chiffre aux mêmes deux intersections. Retire-le ailleurs sur les lignes croisées.';
 }
 
 // Path: learn.lessons
@@ -319,6 +366,10 @@ class _Translations$learn$lessons$fr extends Translations$learn$lessons$uk {
 	@override late final _Translations$learn$lessons$hiddenSingle$fr hiddenSingle = _Translations$learn$lessons$hiddenSingle$fr._(_root);
 	@override late final _Translations$learn$lessons$nakedPair$fr nakedPair = _Translations$learn$lessons$nakedPair$fr._(_root);
 	@override late final _Translations$learn$lessons$pointingPair$fr pointingPair = _Translations$learn$lessons$pointingPair$fr._(_root);
+	@override late final _Translations$learn$lessons$hiddenPair$fr hiddenPair = _Translations$learn$lessons$hiddenPair$fr._(_root);
+	@override late final _Translations$learn$lessons$boxLineReduction$fr boxLineReduction = _Translations$learn$lessons$boxLineReduction$fr._(_root);
+	@override late final _Translations$learn$lessons$nakedTriple$fr nakedTriple = _Translations$learn$lessons$nakedTriple$fr._(_root);
+	@override late final _Translations$learn$lessons$xWing$fr xWing = _Translations$learn$lessons$xWing$fr._(_root);
 }
 
 // Path: learn.lessons.nakedSingle
@@ -381,6 +432,66 @@ class _Translations$learn$lessons$pointingPair$fr extends Translations$learn$les
 	@override String get tryIt => 'Marque tous les candidats éliminés hors du bloc.';
 }
 
+// Path: learn.lessons.hiddenPair
+class _Translations$learn$lessons$hiddenPair$fr extends Translations$learn$lessons$hiddenPair$uk {
+	_Translations$learn$lessons$hiddenPair$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Deux chiffres se cachent dans les mêmes deux cases.';
+	@override String get concept => 'Cherche une paire cachée par chiffre, pas par listes identiques.';
+	@override String get lookFor => 'Trouve deux chiffres possibles uniquement dans les mêmes deux cases d’une unité.';
+	@override String get reasoning => 'Ces chiffres occupent ces cases ; les autres candidats peuvent être retirés.';
+	@override String get example => 'Les cases surlignées sont les seules positions des deux chiffres.';
+	@override String get tryIt => 'Retire les candidats supplémentaires de ces deux cases.';
+}
+
+// Path: learn.lessons.boxLineReduction
+class _Translations$learn$lessons$boxLineReduction$fr extends Translations$learn$lessons$boxLineReduction$uk {
+	_Translations$learn$lessons$boxLineReduction$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Une ligne ou colonne limite un chiffre à un bloc.';
+	@override String get concept => 'Une ligne peut fixer un chiffre dans un bloc.';
+	@override String get lookFor => 'Trouve deux ou trois positions d’un chiffre sur une ligne, toutes dans un bloc.';
+	@override String get reasoning => 'Le chiffre est dans ce bloc sur la ligne ; retire-le ailleurs dans le bloc.';
+	@override String get example => 'Suis la ligne surlignée dans le bloc et repère les candidats à l’extérieur.';
+	@override String get tryIt => 'Retire le chiffre des autres cases du bloc.';
+}
+
+// Path: learn.lessons.nakedTriple
+class _Translations$learn$lessons$nakedTriple$fr extends Translations$learn$lessons$nakedTriple$uk {
+	_Translations$learn$lessons$nakedTriple$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Trois cases partagent seulement trois chiffres candidats.';
+	@override String get concept => 'Un triplet réserve trois chiffres à trois cases d’une unité.';
+	@override String get lookFor => 'Trouve trois cases dont l’union des candidats contient exactement trois chiffres.';
+	@override String get reasoning => 'Ces chiffres remplissent les cases, même si leurs listes diffèrent.';
+	@override String get example => 'Les cases surlignées ont des paires différentes mais trois chiffres en tout.';
+	@override String get tryIt => 'Retire ces chiffres des autres cases de l’unité.';
+}
+
+// Path: learn.lessons.xWing
+class _Translations$learn$lessons$xWing$fr extends Translations$learn$lessons$xWing$uk {
+	_Translations$learn$lessons$xWing$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Deux lignes alignent un chiffre sur deux intersections.';
+	@override String get concept => 'Le X-Wing lie deux lignes ou colonnes par un chiffre candidat.';
+	@override String get lookFor => 'Trouve deux lignes où le chiffre apparaît deux fois aux mêmes positions.';
+	@override String get reasoning => 'Les quatre intersections réservent le chiffre ; retire-le ailleurs sur les lignes croisées.';
+	@override String get example => 'Suis les quatre positions surlignées et les deux lignes croisées.';
+	@override String get tryIt => 'Retire le chiffre hors des quatre cases du motif.';
+}
+
 /// The flat map containing all translations for locale <fr>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -393,11 +504,32 @@ extension on TranslationsFr {
 			'common.continueLabel' => 'Continuer',
 			'common.start' => 'Commencer',
 			'splash.subtitle' => 'Apprends à voir le prochain coup.',
-			'welcome.title' => 'Ton parcours dans le sudoku.',
+			'welcome.title' => 'Trouve ton chemin grâce à la logique.',
+			'welcome.subtitle' => 'Un sudoku avec un guide qui t’aide sans résoudre à ta place.',
+			'welcome.guest' => 'Commencer sans compte',
 			'onboarding.title' => 'Ton apprentissage commence ici.',
 			'onboarding.chooseLevel' => 'Choisir ton niveau',
+			'onboarding.skip' => 'Passer',
+			'onboarding.next' => 'Suivant',
+			'onboarding.seeTitle' => 'Le sudoku devient plus simple quand tu sais où regarder.',
+			'onboarding.seeBody' => 'MICHI explique la logique de chaque coup.',
+			'onboarding.hintsTitle' => 'Des indices qui enseignent.',
+			'onboarding.hintsBody' => 'Commence par une légère piste. Demande plus si besoin.',
+			'onboarding.patternsTitle' => 'Apprends les motifs, pas les réponses.',
+			'onboarding.patternsBody' => 'Simples cachés, paires, X-Wing : à ton rythme.',
+			'onboarding.pathTitle' => 'Ton chemin dans le sudoku.',
+			'onboarding.pathBody' => 'MICHI repère tes difficultés et te suggère quoi travailler.',
 			'playerLevel.title' => 'Connais-tu bien le sudoku ?',
 			'playerLevel.goToGame' => 'Commencer à jouer',
+			'playerLevel.subtitle' => 'Cela détermine ta première leçon et la difficulté. Tu peux changer plus tard.',
+			'playerLevel.beginner' => 'Je débute',
+			'playerLevel.beginnerDetail' => 'Règles et premiers coups',
+			'playerLevel.basics' => 'Je connais les bases',
+			'playerLevel.basicsDetail' => 'Simples et candidats',
+			'playerLevel.regular' => 'Je joue régulièrement',
+			'playerLevel.regularDetail' => 'Paires et paires pointantes',
+			'playerLevel.advanced' => 'Je veux un défi',
+			'playerLevel.advancedDetail' => 'X-Wing et au-delà',
 			'auth.title' => 'Compte',
 			'auth.unavailable' => 'La synchronisation de la progression arrivera plus tard.',
 			'home.title' => 'Ton parcours dans le sudoku',
@@ -422,6 +554,13 @@ extension on TranslationsFr {
 			'home.dailyContinue' => 'Reprendre le sudoku du jour',
 			'home.dailyCompleted' => 'Terminé aujourd’hui',
 			'home.contentUnavailable' => 'Les grilles sont indisponibles. Réessayez.',
+			'home.advanced' => 'Avancé',
+			'home.expert' => 'Expert',
+			'home.greeting' => 'Bonjour',
+			'home.newPuzzle' => 'Un autre sudoku',
+			'home.weekTitle' => 'Cette semaine',
+			'home.weekDetails' => 'Détails',
+			'home.weekdaysShort' => 'Lu|Ma|Me|Je|Ve|Sa|Di',
 			'game.title' => 'Sudoku du jour · Moyen',
 			'game.undo' => 'Annuler',
 			'game.erase' => 'Effacer',
@@ -451,6 +590,9 @@ extension on TranslationsFr {
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} erreurs · ${hints} indices',
 			'game.standardTitle' => 'Sudoku',
 			'game.dailyTitle' => 'Sudoku du jour',
+			'game.completionLogic' => 'cases résolues',
+			'game.completionMistakes' => 'erreurs',
+			'game.completionHints' => 'indices',
 			'learn.title' => 'Apprendre',
 			'learn.intro' => 'Une technique, une étape claire à la fois.',
 			'learn.newLabel' => 'Nouveau',
@@ -513,6 +655,38 @@ extension on TranslationsFr {
 			'learn.lessons.pointingPair.reasoning' => 'Le chiffre reste dans le bloc : élimine-le hors du bloc sur la même ligne.',
 			'learn.lessons.pointingPair.example' => 'Suis la ligne surlignée hors du bloc.',
 			'learn.lessons.pointingPair.tryIt' => 'Marque tous les candidats éliminés hors du bloc.',
+			'learn.lessons.hiddenPair.description' => 'Deux chiffres se cachent dans les mêmes deux cases.',
+			'learn.lessons.hiddenPair.concept' => 'Cherche une paire cachée par chiffre, pas par listes identiques.',
+			'learn.lessons.hiddenPair.lookFor' => 'Trouve deux chiffres possibles uniquement dans les mêmes deux cases d’une unité.',
+			'learn.lessons.hiddenPair.reasoning' => 'Ces chiffres occupent ces cases ; les autres candidats peuvent être retirés.',
+			'learn.lessons.hiddenPair.example' => 'Les cases surlignées sont les seules positions des deux chiffres.',
+			'learn.lessons.hiddenPair.tryIt' => 'Retire les candidats supplémentaires de ces deux cases.',
+			'learn.lessons.boxLineReduction.description' => 'Une ligne ou colonne limite un chiffre à un bloc.',
+			'learn.lessons.boxLineReduction.concept' => 'Une ligne peut fixer un chiffre dans un bloc.',
+			'learn.lessons.boxLineReduction.lookFor' => 'Trouve deux ou trois positions d’un chiffre sur une ligne, toutes dans un bloc.',
+			'learn.lessons.boxLineReduction.reasoning' => 'Le chiffre est dans ce bloc sur la ligne ; retire-le ailleurs dans le bloc.',
+			'learn.lessons.boxLineReduction.example' => 'Suis la ligne surlignée dans le bloc et repère les candidats à l’extérieur.',
+			'learn.lessons.boxLineReduction.tryIt' => 'Retire le chiffre des autres cases du bloc.',
+			'learn.lessons.nakedTriple.description' => 'Trois cases partagent seulement trois chiffres candidats.',
+			'learn.lessons.nakedTriple.concept' => 'Un triplet réserve trois chiffres à trois cases d’une unité.',
+			'learn.lessons.nakedTriple.lookFor' => 'Trouve trois cases dont l’union des candidats contient exactement trois chiffres.',
+			'learn.lessons.nakedTriple.reasoning' => 'Ces chiffres remplissent les cases, même si leurs listes diffèrent.',
+			'learn.lessons.nakedTriple.example' => 'Les cases surlignées ont des paires différentes mais trois chiffres en tout.',
+			'learn.lessons.nakedTriple.tryIt' => 'Retire ces chiffres des autres cases de l’unité.',
+			'learn.lessons.xWing.description' => 'Deux lignes alignent un chiffre sur deux intersections.',
+			'learn.lessons.xWing.concept' => 'Le X-Wing lie deux lignes ou colonnes par un chiffre candidat.',
+			'learn.lessons.xWing.lookFor' => 'Trouve deux lignes où le chiffre apparaît deux fois aux mêmes positions.',
+			'learn.lessons.xWing.reasoning' => 'Les quatre intersections réservent le chiffre ; retire-le ailleurs sur les lignes croisées.',
+			'learn.lessons.xWing.example' => 'Suis les quatre positions surlignées et les deux lignes croisées.',
+			'learn.lessons.xWing.tryIt' => 'Retire le chiffre hors des quatre cases du motif.',
+			'learn.basicsGroup' => 'Bases',
+			'learn.intermediateGroup' => 'Niveau intermédiaire',
+			'learn.advancedGroup' => 'Niveau avancé',
+			'learn.nowLabel' => 'Maintenant',
+			'learn.groupProgress' => ({required Object completed, required Object total}) => '${completed} sur ${total}',
+			'learn.extraElimination' => 'Ce motif ne retire pas l’un des candidats choisis. Vérifie les cases surlignées.',
+			'learn.missingElimination' => 'Il reste des candidats à retirer. Suis l’unité surlignée.',
+			'learn.wrongPlacement' => 'Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position.',
 			'progress.unavailable' => 'Le suivi des techniques maîtrisées arrivera plus tard.',
 			'profile.unavailable' => 'Les réglages du profil arriveront plus tard.',
 			'scanner.unavailable' => 'L’importation par caméra suivra le jeu principal.',
@@ -549,6 +723,14 @@ extension on TranslationsFr {
 			'coach.wrongBody' => 'Impossible de trouver une étape logique tant qu’un chiffre est incorrect.',
 			'coach.stuckTitle' => 'Aucune étape prise en charge.',
 			'coach.stuckBody' => 'MICHI ne peut pas encore expliquer la prochaine étape avec les techniques disponibles.',
+			'coach.hiddenPair' => 'Paire cachée',
+			'coach.boxLineReduction' => 'Réduction ligne-bloc',
+			'coach.nakedTriple' => 'Triplet nu',
+			'coach.xWing' => 'X-Wing',
+			'coach.identifyHiddenPair' => 'Deux chiffres ne sont possibles que dans les mêmes deux cases. Retire les autres candidats.',
+			'coach.understandBoxLine' => 'La ligne limite ce chiffre à un bloc. Retire-le ailleurs dans ce bloc.',
+			'coach.understandTriple' => 'Trois cases partagent exactement trois chiffres. Retire-les des autres cases de l’unité.',
+			'coach.understandXWing' => 'Deux lignes ont ce chiffre aux mêmes deux intersections. Retire-le ailleurs sur les lignes croisées.',
 			_ => null,
 		};
 	}

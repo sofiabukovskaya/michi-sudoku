@@ -60,10 +60,8 @@ final class SudokuBoardWidget extends StatelessWidget {
     final parts = <String>[
       position,
       if (digit == 0) translations.game.empty else '$digit',
-      if (digit != 0)
-        view.isGiven(cell)
-            ? translations.game.given
-            : translations.game.entered,
+      if (digit != 0 && view.isGiven(cell)) translations.game.given,
+      if (digit != 0 && !view.isGiven(cell)) translations.game.entered,
       if (notes != null && !notes.isEmpty)
         '${translations.game.candidates} ${notes.digits.join(', ')}',
       if (view.isWrong(cell)) translations.game.error,

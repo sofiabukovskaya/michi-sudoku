@@ -60,7 +60,7 @@ final unique = solver.hasUniqueSolution(board);
 
 `HumanSolverState.initial(board)` derives legal candidate masks for empty
 cells. The immutable state stores those masks separately from `SudokuBoard`:
-board values alone cannot retain a Naked Pair or Pointing Pair elimination.
+board values alone cannot retain candidate eliminations.
 Applying a `Deduction` creates a new state, removes the specified candidates,
 places any digits, and intersects the remaining masks with the new board's
 legal candidates. A previously eliminated candidate never reappears after an
@@ -72,11 +72,12 @@ candidate eliminations, and/or digit placements. Evidence is semantic data
 (`CandidateSetEvidence`, `UnitCandidateEvidence`, `UnitEvidence`), with no
 localized text. The app can later turn it into Coach hints and explanations.
 
-Phase 4 supports **Naked Single**, **Hidden Single**, **Naked Pair**, and
-**Pointing Pair**, in that priority order. Within a technique, scanning is
-deterministic: cells by index; units as rows, columns, then boxes; digits in
-ascending order. Hidden Single keeps the first row/column/box evidence path
-when the same placement is found more than once.
+The supported priority is centralized in `SudokuTechniqueOrder.supported`:
+**Naked Single**, **Hidden Single**, **Naked Pair**, **Pointing Pair**,
+**Hidden Pair**, **Box-Line Reduction**, **Naked Triple**, then **X-Wing**.
+Within a technique, scanning is deterministic: cells by index; units as rows,
+columns, then boxes; digits in ascending order. The advanced strategies
+emit structured evidence and only actionable, deduplicated eliminations.
 
 ```dart
 const humanSolver = DeterministicHumanSolver();
@@ -114,7 +115,8 @@ if (deduction != null) {
 Every supported technique produces exactly four immutable, ordered hints:
 **Direction → Focus → Reasoning → Result**. The first three hints reveal no
 placement or elimination action. The Result hint contains exactly the
-deduction's actions, including eliminations for Naked Pair and Pointing Pair.
+deduction's actions, including eliminations for pair, triple, box-line and
+X-Wing patterns.
 `CoachHintIntent`, focus cells and units, `CandidateRef` highlights, and selected
 deduction evidence give the Flutter layer semantic input for localization and
 visual presentation. `CandidateRef` marks a relevant candidate; it does not
@@ -125,7 +127,7 @@ track which level the player has viewed.
 remains a small semantic placement/elimination model. Gameplay progress and
 undo history belong in the application.
 
-Localized hint presentation, more advanced human techniques, generator, and
-difficulty analysis remain future work.
+Localized hint presentation and difficulty analysis live in the Flutter app.
+XY-Wing, Swordfish and puzzle generation remain future work.
 
 Run `dart test` from this directory with the workspace's Dart SDK.

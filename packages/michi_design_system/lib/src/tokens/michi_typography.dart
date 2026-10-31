@@ -14,6 +14,20 @@ abstract final class MichiTypography {
     fontWeight: FontWeight.w500,
     color: MichiColors.textPrimary,
   );
+  static const editorialTitle = TextStyle(
+    fontFamily: editorialFamily,
+    fontSize: 28,
+    height: 34 / 28,
+    fontWeight: FontWeight.w500,
+    color: MichiColors.textPrimary,
+  );
+  static const functionalTitle = TextStyle(
+    fontFamily: functionalFamily,
+    fontSize: 28,
+    height: 34 / 28,
+    fontWeight: FontWeight.w800,
+    color: MichiColors.textPrimary,
+  );
   static const heading = TextStyle(
     fontFamily: functionalFamily,
     fontSize: 20,

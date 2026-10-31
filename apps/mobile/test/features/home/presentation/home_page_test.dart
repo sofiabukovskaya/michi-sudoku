@@ -109,7 +109,7 @@ void main() {
     expect(find.byKey(const ValueKey('continue-game')), findsOneWidget);
     expect(find.textContaining('18:04'), findsOneWidget);
 
-    await tester.tap(find.text('Play'));
+    await tester.tap(find.text('Another puzzle'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('difficulty-easy')));
     await tester.pumpAndSettle();

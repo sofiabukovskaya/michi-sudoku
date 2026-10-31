@@ -10,6 +10,10 @@ abstract final class TechniqueCopy {
       SudokuTechnique.hiddenSingle => t.coach.hiddenSingle,
       SudokuTechnique.nakedPair => t.coach.nakedPair,
       SudokuTechnique.pointingPair => t.coach.pointingPair,
+      SudokuTechnique.hiddenPair => t.coach.hiddenPair,
+      SudokuTechnique.boxLineReduction => t.coach.boxLineReduction,
+      SudokuTechnique.nakedTriple => t.coach.nakedTriple,
+      SudokuTechnique.xWing => t.coach.xWing,
       _ => throw ArgumentError.value(technique, 'technique'),
     };
     return '${label[0].toUpperCase()}${label.substring(1)}';
@@ -40,6 +44,11 @@ abstract final class TechniqueCopy {
     SudokuTechnique.hiddenSingle => t.learn.lessons.hiddenSingle.description,
     SudokuTechnique.nakedPair => t.learn.lessons.nakedPair.description,
     SudokuTechnique.pointingPair => t.learn.lessons.pointingPair.description,
+    SudokuTechnique.hiddenPair => t.learn.lessons.hiddenPair.description,
+    SudokuTechnique.boxLineReduction =>
+      t.learn.lessons.boxLineReduction.description,
+    SudokuTechnique.nakedTriple => t.learn.lessons.nakedTriple.description,
+    SudokuTechnique.xWing => t.learn.lessons.xWing.description,
     _ => throw ArgumentError.value(technique, 'technique'),
   };
 
@@ -88,6 +97,46 @@ abstract final class TechniqueCopy {
       t.learn.lessons.pointingPair.example,
     (SudokuTechnique.pointingPair, LessonStepKind.tryIt) =>
       t.learn.lessons.pointingPair.tryIt,
+    (SudokuTechnique.hiddenPair, LessonStepKind.concept) =>
+      t.learn.lessons.hiddenPair.concept,
+    (SudokuTechnique.hiddenPair, LessonStepKind.lookFor) =>
+      t.learn.lessons.hiddenPair.lookFor,
+    (SudokuTechnique.hiddenPair, LessonStepKind.reasoning) =>
+      t.learn.lessons.hiddenPair.reasoning,
+    (SudokuTechnique.hiddenPair, LessonStepKind.example) =>
+      t.learn.lessons.hiddenPair.example,
+    (SudokuTechnique.hiddenPair, LessonStepKind.tryIt) =>
+      t.learn.lessons.hiddenPair.tryIt,
+    (SudokuTechnique.boxLineReduction, LessonStepKind.concept) =>
+      t.learn.lessons.boxLineReduction.concept,
+    (SudokuTechnique.boxLineReduction, LessonStepKind.lookFor) =>
+      t.learn.lessons.boxLineReduction.lookFor,
+    (SudokuTechnique.boxLineReduction, LessonStepKind.reasoning) =>
+      t.learn.lessons.boxLineReduction.reasoning,
+    (SudokuTechnique.boxLineReduction, LessonStepKind.example) =>
+      t.learn.lessons.boxLineReduction.example,
+    (SudokuTechnique.boxLineReduction, LessonStepKind.tryIt) =>
+      t.learn.lessons.boxLineReduction.tryIt,
+    (SudokuTechnique.nakedTriple, LessonStepKind.concept) =>
+      t.learn.lessons.nakedTriple.concept,
+    (SudokuTechnique.nakedTriple, LessonStepKind.lookFor) =>
+      t.learn.lessons.nakedTriple.lookFor,
+    (SudokuTechnique.nakedTriple, LessonStepKind.reasoning) =>
+      t.learn.lessons.nakedTriple.reasoning,
+    (SudokuTechnique.nakedTriple, LessonStepKind.example) =>
+      t.learn.lessons.nakedTriple.example,
+    (SudokuTechnique.nakedTriple, LessonStepKind.tryIt) =>
+      t.learn.lessons.nakedTriple.tryIt,
+    (SudokuTechnique.xWing, LessonStepKind.concept) =>
+      t.learn.lessons.xWing.concept,
+    (SudokuTechnique.xWing, LessonStepKind.lookFor) =>
+      t.learn.lessons.xWing.lookFor,
+    (SudokuTechnique.xWing, LessonStepKind.reasoning) =>
+      t.learn.lessons.xWing.reasoning,
+    (SudokuTechnique.xWing, LessonStepKind.example) =>
+      t.learn.lessons.xWing.example,
+    (SudokuTechnique.xWing, LessonStepKind.tryIt) =>
+      t.learn.lessons.xWing.tryIt,
     _ => throw ArgumentError.value(technique, 'technique'),
   };
 }

@@ -38,12 +38,8 @@ final class PuzzleAnalyzer {
   final ExactSolver exactSolver;
   final HumanSolver humanSolver;
 
-  static const techniqueOrder = <SudokuTechnique>[
-    SudokuTechnique.nakedSingle,
-    SudokuTechnique.hiddenSingle,
-    SudokuTechnique.nakedPair,
-    SudokuTechnique.pointingPair,
-  ];
+  static const List<SudokuTechnique> techniqueOrder =
+      SudokuTechniqueOrder.supported;
 
   PuzzleAnalysis analyze(SudokuBoard board) {
     final valid = SudokuConstraints.validate(board).isValid;
@@ -55,12 +51,18 @@ final class PuzzleAnalyzer {
     final hardest = techniqueOrder.reversed
         .where(techniques.contains)
         .firstOrNull;
-    final difficulty = hardest == null
-        ? null
-        : (hardest == SudokuTechnique.nakedPair ||
-              hardest == SudokuTechnique.pointingPair)
-        ? PuzzleDifficulty.medium
-        : PuzzleDifficulty.easy;
+    final difficulty = switch (hardest) {
+      null => null,
+      SudokuTechnique.nakedSingle ||
+      SudokuTechnique.hiddenSingle => PuzzleDifficulty.easy,
+      SudokuTechnique.nakedPair ||
+      SudokuTechnique.pointingPair => PuzzleDifficulty.medium,
+      SudokuTechnique.hiddenPair ||
+      SudokuTechnique.boxLineReduction ||
+      SudokuTechnique.nakedTriple => PuzzleDifficulty.advanced,
+      SudokuTechnique.xWing => PuzzleDifficulty.expert,
+      _ => null,
+    };
     return PuzzleAnalysis(
       isValid: valid,
       hasSolution: count > 0,

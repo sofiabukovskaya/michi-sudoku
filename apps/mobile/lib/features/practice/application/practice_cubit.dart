@@ -47,7 +47,7 @@ final class PracticeCubit extends Cubit<PracticeState> {
         'Practice needs distinct scenarios of one technique.',
       );
     }
-    final engineState = HumanSolverState.initial(scenarios.first.board);
+    final engineState = scenarios.first.initialState;
     final deduction = solver.findNextDeduction(engineState);
     if (deduction?.technique != scenarios.first.technique) {
       throw StateError('Practice content does not match HumanSolver.');
@@ -156,7 +156,7 @@ final class PracticeCubit extends Cubit<PracticeState> {
     }
     final index = state.index + 1;
     final scenario = state.scenarios[index];
-    final engineState = HumanSolverState.initial(scenario.board);
+    final engineState = scenario.initialState;
     final deduction = _humanSolver.findNextDeduction(engineState);
     if (deduction?.technique != scenario.technique) {
       throw StateError('Practice content does not match HumanSolver.');

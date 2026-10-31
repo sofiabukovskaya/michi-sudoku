@@ -1,7 +1,7 @@
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// Product difficulty is based on the hardest supported logical technique.
-enum PuzzleDifficulty { easy, medium }
+enum PuzzleDifficulty { easy, medium, advanced, expert }
 
 final class PuzzleDefinition {
   PuzzleDefinition({

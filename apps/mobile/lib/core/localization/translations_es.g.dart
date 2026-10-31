@@ -83,7 +83,9 @@ class _Translations$welcome$es extends Translations$welcome$uk {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Tu camino en el sudoku.';
+	@override String get title => 'Encuentra tu camino a través de la lógica.';
+	@override String get subtitle => 'Sudoku con un guía que te orienta sin resolverlo por ti.';
+	@override String get guest => 'Empezar sin cuenta';
 }
 
 // Path: onboarding
@@ -95,6 +97,16 @@ class _Translations$onboarding$es extends Translations$onboarding$uk {
 	// Translations
 	@override String get title => 'Tu aprendizaje empieza aquí.';
 	@override String get chooseLevel => 'Elegir nivel';
+	@override String get skip => 'Saltar';
+	@override String get next => 'Siguiente';
+	@override String get seeTitle => 'El sudoku es más fácil cuando sabes dónde mirar.';
+	@override String get seeBody => 'MICHI explica la lógica de cada jugada.';
+	@override String get hintsTitle => 'Pistas que enseñan.';
+	@override String get hintsBody => 'Empieza con una pista suave. Pide más si lo necesitas.';
+	@override String get patternsTitle => 'Aprende patrones, no respuestas.';
+	@override String get patternsBody => 'Singles ocultos, pares, X-Wing: a tu ritmo.';
+	@override String get pathTitle => 'Tu camino por el sudoku.';
+	@override String get pathBody => 'MICHI detecta lo que te cuesta y propone qué practicar.';
 }
 
 // Path: playerLevel
@@ -106,6 +118,15 @@ class _Translations$playerLevel$es extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => '¿Cuánto sabes de sudoku?';
 	@override String get goToGame => 'Empezar a jugar';
+	@override String get subtitle => 'Esto define tu primera lección y dificultad. Puedes cambiarlo después.';
+	@override String get beginner => 'Estoy empezando';
+	@override String get beginnerDetail => 'Reglas y primeros pasos';
+	@override String get basics => 'Conozco lo básico';
+	@override String get basicsDetail => 'Singles y candidatos';
+	@override String get regular => 'Juego con frecuencia';
+	@override String get regularDetail => 'Pares y pares señalados';
+	@override String get advanced => 'Quiero un reto';
+	@override String get advancedDetail => 'X-Wing y más';
 }
 
 // Path: auth
@@ -148,6 +169,13 @@ class _Translations$home$es extends Translations$home$uk {
 	@override String get dailyContinue => 'Continuar el sudoku de hoy';
 	@override String get dailyCompleted => 'Completado hoy';
 	@override String get contentUnavailable => 'Los sudokus no están disponibles. Inténtalo de nuevo.';
+	@override String get advanced => 'Avanzado';
+	@override String get expert => 'Experto';
+	@override String get greeting => 'Buenos días';
+	@override String get newPuzzle => 'Otro sudoku';
+	@override String get weekTitle => 'Esta semana';
+	@override String get weekDetails => 'Detalles';
+	@override String get weekdaysShort => 'Lu|Ma|Mi|Ju|Vi|Sá|Do';
 }
 
 // Path: game
@@ -186,6 +214,9 @@ class _Translations$game$es extends Translations$game$uk {
 	@override String completionStats({required Object mistakes, required Object hints}) => '${mistakes} errores · ${hints} pistas';
 	@override String get standardTitle => 'Sudoku';
 	@override String get dailyTitle => 'Sudoku del día';
+	@override String get completionLogic => 'casillas resueltas';
+	@override String get completionMistakes => 'errores';
+	@override String get completionHints => 'pistas';
 }
 
 // Path: learn
@@ -234,6 +265,14 @@ class _Translations$learn$es extends Translations$learn$uk {
 	@override String get practiceTitle => 'Práctica';
 	@override String get continueLesson => 'Continuar lección';
 	@override late final _Translations$learn$lessons$es lessons = _Translations$learn$lessons$es._(_root);
+	@override String get basicsGroup => 'Fundamentos';
+	@override String get intermediateGroup => 'Nivel intermedio';
+	@override String get advancedGroup => 'Nivel avanzado';
+	@override String get nowLabel => 'Ahora';
+	@override String groupProgress({required Object completed, required Object total}) => '${completed} de ${total}';
+	@override String get extraElimination => 'Este patrón no elimina uno de los candidatos elegidos. Revisa las celdas resaltadas.';
+	@override String get missingElimination => 'Quedan candidatos por eliminar. Sigue la unidad resaltada.';
+	@override String get wrongPlacement => 'Esa celda o dígito no coincide con la deducción. Revisa la posición resaltada.';
 }
 
 // Path: progress
@@ -306,6 +345,14 @@ class _Translations$coach$es extends Translations$coach$uk {
 	@override String get wrongBody => 'No se puede encontrar un paso lógico mientras haya un número incorrecto.';
 	@override String get stuckTitle => 'Aún no hay un paso compatible.';
 	@override String get stuckBody => 'MICHI todavía no puede explicar el siguiente paso con las técnicas disponibles.';
+	@override String get hiddenPair => 'Par oculto';
+	@override String get boxLineReduction => 'Reducción línea-caja';
+	@override String get nakedTriple => 'Trío desnudo';
+	@override String get xWing => 'X-Wing';
+	@override String get identifyHiddenPair => 'Dos dígitos solo caben en las mismas dos celdas. Elimina los demás candidatos.';
+	@override String get understandBoxLine => 'La línea limita este dígito a una caja. Elimínalo del resto de la caja.';
+	@override String get understandTriple => 'Tres celdas comparten exactamente tres dígitos. Elimínalos de las otras celdas de la unidad.';
+	@override String get understandXWing => 'Dos líneas tienen este dígito en los mismos dos cruces. Elimínalo de los demás cruces.';
 }
 
 // Path: learn.lessons
@@ -319,6 +366,10 @@ class _Translations$learn$lessons$es extends Translations$learn$lessons$uk {
 	@override late final _Translations$learn$lessons$hiddenSingle$es hiddenSingle = _Translations$learn$lessons$hiddenSingle$es._(_root);
 	@override late final _Translations$learn$lessons$nakedPair$es nakedPair = _Translations$learn$lessons$nakedPair$es._(_root);
 	@override late final _Translations$learn$lessons$pointingPair$es pointingPair = _Translations$learn$lessons$pointingPair$es._(_root);
+	@override late final _Translations$learn$lessons$hiddenPair$es hiddenPair = _Translations$learn$lessons$hiddenPair$es._(_root);
+	@override late final _Translations$learn$lessons$boxLineReduction$es boxLineReduction = _Translations$learn$lessons$boxLineReduction$es._(_root);
+	@override late final _Translations$learn$lessons$nakedTriple$es nakedTriple = _Translations$learn$lessons$nakedTriple$es._(_root);
+	@override late final _Translations$learn$lessons$xWing$es xWing = _Translations$learn$lessons$xWing$es._(_root);
 }
 
 // Path: learn.lessons.nakedSingle
@@ -381,6 +432,66 @@ class _Translations$learn$lessons$pointingPair$es extends Translations$learn$les
 	@override String get tryIt => 'Marca todos los candidatos eliminados fuera del bloque.';
 }
 
+// Path: learn.lessons.hiddenPair
+class _Translations$learn$lessons$hiddenPair$es extends Translations$learn$lessons$hiddenPair$uk {
+	_Translations$learn$lessons$hiddenPair$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dos dígitos se esconden en las mismas dos celdas.';
+	@override String get concept => 'Busca un par oculto siguiendo dígitos, no listas iguales.';
+	@override String get lookFor => 'Encuentra dos dígitos que solo aparezcan en las mismas dos celdas de una unidad.';
+	@override String get reasoning => 'Ambos pertenecen a esas celdas; elimina allí los otros candidatos.';
+	@override String get example => 'Las celdas resaltadas son las únicas posiciones de ambos dígitos.';
+	@override String get tryIt => 'Elimina los candidatos extra de esas dos celdas.';
+}
+
+// Path: learn.lessons.boxLineReduction
+class _Translations$learn$lessons$boxLineReduction$es extends Translations$learn$lessons$boxLineReduction$uk {
+	_Translations$learn$lessons$boxLineReduction$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Una fila o columna limita un dígito a una caja.';
+	@override String get concept => 'Una línea puede fijar un dígito dentro de una caja.';
+	@override String get lookFor => 'Busca dos o tres posiciones de un dígito en una línea, todas en la misma caja.';
+	@override String get reasoning => 'El dígito estará en esa caja y línea; elimínalo del resto de la caja.';
+	@override String get example => 'Sigue la línea resaltada dentro de la caja y busca candidatos fuera de ella.';
+	@override String get tryIt => 'Elimina el dígito de las otras celdas de la caja.';
+}
+
+// Path: learn.lessons.nakedTriple
+class _Translations$learn$lessons$nakedTriple$es extends Translations$learn$lessons$nakedTriple$uk {
+	_Translations$learn$lessons$nakedTriple$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Tres celdas comparten solo tres dígitos candidatos.';
+	@override String get concept => 'Un trío reserva tres dígitos para tres celdas de una unidad.';
+	@override String get lookFor => 'Busca tres celdas cuya unión de candidatos tenga exactamente tres dígitos.';
+	@override String get reasoning => 'Los tres dígitos llenarán esas celdas aunque sus listas sean distintas.';
+	@override String get example => 'Las celdas resaltadas tienen pares distintos, pero solo tres dígitos en total.';
+	@override String get tryIt => 'Elimina esos dígitos del resto de la unidad.';
+}
+
+// Path: learn.lessons.xWing
+class _Translations$learn$lessons$xWing$es extends Translations$learn$lessons$xWing$uk {
+	_Translations$learn$lessons$xWing$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get description => 'Dos líneas alinean un dígito en dos cruces.';
+	@override String get concept => 'X-Wing une dos filas o columnas mediante un candidato.';
+	@override String get lookFor => 'Busca dos líneas donde el dígito aparezca dos veces en las mismas posiciones.';
+	@override String get reasoning => 'Los cuatro cruces reservan el dígito; elimínalo del resto de las líneas cruzadas.';
+	@override String get example => 'Sigue las cuatro posiciones resaltadas y las dos líneas cruzadas.';
+	@override String get tryIt => 'Elimina el dígito fuera de las cuatro celdas del patrón.';
+}
+
 /// The flat map containing all translations for locale <es>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -393,11 +504,32 @@ extension on TranslationsEs {
 			'common.continueLabel' => 'Continuar',
 			'common.start' => 'Empezar',
 			'splash.subtitle' => 'Aprende a ver el siguiente paso.',
-			'welcome.title' => 'Tu camino en el sudoku.',
+			'welcome.title' => 'Encuentra tu camino a través de la lógica.',
+			'welcome.subtitle' => 'Sudoku con un guía que te orienta sin resolverlo por ti.',
+			'welcome.guest' => 'Empezar sin cuenta',
 			'onboarding.title' => 'Tu aprendizaje empieza aquí.',
 			'onboarding.chooseLevel' => 'Elegir nivel',
+			'onboarding.skip' => 'Saltar',
+			'onboarding.next' => 'Siguiente',
+			'onboarding.seeTitle' => 'El sudoku es más fácil cuando sabes dónde mirar.',
+			'onboarding.seeBody' => 'MICHI explica la lógica de cada jugada.',
+			'onboarding.hintsTitle' => 'Pistas que enseñan.',
+			'onboarding.hintsBody' => 'Empieza con una pista suave. Pide más si lo necesitas.',
+			'onboarding.patternsTitle' => 'Aprende patrones, no respuestas.',
+			'onboarding.patternsBody' => 'Singles ocultos, pares, X-Wing: a tu ritmo.',
+			'onboarding.pathTitle' => 'Tu camino por el sudoku.',
+			'onboarding.pathBody' => 'MICHI detecta lo que te cuesta y propone qué practicar.',
 			'playerLevel.title' => '¿Cuánto sabes de sudoku?',
 			'playerLevel.goToGame' => 'Empezar a jugar',
+			'playerLevel.subtitle' => 'Esto define tu primera lección y dificultad. Puedes cambiarlo después.',
+			'playerLevel.beginner' => 'Estoy empezando',
+			'playerLevel.beginnerDetail' => 'Reglas y primeros pasos',
+			'playerLevel.basics' => 'Conozco lo básico',
+			'playerLevel.basicsDetail' => 'Singles y candidatos',
+			'playerLevel.regular' => 'Juego con frecuencia',
+			'playerLevel.regularDetail' => 'Pares y pares señalados',
+			'playerLevel.advanced' => 'Quiero un reto',
+			'playerLevel.advancedDetail' => 'X-Wing y más',
 			'auth.title' => 'Cuenta',
 			'auth.unavailable' => 'La sincronización del progreso llegará más adelante.',
 			'home.title' => 'Tu camino en el sudoku',
@@ -422,6 +554,13 @@ extension on TranslationsEs {
 			'home.dailyContinue' => 'Continuar el sudoku de hoy',
 			'home.dailyCompleted' => 'Completado hoy',
 			'home.contentUnavailable' => 'Los sudokus no están disponibles. Inténtalo de nuevo.',
+			'home.advanced' => 'Avanzado',
+			'home.expert' => 'Experto',
+			'home.greeting' => 'Buenos días',
+			'home.newPuzzle' => 'Otro sudoku',
+			'home.weekTitle' => 'Esta semana',
+			'home.weekDetails' => 'Detalles',
+			'home.weekdaysShort' => 'Lu|Ma|Mi|Ju|Vi|Sá|Do',
 			'game.title' => 'Sudoku diario · Intermedio',
 			'game.undo' => 'Deshacer',
 			'game.erase' => 'Borrar',
@@ -451,6 +590,9 @@ extension on TranslationsEs {
 			'game.completionStats' => ({required Object mistakes, required Object hints}) => '${mistakes} errores · ${hints} pistas',
 			'game.standardTitle' => 'Sudoku',
 			'game.dailyTitle' => 'Sudoku del día',
+			'game.completionLogic' => 'casillas resueltas',
+			'game.completionMistakes' => 'errores',
+			'game.completionHints' => 'pistas',
 			'learn.title' => 'Aprender',
 			'learn.intro' => 'Una técnica y un paso claro cada vez.',
 			'learn.newLabel' => 'Nuevo',
@@ -513,6 +655,38 @@ extension on TranslationsEs {
 			'learn.lessons.pointingPair.reasoning' => 'El número queda dentro del bloque; elimínalo fuera del bloque en la misma línea.',
 			'learn.lessons.pointingPair.example' => 'Sigue la línea resaltada fuera del bloque.',
 			'learn.lessons.pointingPair.tryIt' => 'Marca todos los candidatos eliminados fuera del bloque.',
+			'learn.lessons.hiddenPair.description' => 'Dos dígitos se esconden en las mismas dos celdas.',
+			'learn.lessons.hiddenPair.concept' => 'Busca un par oculto siguiendo dígitos, no listas iguales.',
+			'learn.lessons.hiddenPair.lookFor' => 'Encuentra dos dígitos que solo aparezcan en las mismas dos celdas de una unidad.',
+			'learn.lessons.hiddenPair.reasoning' => 'Ambos pertenecen a esas celdas; elimina allí los otros candidatos.',
+			'learn.lessons.hiddenPair.example' => 'Las celdas resaltadas son las únicas posiciones de ambos dígitos.',
+			'learn.lessons.hiddenPair.tryIt' => 'Elimina los candidatos extra de esas dos celdas.',
+			'learn.lessons.boxLineReduction.description' => 'Una fila o columna limita un dígito a una caja.',
+			'learn.lessons.boxLineReduction.concept' => 'Una línea puede fijar un dígito dentro de una caja.',
+			'learn.lessons.boxLineReduction.lookFor' => 'Busca dos o tres posiciones de un dígito en una línea, todas en la misma caja.',
+			'learn.lessons.boxLineReduction.reasoning' => 'El dígito estará en esa caja y línea; elimínalo del resto de la caja.',
+			'learn.lessons.boxLineReduction.example' => 'Sigue la línea resaltada dentro de la caja y busca candidatos fuera de ella.',
+			'learn.lessons.boxLineReduction.tryIt' => 'Elimina el dígito de las otras celdas de la caja.',
+			'learn.lessons.nakedTriple.description' => 'Tres celdas comparten solo tres dígitos candidatos.',
+			'learn.lessons.nakedTriple.concept' => 'Un trío reserva tres dígitos para tres celdas de una unidad.',
+			'learn.lessons.nakedTriple.lookFor' => 'Busca tres celdas cuya unión de candidatos tenga exactamente tres dígitos.',
+			'learn.lessons.nakedTriple.reasoning' => 'Los tres dígitos llenarán esas celdas aunque sus listas sean distintas.',
+			'learn.lessons.nakedTriple.example' => 'Las celdas resaltadas tienen pares distintos, pero solo tres dígitos en total.',
+			'learn.lessons.nakedTriple.tryIt' => 'Elimina esos dígitos del resto de la unidad.',
+			'learn.lessons.xWing.description' => 'Dos líneas alinean un dígito en dos cruces.',
+			'learn.lessons.xWing.concept' => 'X-Wing une dos filas o columnas mediante un candidato.',
+			'learn.lessons.xWing.lookFor' => 'Busca dos líneas donde el dígito aparezca dos veces en las mismas posiciones.',
+			'learn.lessons.xWing.reasoning' => 'Los cuatro cruces reservan el dígito; elimínalo del resto de las líneas cruzadas.',
+			'learn.lessons.xWing.example' => 'Sigue las cuatro posiciones resaltadas y las dos líneas cruzadas.',
+			'learn.lessons.xWing.tryIt' => 'Elimina el dígito fuera de las cuatro celdas del patrón.',
+			'learn.basicsGroup' => 'Fundamentos',
+			'learn.intermediateGroup' => 'Nivel intermedio',
+			'learn.advancedGroup' => 'Nivel avanzado',
+			'learn.nowLabel' => 'Ahora',
+			'learn.groupProgress' => ({required Object completed, required Object total}) => '${completed} de ${total}',
+			'learn.extraElimination' => 'Este patrón no elimina uno de los candidatos elegidos. Revisa las celdas resaltadas.',
+			'learn.missingElimination' => 'Quedan candidatos por eliminar. Sigue la unidad resaltada.',
+			'learn.wrongPlacement' => 'Esa celda o dígito no coincide con la deducción. Revisa la posición resaltada.',
 			'progress.unavailable' => 'El dominio de las técnicas llegará más adelante.',
 			'profile.unavailable' => 'La configuración del perfil llegará más adelante.',
 			'scanner.unavailable' => 'La importación con cámara llegará después del juego principal.',
@@ -549,6 +723,14 @@ extension on TranslationsEs {
 			'coach.wrongBody' => 'No se puede encontrar un paso lógico mientras haya un número incorrecto.',
 			'coach.stuckTitle' => 'Aún no hay un paso compatible.',
 			'coach.stuckBody' => 'MICHI todavía no puede explicar el siguiente paso con las técnicas disponibles.',
+			'coach.hiddenPair' => 'Par oculto',
+			'coach.boxLineReduction' => 'Reducción línea-caja',
+			'coach.nakedTriple' => 'Trío desnudo',
+			'coach.xWing' => 'X-Wing',
+			'coach.identifyHiddenPair' => 'Dos dígitos solo caben en las mismas dos celdas. Elimina los demás candidatos.',
+			'coach.understandBoxLine' => 'La línea limita este dígito a una caja. Elimínalo del resto de la caja.',
+			'coach.understandTriple' => 'Tres celdas comparten exactamente tres dígitos. Elimínalos de las otras celdas de la unidad.',
+			'coach.understandXWing' => 'Dos líneas tienen este dígito en los mismos dos cruces. Elimínalo de los demás cruces.',
 			_ => null,
 		};
 	}

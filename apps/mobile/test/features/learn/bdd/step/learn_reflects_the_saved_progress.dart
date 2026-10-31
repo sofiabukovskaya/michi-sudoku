@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sudoku_engine/sudoku_engine.dart';
 
 import '../learning_driver.dart';
 
@@ -11,5 +12,8 @@ Future<void> learnReflectsTheSavedProgress(WidgetTester tester) async {
     tester,
     find.byKey(const ValueKey('learn-hiddenSingle')),
   );
-  expect(find.text('Learning'), findsOneWidget);
+  final progress = await LearningDriver.current!.progress.load(
+    SudokuTechnique.hiddenSingle,
+  );
+  expect(find.text('${progress.masteryPercent}%'), findsOneWidget);
 }

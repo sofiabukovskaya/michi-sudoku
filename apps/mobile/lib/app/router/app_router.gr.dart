@@ -217,11 +217,16 @@ class HomeRouteArgs {
 class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
   LearnRoute({
     TechniqueProgressRepository? progressRepository,
+    LocalPracticeCatalog? catalog,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          LearnRoute.name,
-         args: LearnRouteArgs(progressRepository: progressRepository, key: key),
+         args: LearnRouteArgs(
+           progressRepository: progressRepository,
+           catalog: catalog,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -235,6 +240,7 @@ class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
       );
       return LearnPage(
         progressRepository: args.progressRepository,
+        catalog: args.catalog,
         key: args.key,
       );
     },
@@ -242,26 +248,31 @@ class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
 }
 
 class LearnRouteArgs {
-  const LearnRouteArgs({this.progressRepository, this.key});
+  const LearnRouteArgs({this.progressRepository, this.catalog, this.key});
 
   final TechniqueProgressRepository? progressRepository;
+
+  final LocalPracticeCatalog? catalog;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'LearnRouteArgs{progressRepository: $progressRepository, key: $key}';
+    return 'LearnRouteArgs{progressRepository: $progressRepository, catalog: $catalog, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! LearnRouteArgs) return false;
-    return progressRepository == other.progressRepository && key == other.key;
+    return progressRepository == other.progressRepository &&
+        catalog == other.catalog &&
+        key == other.key;
   }
 
   @override
-  int get hashCode => progressRepository.hashCode ^ key.hashCode;
+  int get hashCode =>
+      progressRepository.hashCode ^ catalog.hashCode ^ key.hashCode;
 }
 
 /// generated route for

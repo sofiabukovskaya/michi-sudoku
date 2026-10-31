@@ -8,15 +8,36 @@
     "subtitle": "Aprende a ver el siguiente paso."
   },
   "welcome": {
-    "title": "Tu camino en el sudoku."
+    "title": "Encuentra tu camino a través de la lógica.",
+    "subtitle": "Sudoku con un guía que te orienta sin resolverlo por ti.",
+    "guest": "Empezar sin cuenta"
   },
   "onboarding": {
     "title": "Tu aprendizaje empieza aquí.",
-    "chooseLevel": "Elegir nivel"
+    "chooseLevel": "Elegir nivel",
+    "skip": "Saltar",
+    "next": "Siguiente",
+    "seeTitle": "El sudoku es más fácil cuando sabes dónde mirar.",
+    "seeBody": "MICHI explica la lógica de cada jugada.",
+    "hintsTitle": "Pistas que enseñan.",
+    "hintsBody": "Empieza con una pista suave. Pide más si lo necesitas.",
+    "patternsTitle": "Aprende patrones, no respuestas.",
+    "patternsBody": "Singles ocultos, pares, X-Wing: a tu ritmo.",
+    "pathTitle": "Tu camino por el sudoku.",
+    "pathBody": "MICHI detecta lo que te cuesta y propone qué practicar."
   },
   "playerLevel": {
     "title": "¿Cuánto sabes de sudoku?",
-    "goToGame": "Empezar a jugar"
+    "goToGame": "Empezar a jugar",
+    "subtitle": "Esto define tu primera lección y dificultad. Puedes cambiarlo después.",
+    "beginner": "Estoy empezando",
+    "beginnerDetail": "Reglas y primeros pasos",
+    "basics": "Conozco lo básico",
+    "basicsDetail": "Singles y candidatos",
+    "regular": "Juego con frecuencia",
+    "regularDetail": "Pares y pares señalados",
+    "advanced": "Quiero un reto",
+    "advancedDetail": "X-Wing y más"
   },
   "auth": {
     "title": "Cuenta",
@@ -44,7 +65,14 @@
     "dailyStart": "Empezar el sudoku de hoy",
     "dailyContinue": "Continuar el sudoku de hoy",
     "dailyCompleted": "Completado hoy",
-    "contentUnavailable": "Los sudokus no están disponibles. Inténtalo de nuevo."
+    "contentUnavailable": "Los sudokus no están disponibles. Inténtalo de nuevo.",
+    "advanced": "Avanzado",
+    "expert": "Experto",
+    "greeting": "Buenos días",
+    "newPuzzle": "Otro sudoku",
+    "weekTitle": "Esta semana",
+    "weekDetails": "Detalles",
+    "weekdaysShort": "Lu|Ma|Mi|Ju|Vi|Sá|Do"
   },
   "game": {
     "title": "Sudoku diario · Intermedio",
@@ -75,7 +103,10 @@
     "retrySave": "Reintentar",
     "completionStats": "$mistakes errores · $hints pistas",
     "standardTitle": "Sudoku",
-    "dailyTitle": "Sudoku del día"
+    "dailyTitle": "Sudoku del día",
+    "completionLogic": "casillas resueltas",
+    "completionMistakes": "errores",
+    "completionHints": "pistas"
   },
   "learn": {
     "title": "Aprender",
@@ -148,8 +179,48 @@
         "reasoning": "El número queda dentro del bloque; elimínalo fuera del bloque en la misma línea.",
         "example": "Sigue la línea resaltada fuera del bloque.",
         "tryIt": "Marca todos los candidatos eliminados fuera del bloque."
+      },
+      "hiddenPair": {
+        "description": "Dos dígitos se esconden en las mismas dos celdas.",
+        "concept": "Busca un par oculto siguiendo dígitos, no listas iguales.",
+        "lookFor": "Encuentra dos dígitos que solo aparezcan en las mismas dos celdas de una unidad.",
+        "reasoning": "Ambos pertenecen a esas celdas; elimina allí los otros candidatos.",
+        "example": "Las celdas resaltadas son las únicas posiciones de ambos dígitos.",
+        "tryIt": "Elimina los candidatos extra de esas dos celdas."
+      },
+      "boxLineReduction": {
+        "description": "Una fila o columna limita un dígito a una caja.",
+        "concept": "Una línea puede fijar un dígito dentro de una caja.",
+        "lookFor": "Busca dos o tres posiciones de un dígito en una línea, todas en la misma caja.",
+        "reasoning": "El dígito estará en esa caja y línea; elimínalo del resto de la caja.",
+        "example": "Sigue la línea resaltada dentro de la caja y busca candidatos fuera de ella.",
+        "tryIt": "Elimina el dígito de las otras celdas de la caja."
+      },
+      "nakedTriple": {
+        "description": "Tres celdas comparten solo tres dígitos candidatos.",
+        "concept": "Un trío reserva tres dígitos para tres celdas de una unidad.",
+        "lookFor": "Busca tres celdas cuya unión de candidatos tenga exactamente tres dígitos.",
+        "reasoning": "Los tres dígitos llenarán esas celdas aunque sus listas sean distintas.",
+        "example": "Las celdas resaltadas tienen pares distintos, pero solo tres dígitos en total.",
+        "tryIt": "Elimina esos dígitos del resto de la unidad."
+      },
+      "xWing": {
+        "description": "Dos líneas alinean un dígito en dos cruces.",
+        "concept": "X-Wing une dos filas o columnas mediante un candidato.",
+        "lookFor": "Busca dos líneas donde el dígito aparezca dos veces en las mismas posiciones.",
+        "reasoning": "Los cuatro cruces reservan el dígito; elimínalo del resto de las líneas cruzadas.",
+        "example": "Sigue las cuatro posiciones resaltadas y las dos líneas cruzadas.",
+        "tryIt": "Elimina el dígito fuera de las cuatro celdas del patrón."
       }
-    }
+    },
+    "basicsGroup": "Fundamentos",
+    "intermediateGroup": "Nivel intermedio",
+    "advancedGroup": "Nivel avanzado",
+    "nowLabel": "Ahora",
+    "groupProgress": "$completed de $total",
+    "extraElimination": "Este patrón no elimina uno de los candidatos elegidos. Revisa las celdas resaltadas.",
+    "missingElimination": "Quedan candidatos por eliminar. Sigue la unidad resaltada.",
+    "wrongPlacement": "Esa celda o dígito no coincide con la deducción. Revisa la posición resaltada."
   },
   "progress": {
     "unavailable": "El dominio de las técnicas llegará más adelante."
@@ -193,6 +264,14 @@
     "wrongTitle": "Corrige primero el error.",
     "wrongBody": "No se puede encontrar un paso lógico mientras haya un número incorrecto.",
     "stuckTitle": "Aún no hay un paso compatible.",
-    "stuckBody": "MICHI todavía no puede explicar el siguiente paso con las técnicas disponibles."
+    "stuckBody": "MICHI todavía no puede explicar el siguiente paso con las técnicas disponibles.",
+    "hiddenPair": "Par oculto",
+    "boxLineReduction": "Reducción línea-caja",
+    "nakedTriple": "Trío desnudo",
+    "xWing": "X-Wing",
+    "identifyHiddenPair": "Dos dígitos solo caben en las mismas dos celdas. Elimina los demás candidatos.",
+    "understandBoxLine": "La línea limita este dígito a una caja. Elimínalo del resto de la caja.",
+    "understandTriple": "Tres celdas comparten exactamente tres dígitos. Elimínalos de las otras celdas de la unidad.",
+    "understandXWing": "Dos líneas tienen este dígito en los mismos dos cruces. Elimínalo de los demás cruces."
   }
 }

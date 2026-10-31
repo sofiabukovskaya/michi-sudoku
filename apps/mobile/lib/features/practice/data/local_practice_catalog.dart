@@ -58,6 +58,13 @@ final class LocalPracticeCatalog {
             technique: technique,
             board: SudokuBoard.parse(raw['board'] as String),
             contentVersion: version,
+            candidateOverrides: {
+              for (final entry
+                  in (raw['candidateOverrides'] as Map<String, dynamic>? ??
+                          const <String, dynamic>{})
+                      .entries)
+                int.parse(entry.key): entry.value as int,
+            },
           ),
         );
       }

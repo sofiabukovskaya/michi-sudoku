@@ -25,6 +25,10 @@ final class StructuredCoachEngine implements CoachEngine {
       SudokuTechnique.hiddenSingle => _hiddenSingle(deduction),
       SudokuTechnique.nakedPair => _nakedPair(deduction),
       SudokuTechnique.pointingPair => _pointingPair(deduction),
+      SudokuTechnique.hiddenPair => _hiddenPair(deduction),
+      SudokuTechnique.boxLineReduction => _boxLine(deduction),
+      SudokuTechnique.nakedTriple => _nakedTriple(deduction),
+      SudokuTechnique.xWing => _xWing(deduction),
       _ => throw UnsupportedError(
         'Coach planning is not available for ${deduction.technique}.',
       ),
@@ -252,6 +256,210 @@ List<CoachHint> _pointingPair(Deduction deduction) {
     ),
   ];
 }
+
+List<CoachHint> _hiddenPair(Deduction deduction) {
+  final positions = deduction.evidence
+      .whereType<UnitCandidateEvidence>()
+      .toList();
+  final sets = deduction.evidence.whereType<CandidateSetEvidence>().toList();
+  if (deduction.eliminations.isEmpty ||
+      deduction.placements.isNotEmpty ||
+      deduction.focusCells.length != 2 ||
+      positions.length != 2 ||
+      sets.length != 2 ||
+      positions[0].unit != positions[1].unit ||
+      positions[0].digit == positions[1].digit ||
+      positions.any(
+        (item) => !_sameCells(item.candidateCells, deduction.focusCells),
+      ) ||
+      sets.any(
+        (item) =>
+            !deduction.focusCells.contains(item.cell) ||
+            !item.candidates.contains(positions[0].digit) ||
+            !item.candidates.contains(positions[1].digit),
+      ) ||
+      deduction.eliminations.any(
+        (move) =>
+            !deduction.focusCells.contains(move.cell) ||
+            positions.any((item) => item.digit == move.digit),
+      )) {
+    throw StateError('Hidden Pair evidence and eliminations disagree.');
+  }
+  final unit = positions[0].unit;
+  final highlights = [
+    for (final cell in deduction.focusCells)
+      for (final position in positions) CandidateRef(cell, position.digit),
+  ];
+  return _eliminationPlan(
+    deduction,
+    directionUnits: [unit],
+    focusUnits: [unit],
+    focusCells: deduction.focusCells,
+    highlights: highlights,
+    focusEvidence: positions,
+    reasoningIntent: CoachHintIntent.identifyHiddenPair,
+  );
+}
+
+List<CoachHint> _boxLine(Deduction deduction) {
+  final source = deduction.evidence.whereType<UnitCandidateEvidence>().single;
+  final box = deduction.evidence.whereType<UnitEvidence>().single.unit;
+  if (deduction.eliminations.isEmpty ||
+      deduction.placements.isNotEmpty ||
+      source.unit.type == SudokuUnitType.box ||
+      box.type != SudokuUnitType.box ||
+      source.candidateCells.length < 2 ||
+      source.candidateCells.length > 3 ||
+      !_sameCells(source.candidateCells, deduction.focusCells) ||
+      source.candidateCells.any((cell) => cell.box != box.index) ||
+      deduction.eliminations.any(
+        (move) =>
+            move.digit != source.digit ||
+            !box.cells.contains(move.cell) ||
+            source.unit.cells.contains(move.cell),
+      )) {
+    throw StateError('Box-Line evidence and eliminations disagree.');
+  }
+  return _eliminationPlan(
+    deduction,
+    directionUnits: [source.unit],
+    focusUnits: [source.unit, box],
+    focusCells: source.candidateCells,
+    highlights: [
+      for (final cell in source.candidateCells)
+        CandidateRef(cell, source.digit),
+    ],
+    focusEvidence: [source],
+    reasoningIntent: CoachHintIntent.understandBoxLine,
+  );
+}
+
+List<CoachHint> _nakedTriple(Deduction deduction) {
+  final unit = deduction.evidence.whereType<UnitEvidence>().single.unit;
+  final sets = deduction.evidence.whereType<CandidateSetEvidence>().toList();
+  final digits = sets.fold(
+    <int>{},
+    (result, item) => result..addAll(item.candidates.digits),
+  );
+  if (deduction.eliminations.isEmpty ||
+      deduction.placements.isNotEmpty ||
+      deduction.focusCells.length != 3 ||
+      sets.length != 3 ||
+      digits.length != 3 ||
+      sets.any(
+        (item) =>
+            !deduction.focusCells.contains(item.cell) ||
+            !unit.cells.contains(item.cell) ||
+            item.candidates.count < 2 ||
+            item.candidates.count > 3,
+      ) ||
+      deduction.eliminations.any(
+        (move) =>
+            !unit.cells.contains(move.cell) ||
+            deduction.focusCells.contains(move.cell) ||
+            !digits.contains(move.digit),
+      )) {
+    throw StateError('Naked Triple evidence and eliminations disagree.');
+  }
+  return _eliminationPlan(
+    deduction,
+    directionUnits: [unit],
+    focusUnits: [unit],
+    focusCells: deduction.focusCells,
+    highlights: [
+      for (final item in sets)
+        for (final digit in item.candidates.digits)
+          CandidateRef(item.cell, digit),
+    ],
+    focusEvidence: sets,
+    reasoningIntent: CoachHintIntent.understandTriple,
+  );
+}
+
+List<CoachHint> _xWing(Deduction deduction) {
+  final source = deduction.evidence.whereType<UnitCandidateEvidence>().toList();
+  final crosses = deduction.evidence
+      .whereType<UnitEvidence>()
+      .map((item) => item.unit)
+      .toList();
+  if (deduction.eliminations.isEmpty ||
+      deduction.placements.isNotEmpty ||
+      deduction.focusCells.length != 4 ||
+      source.length != 2 ||
+      crosses.length != 2 ||
+      source[0].digit != source[1].digit ||
+      source[0].unit.type != source[1].unit.type ||
+      source[0].unit == source[1].unit ||
+      source.any((item) => item.candidateCells.length != 2) ||
+      source.expand((item) => item.candidateCells).toSet().length != 4 ||
+      crosses[0].type == source[0].unit.type ||
+      crosses[1].type != crosses[0].type ||
+      source
+          .expand((item) => item.candidateCells)
+          .any((cell) => !crosses.any((unit) => unit.cells.contains(cell))) ||
+      deduction.eliminations.any(
+        (move) =>
+            move.digit != source[0].digit ||
+            !crosses.any((unit) => unit.cells.contains(move.cell)) ||
+            deduction.focusCells.contains(move.cell),
+      )) {
+    throw StateError('X-Wing evidence and eliminations disagree.');
+  }
+  return _eliminationPlan(
+    deduction,
+    directionUnits: source.map((item) => item.unit).toList(),
+    focusUnits: [
+      ...source.map((item) => item.unit),
+      ...crosses,
+    ],
+    focusCells: deduction.focusCells,
+    highlights: [
+      for (final cell in deduction.focusCells)
+        CandidateRef(cell, source[0].digit),
+    ],
+    focusEvidence: source,
+    reasoningIntent: CoachHintIntent.understandXWing,
+  );
+}
+
+List<CoachHint> _eliminationPlan(
+  Deduction deduction, {
+  required List<SudokuUnit> directionUnits,
+  required List<SudokuUnit> focusUnits,
+  required List<CellRef> focusCells,
+  required List<CandidateRef> highlights,
+  required List<DeductionEvidence> focusEvidence,
+  required CoachHintIntent reasoningIntent,
+}) => [
+  CoachHint(
+    level: CoachHintLevel.direction,
+    intent: CoachHintIntent.inspectUnit,
+    focusUnits: directionUnits,
+  ),
+  CoachHint(
+    level: CoachHintLevel.focus,
+    intent: CoachHintIntent.inspectCandidatePositions,
+    focusUnits: directionUnits,
+    focusCells: focusCells,
+    candidateHighlights: highlights,
+    evidence: focusEvidence,
+  ),
+  CoachHint(
+    level: CoachHintLevel.reasoning,
+    intent: reasoningIntent,
+    focusUnits: focusUnits,
+    focusCells: focusCells,
+    candidateHighlights: highlights,
+    evidence: deduction.evidence,
+  ),
+  _resultHint(
+    deduction,
+    focusUnits: focusUnits,
+    focusCells: focusCells,
+    candidateHighlights: highlights,
+    evidence: deduction.evidence,
+  ),
+];
 
 CoachHint _resultHint(
   Deduction deduction, {

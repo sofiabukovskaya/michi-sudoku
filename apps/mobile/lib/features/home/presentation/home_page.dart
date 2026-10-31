@@ -4,7 +4,9 @@ import 'dart:developer' as developer;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/navigation/michi_bottom_nav.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
@@ -153,6 +155,22 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               onPressed: () =>
                   Navigator.of(sheetContext).pop(PuzzleDifficulty.medium),
             ),
+            const SizedBox(height: MichiSpacing.sm),
+            MichiButton(
+              key: const ValueKey('difficulty-advanced'),
+              label: sheetContext.t.home.advanced,
+              variant: MichiButtonVariant.secondary,
+              onPressed: () =>
+                  Navigator.of(sheetContext).pop(PuzzleDifficulty.advanced),
+            ),
+            const SizedBox(height: MichiSpacing.sm),
+            MichiButton(
+              key: const ValueKey('difficulty-expert'),
+              label: sheetContext.t.home.expert,
+              variant: MichiButtonVariant.secondary,
+              onPressed: () =>
+                  Navigator.of(sheetContext).pop(PuzzleDifficulty.expert),
+            ),
           ],
         ),
       ),
@@ -249,35 +267,40 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(context.t.appName)),
+    backgroundColor: MichiColors.paper,
+    bottomNavigationBar: const MichiBottomNav(current: MichiTab.game),
     body: SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(MichiSpacing.xl),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                context.t.home.title,
-                style: Theme.of(context).textTheme.displayLarge,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: MichiWordmark(),
               ),
-              const SizedBox(height: MichiSpacing.xxl),
-              MichiButton(
-                label: context.t.home.game,
-                onPressed: _loading || _loadFailed ? null : _startNew,
+              const SizedBox(height: MichiSpacing.lg),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  context.t.home.greeting,
+                  style: MichiTypography.display,
+                ),
               ),
+              const SizedBox(height: MichiSpacing.xl),
               if (_loading) ...[
-                const SizedBox(height: MichiSpacing.lg),
+                const SizedBox(height: MichiSpacing.sm),
                 Text(context.t.home.loading, style: MichiTypography.secondary),
               ] else if (_active case final summary?) ...[
-                const SizedBox(height: MichiSpacing.lg),
+                const SizedBox(height: MichiSpacing.sm),
                 _ContinueCard(summary: summary, onTap: _continue),
               ] else if (_loadFailed) ...[
                 const SizedBox(height: MichiSpacing.lg),
                 Text(context.t.home.storageUnavailable),
               ],
               if (!_loading && !_loadFailed && _daily != null) ...[
-                const SizedBox(height: MichiSpacing.xl),
+                const SizedBox(height: MichiSpacing.sm),
                 _DailyCard(
                   daily: _daily!,
                   completed: _dailyCompleted,
@@ -298,28 +321,32 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               ],
               const SizedBox(height: MichiSpacing.sm),
-              MichiButton(
-                label: context.t.home.learn,
-                variant: MichiButtonVariant.secondary,
-                onPressed: () => context.router.push(LearnRoute()),
+              _HomeActionRow(
+                label: context.t.home.newPuzzle,
+                onTap: _loading || _loadFailed ? null : _startNew,
               ),
-              const SizedBox(height: MichiSpacing.sm),
-              MichiButton(
-                label: context.t.home.progress,
-                variant: MichiButtonVariant.secondary,
-                onPressed: () => context.router.push(const ProgressRoute()),
+              const SizedBox(height: MichiSpacing.xxl),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        context.t.home.weekTitle,
+                        style: MichiTypography.heading,
+                      ),
+                    ),
+                    Text(
+                      context.t.home.weekDetails,
+                      style: MichiTypography.secondary,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: MichiSpacing.sm),
-              MichiButton(
-                label: context.t.home.profile,
-                variant: MichiButtonVariant.secondary,
-                onPressed: () => context.router.push(const ProfileRoute()),
-              ),
-              const SizedBox(height: MichiSpacing.sm),
-              MichiButton(
-                label: context.t.home.scanner,
-                variant: MichiButtonVariant.text,
-                onPressed: () => context.router.push(const ScannerRoute()),
+              const SizedBox(height: MichiSpacing.md),
+              _WeekStrip(
+                todayIndex: _clock.now().toLocal().weekday - 1,
+                todayCompleted: _dailyCompleted,
               ),
             ],
           ),
@@ -327,6 +354,91 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ),
     ),
   );
+}
+
+final class _HomeActionRow extends StatelessWidget {
+  const _HomeActionRow({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: MichiSpacing.md,
+        horizontal: MichiSpacing.sm,
+      ),
+      child: Row(
+        children: [
+          const SizedBox.square(
+            dimension: 48,
+            child: Icon(Icons.grid_on_outlined, color: MichiColors.indigo),
+          ),
+          const SizedBox(width: MichiSpacing.md),
+          Expanded(
+            child: Text(
+              label,
+              style: MichiTypography.body.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const Icon(
+            Icons.chevron_right_rounded,
+            color: MichiColors.textSecondary,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+final class _WeekStrip extends StatelessWidget {
+  const _WeekStrip({required this.todayIndex, required this.todayCompleted});
+
+  final int todayIndex;
+  final bool todayCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = context.t.home.weekdaysShort.split('|');
+    return Row(
+      children: [
+        for (var index = 0; index < 7; index++)
+          Expanded(
+            child: Column(
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: index == todayIndex && todayCompleted
+                        ? MichiColors.indigo
+                        : MichiColors.cream,
+                    border: index == todayIndex && !todayCompleted
+                        ? Border.all(color: MichiColors.indigo, width: 2)
+                        : null,
+                  ),
+                  child: SizedBox.square(
+                    dimension: 30,
+                    child: index == todayIndex && todayCompleted
+                        ? const Icon(
+                            Icons.pets,
+                            size: 16,
+                            color: MichiColors.ivory,
+                          )
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: MichiSpacing.xs),
+                Text(labels[index], style: MichiTypography.meta),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
 }
 
 final class _DailyCard extends StatelessWidget {
@@ -349,9 +461,12 @@ final class _DailyCard extends StatelessWidget {
         : inProgress
         ? context.t.home.dailyContinue
         : context.t.home.dailyStart;
-    final difficulty = daily.puzzle.difficulty == PuzzleDifficulty.easy
-        ? context.t.home.easy
-        : context.t.home.medium;
+    final difficulty = switch (daily.puzzle.difficulty) {
+      PuzzleDifficulty.easy => context.t.home.easy,
+      PuzzleDifficulty.medium => context.t.home.medium,
+      PuzzleDifficulty.advanced => context.t.home.advanced,
+      PuzzleDifficulty.expert => context.t.home.expert,
+    };
     final techniques = daily.puzzle.requiredTechniques
         .where((technique) => technique != SudokuTechnique.nakedSingle)
         .map((technique) => _techniqueName(context, technique))
@@ -361,20 +476,21 @@ final class _DailyCard extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: MichiColors.indigo,
-          borderRadius: BorderRadius.circular(MichiRadius.card),
+          borderRadius: BorderRadius.circular(MichiRadius.hero),
         ),
         child: Padding(
           padding: const EdgeInsets.all(MichiSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 184,
+              ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 138),
                 child: Stack(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 110),
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -387,7 +503,7 @@ final class _DailyCard extends StatelessWidget {
                           const SizedBox(height: MichiSpacing.sm),
                           Text(
                             difficulty,
-                            style: MichiTypography.display.copyWith(
+                            style: MichiTypography.editorialTitle.copyWith(
                               color: MichiColors.ivory,
                             ),
                           ),
@@ -404,8 +520,9 @@ final class _DailyCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomRight,
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
                       child: Image.asset(
                         'assets/images/coach_mascot.png',
                         width: 118,
@@ -437,11 +554,14 @@ final class _DailyCard extends StatelessWidget {
                   ),
                 )
               else
-                MichiButton(
-                  key: const ValueKey('daily-action'),
-                  label: label,
-                  variant: MichiButtonVariant.secondary,
-                  onPressed: onTap,
+                SizedBox(
+                  width: double.infinity,
+                  child: MichiButton(
+                    key: const ValueKey('daily-action'),
+                    label: label,
+                    variant: MichiButtonVariant.secondary,
+                    onPressed: onTap,
+                  ),
                 ),
             ],
           ),
@@ -456,6 +576,10 @@ final class _DailyCard extends StatelessWidget {
         SudokuTechnique.hiddenSingle => context.t.coach.hiddenSingle,
         SudokuTechnique.nakedPair => context.t.coach.nakedPair,
         SudokuTechnique.pointingPair => context.t.coach.pointingPair,
+        SudokuTechnique.hiddenPair => context.t.coach.hiddenPair,
+        SudokuTechnique.boxLineReduction => context.t.coach.boxLineReduction,
+        SudokuTechnique.nakedTriple => context.t.coach.nakedTriple,
+        SudokuTechnique.xWing => context.t.coach.xWing,
         _ => technique.name,
       };
 }

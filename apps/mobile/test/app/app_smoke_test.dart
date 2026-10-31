@@ -86,11 +86,11 @@ void main() {
 
     await tester.tap(find.text('Почати'));
     await tester.pumpAndSettle();
-    expect(find.text('Твій шлях у судоку.'), findsOneWidget);
+    expect(find.text('Знайди свій шлях крізь логіку.'), findsOneWidget);
 
     await LocaleSettings.setLocale(AppLocale.cs);
     await tester.pumpAndSettle();
-    expect(find.text('Tvoje cesta sudoku.'), findsOneWidget);
+    expect(find.text('Najdi svou cestu logikou.'), findsOneWidget);
     expect(
       tester.widget<MaterialApp>(find.byType(MaterialApp)).locale?.languageCode,
       'cs',
@@ -108,7 +108,7 @@ void main() {
     await tester.pumpWidget(MichiApp(router: router));
     unawaited(router.push(HomeRoute(repository: repository)));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Play'));
+    await tester.tap(find.text('Another puzzle'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('difficulty-easy')));
     await tester.pumpAndSettle();
@@ -146,7 +146,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pumpAndSettle();
-    expect(find.text('Your path through Sudoku'), findsOneWidget);
+    expect(find.text('Good morning'), findsOneWidget);
     expect(
       tester.widget<HomePage>(find.byType(HomePage)).repository,
       same(startupRepository),

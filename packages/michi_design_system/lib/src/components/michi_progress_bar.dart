@@ -14,7 +14,7 @@ final class MichiProgressBar extends StatelessWidget {
     borderRadius: BorderRadius.circular(MichiRadius.small),
     child: LinearProgressIndicator(
       value: value.clamp(0, 1),
-      minHeight: 8,
+      minHeight: 4,
       color: MichiPalette.of(context).coral,
       backgroundColor: MichiPalette.of(context).cream,
     ),

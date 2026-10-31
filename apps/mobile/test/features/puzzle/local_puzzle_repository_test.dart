@@ -33,7 +33,7 @@ void main() {
     final today = await puzzles.getDailyPuzzle(date);
     final restarted = LocalPuzzleRepository(LocalPuzzleCatalogLoader(), games);
     expect((await restarted.getDailyPuzzle(date)).puzzle.id, today.puzzle.id);
-    expect(today.challengeKey, '2026-10-26|catalog-v1');
+    expect(today.challengeKey, '2026-10-26|catalog-v2');
     expect(today.puzzle.dailyEligible, isTrue);
     expect(await games.isDailyCompleted(today.challengeKey), isFalse);
     for (final other in [
@@ -134,7 +134,7 @@ void main() {
         ),
       );
       expect(await games.isDailyCompleted(daily.challengeKey), isTrue);
-      expect(await games.isDailyCompleted('2026-10-27|catalog-v1'), isFalse);
+      expect(await games.isDailyCompleted('2026-10-27|catalog-v2'), isFalse);
       expect(
         (await games.loadRecentCompletedGames()).single.dailyChallengeKey,
         daily.challengeKey,

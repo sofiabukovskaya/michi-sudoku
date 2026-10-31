@@ -35,6 +35,13 @@ final class TechniqueProgress {
       reasoningHintSuccesses +
       resultHintSuccesses;
 
+  /// Progress toward the three explicit mastery conditions, capped at 100%.
+  int get masteryPercent =>
+      ((correctAttempts / 5).clamp(0, 1) * 40 +
+              (firstTryCorrect / 4).clamp(0, 1) * 35 +
+              (independentStreak / 3).clamp(0, 1) * 25)
+          .round();
+
   TechniqueMastery get mastery {
     if (correctAttempts >= 5 &&
         firstTryCorrect >= 4 &&
