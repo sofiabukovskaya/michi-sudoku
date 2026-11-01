@@ -53,6 +53,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$profile$en profile = _Translations$profile$en._(_root);
 	@override late final _Translations$scanner$en scanner = _Translations$scanner$en._(_root);
 	@override late final _Translations$coach$en coach = _Translations$coach$en._(_root);
+	@override late final _Translations$why$en why = _Translations$why$en._(_root);
 }
 
 // Path: common
@@ -217,6 +218,8 @@ class _Translations$game$en extends Translations$game$uk {
 	@override String get completionLogic => 'solved cells';
 	@override String get completionMistakes => 'mistakes';
 	@override String get completionHints => 'hints';
+	@override String get dailyStampEarned => 'Daily stamp earned';
+	@override String completionPracticeTechnique({required Object technique}) => 'Practice ${technique} next';
 }
 
 // Path: learn
@@ -353,6 +356,31 @@ class _Translations$coach$en extends Translations$coach$uk {
 	@override String get understandBoxLine => 'This digit is confined to one box along the line. Remove it elsewhere in that box.';
 	@override String get understandTriple => 'Three cells share exactly three digits. Remove those digits from other cells in the unit.';
 	@override String get understandXWing => 'Two lines have this digit in the same two crossing positions. Remove it elsewhere on the crossing lines.';
+}
+
+// Path: why
+class _Translations$why$en extends Translations$why$uk {
+	_Translations$why$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Explanation';
+	@override String whyHere({required Object digit}) => 'Why does ${digit} go here?';
+	@override String get givenTitle => 'This is a given digit of the puzzle';
+	@override String get givenBody => 'It was on the board from the start, so there is no solving step to explain. Explanations are available for digits you place yourself.';
+	@override String get unavailableTitle => 'No direct explanation yet';
+	@override String get unavailableBody => 'MICHI cannot prove this move with a supported technique in its pre-move state.';
+	@override String get lesson => 'Lesson';
+	@override String get gotIt => 'Got it';
+	@override String unitRestrictions({required Object unit, required Object digits}) => 'The filled digits in ${unit} are ${digits}.';
+	@override String onlyCandidate({required Object digit}) => 'Only ${digit} remains possible in this cell.';
+	@override String unitSearch({required Object digit, required Object unit}) => 'Look for a place for ${digit} in ${unit}.';
+	@override String solePosition({required Object unit, required Object digit}) => 'Only this cell in ${unit} can take ${digit}.';
+	@override String placement({required Object digit}) => 'Therefore ${digit} goes here.';
+	@override String unitRow({required Object index}) => 'row ${index}';
+	@override String unitColumn({required Object index}) => 'column ${index}';
+	@override String unitBox({required Object index}) => 'box ${index}';
 }
 
 // Path: learn.lessons
@@ -593,6 +621,8 @@ extension on TranslationsEn {
 			'game.completionLogic' => 'solved cells',
 			'game.completionMistakes' => 'mistakes',
 			'game.completionHints' => 'hints',
+			'game.dailyStampEarned' => 'Daily stamp earned',
+			'game.completionPracticeTechnique' => ({required Object technique}) => 'Practice ${technique} next',
 			'learn.title' => 'Learn',
 			'learn.intro' => 'A clear next step, one technique at a time.',
 			'learn.newLabel' => 'New',
@@ -731,6 +761,22 @@ extension on TranslationsEn {
 			'coach.understandBoxLine' => 'This digit is confined to one box along the line. Remove it elsewhere in that box.',
 			'coach.understandTriple' => 'Three cells share exactly three digits. Remove those digits from other cells in the unit.',
 			'coach.understandXWing' => 'Two lines have this digit in the same two crossing positions. Remove it elsewhere on the crossing lines.',
+			'why.title' => 'Explanation',
+			'why.whyHere' => ({required Object digit}) => 'Why does ${digit} go here?',
+			'why.givenTitle' => 'This is a given digit of the puzzle',
+			'why.givenBody' => 'It was on the board from the start, so there is no solving step to explain. Explanations are available for digits you place yourself.',
+			'why.unavailableTitle' => 'No direct explanation yet',
+			'why.unavailableBody' => 'MICHI cannot prove this move with a supported technique in its pre-move state.',
+			'why.lesson' => 'Lesson',
+			'why.gotIt' => 'Got it',
+			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'The filled digits in ${unit} are ${digits}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'Only ${digit} remains possible in this cell.',
+			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Look for a place for ${digit} in ${unit}.',
+			'why.solePosition' => ({required Object unit, required Object digit}) => 'Only this cell in ${unit} can take ${digit}.',
+			'why.placement' => ({required Object digit}) => 'Therefore ${digit} goes here.',
+			'why.unitRow' => ({required Object index}) => 'row ${index}',
+			'why.unitColumn' => ({required Object index}) => 'column ${index}',
+			'why.unitBox' => ({required Object index}) => 'box ${index}',
 			_ => null,
 		};
 	}

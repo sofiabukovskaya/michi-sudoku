@@ -58,6 +58,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$profile$uk profile = Translations$profile$uk.internal(_root);
 	late final Translations$scanner$uk scanner = Translations$scanner$uk.internal(_root);
 	late final Translations$coach$uk coach = Translations$coach$uk.internal(_root);
+	late final Translations$why$uk why = Translations$why$uk.internal(_root);
 }
 
 // Path: common
@@ -406,6 +407,12 @@ class Translations$game$uk {
 
 	/// uk: 'підказки'
 	String get completionHints => 'підказки';
+
+	/// uk: 'Штамп дня отримано'
+	String get dailyStampEarned => 'Штамп дня отримано';
+
+	/// uk: 'Наступний крок: $technique'
+	String completionPracticeTechnique({required Object technique}) => 'Наступний крок: ${technique}';
 }
 
 // Path: learn
@@ -673,8 +680,8 @@ class Translations$coach$uk {
 	/// uk: 'Техніка: $name'
 	String technique({required Object name}) => 'Техніка: ${name}';
 
-	/// uk: 'голий одинак'
-	String get nakedSingle => 'голий одинак';
+	/// uk: 'відкритий одинак'
+	String get nakedSingle => 'відкритий одинак';
 
 	/// uk: 'прихований одинак'
 	String get hiddenSingle => 'прихований одинак';
@@ -723,6 +730,63 @@ class Translations$coach$uk {
 
 	/// uk: 'У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній.'
 	String get understandXWing => 'У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній.';
+}
+
+// Path: why
+class Translations$why$uk {
+	Translations$why$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Пояснення'
+	String get title => 'Пояснення';
+
+	/// uk: 'Чому тут $digit'
+	String whyHere({required Object digit}) => 'Чому тут ${digit}';
+
+	/// uk: 'Це задана цифра головоломки'
+	String get givenTitle => 'Це задана цифра головоломки';
+
+	/// uk: 'Вона стоїть на дошці від початку, тому її не потрібно знаходити. Пояснення доступні для цифр, які ставиш ти.'
+	String get givenBody => 'Вона стоїть на дошці від початку, тому її не потрібно знаходити. Пояснення доступні для цифр, які ставиш ти.';
+
+	/// uk: 'Пояснення поки недоступне'
+	String get unavailableTitle => 'Пояснення поки недоступне';
+
+	/// uk: 'MICHI не може довести цей хід підтримуваною технікою в стані до ходу.'
+	String get unavailableBody => 'MICHI не може довести цей хід підтримуваною технікою в стані до ходу.';
+
+	/// uk: 'Урок'
+	String get lesson => 'Урок';
+
+	/// uk: 'Зрозуміло'
+	String get gotIt => 'Зрозуміло';
+
+	/// uk: 'У $unit вже стоять цифри: $digits.'
+	String unitRestrictions({required Object unit, required Object digits}) => 'У ${unit} вже стоять цифри: ${digits}.';
+
+	/// uk: 'У цій клітинці можлива лише цифра $digit.'
+	String onlyCandidate({required Object digit}) => 'У цій клітинці можлива лише цифра ${digit}.';
+
+	/// uk: 'Шукаємо місце для $digit у $unit.'
+	String unitSearch({required Object digit, required Object unit}) => 'Шукаємо місце для ${digit} у ${unit}.';
+
+	/// uk: 'Лише ця клітинка у $unit може містити $digit.'
+	String solePosition({required Object unit, required Object digit}) => 'Лише ця клітинка у ${unit} може містити ${digit}.';
+
+	/// uk: 'Отже, тут стоїть $digit.'
+	String placement({required Object digit}) => 'Отже, тут стоїть ${digit}.';
+
+	/// uk: 'рядку $index'
+	String unitRow({required Object index}) => 'рядку ${index}';
+
+	/// uk: 'стовпці $index'
+	String unitColumn({required Object index}) => 'стовпці ${index}';
+
+	/// uk: 'блоці $index'
+	String unitBox({required Object index}) => 'блоці ${index}';
 }
 
 // Path: learn.lessons
@@ -1059,6 +1123,8 @@ extension on Translations {
 			'game.completionLogic' => 'розв’язані клітинки',
 			'game.completionMistakes' => 'помилки',
 			'game.completionHints' => 'підказки',
+			'game.dailyStampEarned' => 'Штамп дня отримано',
+			'game.completionPracticeTechnique' => ({required Object technique}) => 'Наступний крок: ${technique}',
 			'learn.title' => 'Навчання',
 			'learn.intro' => 'Крок за кроком до розуміння технік.',
 			'learn.newLabel' => 'Нове',
@@ -1180,7 +1246,7 @@ extension on Translations {
 			'coach.resultEliminations' => 'Виключи перекреслених кандидатів із виділених клітинок.',
 			'coach.resultActions' => 'Виконай виділений логічний крок.',
 			'coach.technique' => ({required Object name}) => 'Техніка: ${name}',
-			'coach.nakedSingle' => 'голий одинак',
+			'coach.nakedSingle' => 'відкритий одинак',
 			'coach.hiddenSingle' => 'прихований одинак',
 			'coach.nakedPair' => 'гола пара',
 			'coach.pointingPair' => 'вказівна пара',
@@ -1197,6 +1263,22 @@ extension on Translations {
 			'coach.understandBoxLine' => 'У цій лінії цифра обмежена одним блоком. Прибери її в решті блоку.',
 			'coach.understandTriple' => 'Три клітинки ділять рівно три цифри. Прибери їх з інших клітинок групи.',
 			'coach.understandXWing' => 'У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній.',
+			'why.title' => 'Пояснення',
+			'why.whyHere' => ({required Object digit}) => 'Чому тут ${digit}',
+			'why.givenTitle' => 'Це задана цифра головоломки',
+			'why.givenBody' => 'Вона стоїть на дошці від початку, тому її не потрібно знаходити. Пояснення доступні для цифр, які ставиш ти.',
+			'why.unavailableTitle' => 'Пояснення поки недоступне',
+			'why.unavailableBody' => 'MICHI не може довести цей хід підтримуваною технікою в стані до ходу.',
+			'why.lesson' => 'Урок',
+			'why.gotIt' => 'Зрозуміло',
+			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'У ${unit} вже стоять цифри: ${digits}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'У цій клітинці можлива лише цифра ${digit}.',
+			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Шукаємо місце для ${digit} у ${unit}.',
+			'why.solePosition' => ({required Object unit, required Object digit}) => 'Лише ця клітинка у ${unit} може містити ${digit}.',
+			'why.placement' => ({required Object digit}) => 'Отже, тут стоїть ${digit}.',
+			'why.unitRow' => ({required Object index}) => 'рядку ${index}',
+			'why.unitColumn' => ({required Object index}) => 'стовпці ${index}',
+			'why.unitBox' => ({required Object index}) => 'блоці ${index}',
 			_ => null,
 		};
 	}

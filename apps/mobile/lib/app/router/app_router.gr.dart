@@ -601,3 +601,75 @@ class WelcomeRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [WhyPage]
+class WhyRoute extends PageRouteInfo<WhyRouteArgs> {
+  WhyRoute({
+    required GameState game,
+    required WhySelection selection,
+    required CellRef cell,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         WhyRoute.name,
+         args: WhyRouteArgs(
+           game: game,
+           selection: selection,
+           cell: cell,
+           key: key,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'WhyRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<WhyRouteArgs>();
+      return WhyPage(
+        game: args.game,
+        selection: args.selection,
+        cell: args.cell,
+        key: args.key,
+      );
+    },
+  );
+}
+
+class WhyRouteArgs {
+  const WhyRouteArgs({
+    required this.game,
+    required this.selection,
+    required this.cell,
+    this.key,
+  });
+
+  final GameState game;
+
+  final WhySelection selection;
+
+  final CellRef cell;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WhyRouteArgs{game: $game, selection: $selection, cell: $cell, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! WhyRouteArgs) return false;
+    return game == other.game &&
+        selection == other.selection &&
+        cell == other.cell &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode =>
+      game.hashCode ^ selection.hashCode ^ cell.hashCode ^ key.hashCode;
+}

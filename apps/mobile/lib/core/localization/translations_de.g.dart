@@ -53,6 +53,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$profile$de profile = _Translations$profile$de._(_root);
 	@override late final _Translations$scanner$de scanner = _Translations$scanner$de._(_root);
 	@override late final _Translations$coach$de coach = _Translations$coach$de._(_root);
+	@override late final _Translations$why$de why = _Translations$why$de._(_root);
 }
 
 // Path: common
@@ -217,6 +218,8 @@ class _Translations$game$de extends Translations$game$uk {
 	@override String get completionLogic => 'gelöste Felder';
 	@override String get completionMistakes => 'Fehler';
 	@override String get completionHints => 'Hinweise';
+	@override String get dailyStampEarned => 'Tagesstempel erhalten';
+	@override String completionPracticeTechnique({required Object technique}) => 'Nächster Schritt: ${technique}';
 }
 
 // Path: learn
@@ -353,6 +356,31 @@ class _Translations$coach$de extends Translations$coach$uk {
 	@override String get understandBoxLine => 'Diese Ziffer ist in einer Linie auf einen Block beschränkt. Entferne sie sonst im Block.';
 	@override String get understandTriple => 'Drei Felder teilen genau drei Ziffern. Entferne sie aus den anderen Feldern der Einheit.';
 	@override String get understandXWing => 'Zwei Linien haben diese Ziffer an denselben zwei Kreuzungen. Entferne sie sonst auf den Kreuzlinien.';
+}
+
+// Path: why
+class _Translations$why$de extends Translations$why$uk {
+	_Translations$why$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Erklärung';
+	@override String whyHere({required Object digit}) => 'Warum gehört ${digit} hierhin?';
+	@override String get givenTitle => 'Diese Ziffer ist vorgegeben';
+	@override String get givenBody => 'Sie stand von Anfang an im Rätsel, daher gibt es keinen Lösungsschritt zu erklären. Erklärungen gibt es für Ziffern, die du selbst einträgst.';
+	@override String get unavailableTitle => 'Noch keine direkte Erklärung';
+	@override String get unavailableBody => 'MICHI kann diesen Zug im Zustand davor nicht mit einer unterstützten Technik begründen.';
+	@override String get lesson => 'Lektion';
+	@override String get gotIt => 'Verstanden';
+	@override String unitRestrictions({required Object unit, required Object digits}) => 'In ${unit} stehen bereits diese Ziffern: ${digits}.';
+	@override String onlyCandidate({required Object digit}) => 'Für dieses Feld bleibt nur ${digit} übrig.';
+	@override String unitSearch({required Object digit, required Object unit}) => 'Suche einen Platz für ${digit} in ${unit}.';
+	@override String solePosition({required Object unit, required Object digit}) => 'Nur dieses Feld in ${unit} kann ${digit} enthalten.';
+	@override String placement({required Object digit}) => 'Deshalb gehört ${digit} hierhin.';
+	@override String unitRow({required Object index}) => 'Zeile ${index}';
+	@override String unitColumn({required Object index}) => 'Spalte ${index}';
+	@override String unitBox({required Object index}) => 'Block ${index}';
 }
 
 // Path: learn.lessons
@@ -593,6 +621,8 @@ extension on TranslationsDe {
 			'game.completionLogic' => 'gelöste Felder',
 			'game.completionMistakes' => 'Fehler',
 			'game.completionHints' => 'Hinweise',
+			'game.dailyStampEarned' => 'Tagesstempel erhalten',
+			'game.completionPracticeTechnique' => ({required Object technique}) => 'Nächster Schritt: ${technique}',
 			'learn.title' => 'Lernen',
 			'learn.intro' => 'Eine Technik und ein klarer Schritt nach dem anderen.',
 			'learn.newLabel' => 'Neu',
@@ -731,6 +761,22 @@ extension on TranslationsDe {
 			'coach.understandBoxLine' => 'Diese Ziffer ist in einer Linie auf einen Block beschränkt. Entferne sie sonst im Block.',
 			'coach.understandTriple' => 'Drei Felder teilen genau drei Ziffern. Entferne sie aus den anderen Feldern der Einheit.',
 			'coach.understandXWing' => 'Zwei Linien haben diese Ziffer an denselben zwei Kreuzungen. Entferne sie sonst auf den Kreuzlinien.',
+			'why.title' => 'Erklärung',
+			'why.whyHere' => ({required Object digit}) => 'Warum gehört ${digit} hierhin?',
+			'why.givenTitle' => 'Diese Ziffer ist vorgegeben',
+			'why.givenBody' => 'Sie stand von Anfang an im Rätsel, daher gibt es keinen Lösungsschritt zu erklären. Erklärungen gibt es für Ziffern, die du selbst einträgst.',
+			'why.unavailableTitle' => 'Noch keine direkte Erklärung',
+			'why.unavailableBody' => 'MICHI kann diesen Zug im Zustand davor nicht mit einer unterstützten Technik begründen.',
+			'why.lesson' => 'Lektion',
+			'why.gotIt' => 'Verstanden',
+			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'In ${unit} stehen bereits diese Ziffern: ${digits}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'Für dieses Feld bleibt nur ${digit} übrig.',
+			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Suche einen Platz für ${digit} in ${unit}.',
+			'why.solePosition' => ({required Object unit, required Object digit}) => 'Nur dieses Feld in ${unit} kann ${digit} enthalten.',
+			'why.placement' => ({required Object digit}) => 'Deshalb gehört ${digit} hierhin.',
+			'why.unitRow' => ({required Object index}) => 'Zeile ${index}',
+			'why.unitColumn' => ({required Object index}) => 'Spalte ${index}',
+			'why.unitBox' => ({required Object index}) => 'Block ${index}',
 			_ => null,
 		};
 	}

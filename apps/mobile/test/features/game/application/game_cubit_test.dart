@@ -25,6 +25,12 @@ final class _StuckHumanSolver implements HumanSolver {
   Deduction? findNextDeduction(HumanSolverState state) => null;
 
   @override
+  Deduction? findDeductionForPlacement(
+    HumanSolverState state,
+    DigitPlacement target,
+  ) => null;
+
+  @override
   HumanSolveResult solveLogically(SudokuBoard board) =>
       throw UnimplementedError('The game only requests the next deduction.');
 }
@@ -36,6 +42,12 @@ final class _FixedHumanSolver implements HumanSolver {
 
   @override
   Deduction findNextDeduction(HumanSolverState state) => deduction;
+
+  @override
+  Deduction? findDeductionForPlacement(
+    HumanSolverState state,
+    DigitPlacement target,
+  ) => deduction.placements.contains(target) ? deduction : null;
 
   @override
   HumanSolveResult solveLogically(SudokuBoard board) =>

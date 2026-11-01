@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// Compact, deterministic storage format. Board strings contain 81 digits;
@@ -47,8 +48,90 @@ abstract final class GameCodec {
 
   static String history(List<StoredGameSnapshot> snapshots) => jsonEncode([
     for (final snapshot in snapshots)
-      {'board': board(snapshot.board), 'notes': notes(snapshot.notes)},
+      {
+        'board': board(snapshot.board),
+        'notes': notes(snapshot.notes),
+        'why': reasoning(snapshot.reasoning),
+      },
   ]);
+
+  static String reasoning(Map<CellRef, MoveReasoningContext> value) {
+    final cells = value.keys.toList()
+      ..sort((left, right) => left.index.compareTo(right.index));
+    return jsonEncode({
+      for (final cell in cells)
+        '${cell.index}': {
+          'board': board(value[cell]!.preMoveBoard),
+          'digit': value[cell]!.digit,
+          'technique': value[cell]!.technique.name,
+          'source': value[cell]!.source.name,
+        },
+    });
+  }
+
+  static Map<CellRef, MoveReasoningContext> parseReasoning(
+    String raw,
+    SudokuBoard currentBoard,
+  ) {
+    final decoded = jsonDecode(raw);
+    if (decoded is! Map<String, dynamic> || decoded.length > 81) {
+      throw const FormatException('Invalid Why context.');
+    }
+    final result = <CellRef, MoveReasoningContext>{};
+    for (final entry in decoded.entries) {
+      final index = int.tryParse(entry.key);
+      final value = entry.value;
+      if (index == null ||
+          index < 0 ||
+          index > 80 ||
+          value is! Map<String, dynamic>) {
+        throw const FormatException('Invalid Why cell.');
+      }
+      final cell = CellRef.fromIndex(index);
+      final source = value['board'];
+      final digit = value['digit'];
+      final technique = value['technique'];
+      final origin = value['source'];
+      if (source is! String ||
+          digit is! int ||
+          digit < 1 ||
+          digit > 9 ||
+          technique is! String ||
+          origin is! String ||
+          currentBoard.valueAt(cell) != digit) {
+        throw const FormatException('Invalid Why placement.');
+      }
+      final preMoveBoard = parseBoard(source);
+      if (preMoveBoard.isFilled(cell)) {
+        throw const FormatException('Why target must be empty before move.');
+      }
+      if (!SudokuTechnique.values.any((item) => item.name == technique) ||
+          !MoveReasoningSource.values.any((item) => item.name == origin)) {
+        throw const FormatException('Unknown Why metadata.');
+      }
+      result[cell] = MoveReasoningContext(
+        preMoveBoard: preMoveBoard,
+        cell: cell,
+        digit: digit,
+        technique: SudokuTechnique.values.byName(technique),
+        source: MoveReasoningSource.values.byName(origin),
+      );
+    }
+    return Map<CellRef, MoveReasoningContext>.unmodifiable(result);
+  }
+
+  /// Why is optional educational metadata. A damaged record must not make an
+  /// otherwise usable saved game disappear.
+  static Map<CellRef, MoveReasoningContext> parseReasoningOrEmpty(
+    String raw,
+    SudokuBoard board,
+  ) {
+    try {
+      return parseReasoning(raw, board);
+    } on FormatException {
+      return const {};
+    }
+  }
 
   static String techniqueHelp(Map<SudokuTechnique, int> value) {
     for (final level in value.values) {
@@ -93,6 +176,12 @@ abstract final class GameCodec {
           StoredGameSnapshot(
             board: parseBoard(source),
             notes: parseNotes(raw, parseBoard(source)),
+            reasoning: parseReasoningOrEmpty(
+              entry is Map<String, dynamic> && entry['why'] is String
+                  ? entry['why'] as String
+                  : '{}',
+              parseBoard(source),
+            ),
           )
         else
           throw const FormatException('Invalid undo snapshot.'),
@@ -120,6 +209,10 @@ abstract final class GameCodec {
       _checkGivens(game.initialBoard, snapshot.board);
     }
     parseNotes(notes(game.notes), game.currentBoard);
+    parseReasoning(reasoning(game.reasoning), game.currentBoard);
+    for (final snapshot in game.undoHistory) {
+      parseReasoning(reasoning(snapshot.reasoning), snapshot.board);
+    }
     techniqueHelp(game.techniqueHelp);
   }
 

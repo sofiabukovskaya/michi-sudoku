@@ -1,3 +1,4 @@
+import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// One bounded, meaningful undo action. Mistakes are cumulative and are not
@@ -6,10 +7,13 @@ final class StoredGameSnapshot {
   StoredGameSnapshot({
     required this.board,
     required Map<CellRef, CandidateMask> notes,
-  }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes);
+    Map<CellRef, MoveReasoningContext> reasoning = const {},
+  }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
+       reasoning = Map<CellRef, MoveReasoningContext>.unmodifiable(reasoning);
 
   final SudokuBoard board;
   final Map<CellRef, CandidateMask> notes;
+  final Map<CellRef, MoveReasoningContext> reasoning;
 }
 
 final class StoredGame {
@@ -32,8 +36,10 @@ final class StoredGame {
     required this.editableCells,
     this.dailyChallengeKey,
     Map<SudokuTechnique, int> techniqueHelp = const {},
+    Map<CellRef, MoveReasoningContext> reasoning = const {},
   }) : techniqueHelp = Map<SudokuTechnique, int>.unmodifiable(techniqueHelp),
        notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
+       reasoning = Map<CellRef, MoveReasoningContext>.unmodifiable(reasoning),
        undoHistory = List<StoredGameSnapshot>.unmodifiable(undoHistory);
 
   final String gameId;
@@ -42,6 +48,7 @@ final class StoredGame {
   final SudokuBoard initialBoard;
   final SudokuBoard currentBoard;
   final Map<CellRef, CandidateMask> notes;
+  final Map<CellRef, MoveReasoningContext> reasoning;
   final List<StoredGameSnapshot> undoHistory;
   final int mistakes;
   final Duration elapsedBeforeRun;

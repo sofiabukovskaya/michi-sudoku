@@ -42,7 +42,9 @@ List<CoachHint> _nakedSingle(Deduction deduction) {
   if (deduction.placements.length != 1 ||
       deduction.focusCells.length != 1 ||
       candidates.length != 1 ||
-      deduction.evidence.length != 1) {
+      deduction.evidence.any(
+        (item) => item is! CandidateSetEvidence && item is! UnitFilledEvidence,
+      )) {
     throw StateError('Naked Single needs one target and candidate set.');
   }
   final placement = deduction.placements.single;

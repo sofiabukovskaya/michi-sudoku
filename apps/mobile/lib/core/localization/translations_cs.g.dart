@@ -53,6 +53,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$profile$cs profile = _Translations$profile$cs._(_root);
 	@override late final _Translations$scanner$cs scanner = _Translations$scanner$cs._(_root);
 	@override late final _Translations$coach$cs coach = _Translations$coach$cs._(_root);
+	@override late final _Translations$why$cs why = _Translations$why$cs._(_root);
 }
 
 // Path: common
@@ -217,6 +218,8 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String get completionLogic => 'vyřešená políčka';
 	@override String get completionMistakes => 'chyby';
 	@override String get completionHints => 'nápovědy';
+	@override String get dailyStampEarned => 'Denní razítko získáno';
+	@override String completionPracticeTechnique({required Object technique}) => 'Další krok: ${technique}';
 }
 
 // Path: learn
@@ -353,6 +356,31 @@ class _Translations$coach$cs extends Translations$coach$uk {
 	@override String get understandBoxLine => 'Číslice je v řádku omezena na jeden blok. Odstraň ji jinde v bloku.';
 	@override String get understandTriple => 'Tři pole sdílejí přesně tři číslice. Odstraň je z dalších polí jednotky.';
 	@override String get understandXWing => 'Ve dvou řádcích má číslice stejné dva průsečíky. Odstraň ji jinde v protínajících řádcích.';
+}
+
+// Path: why
+class _Translations$why$cs extends Translations$why$uk {
+	_Translations$why$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Vysvětlení';
+	@override String whyHere({required Object digit}) => 'Proč sem patří ${digit}?';
+	@override String get givenTitle => 'Toto je zadaná číslice';
+	@override String get givenBody => 'Byla na desce od začátku, takže není třeba vysvětlovat její odvození. Vysvětlení jsou dostupná pro číslice, které umístíš sám.';
+	@override String get unavailableTitle => 'Přímé vysvětlení zatím není';
+	@override String get unavailableBody => 'MICHI nedokáže tento tah odůvodnit podporovanou technikou ve stavu před tahem.';
+	@override String get lesson => 'Lekce';
+	@override String get gotIt => 'Rozumím';
+	@override String unitRestrictions({required Object unit, required Object digits}) => 'V ${unit} již jsou číslice: ${digits}.';
+	@override String onlyCandidate({required Object digit}) => 'V této buňce zbývá jen ${digit}.';
+	@override String unitSearch({required Object digit, required Object unit}) => 'Hledáme místo pro ${digit} v ${unit}.';
+	@override String solePosition({required Object unit, required Object digit}) => 'Jen tato buňka v ${unit} může obsahovat ${digit}.';
+	@override String placement({required Object digit}) => 'Proto sem patří ${digit}.';
+	@override String unitRow({required Object index}) => 'řádku ${index}';
+	@override String unitColumn({required Object index}) => 'sloupci ${index}';
+	@override String unitBox({required Object index}) => 'bloku ${index}';
 }
 
 // Path: learn.lessons
@@ -593,6 +621,8 @@ extension on TranslationsCs {
 			'game.completionLogic' => 'vyřešená políčka',
 			'game.completionMistakes' => 'chyby',
 			'game.completionHints' => 'nápovědy',
+			'game.dailyStampEarned' => 'Denní razítko získáno',
+			'game.completionPracticeTechnique' => ({required Object technique}) => 'Další krok: ${technique}',
 			'learn.title' => 'Učení',
 			'learn.intro' => 'Jedna technika, jeden jasný krok.',
 			'learn.newLabel' => 'Nové',
@@ -731,6 +761,22 @@ extension on TranslationsCs {
 			'coach.understandBoxLine' => 'Číslice je v řádku omezena na jeden blok. Odstraň ji jinde v bloku.',
 			'coach.understandTriple' => 'Tři pole sdílejí přesně tři číslice. Odstraň je z dalších polí jednotky.',
 			'coach.understandXWing' => 'Ve dvou řádcích má číslice stejné dva průsečíky. Odstraň ji jinde v protínajících řádcích.',
+			'why.title' => 'Vysvětlení',
+			'why.whyHere' => ({required Object digit}) => 'Proč sem patří ${digit}?',
+			'why.givenTitle' => 'Toto je zadaná číslice',
+			'why.givenBody' => 'Byla na desce od začátku, takže není třeba vysvětlovat její odvození. Vysvětlení jsou dostupná pro číslice, které umístíš sám.',
+			'why.unavailableTitle' => 'Přímé vysvětlení zatím není',
+			'why.unavailableBody' => 'MICHI nedokáže tento tah odůvodnit podporovanou technikou ve stavu před tahem.',
+			'why.lesson' => 'Lekce',
+			'why.gotIt' => 'Rozumím',
+			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'V ${unit} již jsou číslice: ${digits}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'V této buňce zbývá jen ${digit}.',
+			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Hledáme místo pro ${digit} v ${unit}.',
+			'why.solePosition' => ({required Object unit, required Object digit}) => 'Jen tato buňka v ${unit} může obsahovat ${digit}.',
+			'why.placement' => ({required Object digit}) => 'Proto sem patří ${digit}.',
+			'why.unitRow' => ({required Object index}) => 'řádku ${index}',
+			'why.unitColumn' => ({required Object index}) => 'sloupci ${index}',
+			'why.unitBox' => ({required Object index}) => 'bloku ${index}',
 			_ => null,
 		};
 	}

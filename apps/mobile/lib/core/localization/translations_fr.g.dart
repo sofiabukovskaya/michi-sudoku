@@ -53,6 +53,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$profile$fr profile = _Translations$profile$fr._(_root);
 	@override late final _Translations$scanner$fr scanner = _Translations$scanner$fr._(_root);
 	@override late final _Translations$coach$fr coach = _Translations$coach$fr._(_root);
+	@override late final _Translations$why$fr why = _Translations$why$fr._(_root);
 }
 
 // Path: common
@@ -217,6 +218,8 @@ class _Translations$game$fr extends Translations$game$uk {
 	@override String get completionLogic => 'cases résolues';
 	@override String get completionMistakes => 'erreurs';
 	@override String get completionHints => 'indices';
+	@override String get dailyStampEarned => 'Tampon quotidien obtenu';
+	@override String completionPracticeTechnique({required Object technique}) => 'Prochaine étape : ${technique}';
 }
 
 // Path: learn
@@ -353,6 +356,31 @@ class _Translations$coach$fr extends Translations$coach$uk {
 	@override String get understandBoxLine => 'La ligne limite ce chiffre à un bloc. Retire-le ailleurs dans ce bloc.';
 	@override String get understandTriple => 'Trois cases partagent exactement trois chiffres. Retire-les des autres cases de l’unité.';
 	@override String get understandXWing => 'Deux lignes ont ce chiffre aux mêmes deux intersections. Retire-le ailleurs sur les lignes croisées.';
+}
+
+// Path: why
+class _Translations$why$fr extends Translations$why$uk {
+	_Translations$why$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Explication';
+	@override String whyHere({required Object digit}) => 'Pourquoi placer ${digit} ici ?';
+	@override String get givenTitle => 'Ce chiffre est donné au départ';
+	@override String get givenBody => 'Il était sur la grille dès le début : aucun raisonnement n’est nécessaire pour le placer. Les explications concernent les chiffres que tu places.';
+	@override String get unavailableTitle => 'Aucune explication directe pour le moment';
+	@override String get unavailableBody => 'MICHI ne peut pas justifier ce coup par une technique prise en charge dans l’état précédent.';
+	@override String get lesson => 'Leçon';
+	@override String get gotIt => 'Compris';
+	@override String unitRestrictions({required Object unit, required Object digits}) => 'Dans ${unit}, ces chiffres sont déjà placés : ${digits}.';
+	@override String onlyCandidate({required Object digit}) => 'Il ne reste que ${digit} pour cette case.';
+	@override String unitSearch({required Object digit, required Object unit}) => 'Cherchons où placer ${digit} dans ${unit}.';
+	@override String solePosition({required Object unit, required Object digit}) => 'Seule cette case dans ${unit} peut contenir ${digit}.';
+	@override String placement({required Object digit}) => 'Donc ${digit} va ici.';
+	@override String unitRow({required Object index}) => 'la ligne ${index}';
+	@override String unitColumn({required Object index}) => 'la colonne ${index}';
+	@override String unitBox({required Object index}) => 'le bloc ${index}';
 }
 
 // Path: learn.lessons
@@ -593,6 +621,8 @@ extension on TranslationsFr {
 			'game.completionLogic' => 'cases résolues',
 			'game.completionMistakes' => 'erreurs',
 			'game.completionHints' => 'indices',
+			'game.dailyStampEarned' => 'Tampon quotidien obtenu',
+			'game.completionPracticeTechnique' => ({required Object technique}) => 'Prochaine étape : ${technique}',
 			'learn.title' => 'Apprendre',
 			'learn.intro' => 'Une technique, une étape claire à la fois.',
 			'learn.newLabel' => 'Nouveau',
@@ -731,6 +761,22 @@ extension on TranslationsFr {
 			'coach.understandBoxLine' => 'La ligne limite ce chiffre à un bloc. Retire-le ailleurs dans ce bloc.',
 			'coach.understandTriple' => 'Trois cases partagent exactement trois chiffres. Retire-les des autres cases de l’unité.',
 			'coach.understandXWing' => 'Deux lignes ont ce chiffre aux mêmes deux intersections. Retire-le ailleurs sur les lignes croisées.',
+			'why.title' => 'Explication',
+			'why.whyHere' => ({required Object digit}) => 'Pourquoi placer ${digit} ici ?',
+			'why.givenTitle' => 'Ce chiffre est donné au départ',
+			'why.givenBody' => 'Il était sur la grille dès le début : aucun raisonnement n’est nécessaire pour le placer. Les explications concernent les chiffres que tu places.',
+			'why.unavailableTitle' => 'Aucune explication directe pour le moment',
+			'why.unavailableBody' => 'MICHI ne peut pas justifier ce coup par une technique prise en charge dans l’état précédent.',
+			'why.lesson' => 'Leçon',
+			'why.gotIt' => 'Compris',
+			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'Dans ${unit}, ces chiffres sont déjà placés : ${digits}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'Il ne reste que ${digit} pour cette case.',
+			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Cherchons où placer ${digit} dans ${unit}.',
+			'why.solePosition' => ({required Object unit, required Object digit}) => 'Seule cette case dans ${unit} peut contenir ${digit}.',
+			'why.placement' => ({required Object digit}) => 'Donc ${digit} va ici.',
+			'why.unitRow' => ({required Object index}) => 'la ligne ${index}',
+			'why.unitColumn' => ({required Object index}) => 'la colonne ${index}',
+			'why.unitBox' => ({required Object index}) => 'le bloc ${index}',
 			_ => null,
 		};
 	}

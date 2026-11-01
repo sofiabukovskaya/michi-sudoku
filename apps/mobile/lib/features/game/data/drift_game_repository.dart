@@ -44,6 +44,10 @@ final class DriftGameRepository implements GameRepository {
           GameCodec.parseBoard(row.currentBoard),
         ),
         undoHistory: GameCodec.parseHistory(row.undoJson),
+        reasoning: GameCodec.parseReasoningOrEmpty(
+          row.reasoningJson,
+          GameCodec.parseBoard(row.currentBoard),
+        ),
         mistakes: row.mistakes,
         elapsedBeforeRun: Duration(milliseconds: row.elapsedMs),
         runningSince: row.runningSinceMs == null
@@ -111,6 +115,7 @@ final class DriftGameRepository implements GameRepository {
             currentBoard: GameCodec.board(game.currentBoard),
             notesJson: GameCodec.notes(game.notes),
             undoJson: GameCodec.history(game.undoHistory),
+            reasoningJson: Value(GameCodec.reasoning(game.reasoning)),
             mistakes: game.mistakes,
             elapsedMs: game.elapsedBeforeRun.inMilliseconds,
             runningSinceMs: Value(game.runningSince?.millisecondsSinceEpoch),

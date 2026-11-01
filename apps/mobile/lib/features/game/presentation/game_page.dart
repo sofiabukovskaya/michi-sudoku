@@ -6,12 +6,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
+import 'package:michi_mobile/features/game/application/why_selection.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_controls.dart';
@@ -21,6 +23,8 @@ import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/boa
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_keypad.dart';
+import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
+import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
@@ -67,6 +71,10 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _definition = widget.definition;
+    _difficulty = widget.definition?.difficulty;
+    _isDaily =
+        widget.dailyChallengeKey != null ||
+        widget.cubit?.state.dailyChallengeKey != null;
     if (widget.cubit case final cubit?) {
       _attach(cubit);
     } else {
@@ -262,13 +270,20 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                 return BlocBuilder<GameCubit, GameState>(
                   builder: (context, state) {
                     if (state.status == GameStatus.completed) {
+                      final nextTechnique = _nextTechnique(state);
                       return _CompletedSurface(
                         state: state,
                         elapsed: cubit.elapsed,
                         puzzleTitle: _gameTitle(context),
-                        requiredTechniques: _isDaily
-                            ? const {}
-                            : _definition?.requiredTechniques ?? const {},
+                        requiredTechniques:
+                            _definition?.requiredTechniques ?? const {},
+                        isDaily: _isDaily,
+                        nextTechnique: nextTechnique,
+                        onContinue: nextTechnique == null
+                            ? null
+                            : () => context.router.push(
+                                TechniqueLessonRoute(technique: nextTechnique),
+                              ),
                         onHome: () async {
                           await cubit.flushPersistence();
                           if (context.mounted &&
@@ -286,6 +301,7 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                       onToggleNotes: cubit.toggleNotesMode,
                       onHint: cubit.requestHint,
                       onDigit: cubit.enterDigit,
+                      onWhy: _whyAction(context, cubit, state),
                     );
                     return Column(
                       children: [
@@ -376,6 +392,44 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     };
     return difficulty == null ? kind : '$kind · $difficulty';
   }
+
+  SudokuTechnique? _nextTechnique(GameState state) {
+    final helped = state.techniqueHelp.entries.toList()
+      ..sort((a, b) {
+        final count = b.value.compareTo(a.value);
+        return count != 0
+            ? count
+            : SudokuTechniqueOrder.supported
+                  .indexOf(a.key)
+                  .compareTo(SudokuTechniqueOrder.supported.indexOf(b.key));
+      });
+    if (helped.isNotEmpty) return helped.first.key;
+    final required = _definition?.requiredTechniques ?? const {};
+    for (final technique in TechniqueLessons.supported) {
+      if (technique != SudokuTechnique.nakedSingle &&
+          required.contains(technique)) {
+        return technique;
+      }
+    }
+    return null;
+  }
+
+  VoidCallback? _whyAction(
+    BuildContext context,
+    GameCubit cubit,
+    GameState state,
+  ) {
+    final cell = state.selectedCell;
+    if (cell == null || state.board.isEmpty(cell)) return null;
+    final selection = cubit.whyForCell(cell);
+    if (selection.availability != WhyAvailability.available &&
+        selection.availability != WhyAvailability.given) {
+      return null;
+    }
+    return () => context.router.push(
+      WhyRoute(game: state, selection: selection, cell: cell),
+    );
+  }
 }
 
 final class _GameInputArea extends StatelessWidget {
@@ -387,6 +441,7 @@ final class _GameInputArea extends StatelessWidget {
     required this.onToggleNotes,
     required this.onHint,
     required this.onDigit,
+    required this.onWhy,
   });
 
   final GameState state;
@@ -396,6 +451,7 @@ final class _GameInputArea extends StatelessWidget {
   final VoidCallback onToggleNotes;
   final VoidCallback onHint;
   final ValueChanged<int> onDigit;
+  final VoidCallback? onWhy;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -411,17 +467,32 @@ final class _GameInputArea extends StatelessWidget {
           onHint: onHint,
         ),
         SudokuKeypad(state: state, compact: compact, onDigit: onDigit),
-        Text(
-          state.notesMode
-              ? context.t.game.notesModeOn
-              : context.t.game.mistakes(count: state.mistakes),
-          style: MichiTypography.meta.copyWith(
-            color: state.wrongCells.isEmpty
-                ? MichiColors.textSecondary
-                : MichiColors.error,
-          ),
-          textAlign: TextAlign.center,
-          maxLines: 2,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Text(
+                state.notesMode
+                    ? context.t.game.notesModeOn
+                    : context.t.game.mistakes(count: state.mistakes),
+                style: MichiTypography.meta.copyWith(
+                  color: state.wrongCells.isEmpty
+                      ? MichiColors.textSecondary
+                      : MichiColors.error,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
+            ),
+            if (onWhy != null) ...[
+              const SizedBox(width: MichiSpacing.sm),
+              TextButton(
+                key: const ValueKey('why-action'),
+                onPressed: onWhy,
+                child: Text(context.t.why.title),
+              ),
+            ],
+          ],
         ),
       ],
     ),
@@ -472,6 +543,9 @@ final class _CompletedSurface extends StatelessWidget {
     required this.elapsed,
     required this.puzzleTitle,
     required this.requiredTechniques,
+    required this.isDaily,
+    required this.nextTechnique,
+    required this.onContinue,
     required this.onHome,
   });
 
@@ -479,6 +553,9 @@ final class _CompletedSurface extends StatelessWidget {
   final Duration elapsed;
   final String puzzleTitle;
   final Set<SudokuTechnique> requiredTechniques;
+  final bool isDaily;
+  final SudokuTechnique? nextTechnique;
+  final VoidCallback? onContinue;
   final VoidCallback onHome;
 
   @override
@@ -506,23 +583,16 @@ final class _CompletedSurface extends StatelessWidget {
                       onPressed: onHome,
                       icon: const Icon(Icons.close, color: MichiColors.ivory),
                     ),
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CustomPaint(
-                          size: Size.square(130),
-                          painter: _CompletedGridPainter(),
-                        ),
-                        const SizedBox(width: MichiSpacing.lg),
-                        Image.asset(
-                          'assets/images/coach_mascot.png',
-                          height: 148,
+                    Expanded(
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/completion_hero.png',
+                          width: math.min(constraints.maxWidth - 48, 400),
+                          fit: BoxFit.contain,
                           excludeFromSemantics: true,
                         ),
-                      ],
+                      ),
                     ),
-                    const Spacer(),
                     Text(
                       context.t.game.completeTitle,
                       style: MichiTypography.display.copyWith(
@@ -565,9 +635,19 @@ final class _CompletedSurface extends StatelessWidget {
                       value: state.correctEditableCells,
                       label: context.t.game.completionLogic,
                     ),
+                    Container(
+                      width: 1,
+                      height: 48,
+                      color: MichiColors.hairline,
+                    ),
                     _CompletionMetric(
                       value: state.mistakes,
                       label: context.t.game.completionMistakes,
+                    ),
+                    Container(
+                      width: 1,
+                      height: 48,
+                      color: MichiColors.hairline,
                     ),
                     _CompletionMetric(
                       value: state.hintsRequested,
@@ -577,13 +657,75 @@ final class _CompletedSurface extends StatelessWidget {
                 ),
                 const Divider(height: MichiSpacing.xxl),
                 Text(context.t.game.completeBody, style: MichiTypography.body),
+                if (isDaily) ...[
+                  const SizedBox(height: MichiSpacing.lg),
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        radius: 14,
+                        backgroundColor: MichiColors.indigo,
+                        child: Icon(
+                          Icons.pets,
+                          size: 15,
+                          color: MichiColors.ivory,
+                        ),
+                      ),
+                      const SizedBox(width: MichiSpacing.sm),
+                      Text(
+                        context.t.game.dailyStampEarned,
+                        style: MichiTypography.body.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (nextTechnique case final technique?) ...[
+                  const Divider(height: MichiSpacing.xxl),
+                  InkWell(
+                    onTap: onContinue,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: MichiSpacing.sm,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              context.t.game.completionPracticeTechnique(
+                                technique: TechniqueCopy.name(
+                                  context.t,
+                                  technique,
+                                ),
+                              ),
+                              style: MichiTypography.body.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right_rounded),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: MichiSpacing.xl),
+                MichiButton(
+                  label: onContinue == null
+                      ? context.t.game.backHome
+                      : context.t.common.continueLabel,
+                  onPressed: onContinue ?? onHome,
+                ),
+                if (onContinue != null)
+                  TextButton(
+                    onPressed: onHome,
+                    child: Text(context.t.game.backHome),
+                  ),
                 const SizedBox(height: MichiSpacing.xl),
                 PostGameTechniqueFeedback(
                   requiredTechniques: requiredTechniques,
                   techniqueHelp: state.techniqueHelp,
                 ),
-                const SizedBox(height: MichiSpacing.xl),
-                MichiButton(label: context.t.game.backHome, onPressed: onHome),
               ],
             ),
           ),
@@ -609,47 +751,6 @@ final class _CompletionMetric extends StatelessWidget {
       ],
     ),
   );
-}
-
-final class _CompletedGridPainter extends CustomPainter {
-  const _CompletedGridPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas
-      ..save()
-      ..rotate(-0.08);
-    final rect = RRect.fromRectAndRadius(
-      Offset.zero & size,
-      const Radius.circular(8),
-    );
-    canvas.drawRRect(rect, Paint()..color = MichiColors.ivory);
-    final line = Paint()
-      ..color = MichiColors.boardBoxLine
-      ..strokeWidth = 1;
-    for (var part = 1; part < 3; part++) {
-      final position = size.width * part / 3;
-      canvas
-        ..drawLine(Offset(position, 0), Offset(position, size.height), line)
-        ..drawLine(Offset(0, position), Offset(size.width, position), line);
-    }
-    for (var row = 0; row < 9; row++) {
-      for (var column = 0; column < 9; column++) {
-        canvas.drawCircle(
-          Offset(
-            (column + 0.5) * size.width / 9,
-            (row + 0.5) * size.height / 9,
-          ),
-          1.8,
-          Paint()..color = MichiColors.indigo,
-        );
-      }
-    }
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant _CompletedGridPainter oldDelegate) => false;
 }
 
 String _formatElapsed(Duration elapsed) =>

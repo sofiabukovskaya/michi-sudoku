@@ -106,7 +106,9 @@
     "dailyTitle": "Sudoku dne",
     "completionLogic": "vyřešená políčka",
     "completionMistakes": "chyby",
-    "completionHints": "nápovědy"
+    "completionHints": "nápovědy",
+    "dailyStampEarned": "Denní razítko získáno",
+    "completionPracticeTechnique": "Další krok: $technique"
   },
   "learn": {
     "title": "Učení",
@@ -273,5 +275,23 @@
     "understandBoxLine": "Číslice je v řádku omezena na jeden blok. Odstraň ji jinde v bloku.",
     "understandTriple": "Tři pole sdílejí přesně tři číslice. Odstraň je z dalších polí jednotky.",
     "understandXWing": "Ve dvou řádcích má číslice stejné dva průsečíky. Odstraň ji jinde v protínajících řádcích."
+  },
+  "why": {
+    "title": "Vysvětlení",
+    "whyHere": "Proč sem patří $digit?",
+    "givenTitle": "Toto je zadaná číslice",
+    "givenBody": "Byla na desce od začátku, takže není třeba vysvětlovat její odvození. Vysvětlení jsou dostupná pro číslice, které umístíš sám.",
+    "unavailableTitle": "Přímé vysvětlení zatím není",
+    "unavailableBody": "MICHI nedokáže tento tah odůvodnit podporovanou technikou ve stavu před tahem.",
+    "lesson": "Lekce",
+    "gotIt": "Rozumím",
+    "unitRestrictions": "V $unit již jsou číslice: $digits.",
+    "onlyCandidate": "V této buňce zbývá jen $digit.",
+    "unitSearch": "Hledáme místo pro $digit v $unit.",
+    "solePosition": "Jen tato buňka v $unit může obsahovat $digit.",
+    "placement": "Proto sem patří $digit.",
+    "unitRow": "řádku $index",
+    "unitColumn": "sloupci $index",
+    "unitBox": "bloku $index"
   }
 }

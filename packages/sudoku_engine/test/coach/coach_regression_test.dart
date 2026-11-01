@@ -57,6 +57,9 @@ void main() {
               }
             case UnitEvidence(:final unit):
               relatedUnits.add(unit);
+            case UnitFilledEvidence(:final unit, :final placements):
+              relatedUnits.add(unit);
+              relatedCells.addAll(placements.map((move) => move.cell));
           }
         }
 

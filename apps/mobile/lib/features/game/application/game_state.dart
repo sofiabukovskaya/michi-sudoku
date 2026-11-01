@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:michi_mobile/core/errors/app_failure.dart';
+import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 enum GameStatus { playing, completed }
@@ -12,10 +13,13 @@ final class GameSnapshot {
   GameSnapshot({
     required this.board,
     required Map<CellRef, CandidateMask> notes,
-  }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes);
+    Map<CellRef, MoveReasoningContext> reasoning = const {},
+  }) : notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
+       reasoning = Map<CellRef, MoveReasoningContext>.unmodifiable(reasoning);
 
   final SudokuBoard board;
   final Map<CellRef, CandidateMask> notes;
+  final Map<CellRef, MoveReasoningContext> reasoning;
 }
 
 @immutable
@@ -46,6 +50,7 @@ final class GameState {
     required this.board,
     required Map<CellRef, CandidateMask> notes,
     required List<GameSnapshot> history,
+    Map<CellRef, MoveReasoningContext> reasoning = const {},
     this.dailyChallengeKey,
     this.selectedCell,
     this.notesMode = false,
@@ -60,6 +65,7 @@ final class GameState {
     this.hintUnavailable,
   }) : techniqueHelp = Map<SudokuTechnique, int>.unmodifiable(techniqueHelp),
        notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
+       reasoning = Map<CellRef, MoveReasoningContext>.unmodifiable(reasoning),
        history = List<GameSnapshot>.unmodifiable(history);
 
   final String gameId;
@@ -69,6 +75,7 @@ final class GameState {
   final SudokuBoard solution;
   final SudokuBoard board;
   final Map<CellRef, CandidateMask> notes;
+  final Map<CellRef, MoveReasoningContext> reasoning;
   final List<GameSnapshot> history;
   final CellRef? selectedCell;
   final bool notesMode;
@@ -126,6 +133,7 @@ final class GameState {
   GameState copyWith({
     SudokuBoard? board,
     Map<CellRef, CandidateMask>? notes,
+    Map<CellRef, MoveReasoningContext>? reasoning,
     List<GameSnapshot>? history,
     CellRef? selectedCell,
     bool keepSelection = true,
@@ -150,6 +158,7 @@ final class GameState {
     solution: solution,
     board: board ?? this.board,
     notes: notes ?? this.notes,
+    reasoning: reasoning ?? this.reasoning,
     history: history ?? this.history,
     selectedCell: keepSelection
         ? selectedCell ?? this.selectedCell

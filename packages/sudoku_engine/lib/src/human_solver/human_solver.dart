@@ -1,4 +1,5 @@
 import '../model/sudoku_board.dart';
+import '../model/sudoku_move.dart';
 import 'deduction.dart';
 import 'human_solve_result.dart';
 import 'human_solver_state.dart';
@@ -16,6 +17,13 @@ import 'techniques/x_wing.dart';
 /// Finds human-recognizable logical deductions without exact-solver search.
 abstract interface class HumanSolver {
   Deduction? findNextDeduction(HumanSolverState state);
+
+  /// Finds a direct proof for [target] in this exact state, without applying
+  /// another deduction or consulting the exact solver.
+  Deduction? findDeductionForPlacement(
+    HumanSolverState state,
+    DigitPlacement target,
+  );
 
   HumanSolveResult solveLogically(SudokuBoard board);
 }
@@ -45,6 +53,25 @@ final class DeterministicHumanSolver implements HumanSolver {
       }
       final deductions = strategy.find(state);
       if (deductions.isNotEmpty) return deductions.first;
+    }
+    return null;
+  }
+
+  @override
+  Deduction? findDeductionForPlacement(
+    HumanSolverState state,
+    DigitPlacement target,
+  ) {
+    if (state.board.isFilled(target.cell) ||
+        state.hasContradiction ||
+        state.isSolved) {
+      return null;
+    }
+    for (final technique in SudokuTechniqueOrder.supported) {
+      final strategy = _strategies[technique]!;
+      for (final deduction in strategy.find(state)) {
+        if (deduction.placements.contains(target)) return deduction;
+      }
     }
     return null;
   }

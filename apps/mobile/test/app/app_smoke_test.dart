@@ -84,7 +84,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Вчися бачити наступний хід.'), findsOneWidget);
 
-    await tester.tap(find.text('Почати'));
+    await tester.pump(const Duration(milliseconds: 900));
     await tester.pumpAndSettle();
     expect(find.text('Знайди свій шлях крізь логіку.'), findsOneWidget);
 

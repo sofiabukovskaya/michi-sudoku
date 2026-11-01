@@ -106,7 +106,9 @@
     "dailyTitle": "Sudoku des Tages",
     "completionLogic": "gelöste Felder",
     "completionMistakes": "Fehler",
-    "completionHints": "Hinweise"
+    "completionHints": "Hinweise",
+    "dailyStampEarned": "Tagesstempel erhalten",
+    "completionPracticeTechnique": "Nächster Schritt: $technique"
   },
   "learn": {
     "title": "Lernen",
@@ -273,5 +275,23 @@
     "understandBoxLine": "Diese Ziffer ist in einer Linie auf einen Block beschränkt. Entferne sie sonst im Block.",
     "understandTriple": "Drei Felder teilen genau drei Ziffern. Entferne sie aus den anderen Feldern der Einheit.",
     "understandXWing": "Zwei Linien haben diese Ziffer an denselben zwei Kreuzungen. Entferne sie sonst auf den Kreuzlinien."
+  },
+  "why": {
+    "title": "Erklärung",
+    "whyHere": "Warum gehört $digit hierhin?",
+    "givenTitle": "Diese Ziffer ist vorgegeben",
+    "givenBody": "Sie stand von Anfang an im Rätsel, daher gibt es keinen Lösungsschritt zu erklären. Erklärungen gibt es für Ziffern, die du selbst einträgst.",
+    "unavailableTitle": "Noch keine direkte Erklärung",
+    "unavailableBody": "MICHI kann diesen Zug im Zustand davor nicht mit einer unterstützten Technik begründen.",
+    "lesson": "Lektion",
+    "gotIt": "Verstanden",
+    "unitRestrictions": "In $unit stehen bereits diese Ziffern: $digits.",
+    "onlyCandidate": "Für dieses Feld bleibt nur $digit übrig.",
+    "unitSearch": "Suche einen Platz für $digit in $unit.",
+    "solePosition": "Nur dieses Feld in $unit kann $digit enthalten.",
+    "placement": "Deshalb gehört $digit hierhin.",
+    "unitRow": "Zeile $index",
+    "unitColumn": "Spalte $index",
+    "unitBox": "Block $index"
   }
 }

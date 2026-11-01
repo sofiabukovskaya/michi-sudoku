@@ -106,7 +106,9 @@
     "dailyTitle": "Судоку дня",
     "completionLogic": "розв’язані клітинки",
     "completionMistakes": "помилки",
-    "completionHints": "підказки"
+    "completionHints": "підказки",
+    "dailyStampEarned": "Штамп дня отримано",
+    "completionPracticeTechnique": "Наступний крок: $technique"
   },
   "learn": {
     "title": "Навчання",
@@ -256,7 +258,7 @@
     "resultEliminations": "Виключи перекреслених кандидатів із виділених клітинок.",
     "resultActions": "Виконай виділений логічний крок.",
     "technique": "Техніка: $name",
-    "nakedSingle": "голий одинак",
+    "nakedSingle": "відкритий одинак",
     "hiddenSingle": "прихований одинак",
     "nakedPair": "гола пара",
     "pointingPair": "вказівна пара",
@@ -273,5 +275,23 @@
     "understandBoxLine": "У цій лінії цифра обмежена одним блоком. Прибери її в решті блоку.",
     "understandTriple": "Три клітинки ділять рівно три цифри. Прибери їх з інших клітинок групи.",
     "understandXWing": "У двох лініях цифра має ті самі два перетини. Прибери її з решти перехресних ліній."
+  },
+  "why": {
+    "title": "Пояснення",
+    "whyHere": "Чому тут $digit",
+    "givenTitle": "Це задана цифра головоломки",
+    "givenBody": "Вона стоїть на дошці від початку, тому її не потрібно знаходити. Пояснення доступні для цифр, які ставиш ти.",
+    "unavailableTitle": "Пояснення поки недоступне",
+    "unavailableBody": "MICHI не може довести цей хід підтримуваною технікою в стані до ходу.",
+    "lesson": "Урок",
+    "gotIt": "Зрозуміло",
+    "unitRestrictions": "У $unit вже стоять цифри: $digits.",
+    "onlyCandidate": "У цій клітинці можлива лише цифра $digit.",
+    "unitSearch": "Шукаємо місце для $digit у $unit.",
+    "solePosition": "Лише ця клітинка у $unit може містити $digit.",
+    "placement": "Отже, тут стоїть $digit.",
+    "unitRow": "рядку $index",
+    "unitColumn": "стовпці $index",
+    "unitBox": "блоці $index"
   }
 }

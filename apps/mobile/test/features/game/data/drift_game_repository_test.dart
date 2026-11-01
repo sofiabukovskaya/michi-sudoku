@@ -61,8 +61,8 @@ void main() {
   });
   tearDown(() async => database.close());
 
-  test('schema version 3 initializes all tables without data loss', () async {
-    expect(database.schemaVersion, 3);
+  test('schema version 4 initializes all tables without data loss', () async {
+    expect(database.schemaVersion, 4);
     await repository.saveActiveGame(_active());
     final tables = await database
         .customSelect(
@@ -98,6 +98,25 @@ void main() {
     expect(loaded.techniqueHelp, {SudokuTechnique.nakedPair: 2});
     expect((await repository.loadActiveSummary())!.progress, 0);
   });
+
+  test(
+    'legacy undo snapshots and damaged Why metadata keep the game',
+    () async {
+      final legacy = GameCodec.parseHistory(
+        '[{"board":"${GameCodec.board(DemoPuzzle.standard.givens)}",'
+        '"notes":"{}"}]',
+      );
+      expect(legacy.single.reasoning, isEmpty);
+
+      await repository.saveActiveGame(_active());
+      await database.customUpdate(
+        "UPDATE active_games SET reasoning_json = 'broken' WHERE slot = 1",
+      );
+      final loaded = await repository.loadActiveGame();
+      expect(loaded?.gameId, 'game-1');
+      expect(loaded?.reasoning, isEmpty);
+    },
+  );
 
   test('updates the singleton active game and deletes by identity', () async {
     final first = _active();

@@ -106,7 +106,8 @@ final class _LearnPageState extends State<LearnPage>
                             values[item]?.mastery == TechniqueMastery.mastered,
                       )
                       .length,
-                  total: _groups[group].length,
+                  // The two unsupported advanced techniques remain visible.
+                  total: _groups[group].length + (group == 2 ? 2 : 0),
                 ),
                 const SizedBox(height: MichiSpacing.sm),
                 for (final technique in _groups[group])
@@ -123,9 +124,10 @@ final class _LearnPageState extends State<LearnPage>
                       ),
                     ),
                   ),
+                if (group == 2)
+                  for (final name in ['XY-Wing', 'Swordfish'])
+                    _FutureItem(name: name),
               ],
-              for (final name in ['XY-Wing', 'Swordfish'])
-                _FutureItem(name: name),
             ],
           );
         },

@@ -6,7 +6,9 @@ import 'package:michi_mobile/core/errors/app_failure.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/game_timer.dart';
+import 'package:michi_mobile/features/game/application/why_selection.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// Owns an offline game session and serializes its persistence operations.
@@ -72,9 +74,14 @@ final class GameCubit extends Cubit<GameState> {
         solution: solution,
         board: stored.currentBoard,
         notes: stored.notes,
+        reasoning: stored.reasoning,
         history: [
           for (final item in stored.undoHistory)
-            GameSnapshot(board: item.board, notes: item.notes),
+            GameSnapshot(
+              board: item.board,
+              notes: item.notes,
+              reasoning: item.reasoning,
+            ),
         ],
         mistakes: stored.mistakes,
         isPaused: true,
@@ -171,12 +178,55 @@ final class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(selectedCell: cell));
   }
 
+  WhySelection whyForCell(CellRef cell) {
+    if (state.board.isEmpty(cell)) {
+      return const WhySelection(WhyAvailability.empty);
+    }
+    if (state.isGiven(cell)) {
+      return const WhySelection(WhyAvailability.given);
+    }
+    if (state.isWrong(cell)) {
+      return const WhySelection(WhyAvailability.wrong);
+    }
+    final record = state.reasoning[cell];
+    if (record == null ||
+        record.cell != cell ||
+        record.digit != state.board.valueAt(cell) ||
+        record.preMoveBoard.isFilled(cell)) {
+      return const WhySelection(WhyAvailability.unsupported);
+    }
+    for (var index = 0; index < 81; index++) {
+      final given = CellRef.fromIndex(index);
+      if (state.isGiven(given) &&
+          record.preMoveBoard.valueAt(given) !=
+              state.puzzle.givens.valueAt(given)) {
+        return const WhySelection(WhyAvailability.unsupported);
+      }
+    }
+    final deduction = _humanSolver.findDeductionForPlacement(
+      HumanSolverState.initial(record.preMoveBoard),
+      record.placement,
+    );
+    if (deduction == null || deduction.technique != record.technique) {
+      return const WhySelection(WhyAvailability.unsupported);
+    }
+    final plan = const StructuredWhyEngine().createPlan(
+      deduction,
+      record.placement,
+    );
+    return plan == null
+        ? const WhySelection(WhyAvailability.unsupported)
+        : WhySelection(WhyAvailability.available, plan: plan);
+  }
+
   void toggleNotesMode() {
     if (state.isPaused || state.status == GameStatus.completed) return;
     emit(state.copyWith(notesMode: !state.notesMode));
   }
 
-  void enterDigit(int digit) {
+  void enterDigit(int digit) => _enterDigit(digit);
+
+  void _enterDigit(int digit, {Deduction? coachDeduction}) {
     RangeError.checkValueInInterval(digit, 1, 9, 'digit');
     final cell = state.selectedCell;
     if (cell == null ||
@@ -190,6 +240,32 @@ final class GameCubit extends Cubit<GameState> {
       return;
     }
     if (state.board.valueAt(cell) == digit) return;
+    final nextReasoning = Map<CellRef, MoveReasoningContext>.of(state.reasoning)
+      ..remove(cell);
+    if (digit == state.solution.valueAt(cell)) {
+      var preMoveBoard = state.board.withValue(cell, 0);
+      for (final wrong in state.wrongCells) {
+        preMoveBoard = preMoveBoard.withValue(wrong, 0);
+      }
+      final target = DigitPlacement(cell, digit);
+      final deduction = coachDeduction?.placements.contains(target) == true
+          ? coachDeduction
+          : _humanSolver.findDeductionForPlacement(
+              HumanSolverState.initial(preMoveBoard),
+              target,
+            );
+      if (deduction != null) {
+        nextReasoning[cell] = MoveReasoningContext(
+          preMoveBoard: preMoveBoard,
+          cell: cell,
+          digit: digit,
+          technique: deduction.technique,
+          source: coachDeduction == deduction
+              ? MoveReasoningSource.coach
+              : MoveReasoningSource.manual,
+        );
+      }
+    }
     final nextBoard = state.board.withValue(cell, digit);
     final nextNotes = Map<CellRef, CandidateMask>.of(state.notes)..remove(cell);
     if (digit == state.solution.valueAt(cell)) {
@@ -207,6 +283,7 @@ final class GameCubit extends Cubit<GameState> {
     _commit(
       nextBoard,
       nextNotes,
+      reasoning: nextReasoning,
       mistakes:
           state.mistakes + (digit != state.solution.valueAt(cell) ? 1 : 0),
     );
@@ -237,7 +314,12 @@ final class GameCubit extends Cubit<GameState> {
     }
     final nextNotes = Map<CellRef, CandidateMask>.of(state.notes);
     if (state.board.isFilled(cell)) {
-      _commit(state.board.withValue(cell, 0), nextNotes);
+      _commit(
+        state.board.withValue(cell, 0),
+        nextNotes,
+        reasoning: Map<CellRef, MoveReasoningContext>.of(state.reasoning)
+          ..remove(cell),
+      );
     } else {
       nextNotes.remove(cell);
       _commit(state.board, nextNotes, invalidateCoach: false);
@@ -256,6 +338,7 @@ final class GameCubit extends Cubit<GameState> {
       state.copyWith(
         board: previous.board,
         notes: previous.notes,
+        reasoning: previous.reasoning,
         history: state.history.sublist(0, state.history.length - 1),
         keepCoach: !boardChanged,
         keepHintUnavailable: !boardChanged,
@@ -364,7 +447,7 @@ final class GameCubit extends Cubit<GameState> {
     if (state.isGiven(move.cell)) return;
     selectCell(move.cell);
     if (state.notesMode) emit(state.copyWith(notesMode: false));
-    enterDigit(move.digit);
+    _enterDigit(move.digit, coachDeduction: coach.deduction);
   }
 
   void retryPersistence() {
@@ -378,12 +461,17 @@ final class GameCubit extends Cubit<GameState> {
   void _commit(
     SudokuBoard board,
     Map<CellRef, CandidateMask> notes, {
+    Map<CellRef, MoveReasoningContext>? reasoning,
     int? mistakes,
     bool invalidateCoach = true,
   }) {
     final history = [
       ...state.history,
-      GameSnapshot(board: state.board, notes: state.notes),
+      GameSnapshot(
+        board: state.board,
+        notes: state.notes,
+        reasoning: state.reasoning,
+      ),
     ];
     if (history.length > 100) history.removeAt(0);
     final completed = board == state.solution;
@@ -392,6 +480,7 @@ final class GameCubit extends Cubit<GameState> {
       state.copyWith(
         board: board,
         notes: notes,
+        reasoning: reasoning,
         history: history,
         mistakes: mistakes,
         status: completed ? GameStatus.completed : GameStatus.playing,
@@ -418,9 +507,14 @@ final class GameCubit extends Cubit<GameState> {
       initialBoard: snapshot.puzzle.givens,
       currentBoard: snapshot.board,
       notes: snapshot.notes,
+      reasoning: snapshot.reasoning,
       undoHistory: [
         for (final item in snapshot.history)
-          StoredGameSnapshot(board: item.board, notes: item.notes),
+          StoredGameSnapshot(
+            board: item.board,
+            notes: item.notes,
+            reasoning: item.reasoning,
+          ),
       ],
       mistakes: snapshot.mistakes,
       elapsedBeforeRun: timer.elapsedBeforeRun,

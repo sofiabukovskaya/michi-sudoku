@@ -106,7 +106,9 @@
     "dailyTitle": "Daily Sudoku",
     "completionLogic": "solved cells",
     "completionMistakes": "mistakes",
-    "completionHints": "hints"
+    "completionHints": "hints",
+    "dailyStampEarned": "Daily stamp earned",
+    "completionPracticeTechnique": "Practice $technique next"
   },
   "learn": {
     "title": "Learn",
@@ -273,5 +275,23 @@
     "understandBoxLine": "This digit is confined to one box along the line. Remove it elsewhere in that box.",
     "understandTriple": "Three cells share exactly three digits. Remove those digits from other cells in the unit.",
     "understandXWing": "Two lines have this digit in the same two crossing positions. Remove it elsewhere on the crossing lines."
+  },
+  "why": {
+    "title": "Explanation",
+    "whyHere": "Why does $digit go here?",
+    "givenTitle": "This is a given digit of the puzzle",
+    "givenBody": "It was on the board from the start, so there is no solving step to explain. Explanations are available for digits you place yourself.",
+    "unavailableTitle": "No direct explanation yet",
+    "unavailableBody": "MICHI cannot prove this move with a supported technique in its pre-move state.",
+    "lesson": "Lesson",
+    "gotIt": "Got it",
+    "unitRestrictions": "The filled digits in $unit are $digits.",
+    "onlyCandidate": "Only $digit remains possible in this cell.",
+    "unitSearch": "Look for a place for $digit in $unit.",
+    "solePosition": "Only this cell in $unit can take $digit.",
+    "placement": "Therefore $digit goes here.",
+    "unitRow": "row $index",
+    "unitColumn": "column $index",
+    "unitBox": "box $index"
   }
 }

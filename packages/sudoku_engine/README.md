@@ -123,6 +123,24 @@ visual presentation. `CandidateRef` marks a relevant candidate; it does not
 claim that candidate can be eliminated. The plan is stateless; the app will
 track which level the player has viewed.
 
+## Retrospective Why plans
+
+`HumanSolver.findDeductionForPlacement(state, target)` searches the supported
+strategies in their authoritative order for a deduction that **directly places**
+the requested digit. It examines the supplied state only: it does not apply
+other moves, solve ahead, or consult ExactSolver. This lets a player explain a
+valid move even when it was not the globally first deduction.
+
+`StructuredWhyEngine.createPlan(deduction, target)` accepts the resulting
+structured evidence and emits a semantic `WhyPlan` with numbered `WhyStep`
+facts and board marker cells. Naked Single uses the captured row, column and
+box restrictions plus the one remaining candidate. Hidden Single uses the
+unit's sole candidate position. Unsupported placement techniques return null;
+malformed supported evidence throws `StateError`. No localized text or UI
+state enters this package. The application captures the pre-move board and
+regenerates the proof after restoration. User notes never become logical
+candidates.
+
 `SudokuPuzzle` remains a minimal puzzle identity and given board. `SudokuMove`
 remains a small semantic placement/elimination model. Gameplay progress and
 undo history belong in the application.

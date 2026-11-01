@@ -106,7 +106,9 @@
     "dailyTitle": "Sudoku du jour",
     "completionLogic": "cases résolues",
     "completionMistakes": "erreurs",
-    "completionHints": "indices"
+    "completionHints": "indices",
+    "dailyStampEarned": "Tampon quotidien obtenu",
+    "completionPracticeTechnique": "Prochaine étape : $technique"
   },
   "learn": {
     "title": "Apprendre",
@@ -273,5 +275,23 @@
     "understandBoxLine": "La ligne limite ce chiffre à un bloc. Retire-le ailleurs dans ce bloc.",
     "understandTriple": "Trois cases partagent exactement trois chiffres. Retire-les des autres cases de l’unité.",
     "understandXWing": "Deux lignes ont ce chiffre aux mêmes deux intersections. Retire-le ailleurs sur les lignes croisées."
+  },
+  "why": {
+    "title": "Explication",
+    "whyHere": "Pourquoi placer $digit ici ?",
+    "givenTitle": "Ce chiffre est donné au départ",
+    "givenBody": "Il était sur la grille dès le début : aucun raisonnement n’est nécessaire pour le placer. Les explications concernent les chiffres que tu places.",
+    "unavailableTitle": "Aucune explication directe pour le moment",
+    "unavailableBody": "MICHI ne peut pas justifier ce coup par une technique prise en charge dans l’état précédent.",
+    "lesson": "Leçon",
+    "gotIt": "Compris",
+    "unitRestrictions": "Dans $unit, ces chiffres sont déjà placés : $digits.",
+    "onlyCandidate": "Il ne reste que $digit pour cette case.",
+    "unitSearch": "Cherchons où placer $digit dans $unit.",
+    "solePosition": "Seule cette case dans $unit peut contenir $digit.",
+    "placement": "Donc $digit va ici.",
+    "unitRow": "la ligne $index",
+    "unitColumn": "la colonne $index",
+    "unitBox": "le bloc $index"
   }
 }

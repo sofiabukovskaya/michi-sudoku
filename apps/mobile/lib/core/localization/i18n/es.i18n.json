@@ -106,7 +106,9 @@
     "dailyTitle": "Sudoku del día",
     "completionLogic": "casillas resueltas",
     "completionMistakes": "errores",
-    "completionHints": "pistas"
+    "completionHints": "pistas",
+    "dailyStampEarned": "Sello diario conseguido",
+    "completionPracticeTechnique": "Siguiente paso: $technique"
   },
   "learn": {
     "title": "Aprender",
@@ -273,5 +275,23 @@
     "understandBoxLine": "La línea limita este dígito a una caja. Elimínalo del resto de la caja.",
     "understandTriple": "Tres celdas comparten exactamente tres dígitos. Elimínalos de las otras celdas de la unidad.",
     "understandXWing": "Dos líneas tienen este dígito en los mismos dos cruces. Elimínalo de los demás cruces."
+  },
+  "why": {
+    "title": "Explicación",
+    "whyHere": "¿Por qué va el $digit aquí?",
+    "givenTitle": "Esta cifra es una pista inicial",
+    "givenBody": "Estaba en el tablero desde el principio, así que no hay un paso lógico que explicar. Hay explicaciones para las cifras que colocas tú.",
+    "unavailableTitle": "Aún no hay explicación directa",
+    "unavailableBody": "MICHI no puede demostrar este movimiento con una técnica compatible en el estado anterior.",
+    "lesson": "Lección",
+    "gotIt": "Entendido",
+    "unitRestrictions": "En $unit ya están estas cifras: $digits.",
+    "onlyCandidate": "En esta casilla solo queda el $digit.",
+    "unitSearch": "Buscamos un lugar para el $digit en $unit.",
+    "solePosition": "Solo esta casilla en $unit admite el $digit.",
+    "placement": "Por eso aquí va el $digit.",
+    "unitRow": "la fila $index",
+    "unitColumn": "la columna $index",
+    "unitBox": "el bloque $index"
   }
 }

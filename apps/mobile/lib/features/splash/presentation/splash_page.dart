@@ -22,7 +22,7 @@ final class SplashPage extends StatefulWidget {
 }
 
 final class _SplashPageState extends State<SplashPage> {
-  bool _checking = true;
+  Timer? _welcomeTimer;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ final class _SplashPageState extends State<SplashPage> {
       if (active != null) {
         await context.router.replace(HomeRoute(repository: repository));
       } else {
-        setState(() => _checking = false);
+        _scheduleWelcome();
       }
     } on Object catch (error, stackTrace) {
       developer.log(
@@ -47,8 +47,23 @@ final class _SplashPageState extends State<SplashPage> {
         error: error,
         stackTrace: stackTrace,
       );
-      if (mounted) setState(() => _checking = false);
+      if (mounted) _scheduleWelcome();
     }
+  }
+
+  void _scheduleWelcome() {
+    _welcomeTimer?.cancel();
+    _welcomeTimer = Timer(const Duration(milliseconds: 900), () {
+      if (mounted && context.router.current.name == SplashRoute.name) {
+        unawaited(context.router.replace(const WelcomeRoute()));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _welcomeTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -57,54 +72,38 @@ final class _SplashPageState extends State<SplashPage> {
     body: SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final mascotSize = (constraints.maxWidth * 0.72).clamp(
-            160.0,
-            constraints.maxHeight < 650 ? 280.0 : 320.0,
-          );
+          final compact = constraints.maxHeight < 650;
+          final mascotSize = (constraints.maxWidth * (compact ? 0.67 : 0.80))
+              .clamp(
+                160.0,
+                compact ? 280.0 : 360.0,
+              );
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: MichiSpacing.xl),
             child: Column(
               children: [
-                SizedBox(height: constraints.maxHeight * 0.08),
-                Container(
+                SizedBox(
+                  height: constraints.maxHeight * (compact ? 0.18 : 0.16),
+                ),
+                Image.asset(
+                  'assets/images/splash_mascot.png',
                   width: mascotSize,
                   height: mascotSize,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: MichiColors.indigoPressed,
-                  ),
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    'assets/images/coach_mascot.png',
-                    width: mascotSize * 0.84,
-                    height: mascotSize * 0.84,
-                    excludeFromSemantics: true,
-                  ),
+                  excludeFromSemantics: true,
                 ),
-                SizedBox(height: constraints.maxHeight < 650 ? 72 : 96),
+                SizedBox(height: compact ? 32 : 64),
                 const MichiWordmark(light: true, iconSize: 42),
                 const SizedBox(height: MichiSpacing.lg),
                 Text(
                   context.t.splash.subtitle,
                   style: MichiTypography.editorialTitle.copyWith(
                     color: MichiColors.ivory,
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: _checking
-                      ? null
-                      : () => context.router.replace(const WelcomeRoute()),
-                  child: Text(
-                    context.t.common.start,
-                    style: MichiTypography.body.copyWith(
-                      color: MichiColors.ivory,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: MichiSpacing.xl),
               ],
             ),
           );

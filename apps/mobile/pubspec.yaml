@@ -50,4 +50,6 @@ flutter:
     - assets/puzzles/classic_v1.json
     - assets/practice/practice_v1.json
     - assets/images/coach_mascot.png
+    - assets/images/splash_mascot.png
+    - assets/images/completion_hero.png
     - assets/images/hint_icon.png

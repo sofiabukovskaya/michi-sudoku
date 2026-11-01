@@ -30,3 +30,5 @@ export 'src/model/sudoku_board.dart';
 export 'src/model/sudoku_move.dart';
 export 'src/model/sudoku_puzzle.dart';
 export 'src/solver/exact_solver.dart';
+export 'src/why/structured_why_engine.dart';
+export 'src/why/why_plan.dart';

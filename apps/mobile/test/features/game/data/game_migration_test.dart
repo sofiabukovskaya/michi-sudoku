@@ -108,6 +108,7 @@ void main() {
       expect(active?.puzzleId, 'legacy-puzzle');
       expect(active?.dailyChallengeKey, isNull);
       expect(active?.techniqueHelp, isEmpty);
+      expect(active?.reasoning, isEmpty);
       final completed = await games.loadRecentCompletedGames();
       expect(completed.single.gameId, 'completed-v1');
       expect(completed.single.dailyChallengeKey, isNull);
@@ -217,6 +218,7 @@ void main() {
     expect(active?.puzzleId, 'puzzle-active');
     expect(active?.dailyChallengeKey, '2026-10-29|catalog-v1');
     expect(active?.techniqueHelp, isEmpty);
+    expect(active?.reasoning, isEmpty);
     final completed = (await games.loadRecentCompletedGames()).single;
     expect(completed.gameId, 'completed-v2');
     expect(completed.puzzleId, 'puzzle-complete');
