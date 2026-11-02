@@ -55,8 +55,13 @@ final class _FailOnceRepository implements GameRepository {
   Future<void> completeGame(CompletedGame game) => delegate.completeGame(game);
 
   @override
-  Future<List<CompletedGame>> loadRecentCompletedGames({int limit = 20}) =>
-      delegate.loadRecentCompletedGames(limit: limit);
+  Future<List<CompletedGame>> loadRecentCompletedGames({
+    int limit = 20,
+    bool normalOnly = false,
+  }) => delegate.loadRecentCompletedGames(
+    limit: limit,
+    normalOnly: normalOnly,
+  );
 
   @override
   Future<List<String>> recentCompletedPuzzleIds({int limit = 20}) =>

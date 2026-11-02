@@ -59,6 +59,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$scanner$uk scanner = Translations$scanner$uk.internal(_root);
 	late final Translations$coach$uk coach = Translations$coach$uk.internal(_root);
 	late final Translations$why$uk why = Translations$why$uk.internal(_root);
+	late final Translations$recommendation$uk recommendation = Translations$recommendation$uk.internal(_root);
 }
 
 // Path: common
@@ -686,8 +687,8 @@ class Translations$coach$uk {
 	/// uk: 'прихований одинак'
 	String get hiddenSingle => 'прихований одинак';
 
-	/// uk: 'гола пара'
-	String get nakedPair => 'гола пара';
+	/// uk: 'відкрита пара'
+	String get nakedPair => 'відкрита пара';
 
 	/// uk: 'вказівна пара'
 	String get pointingPair => 'вказівна пара';
@@ -787,6 +788,51 @@ class Translations$why$uk {
 
 	/// uk: 'блоці $index'
 	String unitBox({required Object index}) => 'блоці ${index}';
+}
+
+// Path: recommendation
+class Translations$recommendation$uk {
+	Translations$recommendation$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Фокус дня: $technique'
+	String focusTitle({required Object technique}) => 'Фокус дня: ${technique}';
+
+	/// uk: 'Урок: $technique'
+	String learnAction({required Object technique}) => 'Урок: ${technique}';
+
+	/// uk: 'Практика: $technique'
+	String practiceAction({required Object technique}) => 'Практика: ${technique}';
+
+	/// uk: 'Повторення: $technique'
+	String reviewAction({required Object technique}) => 'Повторення: ${technique}';
+
+	/// uk: '$minutes хв'
+	String duration({required Object minutes}) => '${minutes} хв';
+
+	/// uk: 'Почніть із першого логічного кроку.'
+	String get startWithBasics => 'Почніть із першого логічного кроку.';
+
+	/// uk: 'Нещодавно знадобилася допомога MICHI.'
+	String get repeatedCoachHelp => 'Нещодавно знадобилася допомога MICHI.';
+
+	/// uk: 'Самостійні вправи варто закріпити.'
+	String get weakIndependentPractice => 'Самостійні вправи варто закріпити.';
+
+	/// uk: 'Продовжуйте практикувати цю техніку.'
+	String get continuePractice => 'Продовжуйте практикувати цю техніку.';
+
+	/// uk: 'Наступний крок у вашому навчанні.'
+	String get nextTechnique => 'Наступний крок у вашому навчанні.';
+
+	/// uk: 'Знайому техніку варто повторити.'
+	String get masteredNeedsReview => 'Знайому техніку варто повторити.';
+
+	/// uk: 'Повторіть уже опановану техніку.'
+	String get allMasteredReview => 'Повторіть уже опановану техніку.';
 }
 
 // Path: learn.lessons
@@ -1248,7 +1294,7 @@ extension on Translations {
 			'coach.technique' => ({required Object name}) => 'Техніка: ${name}',
 			'coach.nakedSingle' => 'відкритий одинак',
 			'coach.hiddenSingle' => 'прихований одинак',
-			'coach.nakedPair' => 'гола пара',
+			'coach.nakedPair' => 'відкрита пара',
 			'coach.pointingPair' => 'вказівна пара',
 			'coach.unavailable' => 'Підказка недоступна',
 			'coach.wrongTitle' => 'Спершу виправ помилку.',
@@ -1279,6 +1325,18 @@ extension on Translations {
 			'why.unitRow' => ({required Object index}) => 'рядку ${index}',
 			'why.unitColumn' => ({required Object index}) => 'стовпці ${index}',
 			'why.unitBox' => ({required Object index}) => 'блоці ${index}',
+			'recommendation.focusTitle' => ({required Object technique}) => 'Фокус дня: ${technique}',
+			'recommendation.learnAction' => ({required Object technique}) => 'Урок: ${technique}',
+			'recommendation.practiceAction' => ({required Object technique}) => 'Практика: ${technique}',
+			'recommendation.reviewAction' => ({required Object technique}) => 'Повторення: ${technique}',
+			'recommendation.duration' => ({required Object minutes}) => '${minutes} хв',
+			'recommendation.startWithBasics' => 'Почніть із першого логічного кроку.',
+			'recommendation.repeatedCoachHelp' => 'Нещодавно знадобилася допомога MICHI.',
+			'recommendation.weakIndependentPractice' => 'Самостійні вправи варто закріпити.',
+			'recommendation.continuePractice' => 'Продовжуйте практикувати цю техніку.',
+			'recommendation.nextTechnique' => 'Наступний крок у вашому навчанні.',
+			'recommendation.masteredNeedsReview' => 'Знайому техніку варто повторити.',
+			'recommendation.allMasteredReview' => 'Повторіть уже опановану техніку.',
 			_ => null,
 		};
 	}

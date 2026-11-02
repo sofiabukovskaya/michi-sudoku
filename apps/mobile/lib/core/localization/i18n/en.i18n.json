@@ -293,5 +293,19 @@
     "unitRow": "row $index",
     "unitColumn": "column $index",
     "unitBox": "box $index"
+  },
+  "recommendation": {
+    "focusTitle": "Focus of the day: $technique",
+    "learnAction": "Learn $technique",
+    "practiceAction": "Practice $technique",
+    "reviewAction": "Review $technique",
+    "duration": "$minutes min",
+    "startWithBasics": "Start with the first logical move.",
+    "repeatedCoachHelp": "You recently needed MICHI’s help.",
+    "weakIndependentPractice": "Independent practice needs reinforcement.",
+    "continuePractice": "Keep practicing this technique.",
+    "nextTechnique": "The next step in your path.",
+    "masteredNeedsReview": "A familiar technique needs a review.",
+    "allMasteredReview": "Review a skill you have mastered."
   }
 }

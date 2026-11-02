@@ -260,7 +260,7 @@
     "technique": "Техніка: $name",
     "nakedSingle": "відкритий одинак",
     "hiddenSingle": "прихований одинак",
-    "nakedPair": "гола пара",
+    "nakedPair": "відкрита пара",
     "pointingPair": "вказівна пара",
     "unavailable": "Підказка недоступна",
     "wrongTitle": "Спершу виправ помилку.",
@@ -293,5 +293,19 @@
     "unitRow": "рядку $index",
     "unitColumn": "стовпці $index",
     "unitBox": "блоці $index"
+  },
+  "recommendation": {
+    "focusTitle": "Фокус дня: $technique",
+    "learnAction": "Урок: $technique",
+    "practiceAction": "Практика: $technique",
+    "reviewAction": "Повторення: $technique",
+    "duration": "$minutes хв",
+    "startWithBasics": "Почніть із першого логічного кроку.",
+    "repeatedCoachHelp": "Нещодавно знадобилася допомога MICHI.",
+    "weakIndependentPractice": "Самостійні вправи варто закріпити.",
+    "continuePractice": "Продовжуйте практикувати цю техніку.",
+    "nextTechnique": "Наступний крок у вашому навчанні.",
+    "masteredNeedsReview": "Знайому техніку варто повторити.",
+    "allMasteredReview": "Повторіть уже опановану техніку."
   }
 }

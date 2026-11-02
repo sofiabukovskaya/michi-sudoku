@@ -8,14 +8,19 @@ import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/home/presentation/home_page.dart';
+import 'package:michi_mobile/features/learn/data/drift_technique_progress_repository.dart';
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart';
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_profile_provider.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
+import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
 
 final class _StartupRepository implements GameRepository {
   StoredGame? active;
@@ -51,6 +56,7 @@ final class _StartupRepository implements GameRepository {
   @override
   Future<List<CompletedGame>> loadRecentCompletedGames({
     int limit = 20,
+    bool normalOnly = false,
   }) async => const [];
 
   @override
@@ -119,6 +125,20 @@ void main() {
 
   testWidgets('saved game bypasses onboarding at startup', (tester) async {
     LocaleSettings.setLocaleSync(AppLocale.en);
+    final focusDatabase = GameDatabase(NativeDatabase.memory());
+    addTearDown(focusDatabase.close);
+    await getIt.unregister<LearningRecommendationService>();
+    getIt.registerSingleton<LearningRecommendationService>(
+      LearningRecommendationService(
+        profileProvider: LearningProfileProvider(
+          DriftTechniqueProgressRepository(focusDatabase),
+          startupRepository,
+          getIt<PuzzleRepository>(),
+        ),
+        focusRepository: DriftDailyLearningFocusRepository(focusDatabase),
+        clock: getIt<GameClock>(),
+      ),
+    );
     final now = DateTime.utc(2026, 10);
     await startupRepository.saveActiveGame(
       StoredGame(
@@ -151,8 +171,14 @@ void main() {
       tester.widget<HomePage>(find.byType(HomePage)).repository,
       same(startupRepository),
     );
+    expect(
+      tester.widget<HomePage>(find.byType(HomePage)).recommendationService,
+      isNotNull,
+    );
     expect(await startupRepository.loadActiveSummary(), isNotNull);
     expect(find.byKey(const ValueKey('continue-game')), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('Focus of the day: Naked single'), findsOneWidget);
     expect(find.text('Your path through Sudoku.'), findsNothing);
     LocaleSettings.setLocaleSync(AppLocale.uk);
   });

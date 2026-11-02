@@ -171,11 +171,18 @@ final class DriftGameRepository implements GameRepository {
   });
 
   @override
-  Future<List<CompletedGame>> loadRecentCompletedGames({int limit = 20}) async {
+  Future<List<CompletedGame>> loadRecentCompletedGames({
+    int limit = 20,
+    bool normalOnly = false,
+  }) async {
     RangeError.checkValueInInterval(limit, 1, 1000, 'limit');
     await _writeTail;
+    final query = database.select(database.completedGames);
+    if (normalOnly) {
+      query.where((table) => table.dailyChallengeKey.isNull());
+    }
     final rows =
-        await (database.select(database.completedGames)
+        await (query
               ..orderBy([
                 (table) => OrderingTerm.desc(table.completedAtMs),
                 (table) => OrderingTerm.desc(table.gameId),

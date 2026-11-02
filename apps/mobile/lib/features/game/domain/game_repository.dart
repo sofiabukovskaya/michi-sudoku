@@ -131,7 +131,10 @@ abstract interface class GameRepository {
   /// Repeating the same completion must not create another record.
   Future<void> completeGame(CompletedGame game);
 
-  Future<List<CompletedGame>> loadRecentCompletedGames({int limit = 20});
+  Future<List<CompletedGame>> loadRecentCompletedGames({
+    int limit = 20,
+    bool normalOnly = false,
+  });
 
   /// Newest first; reads IDs only to support catalog rotation.
   Future<List<String>> recentCompletedPuzzleIds({int limit = 20});

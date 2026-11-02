@@ -12,6 +12,10 @@ import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.da
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_analyzer.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_profile_provider.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
+import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
+import 'package:michi_mobile/features/recommendation/domain/daily_learning_focus_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 import 'injection.config.dart';
@@ -66,4 +70,27 @@ abstract class AppModule {
 
   @lazySingleton
   LocalPracticeCatalog get practiceCatalog => LocalPracticeCatalog();
+
+  @lazySingleton
+  DailyLearningFocusRepository dailyLearningFocusRepository(
+    GameDatabase database,
+  ) => DriftDailyLearningFocusRepository(database);
+
+  @lazySingleton
+  LearningProfileProvider learningProfileProvider(
+    TechniqueProgressRepository progress,
+    GameRepository games,
+    PuzzleRepository puzzles,
+  ) => LearningProfileProvider(progress, games, puzzles);
+
+  @lazySingleton
+  LearningRecommendationService learningRecommendationService(
+    LearningProfileProvider profile,
+    DailyLearningFocusRepository focus,
+    GameClock clock,
+  ) => LearningRecommendationService(
+    profileProvider: profile,
+    focusRepository: focus,
+    clock: clock,
+  );
 }

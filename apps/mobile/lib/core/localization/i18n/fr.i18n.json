@@ -293,5 +293,19 @@
     "unitRow": "la ligne $index",
     "unitColumn": "la colonne $index",
     "unitBox": "le bloc $index"
+  },
+  "recommendation": {
+    "focusTitle": "Objectif du jour : $technique",
+    "learnAction": "Apprendre : $technique",
+    "practiceAction": "S’entraîner : $technique",
+    "reviewAction": "Réviser : $technique",
+    "duration": "$minutes min",
+    "startWithBasics": "Commencez par le premier pas logique.",
+    "repeatedCoachHelp": "Vous avez récemment eu besoin de MICHI.",
+    "weakIndependentPractice": "La pratique autonome mérite d’être renforcée.",
+    "continuePractice": "Continuez à pratiquer cette technique.",
+    "nextTechnique": "La prochaine étape de votre parcours.",
+    "masteredNeedsReview": "Une technique connue mérite une révision.",
+    "allMasteredReview": "Révisez une technique déjà maîtrisée."
   }
 }

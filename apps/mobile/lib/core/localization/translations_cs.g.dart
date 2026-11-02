@@ -54,6 +54,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$scanner$cs scanner = _Translations$scanner$cs._(_root);
 	@override late final _Translations$coach$cs coach = _Translations$coach$cs._(_root);
 	@override late final _Translations$why$cs why = _Translations$why$cs._(_root);
+	@override late final _Translations$recommendation$cs recommendation = _Translations$recommendation$cs._(_root);
 }
 
 // Path: common
@@ -381,6 +382,27 @@ class _Translations$why$cs extends Translations$why$uk {
 	@override String unitRow({required Object index}) => 'řádku ${index}';
 	@override String unitColumn({required Object index}) => 'sloupci ${index}';
 	@override String unitBox({required Object index}) => 'bloku ${index}';
+}
+
+// Path: recommendation
+class _Translations$recommendation$cs extends Translations$recommendation$uk {
+	_Translations$recommendation$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String focusTitle({required Object technique}) => 'Dnešní zaměření: ${technique}';
+	@override String learnAction({required Object technique}) => 'Naučit se: ${technique}';
+	@override String practiceAction({required Object technique}) => 'Procvičit: ${technique}';
+	@override String reviewAction({required Object technique}) => 'Zopakovat: ${technique}';
+	@override String duration({required Object minutes}) => '${minutes} min';
+	@override String get startWithBasics => 'Začněte prvním logickým krokem.';
+	@override String get repeatedCoachHelp => 'Nedávno jste potřebovali pomoc MICHI.';
+	@override String get weakIndependentPractice => 'Samostatné řešení chce ještě procvičit.';
+	@override String get continuePractice => 'Pokračujte v procvičování této techniky.';
+	@override String get nextTechnique => 'Další krok na vaší cestě.';
+	@override String get masteredNeedsReview => 'Známou techniku je dobré zopakovat.';
+	@override String get allMasteredReview => 'Zopakujte si zvládnutou techniku.';
 }
 
 // Path: learn.lessons
@@ -777,6 +799,18 @@ extension on TranslationsCs {
 			'why.unitRow' => ({required Object index}) => 'řádku ${index}',
 			'why.unitColumn' => ({required Object index}) => 'sloupci ${index}',
 			'why.unitBox' => ({required Object index}) => 'bloku ${index}',
+			'recommendation.focusTitle' => ({required Object technique}) => 'Dnešní zaměření: ${technique}',
+			'recommendation.learnAction' => ({required Object technique}) => 'Naučit se: ${technique}',
+			'recommendation.practiceAction' => ({required Object technique}) => 'Procvičit: ${technique}',
+			'recommendation.reviewAction' => ({required Object technique}) => 'Zopakovat: ${technique}',
+			'recommendation.duration' => ({required Object minutes}) => '${minutes} min',
+			'recommendation.startWithBasics' => 'Začněte prvním logickým krokem.',
+			'recommendation.repeatedCoachHelp' => 'Nedávno jste potřebovali pomoc MICHI.',
+			'recommendation.weakIndependentPractice' => 'Samostatné řešení chce ještě procvičit.',
+			'recommendation.continuePractice' => 'Pokračujte v procvičování této techniky.',
+			'recommendation.nextTechnique' => 'Další krok na vaší cestě.',
+			'recommendation.masteredNeedsReview' => 'Známou techniku je dobré zopakovat.',
+			'recommendation.allMasteredReview' => 'Zopakujte si zvládnutou techniku.',
 			_ => null,
 		};
 	}

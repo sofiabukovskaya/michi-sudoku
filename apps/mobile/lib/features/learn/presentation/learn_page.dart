@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
@@ -10,14 +12,23 @@ import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
+import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
+import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
 final class LearnPage extends StatefulWidget {
-  const LearnPage({this.progressRepository, this.catalog, super.key});
+  const LearnPage({
+    this.progressRepository,
+    this.catalog,
+    this.recommendationService,
+    super.key,
+  });
 
   final TechniqueProgressRepository? progressRepository;
   final LocalPracticeCatalog? catalog;
+  final LearningRecommendationService? recommendationService;
 
   @override
   State<LearnPage> createState() => _LearnPageState();
@@ -27,6 +38,7 @@ final class _LearnPageState extends State<LearnPage>
     with AutoRouteAwareStateMixin<LearnPage> {
   late final TechniqueProgressRepository _repository;
   late Future<Map<SudokuTechnique, TechniqueProgress>> _progress;
+  LearningRecommendation? _focus;
 
   // PDF screen 18 places Hidden Pair before Pointing Pair in the path. The
   // engine's complexity priority remains SudokuTechniqueOrder.supported.
@@ -47,6 +59,21 @@ final class _LearnPageState extends State<LearnPage>
     _repository =
         widget.progressRepository ?? getIt<TechniqueProgressRepository>();
     _progress = _repository.loadAll();
+    _loadFocus();
+  }
+
+  void _loadFocus() {
+    final service =
+        widget.recommendationService ??
+        (getIt.isRegistered<LearningRecommendationService>()
+            ? getIt<LearningRecommendationService>()
+            : null);
+    if (service == null) return;
+    unawaited(
+      service.today().then((value) {
+        if (mounted) setState(() => _focus = value);
+      }),
+    );
   }
 
   @override
@@ -54,6 +81,7 @@ final class _LearnPageState extends State<LearnPage>
     setState(() {
       _progress = _repository.loadAll();
     });
+    _loadFocus();
   }
 
   @override
@@ -76,10 +104,12 @@ final class _LearnPageState extends State<LearnPage>
                 (item) => values[item]?.mastery == TechniqueMastery.mastered,
               )
               .length;
-          final current = TechniqueLessons.supported.firstWhere(
-            (item) => values[item]?.mastery != TechniqueMastery.mastered,
-            orElse: () => TechniqueLessons.supported.last,
-          );
+          final current =
+              _focus?.technique ??
+              TechniqueLessons.supported.firstWhere(
+                (item) => values[item]?.mastery != TechniqueMastery.mastered,
+                orElse: () => TechniqueLessons.supported.last,
+              );
           final names = [
             context.t.learn.basicsGroup,
             context.t.learn.intermediateGroup,
@@ -117,12 +147,20 @@ final class _LearnPageState extends State<LearnPage>
                         values[technique] ??
                         TechniqueProgress(technique: technique),
                     current: technique == current,
-                    onTap: () => context.router.push(
-                      TechniqueLessonRoute(
-                        technique: technique,
-                        catalog: widget.catalog,
-                      ),
-                    ),
+                    onTap: () {
+                      if (technique == current && _focus != null) {
+                        openRecommendation(context, _focus!).ignore();
+                      } else {
+                        context.router
+                            .push(
+                              TechniqueLessonRoute(
+                                technique: technique,
+                                catalog: widget.catalog,
+                              ),
+                            )
+                            .ignore();
+                      }
+                    },
                   ),
                 if (group == 2)
                   for (final name in ['XY-Wing', 'Swordfish'])

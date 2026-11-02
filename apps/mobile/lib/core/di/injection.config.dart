@@ -28,6 +28,12 @@ import 'package:michi_mobile/features/puzzle/domain/puzzle_analyzer.dart'
     as _i150;
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart'
     as _i769;
+import 'package:michi_mobile/features/recommendation/application/learning_profile_provider.dart'
+    as _i484;
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart'
+    as _i539;
+import 'package:michi_mobile/features/recommendation/domain/daily_learning_focus_repository.dart'
+    as _i397;
 import 'package:sudoku_engine/sudoku_engine.dart' as _i247;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -62,10 +68,27 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i426.TechniqueProgressRepository>(
       () => appModule.techniqueProgressRepository(gh<_i520.GameDatabase>()),
     );
+    gh.lazySingleton<_i397.DailyLearningFocusRepository>(
+      () => appModule.dailyLearningFocusRepository(gh<_i520.GameDatabase>()),
+    );
     gh.lazySingleton<_i769.PuzzleRepository>(
       () => appModule.puzzleRepository(
         gh<_i936.LocalPuzzleCatalogLoader>(),
         gh<_i263.GameRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i484.LearningProfileProvider>(
+      () => appModule.learningProfileProvider(
+        gh<_i426.TechniqueProgressRepository>(),
+        gh<_i263.GameRepository>(),
+        gh<_i769.PuzzleRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i539.LearningRecommendationService>(
+      () => appModule.learningRecommendationService(
+        gh<_i484.LearningProfileProvider>(),
+        gh<_i397.DailyLearningFocusRepository>(),
+        gh<_i585.GameClock>(),
       ),
     );
     return this;

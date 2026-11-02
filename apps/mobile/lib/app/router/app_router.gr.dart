@@ -36,6 +36,7 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
     GameCubit? cubit,
     GameRepository? repository,
     GameClock? clock,
+    LearningRecommendationService? recommendationService,
     bool restore = false,
     Key? key,
     List<PageRouteInfo>? children,
@@ -48,6 +49,7 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
            cubit: cubit,
            repository: repository,
            clock: clock,
+           recommendationService: recommendationService,
            restore: restore,
            key: key,
          ),
@@ -69,6 +71,7 @@ class GameRoute extends PageRouteInfo<GameRouteArgs> {
         cubit: args.cubit,
         repository: args.repository,
         clock: args.clock,
+        recommendationService: args.recommendationService,
         restore: args.restore,
         key: args.key,
       );
@@ -84,6 +87,7 @@ class GameRouteArgs {
     this.cubit,
     this.repository,
     this.clock,
+    this.recommendationService,
     this.restore = false,
     this.key,
   });
@@ -100,13 +104,15 @@ class GameRouteArgs {
 
   final GameClock? clock;
 
+  final LearningRecommendationService? recommendationService;
+
   final bool restore;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'GameRouteArgs{puzzle: $puzzle, definition: $definition, dailyChallengeKey: $dailyChallengeKey, cubit: $cubit, repository: $repository, clock: $clock, restore: $restore, key: $key}';
+    return 'GameRouteArgs{puzzle: $puzzle, definition: $definition, dailyChallengeKey: $dailyChallengeKey, cubit: $cubit, repository: $repository, clock: $clock, recommendationService: $recommendationService, restore: $restore, key: $key}';
   }
 
   @override
@@ -119,6 +125,7 @@ class GameRouteArgs {
         cubit == other.cubit &&
         repository == other.repository &&
         clock == other.clock &&
+        recommendationService == other.recommendationService &&
         restore == other.restore &&
         key == other.key;
   }
@@ -131,6 +138,7 @@ class GameRouteArgs {
       cubit.hashCode ^
       repository.hashCode ^
       clock.hashCode ^
+      recommendationService.hashCode ^
       restore.hashCode ^
       key.hashCode;
 }
@@ -142,6 +150,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
     GameRepository? repository,
     PuzzleRepository? puzzleRepository,
     GameClock? clock,
+    LearningRecommendationService? recommendationService,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -150,6 +159,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
            repository: repository,
            puzzleRepository: puzzleRepository,
            clock: clock,
+           recommendationService: recommendationService,
            key: key,
          ),
          initialChildren: children,
@@ -167,6 +177,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
         repository: args.repository,
         puzzleRepository: args.puzzleRepository,
         clock: args.clock,
+        recommendationService: args.recommendationService,
         key: args.key,
       );
     },
@@ -178,6 +189,7 @@ class HomeRouteArgs {
     this.repository,
     this.puzzleRepository,
     this.clock,
+    this.recommendationService,
     this.key,
   });
 
@@ -187,11 +199,13 @@ class HomeRouteArgs {
 
   final GameClock? clock;
 
+  final LearningRecommendationService? recommendationService;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, key: $key}';
+    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, recommendationService: $recommendationService, key: $key}';
   }
 
   @override
@@ -201,6 +215,7 @@ class HomeRouteArgs {
     return repository == other.repository &&
         puzzleRepository == other.puzzleRepository &&
         clock == other.clock &&
+        recommendationService == other.recommendationService &&
         key == other.key;
   }
 
@@ -209,6 +224,7 @@ class HomeRouteArgs {
       repository.hashCode ^
       puzzleRepository.hashCode ^
       clock.hashCode ^
+      recommendationService.hashCode ^
       key.hashCode;
 }
 
@@ -218,6 +234,7 @@ class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
   LearnRoute({
     TechniqueProgressRepository? progressRepository,
     LocalPracticeCatalog? catalog,
+    LearningRecommendationService? recommendationService,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -225,6 +242,7 @@ class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
          args: LearnRouteArgs(
            progressRepository: progressRepository,
            catalog: catalog,
+           recommendationService: recommendationService,
            key: key,
          ),
          initialChildren: children,
@@ -241,6 +259,7 @@ class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
       return LearnPage(
         progressRepository: args.progressRepository,
         catalog: args.catalog,
+        recommendationService: args.recommendationService,
         key: args.key,
       );
     },
@@ -248,17 +267,24 @@ class LearnRoute extends PageRouteInfo<LearnRouteArgs> {
 }
 
 class LearnRouteArgs {
-  const LearnRouteArgs({this.progressRepository, this.catalog, this.key});
+  const LearnRouteArgs({
+    this.progressRepository,
+    this.catalog,
+    this.recommendationService,
+    this.key,
+  });
 
   final TechniqueProgressRepository? progressRepository;
 
   final LocalPracticeCatalog? catalog;
 
+  final LearningRecommendationService? recommendationService;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'LearnRouteArgs{progressRepository: $progressRepository, catalog: $catalog, key: $key}';
+    return 'LearnRouteArgs{progressRepository: $progressRepository, catalog: $catalog, recommendationService: $recommendationService, key: $key}';
   }
 
   @override
@@ -267,12 +293,16 @@ class LearnRouteArgs {
     if (other is! LearnRouteArgs) return false;
     return progressRepository == other.progressRepository &&
         catalog == other.catalog &&
+        recommendationService == other.recommendationService &&
         key == other.key;
   }
 
   @override
   int get hashCode =>
-      progressRepository.hashCode ^ catalog.hashCode ^ key.hashCode;
+      progressRepository.hashCode ^
+      catalog.hashCode ^
+      recommendationService.hashCode ^
+      key.hashCode;
 }
 
 /// generated route for

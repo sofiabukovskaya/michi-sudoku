@@ -293,5 +293,19 @@
     "unitRow": "la fila $index",
     "unitColumn": "la columna $index",
     "unitBox": "el bloque $index"
+  },
+  "recommendation": {
+    "focusTitle": "Enfoque de hoy: $technique",
+    "learnAction": "Aprender: $technique",
+    "practiceAction": "Practicar: $technique",
+    "reviewAction": "Repasar: $technique",
+    "duration": "$minutes min",
+    "startWithBasics": "Empieza por el primer paso lógico.",
+    "repeatedCoachHelp": "Hace poco necesitaste ayuda de MICHI.",
+    "weakIndependentPractice": "Conviene reforzar la práctica independiente.",
+    "continuePractice": "Sigue practicando esta técnica.",
+    "nextTechnique": "El siguiente paso en tu camino.",
+    "masteredNeedsReview": "Conviene repasar una técnica conocida.",
+    "allMasteredReview": "Repasa una técnica que ya dominas."
   }
 }

@@ -2589,6 +2589,444 @@ class TechniqueProgressEntriesCompanion
   }
 }
 
+class $DailyLearningFocusesTable extends DailyLearningFocuses
+    with TableInfo<$DailyLearningFocusesTable, DailyLearningFocusRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyLearningFocusesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _localDateMeta = const VerificationMeta(
+    'localDate',
+  );
+  @override
+  late final GeneratedColumn<String> localDate = GeneratedColumn<String>(
+    'local_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _techniqueIdMeta = const VerificationMeta(
+    'techniqueId',
+  );
+  @override
+  late final GeneratedColumn<String> techniqueId = GeneratedColumn<String>(
+    'technique_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _actionIdMeta = const VerificationMeta(
+    'actionId',
+  );
+  @override
+  late final GeneratedColumn<String> actionId = GeneratedColumn<String>(
+    'action_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reasonIdMeta = const VerificationMeta(
+    'reasonId',
+  );
+  @override
+  late final GeneratedColumn<String> reasonId = GeneratedColumn<String>(
+    'reason_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _estimatedMinutesMeta = const VerificationMeta(
+    'estimatedMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> estimatedMinutes = GeneratedColumn<int>(
+    'estimated_minutes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _evidenceJsonMeta = const VerificationMeta(
+    'evidenceJson',
+  );
+  @override
+  late final GeneratedColumn<String> evidenceJson = GeneratedColumn<String>(
+    'evidence_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    localDate,
+    techniqueId,
+    actionId,
+    reasonId,
+    estimatedMinutes,
+    evidenceJson,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_learning_focuses';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyLearningFocusRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('local_date')) {
+      context.handle(
+        _localDateMeta,
+        localDate.isAcceptableOrUnknown(data['local_date']!, _localDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localDateMeta);
+    }
+    if (data.containsKey('technique_id')) {
+      context.handle(
+        _techniqueIdMeta,
+        techniqueId.isAcceptableOrUnknown(
+          data['technique_id']!,
+          _techniqueIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_techniqueIdMeta);
+    }
+    if (data.containsKey('action_id')) {
+      context.handle(
+        _actionIdMeta,
+        actionId.isAcceptableOrUnknown(data['action_id']!, _actionIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_actionIdMeta);
+    }
+    if (data.containsKey('reason_id')) {
+      context.handle(
+        _reasonIdMeta,
+        reasonId.isAcceptableOrUnknown(data['reason_id']!, _reasonIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reasonIdMeta);
+    }
+    if (data.containsKey('estimated_minutes')) {
+      context.handle(
+        _estimatedMinutesMeta,
+        estimatedMinutes.isAcceptableOrUnknown(
+          data['estimated_minutes']!,
+          _estimatedMinutesMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_estimatedMinutesMeta);
+    }
+    if (data.containsKey('evidence_json')) {
+      context.handle(
+        _evidenceJsonMeta,
+        evidenceJson.isAcceptableOrUnknown(
+          data['evidence_json']!,
+          _evidenceJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_evidenceJsonMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {localDate};
+  @override
+  DailyLearningFocusRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyLearningFocusRow(
+      localDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_date'],
+      )!,
+      techniqueId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}technique_id'],
+      )!,
+      actionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}action_id'],
+      )!,
+      reasonId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason_id'],
+      )!,
+      estimatedMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}estimated_minutes'],
+      )!,
+      evidenceJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}evidence_json'],
+      )!,
+    );
+  }
+
+  @override
+  $DailyLearningFocusesTable createAlias(String alias) {
+    return $DailyLearningFocusesTable(attachedDatabase, alias);
+  }
+}
+
+class DailyLearningFocusRow extends DataClass
+    implements Insertable<DailyLearningFocusRow> {
+  final String localDate;
+  final String techniqueId;
+  final String actionId;
+  final String reasonId;
+  final int estimatedMinutes;
+  final String evidenceJson;
+  const DailyLearningFocusRow({
+    required this.localDate,
+    required this.techniqueId,
+    required this.actionId,
+    required this.reasonId,
+    required this.estimatedMinutes,
+    required this.evidenceJson,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['local_date'] = Variable<String>(localDate);
+    map['technique_id'] = Variable<String>(techniqueId);
+    map['action_id'] = Variable<String>(actionId);
+    map['reason_id'] = Variable<String>(reasonId);
+    map['estimated_minutes'] = Variable<int>(estimatedMinutes);
+    map['evidence_json'] = Variable<String>(evidenceJson);
+    return map;
+  }
+
+  DailyLearningFocusesCompanion toCompanion(bool nullToAbsent) {
+    return DailyLearningFocusesCompanion(
+      localDate: Value(localDate),
+      techniqueId: Value(techniqueId),
+      actionId: Value(actionId),
+      reasonId: Value(reasonId),
+      estimatedMinutes: Value(estimatedMinutes),
+      evidenceJson: Value(evidenceJson),
+    );
+  }
+
+  factory DailyLearningFocusRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyLearningFocusRow(
+      localDate: serializer.fromJson<String>(json['localDate']),
+      techniqueId: serializer.fromJson<String>(json['techniqueId']),
+      actionId: serializer.fromJson<String>(json['actionId']),
+      reasonId: serializer.fromJson<String>(json['reasonId']),
+      estimatedMinutes: serializer.fromJson<int>(json['estimatedMinutes']),
+      evidenceJson: serializer.fromJson<String>(json['evidenceJson']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'localDate': serializer.toJson<String>(localDate),
+      'techniqueId': serializer.toJson<String>(techniqueId),
+      'actionId': serializer.toJson<String>(actionId),
+      'reasonId': serializer.toJson<String>(reasonId),
+      'estimatedMinutes': serializer.toJson<int>(estimatedMinutes),
+      'evidenceJson': serializer.toJson<String>(evidenceJson),
+    };
+  }
+
+  DailyLearningFocusRow copyWith({
+    String? localDate,
+    String? techniqueId,
+    String? actionId,
+    String? reasonId,
+    int? estimatedMinutes,
+    String? evidenceJson,
+  }) => DailyLearningFocusRow(
+    localDate: localDate ?? this.localDate,
+    techniqueId: techniqueId ?? this.techniqueId,
+    actionId: actionId ?? this.actionId,
+    reasonId: reasonId ?? this.reasonId,
+    estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
+    evidenceJson: evidenceJson ?? this.evidenceJson,
+  );
+  DailyLearningFocusRow copyWithCompanion(DailyLearningFocusesCompanion data) {
+    return DailyLearningFocusRow(
+      localDate: data.localDate.present ? data.localDate.value : this.localDate,
+      techniqueId: data.techniqueId.present
+          ? data.techniqueId.value
+          : this.techniqueId,
+      actionId: data.actionId.present ? data.actionId.value : this.actionId,
+      reasonId: data.reasonId.present ? data.reasonId.value : this.reasonId,
+      estimatedMinutes: data.estimatedMinutes.present
+          ? data.estimatedMinutes.value
+          : this.estimatedMinutes,
+      evidenceJson: data.evidenceJson.present
+          ? data.evidenceJson.value
+          : this.evidenceJson,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyLearningFocusRow(')
+          ..write('localDate: $localDate, ')
+          ..write('techniqueId: $techniqueId, ')
+          ..write('actionId: $actionId, ')
+          ..write('reasonId: $reasonId, ')
+          ..write('estimatedMinutes: $estimatedMinutes, ')
+          ..write('evidenceJson: $evidenceJson')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    localDate,
+    techniqueId,
+    actionId,
+    reasonId,
+    estimatedMinutes,
+    evidenceJson,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyLearningFocusRow &&
+          other.localDate == this.localDate &&
+          other.techniqueId == this.techniqueId &&
+          other.actionId == this.actionId &&
+          other.reasonId == this.reasonId &&
+          other.estimatedMinutes == this.estimatedMinutes &&
+          other.evidenceJson == this.evidenceJson);
+}
+
+class DailyLearningFocusesCompanion
+    extends UpdateCompanion<DailyLearningFocusRow> {
+  final Value<String> localDate;
+  final Value<String> techniqueId;
+  final Value<String> actionId;
+  final Value<String> reasonId;
+  final Value<int> estimatedMinutes;
+  final Value<String> evidenceJson;
+  final Value<int> rowid;
+  const DailyLearningFocusesCompanion({
+    this.localDate = const Value.absent(),
+    this.techniqueId = const Value.absent(),
+    this.actionId = const Value.absent(),
+    this.reasonId = const Value.absent(),
+    this.estimatedMinutes = const Value.absent(),
+    this.evidenceJson = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DailyLearningFocusesCompanion.insert({
+    required String localDate,
+    required String techniqueId,
+    required String actionId,
+    required String reasonId,
+    required int estimatedMinutes,
+    required String evidenceJson,
+    this.rowid = const Value.absent(),
+  }) : localDate = Value(localDate),
+       techniqueId = Value(techniqueId),
+       actionId = Value(actionId),
+       reasonId = Value(reasonId),
+       estimatedMinutes = Value(estimatedMinutes),
+       evidenceJson = Value(evidenceJson);
+  static Insertable<DailyLearningFocusRow> custom({
+    Expression<String>? localDate,
+    Expression<String>? techniqueId,
+    Expression<String>? actionId,
+    Expression<String>? reasonId,
+    Expression<int>? estimatedMinutes,
+    Expression<String>? evidenceJson,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (localDate != null) 'local_date': localDate,
+      if (techniqueId != null) 'technique_id': techniqueId,
+      if (actionId != null) 'action_id': actionId,
+      if (reasonId != null) 'reason_id': reasonId,
+      if (estimatedMinutes != null) 'estimated_minutes': estimatedMinutes,
+      if (evidenceJson != null) 'evidence_json': evidenceJson,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DailyLearningFocusesCompanion copyWith({
+    Value<String>? localDate,
+    Value<String>? techniqueId,
+    Value<String>? actionId,
+    Value<String>? reasonId,
+    Value<int>? estimatedMinutes,
+    Value<String>? evidenceJson,
+    Value<int>? rowid,
+  }) {
+    return DailyLearningFocusesCompanion(
+      localDate: localDate ?? this.localDate,
+      techniqueId: techniqueId ?? this.techniqueId,
+      actionId: actionId ?? this.actionId,
+      reasonId: reasonId ?? this.reasonId,
+      estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
+      evidenceJson: evidenceJson ?? this.evidenceJson,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (localDate.present) {
+      map['local_date'] = Variable<String>(localDate.value);
+    }
+    if (techniqueId.present) {
+      map['technique_id'] = Variable<String>(techniqueId.value);
+    }
+    if (actionId.present) {
+      map['action_id'] = Variable<String>(actionId.value);
+    }
+    if (reasonId.present) {
+      map['reason_id'] = Variable<String>(reasonId.value);
+    }
+    if (estimatedMinutes.present) {
+      map['estimated_minutes'] = Variable<int>(estimatedMinutes.value);
+    }
+    if (evidenceJson.present) {
+      map['evidence_json'] = Variable<String>(evidenceJson.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyLearningFocusesCompanion(')
+          ..write('localDate: $localDate, ')
+          ..write('techniqueId: $techniqueId, ')
+          ..write('actionId: $actionId, ')
+          ..write('reasonId: $reasonId, ')
+          ..write('estimatedMinutes: $estimatedMinutes, ')
+          ..write('evidenceJson: $evidenceJson, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$GameDatabase extends GeneratedDatabase {
   _$GameDatabase(QueryExecutor e) : super(e);
   $GameDatabaseManager get managers => $GameDatabaseManager(this);
@@ -2596,6 +3034,8 @@ abstract class _$GameDatabase extends GeneratedDatabase {
   late final $CompletedGamesTable completedGames = $CompletedGamesTable(this);
   late final $TechniqueProgressEntriesTable techniqueProgressEntries =
       $TechniqueProgressEntriesTable(this);
+  late final $DailyLearningFocusesTable dailyLearningFocuses =
+      $DailyLearningFocusesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2604,6 +3044,7 @@ abstract class _$GameDatabase extends GeneratedDatabase {
     activeGames,
     completedGames,
     techniqueProgressEntries,
+    dailyLearningFocuses,
   ];
 }
 
@@ -3797,6 +4238,247 @@ typedef $$TechniqueProgressEntriesTableProcessedTableManager =
       TechniqueProgressRow,
       PrefetchHooks Function()
     >;
+typedef $$DailyLearningFocusesTableCreateCompanionBuilder =
+    DailyLearningFocusesCompanion Function({
+      required String localDate,
+      required String techniqueId,
+      required String actionId,
+      required String reasonId,
+      required int estimatedMinutes,
+      required String evidenceJson,
+      Value<int> rowid,
+    });
+typedef $$DailyLearningFocusesTableUpdateCompanionBuilder =
+    DailyLearningFocusesCompanion Function({
+      Value<String> localDate,
+      Value<String> techniqueId,
+      Value<String> actionId,
+      Value<String> reasonId,
+      Value<int> estimatedMinutes,
+      Value<String> evidenceJson,
+      Value<int> rowid,
+    });
+
+class $$DailyLearningFocusesTableFilterComposer
+    extends Composer<_$GameDatabase, $DailyLearningFocusesTable> {
+  $$DailyLearningFocusesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get techniqueId => $composableBuilder(
+    column: $table.techniqueId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get actionId => $composableBuilder(
+    column: $table.actionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reasonId => $composableBuilder(
+    column: $table.reasonId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get estimatedMinutes => $composableBuilder(
+    column: $table.estimatedMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get evidenceJson => $composableBuilder(
+    column: $table.evidenceJson,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DailyLearningFocusesTableOrderingComposer
+    extends Composer<_$GameDatabase, $DailyLearningFocusesTable> {
+  $$DailyLearningFocusesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get techniqueId => $composableBuilder(
+    column: $table.techniqueId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get actionId => $composableBuilder(
+    column: $table.actionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reasonId => $composableBuilder(
+    column: $table.reasonId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get estimatedMinutes => $composableBuilder(
+    column: $table.estimatedMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get evidenceJson => $composableBuilder(
+    column: $table.evidenceJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DailyLearningFocusesTableAnnotationComposer
+    extends Composer<_$GameDatabase, $DailyLearningFocusesTable> {
+  $$DailyLearningFocusesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get localDate =>
+      $composableBuilder(column: $table.localDate, builder: (column) => column);
+
+  GeneratedColumn<String> get techniqueId => $composableBuilder(
+    column: $table.techniqueId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get actionId =>
+      $composableBuilder(column: $table.actionId, builder: (column) => column);
+
+  GeneratedColumn<String> get reasonId =>
+      $composableBuilder(column: $table.reasonId, builder: (column) => column);
+
+  GeneratedColumn<int> get estimatedMinutes => $composableBuilder(
+    column: $table.estimatedMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get evidenceJson => $composableBuilder(
+    column: $table.evidenceJson,
+    builder: (column) => column,
+  );
+}
+
+class $$DailyLearningFocusesTableTableManager
+    extends
+        RootTableManager<
+          _$GameDatabase,
+          $DailyLearningFocusesTable,
+          DailyLearningFocusRow,
+          $$DailyLearningFocusesTableFilterComposer,
+          $$DailyLearningFocusesTableOrderingComposer,
+          $$DailyLearningFocusesTableAnnotationComposer,
+          $$DailyLearningFocusesTableCreateCompanionBuilder,
+          $$DailyLearningFocusesTableUpdateCompanionBuilder,
+          (
+            DailyLearningFocusRow,
+            BaseReferences<
+              _$GameDatabase,
+              $DailyLearningFocusesTable,
+              DailyLearningFocusRow
+            >,
+          ),
+          DailyLearningFocusRow,
+          PrefetchHooks Function()
+        > {
+  $$DailyLearningFocusesTableTableManager(
+    _$GameDatabase db,
+    $DailyLearningFocusesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyLearningFocusesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyLearningFocusesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$DailyLearningFocusesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> localDate = const Value.absent(),
+                Value<String> techniqueId = const Value.absent(),
+                Value<String> actionId = const Value.absent(),
+                Value<String> reasonId = const Value.absent(),
+                Value<int> estimatedMinutes = const Value.absent(),
+                Value<String> evidenceJson = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyLearningFocusesCompanion(
+                localDate: localDate,
+                techniqueId: techniqueId,
+                actionId: actionId,
+                reasonId: reasonId,
+                estimatedMinutes: estimatedMinutes,
+                evidenceJson: evidenceJson,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String localDate,
+                required String techniqueId,
+                required String actionId,
+                required String reasonId,
+                required int estimatedMinutes,
+                required String evidenceJson,
+                Value<int> rowid = const Value.absent(),
+              }) => DailyLearningFocusesCompanion.insert(
+                localDate: localDate,
+                techniqueId: techniqueId,
+                actionId: actionId,
+                reasonId: reasonId,
+                estimatedMinutes: estimatedMinutes,
+                evidenceJson: evidenceJson,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DailyLearningFocusesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$GameDatabase,
+      $DailyLearningFocusesTable,
+      DailyLearningFocusRow,
+      $$DailyLearningFocusesTableFilterComposer,
+      $$DailyLearningFocusesTableOrderingComposer,
+      $$DailyLearningFocusesTableAnnotationComposer,
+      $$DailyLearningFocusesTableCreateCompanionBuilder,
+      $$DailyLearningFocusesTableUpdateCompanionBuilder,
+      (
+        DailyLearningFocusRow,
+        BaseReferences<
+          _$GameDatabase,
+          $DailyLearningFocusesTable,
+          DailyLearningFocusRow
+        >,
+      ),
+      DailyLearningFocusRow,
+      PrefetchHooks Function()
+    >;
 
 class $GameDatabaseManager {
   final _$GameDatabase _db;
@@ -3810,4 +4492,6 @@ class $GameDatabaseManager {
         _db,
         _db.techniqueProgressEntries,
       );
+  $$DailyLearningFocusesTableTableManager get dailyLearningFocuses =>
+      $$DailyLearningFocusesTableTableManager(_db, _db.dailyLearningFocuses);
 }
