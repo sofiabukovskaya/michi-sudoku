@@ -3,16 +3,29 @@ import 'package:flutter/material.dart';
 import 'michi_colors.dart';
 
 abstract final class MichiTypography {
-  // Font files are not embedded in the supplied flattened PDF. Add licensed
-  // Manrope/Lora assets here when the original font files are available.
-  static const functionalFamily = 'Manrope';
-  static const editorialFamily = 'Lora';
+  // The approved families are bundled with this package for offline use.
+  static const functionalFamily = 'packages/michi_design_system/Manrope';
+  static const editorialFamily = 'packages/michi_design_system/Lora';
 
   static const display = TextStyle(
     fontFamily: editorialFamily,
     fontSize: 34,
     height: 40 / 34,
     fontWeight: FontWeight.w500,
+    color: MichiColors.textPrimary,
+  );
+  static const editorialTitle = TextStyle(
+    fontFamily: editorialFamily,
+    fontSize: 28,
+    height: 34 / 28,
+    fontWeight: FontWeight.w500,
+    color: MichiColors.textPrimary,
+  );
+  static const functionalTitle = TextStyle(
+    fontFamily: functionalFamily,
+    fontSize: 28,
+    height: 34 / 28,
+    fontWeight: FontWeight.w800,
     color: MichiColors.textPrimary,
   );
   static const heading = TextStyle(

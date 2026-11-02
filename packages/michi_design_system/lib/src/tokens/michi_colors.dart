@@ -13,7 +13,22 @@ abstract final class MichiColors {
   static const coral = Color(0xFFD9826B);
   static const coralText = Color(0xFF9C4F3B);
   static const success = Color(0xFF56663F);
+  static const almostText = Color(0xFF86642A);
+  static const almostTint = Color(0xFFF7EDDB);
   static const error = Color(0xFFA8554C);
   static const disabledBackground = Color(0xFFD9D1C3);
   static const disabledText = Color(0xFF77736B);
+
+  // Approved Game/Coach tokens from the MICHI production design specification.
+  static const indigoTint = Color(0xFFEAEAE8);
+  static const coralTint = Color(0xFFF9E9E1);
+  static const successTint = Color(0xFFEBECE0);
+  static const errorTint = Color(0xFFF8ECE6);
+  static const boardCellLine = Color(0xFFE8E0D2);
+  static const boardBoxLine = Color(0xFFB5AC9C);
+  static const boardSelected = Color(0xFFD8DBDB);
+  static const boardSameDigit = Color(0xFFE6E7E6);
+  static const boardRelated = Color(0xFFF4EEE3);
+  static const boardCandidate = Color(0xFF4E5A66);
+  static const boardEliminated = Color(0xFF7E7669);
 }

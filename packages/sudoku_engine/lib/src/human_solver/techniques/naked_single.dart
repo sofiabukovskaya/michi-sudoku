@@ -1,3 +1,4 @@
+import '../../core/sudoku_unit.dart';
 import '../../model/sudoku_move.dart';
 import '../deduction.dart';
 import '../human_solver_state.dart';
@@ -18,7 +19,22 @@ final class NakedSingleTechnique implements HumanTechniqueStrategy {
         Deduction(
           technique: technique,
           focusCells: [cell],
-          evidence: [CandidateSetEvidence(cell, state.candidatesFor(cell))],
+          evidence: [
+            for (final unit in [
+              SudokuUnit.row(cell.row),
+              SudokuUnit.column(cell.column),
+              SudokuUnit.box(cell.box),
+            ])
+              UnitFilledEvidence(
+                unit: unit,
+                placements: [
+                  for (final peer in unit.cells)
+                    if (state.board.isFilled(peer))
+                      DigitPlacement(peer, state.board.valueAt(peer)),
+                ],
+              ),
+            CandidateSetEvidence(cell, state.candidatesFor(cell)),
+          ],
           eliminations: const [],
           placements: [
             DigitPlacement(cell, state.candidatesFor(cell).singleDigit!),

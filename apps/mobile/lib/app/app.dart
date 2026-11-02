@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
@@ -14,6 +15,7 @@ final class MichiApp extends StatelessWidget {
     child: Builder(
       builder: (context) => MaterialApp.router(
         title: context.t.appName,
+        debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         locale: TranslationProvider.of(context).flutterLocale,
         supportedLocales: AppLocaleUtils.supportedLocales,
@@ -22,7 +24,9 @@ final class MichiApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        routerConfig: router.config(),
+        routerConfig: router.config(
+          navigatorObservers: () => [AutoRouteObserver()],
+        ),
       ),
     ),
   );

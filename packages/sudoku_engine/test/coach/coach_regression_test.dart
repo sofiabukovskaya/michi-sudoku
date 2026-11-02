@@ -57,6 +57,9 @@ void main() {
               }
             case UnitEvidence(:final unit):
               relatedUnits.add(unit);
+            case UnitFilledEvidence(:final unit, :final placements):
+              relatedUnits.add(unit);
+              relatedCells.addAll(placements.map((move) => move.cell));
           }
         }
 
@@ -75,11 +78,16 @@ void main() {
         }
       }
     }
-    expect(seenTechniques, {
-      SudokuTechnique.nakedSingle,
-      SudokuTechnique.hiddenSingle,
-      SudokuTechnique.nakedPair,
-      SudokuTechnique.pointingPair,
-    });
+    expect(
+      seenTechniques,
+      containsAll({
+        SudokuTechnique.nakedSingle,
+        SudokuTechnique.hiddenSingle,
+        SudokuTechnique.nakedPair,
+        SudokuTechnique.pointingPair,
+        SudokuTechnique.hiddenPair,
+        SudokuTechnique.nakedTriple,
+      }),
+    );
   });
 }

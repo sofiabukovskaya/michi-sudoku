@@ -84,6 +84,33 @@ final class CandidateSetEvidence extends DeductionEvidence {
   int get hashCode => Object.hash(cell, candidates);
 }
 
+/// Filled cells already restricting a row, column or box.
+///
+/// Captured when the deduction is found so retrospective explanations need
+/// only this evidence, never a solved board or reconstructed claims.
+final class UnitFilledEvidence extends DeductionEvidence {
+  UnitFilledEvidence({
+    required this.unit,
+    required List<DigitPlacement> placements,
+  }) : placements = _sortedMoves(placements) {
+    if (this.placements.any((move) => !unit.cells.contains(move.cell))) {
+      throw ArgumentError.value(placements, 'placements');
+    }
+  }
+
+  final SudokuUnit unit;
+  final List<DigitPlacement> placements;
+
+  @override
+  bool operator ==(Object other) =>
+      other is UnitFilledEvidence &&
+      unit == other.unit &&
+      _sameList(placements, other.placements);
+
+  @override
+  int get hashCode => Object.hash(unit, Object.hashAll(placements));
+}
+
 /// The cells supporting a digit within a row, column, or box.
 final class UnitCandidateEvidence extends DeductionEvidence {
   UnitCandidateEvidence({

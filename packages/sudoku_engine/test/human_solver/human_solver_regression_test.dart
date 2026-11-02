@@ -72,7 +72,7 @@ void main() {
     expect(result.deductions, isNotEmpty);
   });
 
-  test('top95 #14 remains solvable but exceeds the Phase 4 technique set', () {
+  test('top95 #14 is solved with the expanded technique set', () {
     final board = SudokuBoard.parse(
       solverRegressionPuzzles
           .firstWhere(
@@ -83,8 +83,8 @@ void main() {
     final result = human.solveLogically(board);
 
     expect(exact.hasUniqueSolution(board), isTrue);
-    expect(result.status, HumanSolveStatus.stuck);
-    expect(result.finalState.board.isComplete, isFalse);
+    expect(result.status, HumanSolveStatus.solved);
+    expect(result.finalState.board.isComplete, isTrue);
     expect(result.finalState.hasContradiction, isFalse);
   });
 }

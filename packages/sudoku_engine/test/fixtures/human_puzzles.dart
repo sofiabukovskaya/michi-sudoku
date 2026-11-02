@@ -70,7 +70,7 @@ const humanPuzzleExpectations = <HumanPuzzleExpectation>[
   ),
   HumanPuzzleExpectation(
     name: 'top95 #14',
-    status: HumanSolveStatus.stuck,
+    status: HumanSolveStatus.solved,
     requiredTechniques: phase4Techniques,
   ),
   HumanPuzzleExpectation(
@@ -80,7 +80,7 @@ const humanPuzzleExpectations = <HumanPuzzleExpectation>[
   ),
   HumanPuzzleExpectation(
     name: 'hardest #0',
-    status: HumanSolveStatus.stuck,
+    status: HumanSolveStatus.solved,
     requiredTechniques: phase4Techniques,
   ),
   HumanPuzzleExpectation(

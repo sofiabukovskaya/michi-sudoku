@@ -90,7 +90,7 @@ void main() {
 
   test('unsupported future technique fails instead of a generic hint', () {
     final deduction = Deduction(
-      technique: SudokuTechnique.hiddenPair,
+      technique: SudokuTechnique.xyWing,
       focusCells: [cell(0, 0)],
       evidence: [UnitEvidence(SudokuUnit.row(0))],
       eliminations: [CandidateElimination(cell(0, 1), 2)],

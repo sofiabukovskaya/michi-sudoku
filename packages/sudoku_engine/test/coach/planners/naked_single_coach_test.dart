@@ -19,7 +19,11 @@ void main() {
     expect(plan.hints[1].candidateHighlights, isEmpty);
     expect(plan.hints[2].intent, CoachHintIntent.singleCandidateRemains);
     expect(plan.hints[2].candidateHighlights, highlights);
-    expect(plan.hints[2].evidence, deduction.evidence);
+    // Coach exposes the one candidate; extra unit facts are for Why.
+    expect(
+      plan.hints[2].evidence,
+      deduction.evidence.whereType<CandidateSetEvidence>().toList(),
+    );
     expect(plan.last.intent, CoachHintIntent.revealPlacement);
     expect(plan.last.revealedPlacements, deduction.placements);
     expect(plan.last.revealedEliminations, isEmpty);

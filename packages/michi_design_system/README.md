@@ -8,5 +8,6 @@ Theme Tailor generates `MichiPalette` as a `ThemeExtension`; components resolve
 colors from the active theme. Light mode uses the approved MICHI palette. Dark
 mode values remain deferred until they are designed.
 
-The source PDF is flattened. Font family names are configured, but Manrope and
-Lora font files must be provided before typography can match the design exactly.
+Manrope and Lora variable font assets are bundled in `assets/fonts/` with their
+Open Font License files. The Phase 6 Game uses the approved board and Coach
+palette tokens, and the bottom sheet uses the approved radius and shadow.

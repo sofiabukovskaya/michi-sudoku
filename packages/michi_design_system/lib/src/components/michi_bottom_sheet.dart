@@ -16,6 +16,13 @@ final class MichiBottomSheet extends StatelessWidget {
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MichiRadius.hero),
       ),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFF000000).withValues(alpha: 0.08),
+          offset: const Offset(0, -8),
+          blurRadius: 24,
+        ),
+      ],
     ),
     child: SafeArea(
       top: false,

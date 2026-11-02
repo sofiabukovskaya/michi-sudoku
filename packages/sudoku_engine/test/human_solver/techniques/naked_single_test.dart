@@ -18,6 +18,9 @@ void main() {
     expect(deduction.technique, SudokuTechnique.nakedSingle);
     expect(deduction.focusCells, [cell(4, 6)]);
     expect(deduction.evidence, [
+      UnitFilledEvidence(unit: SudokuUnit.row(4), placements: const []),
+      UnitFilledEvidence(unit: SudokuUnit.column(6), placements: const []),
+      UnitFilledEvidence(unit: SudokuUnit.box(5), placements: const []),
       CandidateSetEvidence(cell(4, 6), mask([9])),
     ]);
     expect(deduction.placements, [DigitPlacement(cell(4, 6), 9)]);
