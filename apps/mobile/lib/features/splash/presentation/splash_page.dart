@@ -9,6 +9,7 @@ import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 
 @RoutePage()
 final class SplashPage extends StatefulWidget {
@@ -36,7 +37,14 @@ final class _SplashPageState extends State<SplashPage> {
       final active = await repository.loadActiveSummary();
       if (!mounted) return;
       if (active != null) {
-        await context.router.replace(HomeRoute(repository: repository));
+        await context.router.replace(
+          HomeRoute(
+            repository: repository,
+            recommendationService: widget.repository == null
+                ? getIt<LearningRecommendationService>()
+                : null,
+          ),
+        );
       } else {
         _scheduleWelcome();
       }

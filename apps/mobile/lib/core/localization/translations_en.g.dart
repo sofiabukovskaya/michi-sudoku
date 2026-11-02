@@ -54,6 +54,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$scanner$en scanner = _Translations$scanner$en._(_root);
 	@override late final _Translations$coach$en coach = _Translations$coach$en._(_root);
 	@override late final _Translations$why$en why = _Translations$why$en._(_root);
+	@override late final _Translations$recommendation$en recommendation = _Translations$recommendation$en._(_root);
 }
 
 // Path: common
@@ -381,6 +382,27 @@ class _Translations$why$en extends Translations$why$uk {
 	@override String unitRow({required Object index}) => 'row ${index}';
 	@override String unitColumn({required Object index}) => 'column ${index}';
 	@override String unitBox({required Object index}) => 'box ${index}';
+}
+
+// Path: recommendation
+class _Translations$recommendation$en extends Translations$recommendation$uk {
+	_Translations$recommendation$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String focusTitle({required Object technique}) => 'Focus of the day: ${technique}';
+	@override String learnAction({required Object technique}) => 'Learn ${technique}';
+	@override String practiceAction({required Object technique}) => 'Practice ${technique}';
+	@override String reviewAction({required Object technique}) => 'Review ${technique}';
+	@override String duration({required Object minutes}) => '${minutes} min';
+	@override String get startWithBasics => 'Start with the first logical move.';
+	@override String get repeatedCoachHelp => 'You recently needed MICHI’s help.';
+	@override String get weakIndependentPractice => 'Independent practice needs reinforcement.';
+	@override String get continuePractice => 'Keep practicing this technique.';
+	@override String get nextTechnique => 'The next step in your path.';
+	@override String get masteredNeedsReview => 'A familiar technique needs a review.';
+	@override String get allMasteredReview => 'Review a skill you have mastered.';
 }
 
 // Path: learn.lessons
@@ -777,6 +799,18 @@ extension on TranslationsEn {
 			'why.unitRow' => ({required Object index}) => 'row ${index}',
 			'why.unitColumn' => ({required Object index}) => 'column ${index}',
 			'why.unitBox' => ({required Object index}) => 'box ${index}',
+			'recommendation.focusTitle' => ({required Object technique}) => 'Focus of the day: ${technique}',
+			'recommendation.learnAction' => ({required Object technique}) => 'Learn ${technique}',
+			'recommendation.practiceAction' => ({required Object technique}) => 'Practice ${technique}',
+			'recommendation.reviewAction' => ({required Object technique}) => 'Review ${technique}',
+			'recommendation.duration' => ({required Object minutes}) => '${minutes} min',
+			'recommendation.startWithBasics' => 'Start with the first logical move.',
+			'recommendation.repeatedCoachHelp' => 'You recently needed MICHI’s help.',
+			'recommendation.weakIndependentPractice' => 'Independent practice needs reinforcement.',
+			'recommendation.continuePractice' => 'Keep practicing this technique.',
+			'recommendation.nextTechnique' => 'The next step in your path.',
+			'recommendation.masteredNeedsReview' => 'A familiar technique needs a review.',
+			'recommendation.allMasteredReview' => 'Review a skill you have mastered.',
 			_ => null,
 		};
 	}

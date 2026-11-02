@@ -18,15 +18,17 @@ import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_controls.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_top_bar.dart';
-import 'package:michi_mobile/features/game/presentation/widgets/post_game_technique_feedback.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_geometry.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_keypad.dart';
-import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
-import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
+import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
+import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
+import 'package:michi_mobile/features/recommendation/domain/learning_recommendation_engine.dart';
+import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
@@ -38,6 +40,7 @@ final class GamePage extends StatefulWidget {
     this.cubit,
     this.repository,
     this.clock,
+    this.recommendationService,
     this.restore = false,
     super.key,
   });
@@ -51,6 +54,7 @@ final class GamePage extends StatefulWidget {
   final GameCubit? cubit;
   final GameRepository? repository;
   final GameClock? clock;
+  final LearningRecommendationService? recommendationService;
   final bool restore;
 
   @override
@@ -65,6 +69,7 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   PuzzleDifficulty? _difficulty;
   bool _isDaily = false;
   PuzzleDefinition? _definition;
+  Future<LearningRecommendation>? _postGameRecommendation;
 
   @override
   void initState() {
@@ -270,27 +275,29 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                 return BlocBuilder<GameCubit, GameState>(
                   builder: (context, state) {
                     if (state.status == GameStatus.completed) {
-                      final nextTechnique = _nextTechnique(state);
-                      return _CompletedSurface(
-                        state: state,
-                        elapsed: cubit.elapsed,
-                        puzzleTitle: _gameTitle(context),
-                        requiredTechniques:
-                            _definition?.requiredTechniques ?? const {},
-                        isDaily: _isDaily,
-                        nextTechnique: nextTechnique,
-                        onContinue: nextTechnique == null
-                            ? null
-                            : () => context.router.push(
-                                TechniqueLessonRoute(technique: nextTechnique),
-                              ),
-                        onHome: () async {
-                          await cubit.flushPersistence();
-                          if (context.mounted &&
-                              cubit.state.storageFailure == null) {
-                            await Navigator.of(context).maybePop();
-                          }
-                        },
+                      _postGameRecommendation ??= _recommendAfterGame(state);
+                      return FutureBuilder<LearningRecommendation>(
+                        future: _postGameRecommendation,
+                        builder: (context, snapshot) => _CompletedSurface(
+                          state: state,
+                          elapsed: cubit.elapsed,
+                          puzzleTitle: _gameTitle(context),
+                          isDaily: _isDaily,
+                          recommendation: snapshot.data,
+                          onContinue: snapshot.data == null
+                              ? null
+                              : () => openRecommendation(
+                                  context,
+                                  snapshot.data!,
+                                ).ignore(),
+                          onHome: () async {
+                            await cubit.flushPersistence();
+                            if (context.mounted &&
+                                cubit.state.storageFailure == null) {
+                              await Navigator.of(context).maybePop();
+                            }
+                          },
+                        ),
                       );
                     }
                     final input = _GameInputArea(
@@ -393,25 +400,31 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     return difficulty == null ? kind : '$kind · $difficulty';
   }
 
-  SudokuTechnique? _nextTechnique(GameState state) {
-    final helped = state.techniqueHelp.entries.toList()
-      ..sort((a, b) {
-        final count = b.value.compareTo(a.value);
-        return count != 0
-            ? count
-            : SudokuTechniqueOrder.supported
-                  .indexOf(a.key)
-                  .compareTo(SudokuTechniqueOrder.supported.indexOf(b.key));
-      });
-    if (helped.isNotEmpty) return helped.first.key;
-    final required = _definition?.requiredTechniques ?? const {};
-    for (final technique in TechniqueLessons.supported) {
-      if (technique != SudokuTechnique.nakedSingle &&
-          required.contains(technique)) {
-        return technique;
-      }
-    }
-    return null;
+  Future<LearningRecommendation> _recommendAfterGame(GameState state) {
+    final game = GameLearningEvidence(
+      gameId: state.gameId,
+      techniqueHelp: state.techniqueHelp,
+      requiredTechniques: _definition?.requiredTechniques ?? const {},
+    );
+    final service =
+        widget.recommendationService ??
+        (widget.repository == null &&
+                getIt.isRegistered<LearningRecommendationService>()
+            ? getIt<LearningRecommendationService>()
+            : null);
+    if (service != null) return service.afterGame(game);
+    return Future.value(
+      const LearningRecommendationEngine().recommend(
+        LearningProfileSnapshot(
+          date: LocalDate.fromDateTime(
+            (widget.clock ?? SystemGameClock()).now(),
+          ),
+          techniqueProgress: const {},
+          recentNormalGames: const [],
+        ),
+        justFinished: game,
+      ),
+    );
   }
 
   VoidCallback? _whyAction(
@@ -542,9 +555,8 @@ final class _CompletedSurface extends StatelessWidget {
     required this.state,
     required this.elapsed,
     required this.puzzleTitle,
-    required this.requiredTechniques,
     required this.isDaily,
-    required this.nextTechnique,
+    required this.recommendation,
     required this.onContinue,
     required this.onHome,
   });
@@ -552,9 +564,8 @@ final class _CompletedSurface extends StatelessWidget {
   final GameState state;
   final Duration elapsed;
   final String puzzleTitle;
-  final Set<SudokuTechnique> requiredTechniques;
   final bool isDaily;
-  final SudokuTechnique? nextTechnique;
+  final LearningRecommendation? recommendation;
   final VoidCallback? onContinue;
   final VoidCallback onHome;
 
@@ -680,9 +691,10 @@ final class _CompletedSurface extends StatelessWidget {
                     ],
                   ),
                 ],
-                if (nextTechnique case final technique?) ...[
+                if (recommendation case final recommended?) ...[
                   const Divider(height: MichiSpacing.xxl),
                   InkWell(
+                    key: const ValueKey('post-game-next-step'),
                     onTap: onContinue,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -691,16 +703,26 @@ final class _CompletedSurface extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Text(
-                              context.t.game.completionPracticeTechnique(
-                                technique: TechniqueCopy.name(
-                                  context.t,
-                                  technique,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  RecommendationCopy.action(
+                                    context.t,
+                                    recommended,
+                                  ),
+                                  style: MichiTypography.body.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                              style: MichiTypography.body.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
+                                Text(
+                                  RecommendationCopy.detail(
+                                    context.t,
+                                    recommended,
+                                  ),
+                                  style: MichiTypography.secondary,
+                                ),
+                              ],
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded),
@@ -721,11 +743,6 @@ final class _CompletedSurface extends StatelessWidget {
                     onPressed: onHome,
                     child: Text(context.t.game.backHome),
                   ),
-                const SizedBox(height: MichiSpacing.xl),
-                PostGameTechniqueFeedback(
-                  requiredTechniques: requiredTechniques,
-                  techniqueHelp: state.techniqueHelp,
-                ),
               ],
             ),
           ),

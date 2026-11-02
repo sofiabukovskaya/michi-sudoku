@@ -67,7 +67,27 @@ class TechniqueProgressEntries extends Table {
   Set<Column> get primaryKey => {techniqueId};
 }
 
-@DriftDatabase(tables: [ActiveGames, CompletedGames, TechniqueProgressEntries])
+@DataClassName('DailyLearningFocusRow')
+class DailyLearningFocuses extends Table {
+  TextColumn get localDate => text()();
+  TextColumn get techniqueId => text()();
+  TextColumn get actionId => text()();
+  TextColumn get reasonId => text()();
+  IntColumn get estimatedMinutes => integer()();
+  TextColumn get evidenceJson => text()();
+
+  @override
+  Set<Column> get primaryKey => {localDate};
+}
+
+@DriftDatabase(
+  tables: [
+    ActiveGames,
+    CompletedGames,
+    TechniqueProgressEntries,
+    DailyLearningFocuses,
+  ],
+)
 final class GameDatabase extends _$GameDatabase {
   GameDatabase(super.e);
 
@@ -75,7 +95,7 @@ final class GameDatabase extends _$GameDatabase {
       GameDatabase(driftDatabase(name: 'michi_games'));
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -98,6 +118,9 @@ final class GameDatabase extends _$GameDatabase {
       }
       if (from <= 3 && to >= 4) {
         await migrator.addColumn(activeGames, activeGames.reasoningJson);
+      }
+      if (from <= 4 && to >= 5) {
+        await migrator.createTable(dailyLearningFocuses);
       }
     },
   );

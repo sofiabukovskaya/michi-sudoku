@@ -54,6 +54,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$scanner$de scanner = _Translations$scanner$de._(_root);
 	@override late final _Translations$coach$de coach = _Translations$coach$de._(_root);
 	@override late final _Translations$why$de why = _Translations$why$de._(_root);
+	@override late final _Translations$recommendation$de recommendation = _Translations$recommendation$de._(_root);
 }
 
 // Path: common
@@ -381,6 +382,27 @@ class _Translations$why$de extends Translations$why$uk {
 	@override String unitRow({required Object index}) => 'Zeile ${index}';
 	@override String unitColumn({required Object index}) => 'Spalte ${index}';
 	@override String unitBox({required Object index}) => 'Block ${index}';
+}
+
+// Path: recommendation
+class _Translations$recommendation$de extends Translations$recommendation$uk {
+	_Translations$recommendation$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String focusTitle({required Object technique}) => 'Fokus des Tages: ${technique}';
+	@override String learnAction({required Object technique}) => 'Lernen: ${technique}';
+	@override String practiceAction({required Object technique}) => 'Üben: ${technique}';
+	@override String reviewAction({required Object technique}) => 'Wiederholen: ${technique}';
+	@override String duration({required Object minutes}) => '${minutes} Min.';
+	@override String get startWithBasics => 'Beginne mit dem ersten logischen Schritt.';
+	@override String get repeatedCoachHelp => 'Du hast kürzlich MICHI-Hilfe gebraucht.';
+	@override String get weakIndependentPractice => 'Selbstständiges Üben sollte gefestigt werden.';
+	@override String get continuePractice => 'Übe diese Technik weiter.';
+	@override String get nextTechnique => 'Der nächste Schritt auf deinem Weg.';
+	@override String get masteredNeedsReview => 'Eine bekannte Technik braucht Wiederholung.';
+	@override String get allMasteredReview => 'Wiederhole eine bereits beherrschte Technik.';
 }
 
 // Path: learn.lessons
@@ -777,6 +799,18 @@ extension on TranslationsDe {
 			'why.unitRow' => ({required Object index}) => 'Zeile ${index}',
 			'why.unitColumn' => ({required Object index}) => 'Spalte ${index}',
 			'why.unitBox' => ({required Object index}) => 'Block ${index}',
+			'recommendation.focusTitle' => ({required Object technique}) => 'Fokus des Tages: ${technique}',
+			'recommendation.learnAction' => ({required Object technique}) => 'Lernen: ${technique}',
+			'recommendation.practiceAction' => ({required Object technique}) => 'Üben: ${technique}',
+			'recommendation.reviewAction' => ({required Object technique}) => 'Wiederholen: ${technique}',
+			'recommendation.duration' => ({required Object minutes}) => '${minutes} Min.',
+			'recommendation.startWithBasics' => 'Beginne mit dem ersten logischen Schritt.',
+			'recommendation.repeatedCoachHelp' => 'Du hast kürzlich MICHI-Hilfe gebraucht.',
+			'recommendation.weakIndependentPractice' => 'Selbstständiges Üben sollte gefestigt werden.',
+			'recommendation.continuePractice' => 'Übe diese Technik weiter.',
+			'recommendation.nextTechnique' => 'Der nächste Schritt auf deinem Weg.',
+			'recommendation.masteredNeedsReview' => 'Eine bekannte Technik braucht Wiederholung.',
+			'recommendation.allMasteredReview' => 'Wiederhole eine bereits beherrschte Technik.',
 			_ => null,
 		};
 	}

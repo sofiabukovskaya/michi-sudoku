@@ -21,6 +21,7 @@ import 'package:michi_mobile/features/profile/presentation/profile_page.dart';
 import 'package:michi_mobile/features/progress/presentation/progress_page.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/scanner/presentation/scanner_page.dart';
 import 'package:michi_mobile/features/splash/presentation/splash_page.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';

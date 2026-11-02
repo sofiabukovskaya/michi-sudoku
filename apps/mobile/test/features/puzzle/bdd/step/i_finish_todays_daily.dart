@@ -12,6 +12,8 @@ Future<void> iFinishTodaysDaily(WidgetTester tester) async {
   await tester.tap(find.byKey(ValueKey('keypad-${driver.finalDigit}')));
   await tester.pumpAndSettle();
   expect(find.text('Solved.'), findsOneWidget);
+  await tester.ensureVisible(find.text('Back to home'));
+  await tester.pumpAndSettle();
   await tester.tap(find.text('Back to home'));
   await ContentDriver.settleUntil(tester, find.text('Completed today'));
 }

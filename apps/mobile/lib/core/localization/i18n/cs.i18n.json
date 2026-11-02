@@ -293,5 +293,19 @@
     "unitRow": "řádku $index",
     "unitColumn": "sloupci $index",
     "unitBox": "bloku $index"
+  },
+  "recommendation": {
+    "focusTitle": "Dnešní zaměření: $technique",
+    "learnAction": "Naučit se: $technique",
+    "practiceAction": "Procvičit: $technique",
+    "reviewAction": "Zopakovat: $technique",
+    "duration": "$minutes min",
+    "startWithBasics": "Začněte prvním logickým krokem.",
+    "repeatedCoachHelp": "Nedávno jste potřebovali pomoc MICHI.",
+    "weakIndependentPractice": "Samostatné řešení chce ještě procvičit.",
+    "continuePractice": "Pokračujte v procvičování této techniky.",
+    "nextTechnique": "Další krok na vaší cestě.",
+    "masteredNeedsReview": "Známou techniku je dobré zopakovat.",
+    "allMasteredReview": "Zopakujte si zvládnutou techniku."
   }
 }

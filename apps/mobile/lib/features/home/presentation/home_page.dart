@@ -11,10 +11,14 @@ import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/puzzle/domain/daily_puzzle.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
+import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
+import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
+import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
@@ -23,6 +27,7 @@ final class HomePage extends StatefulWidget {
     this.repository,
     this.puzzleRepository,
     this.clock,
+    this.recommendationService,
     super.key,
   });
 
@@ -30,6 +35,7 @@ final class HomePage extends StatefulWidget {
   final GameRepository? repository;
   final PuzzleRepository? puzzleRepository;
   final GameClock? clock;
+  final LearningRecommendationService? recommendationService;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,6 +45,8 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   late final GameRepository _repository;
   late final PuzzleRepository _puzzles;
   late final GameClock _clock;
+  LearningRecommendationService? _recommendations;
+  LearningRecommendation? _focus;
   ActiveGameSummary? _active;
   DailyPuzzle? _daily;
   bool _dailyCompleted = false;
@@ -55,6 +63,13 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     _repository = widget.repository ?? getIt<GameRepository>();
     _puzzles = widget.puzzleRepository ?? getIt<PuzzleRepository>();
     _clock = widget.clock ?? getIt<GameClock>();
+    // Tests and embedded routes can supply isolated repositories without
+    // constructing the production Drift connection.
+    _recommendations =
+        widget.recommendationService ??
+        (widget.repository == null
+            ? getIt<LearningRecommendationService>()
+            : null);
     unawaited(_reload());
   }
 
@@ -86,6 +101,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _loadFailed = false;
         _loading = false;
       });
+      unawaited(_loadFocus(sequence));
     } on Object catch (error, stackTrace) {
       developer.log(
         'Unable to load Home content',
@@ -125,6 +141,21 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _dailyFailed = true;
       });
     }
+  }
+
+  Future<void> _loadFocus(int sequence) async {
+    final service = _recommendations;
+    if (service == null) return;
+    final focus = await service.today();
+    if (!mounted || sequence != _reloadSequence) return;
+    setState(() => _focus = focus);
+  }
+
+  Future<void> _openFocus() async {
+    final focus = _focus;
+    if (focus == null) return;
+    await openRecommendation(context, focus);
+    if (mounted) await _reload();
   }
 
   Future<void> _startNew() async {
@@ -181,7 +212,11 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       if (!mounted || !await _confirmReplacement()) return;
       if (!mounted) return;
       await context.router.push(
-        GameRoute(definition: puzzle, repository: _repository),
+        GameRoute(
+          definition: puzzle,
+          repository: _repository,
+          recommendationService: _recommendations,
+        ),
       );
       if (mounted) await _reload();
     } on Object {
@@ -203,6 +238,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           definition: daily.puzzle,
           dailyChallengeKey: daily.challengeKey,
           repository: _repository,
+          recommendationService: _recommendations,
         ),
       );
       if (mounted) await _reload();
@@ -260,7 +296,11 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Future<void> _continue() async {
     await context.router.push(
-      GameRoute(restore: true, repository: _repository),
+      GameRoute(
+        restore: true,
+        repository: _repository,
+        recommendationService: _recommendations,
+      ),
     );
     if (mounted) await _reload();
   }
@@ -292,9 +332,6 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               if (_loading) ...[
                 const SizedBox(height: MichiSpacing.sm),
                 Text(context.t.home.loading, style: MichiTypography.secondary),
-              ] else if (_active case final summary?) ...[
-                const SizedBox(height: MichiSpacing.sm),
-                _ContinueCard(summary: summary, onTap: _continue),
               ] else if (_loadFailed) ...[
                 const SizedBox(height: MichiSpacing.lg),
                 Text(context.t.home.storageUnavailable),
@@ -319,6 +356,14 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   context.t.home.contentUnavailable,
                   style: MichiTypography.secondary,
                 ),
+              ],
+              if (!_loading && _active != null) ...[
+                const SizedBox(height: MichiSpacing.sm),
+                _ContinueCard(summary: _active!, onTap: _continue),
+              ],
+              if (_focus case final focus?) ...[
+                const SizedBox(height: MichiSpacing.sm),
+                _FocusRow(recommendation: focus, onTap: _openFocus),
               ],
               const SizedBox(height: MichiSpacing.sm),
               _HomeActionRow(
@@ -354,6 +399,68 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ),
     ),
   );
+}
+
+final class _FocusRow extends StatelessWidget {
+  const _FocusRow({required this.recommendation, required this.onTap});
+
+  final LearningRecommendation recommendation;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final title = t.recommendation.focusTitle(
+      technique: TechniqueCopy.name(t, recommendation.technique),
+    );
+    final detail = RecommendationCopy.detail(t, recommendation);
+    return Semantics(
+      button: true,
+      label: '$title. ${RecommendationCopy.action(t, recommendation)}. $detail',
+      child: InkWell(
+        key: const ValueKey('daily-learning-focus'),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: MichiSpacing.md),
+          child: Row(
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: MichiColors.coralTint,
+                  borderRadius: BorderRadius.circular(MichiRadius.small),
+                ),
+                child: const SizedBox.square(
+                  dimension: 48,
+                  child: Icon(Icons.pets, color: MichiColors.coralText),
+                ),
+              ),
+              const SizedBox(width: MichiSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: MichiTypography.body.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      detail,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: MichiTypography.secondary,
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right_rounded),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 final class _HomeActionRow extends StatelessWidget {

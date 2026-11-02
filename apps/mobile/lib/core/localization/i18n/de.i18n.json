@@ -293,5 +293,19 @@
     "unitRow": "Zeile $index",
     "unitColumn": "Spalte $index",
     "unitBox": "Block $index"
+  },
+  "recommendation": {
+    "focusTitle": "Fokus des Tages: $technique",
+    "learnAction": "Lernen: $technique",
+    "practiceAction": "Üben: $technique",
+    "reviewAction": "Wiederholen: $technique",
+    "duration": "$minutes Min.",
+    "startWithBasics": "Beginne mit dem ersten logischen Schritt.",
+    "repeatedCoachHelp": "Du hast kürzlich MICHI-Hilfe gebraucht.",
+    "weakIndependentPractice": "Selbstständiges Üben sollte gefestigt werden.",
+    "continuePractice": "Übe diese Technik weiter.",
+    "nextTechnique": "Der nächste Schritt auf deinem Weg.",
+    "masteredNeedsReview": "Eine bekannte Technik braucht Wiederholung.",
+    "allMasteredReview": "Wiederhole eine bereits beherrschte Technik."
   }
 }
