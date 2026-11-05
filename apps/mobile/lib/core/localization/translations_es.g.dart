@@ -306,7 +306,41 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'La importación con cámara llegará después del juego principal.';
+	@override String get title => 'Escanear sudoku';
+	@override String get intro => 'Encuadra toda la cuadrícula y haz una foto o elige una.';
+	@override String get openCamera => 'Usar cámara';
+	@override String get choosePhoto => 'Elegir foto';
+	@override String get shutter => 'Hacer foto';
+	@override String get frameGuide => 'Mantén las cuatro esquinas dentro del encuadre.';
+	@override String get processing => 'Leyendo tu sudoku…';
+	@override String get reviewTitle => 'Revisa los números';
+	@override String get reviewBody => 'Toca una casilla para corregirla antes de jugar.';
+	@override String get needsReview => 'Revisar';
+	@override String get conflict => 'Número en conflicto';
+	@override String get selected => 'seleccionada';
+	@override String get recognized => 'reconocido';
+	@override String get empty => 'vacía';
+	@override String get clear => 'Borrar';
+	@override String get confirm => 'Importar sudoku';
+	@override String get rescan => 'Escanear de nuevo';
+	@override String get permissionIntro => 'Permite el acceso a la cámara para hacer una foto.';
+	@override String get permissionDenied => 'Se denegó el acceso a la cámara. Puedes elegir una foto.';
+	@override String get permissionSettings => 'Activa la cámara en Ajustes o elige una foto.';
+	@override String get noCamera => 'La cámara no está disponible. Elige una foto.';
+	@override String get openSettings => 'Abrir Ajustes';
+	@override String get imageDecodeFailure => 'No pudimos leer la imagen. Prueba con otra foto.';
+	@override String get noGridFound => 'No encontramos la cuadrícula. Inclúyela entera e inténtalo de nuevo.';
+	@override String get invalidGeometry => 'No pudimos enderezar la cuadrícula. Prueba con una foto más nítida.';
+	@override String get segmentationFailure => 'No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.';
+	@override String get recognitionFailure => 'No pudimos leer algunos números. Inténtalo de nuevo.';
+	@override String get duplicateClues => 'Corrige los números en conflicto resaltados.';
+	@override String get noSolution => 'Estos números no tienen solución. Revísalos.';
+	@override String get multipleSolutions => 'Pueden faltar números; este sudoku tiene varias soluciones.';
+	@override String get storageFailure => 'No pudimos guardar el sudoku importado. Inténtalo de nuevo.';
+	@override String get validationFailure => 'No se pudo comprobar este sudoku. Vuelve a confirmar.';
+	@override String get unsupportedCoach => 'MICHI quizá aún no pueda explicar todos los pasos de este sudoku.';
+	@override String get importedTitle => 'Sudoku importado';
+	@override String lowConfidenceCount({required Object count}) => 'Casillas para revisar: ${count}';
 }
 
 // Path: coach
@@ -741,7 +775,41 @@ extension on TranslationsEs {
 			'learn.wrongPlacement' => 'Esa celda o dígito no coincide con la deducción. Revisa la posición resaltada.',
 			'progress.unavailable' => 'El dominio de las técnicas llegará más adelante.',
 			'profile.unavailable' => 'La configuración del perfil llegará más adelante.',
-			'scanner.unavailable' => 'La importación con cámara llegará después del juego principal.',
+			'scanner.title' => 'Escanear sudoku',
+			'scanner.intro' => 'Encuadra toda la cuadrícula y haz una foto o elige una.',
+			'scanner.openCamera' => 'Usar cámara',
+			'scanner.choosePhoto' => 'Elegir foto',
+			'scanner.shutter' => 'Hacer foto',
+			'scanner.frameGuide' => 'Mantén las cuatro esquinas dentro del encuadre.',
+			'scanner.processing' => 'Leyendo tu sudoku…',
+			'scanner.reviewTitle' => 'Revisa los números',
+			'scanner.reviewBody' => 'Toca una casilla para corregirla antes de jugar.',
+			'scanner.needsReview' => 'Revisar',
+			'scanner.conflict' => 'Número en conflicto',
+			'scanner.selected' => 'seleccionada',
+			'scanner.recognized' => 'reconocido',
+			'scanner.empty' => 'vacía',
+			'scanner.clear' => 'Borrar',
+			'scanner.confirm' => 'Importar sudoku',
+			'scanner.rescan' => 'Escanear de nuevo',
+			'scanner.permissionIntro' => 'Permite el acceso a la cámara para hacer una foto.',
+			'scanner.permissionDenied' => 'Se denegó el acceso a la cámara. Puedes elegir una foto.',
+			'scanner.permissionSettings' => 'Activa la cámara en Ajustes o elige una foto.',
+			'scanner.noCamera' => 'La cámara no está disponible. Elige una foto.',
+			'scanner.openSettings' => 'Abrir Ajustes',
+			'scanner.imageDecodeFailure' => 'No pudimos leer la imagen. Prueba con otra foto.',
+			'scanner.noGridFound' => 'No encontramos la cuadrícula. Inclúyela entera e inténtalo de nuevo.',
+			'scanner.invalidGeometry' => 'No pudimos enderezar la cuadrícula. Prueba con una foto más nítida.',
+			'scanner.segmentationFailure' => 'No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.',
+			'scanner.recognitionFailure' => 'No pudimos leer algunos números. Inténtalo de nuevo.',
+			'scanner.duplicateClues' => 'Corrige los números en conflicto resaltados.',
+			'scanner.noSolution' => 'Estos números no tienen solución. Revísalos.',
+			'scanner.multipleSolutions' => 'Pueden faltar números; este sudoku tiene varias soluciones.',
+			'scanner.storageFailure' => 'No pudimos guardar el sudoku importado. Inténtalo de nuevo.',
+			'scanner.validationFailure' => 'No se pudo comprobar este sudoku. Vuelve a confirmar.',
+			'scanner.unsupportedCoach' => 'MICHI quizá aún no pueda explicar todos los pasos de este sudoku.',
+			'scanner.importedTitle' => 'Sudoku importado',
+			'scanner.lowConfidenceCount' => ({required Object count}) => 'Casillas para revisar: ${count}',
 			'coach.step' => ({required Object step}) => 'Pista ${step} de 4',
 			'coach.kTry' => 'Lo intentaré',
 			'coach.show' => 'Mostrar',

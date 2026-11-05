@@ -462,18 +462,49 @@ class ProgressRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ScannerPage]
-class ScannerRoute extends PageRouteInfo<void> {
-  const ScannerRoute({List<PageRouteInfo>? children})
-    : super(ScannerRoute.name, initialChildren: children);
+class ScannerRoute extends PageRouteInfo<ScannerRouteArgs> {
+  ScannerRoute({
+    required ScannerCubit cubit,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ScannerRoute.name,
+         args: ScannerRouteArgs(cubit: cubit, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'ScannerRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ScannerPage();
+      final args = data.argsAs<ScannerRouteArgs>();
+      return ScannerPage(cubit: args.cubit, key: args.key);
     },
   );
+}
+
+class ScannerRouteArgs {
+  const ScannerRouteArgs({required this.cubit, this.key});
+
+  final ScannerCubit cubit;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ScannerRouteArgs{cubit: $cubit, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ScannerRouteArgs) return false;
+    return cubit == other.cubit && key == other.key;
+  }
+
+  @override
+  int get hashCode => cubit.hashCode ^ key.hashCode;
 }
 
 /// generated route for

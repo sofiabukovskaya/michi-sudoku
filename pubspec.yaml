@@ -15,17 +15,17 @@ dev_dependencies:
 melos:
   scripts:
     analyze:
-      run: melos exec -c 1 -- "flutter analyze --no-pub"
+      run: dart run melos exec -c 1 -- "flutter analyze --no-pub"
       description: Analyze every workspace package.
     test:
       run: |
         set -e
-        melos exec -c 1 --depends-on=flutter_test -- "flutter test --no-pub"
-        melos exec --depends-on=test -- "dart test"
+        dart run melos exec -c 1 --depends-on=flutter_test -- "flutter test --no-pub"
+        dart run melos exec --depends-on=test -- "dart test"
       description: Run every workspace test suite.
     format:
       run: dart format .
       description: Format Dart sources in the workspace.
     generate:
-      run: melos exec --depends-on=build_runner -- "dart run build_runner build"
+      run: dart run melos exec --depends-on=build_runner -- "dart run build_runner build"
       description: Generate routes, DI, models, translations and themes.

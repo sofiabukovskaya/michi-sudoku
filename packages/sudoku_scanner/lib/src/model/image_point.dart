@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 final class ImagePoint {
   ImagePoint(this.x, this.y) {
     if (!x.isFinite || !y.isFinite) {
@@ -7,4 +10,11 @@ final class ImagePoint {
 
   final double x;
   final double y;
+
+  @override
+  bool operator ==(Object other) =>
+      other is ImagePoint && x == other.x && y == other.y;
+
+  @override
+  int get hashCode => Object.hash(x, y);
 }

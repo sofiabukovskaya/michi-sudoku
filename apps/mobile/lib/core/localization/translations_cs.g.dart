@@ -306,7 +306,41 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Import z fotoaparátu přijde po základní hře.';
+	@override String get title => 'Skenovat sudoku';
+	@override String get intro => 'Zaberte celou mřížku, vyfoťte ji nebo vyberte snímek.';
+	@override String get openCamera => 'Použít fotoaparát';
+	@override String get choosePhoto => 'Vybrat fotku';
+	@override String get shutter => 'Vyfotit';
+	@override String get frameGuide => 'Nechte všechny čtyři rohy v záběru.';
+	@override String get processing => 'Čteme vaše sudoku…';
+	@override String get reviewTitle => 'Zkontrolujte číslice';
+	@override String get reviewBody => 'Klepnutím na políčko jej před hrou opravíte.';
+	@override String get needsReview => 'Vyžaduje kontrolu';
+	@override String get conflict => 'Číslice v konfliktu';
+	@override String get selected => 'vybráno';
+	@override String get recognized => 'rozpoznáno';
+	@override String get empty => 'prázdné';
+	@override String get clear => 'Vymazat';
+	@override String get confirm => 'Importovat sudoku';
+	@override String get rescan => 'Skenovat znovu';
+	@override String get permissionIntro => 'Pro pořízení snímku povolte fotoaparát.';
+	@override String get permissionDenied => 'Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.';
+	@override String get permissionSettings => 'Povolte fotoaparát v Nastavení nebo vyberte fotku.';
+	@override String get noCamera => 'Fotoaparát není dostupný. Vyberte fotku.';
+	@override String get openSettings => 'Otevřít Nastavení';
+	@override String get imageDecodeFailure => 'Obrázek se nepodařilo přečíst. Zkuste jinou fotku.';
+	@override String get noGridFound => 'Mřížka sudoku nebyla nalezena. Zaberte ji celou.';
+	@override String get invalidGeometry => 'Mřížku se nepodařilo narovnat. Zkuste ostřejší fotku.';
+	@override String get segmentationFailure => 'Mřížku se nepodařilo rozdělit na políčka. Zkuste to znovu.';
+	@override String get recognitionFailure => 'Některé číslice se nepodařilo přečíst. Zkuste to znovu.';
+	@override String get duplicateClues => 'Opravte zvýrazněné konfliktní číslice.';
+	@override String get noSolution => 'Tyto číslice nemají řešení. Zkontrolujte je.';
+	@override String get multipleSolutions => 'Některé číslice mohou chybět; sudoku má více řešení.';
+	@override String get storageFailure => 'Importované sudoku se nepodařilo uložit. Zkuste to znovu.';
+	@override String get validationFailure => 'Tuto úlohu se nepodařilo ověřit. Zkuste ji potvrdit znovu.';
+	@override String get unsupportedCoach => 'MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.';
+	@override String get importedTitle => 'Importované sudoku';
+	@override String lowConfidenceCount({required Object count}) => 'Políčka ke kontrole: ${count}';
 }
 
 // Path: coach
@@ -741,7 +775,41 @@ extension on TranslationsCs {
 			'learn.wrongPlacement' => 'Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici.',
 			'progress.unavailable' => 'Přehled zvládnutých technik přijde později.',
 			'profile.unavailable' => 'Nastavení profilu přijde později.',
-			'scanner.unavailable' => 'Import z fotoaparátu přijde po základní hře.',
+			'scanner.title' => 'Skenovat sudoku',
+			'scanner.intro' => 'Zaberte celou mřížku, vyfoťte ji nebo vyberte snímek.',
+			'scanner.openCamera' => 'Použít fotoaparát',
+			'scanner.choosePhoto' => 'Vybrat fotku',
+			'scanner.shutter' => 'Vyfotit',
+			'scanner.frameGuide' => 'Nechte všechny čtyři rohy v záběru.',
+			'scanner.processing' => 'Čteme vaše sudoku…',
+			'scanner.reviewTitle' => 'Zkontrolujte číslice',
+			'scanner.reviewBody' => 'Klepnutím na políčko jej před hrou opravíte.',
+			'scanner.needsReview' => 'Vyžaduje kontrolu',
+			'scanner.conflict' => 'Číslice v konfliktu',
+			'scanner.selected' => 'vybráno',
+			'scanner.recognized' => 'rozpoznáno',
+			'scanner.empty' => 'prázdné',
+			'scanner.clear' => 'Vymazat',
+			'scanner.confirm' => 'Importovat sudoku',
+			'scanner.rescan' => 'Skenovat znovu',
+			'scanner.permissionIntro' => 'Pro pořízení snímku povolte fotoaparát.',
+			'scanner.permissionDenied' => 'Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.',
+			'scanner.permissionSettings' => 'Povolte fotoaparát v Nastavení nebo vyberte fotku.',
+			'scanner.noCamera' => 'Fotoaparát není dostupný. Vyberte fotku.',
+			'scanner.openSettings' => 'Otevřít Nastavení',
+			'scanner.imageDecodeFailure' => 'Obrázek se nepodařilo přečíst. Zkuste jinou fotku.',
+			'scanner.noGridFound' => 'Mřížka sudoku nebyla nalezena. Zaberte ji celou.',
+			'scanner.invalidGeometry' => 'Mřížku se nepodařilo narovnat. Zkuste ostřejší fotku.',
+			'scanner.segmentationFailure' => 'Mřížku se nepodařilo rozdělit na políčka. Zkuste to znovu.',
+			'scanner.recognitionFailure' => 'Některé číslice se nepodařilo přečíst. Zkuste to znovu.',
+			'scanner.duplicateClues' => 'Opravte zvýrazněné konfliktní číslice.',
+			'scanner.noSolution' => 'Tyto číslice nemají řešení. Zkontrolujte je.',
+			'scanner.multipleSolutions' => 'Některé číslice mohou chybět; sudoku má více řešení.',
+			'scanner.storageFailure' => 'Importované sudoku se nepodařilo uložit. Zkuste to znovu.',
+			'scanner.validationFailure' => 'Tuto úlohu se nepodařilo ověřit. Zkuste ji potvrdit znovu.',
+			'scanner.unsupportedCoach' => 'MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.',
+			'scanner.importedTitle' => 'Importované sudoku',
+			'scanner.lowConfidenceCount' => ({required Object count}) => 'Políčka ke kontrole: ${count}',
 			'coach.step' => ({required Object step}) => 'Nápověda ${step} ze 4',
 			'coach.kTry' => 'Zkusím to',
 			'coach.show' => 'Ukázat',

@@ -12,7 +12,7 @@ void main() {
     for (final locale in AppLocale.values) {
       final translations = locale.buildSync();
       expect(translations.home.game, isNotEmpty);
-      expect(translations.scanner.unavailable, isNotEmpty);
+      expect(translations.scanner.noCamera, isNotEmpty);
       expect(translations.recommendation.repeatedCoachHelp, isNotEmpty);
       expect(
         translations.recommendation.focusTitle(technique: 'Test'),

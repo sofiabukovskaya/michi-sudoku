@@ -29,6 +29,7 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
 import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
 import 'package:michi_mobile/features/recommendation/domain/learning_recommendation_engine.dart';
 import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
+import 'package:michi_mobile/features/scanner/domain/imported_puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
@@ -130,6 +131,15 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
           _difficulty = _definition?.difficulty;
         } on Object {
           // Legacy or removed catalog content remains restorable.
+        }
+        if (_definition == null && stored.puzzleId.startsWith('imported_')) {
+          try {
+            _definition = await getIt<ImportedPuzzleRepository>().load(
+              stored.puzzleId,
+            );
+          } on Object {
+            // The active board restores if import metadata cannot be loaded.
+          }
         }
         try {
           cubit = GameCubit.restore(
@@ -387,6 +397,9 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   }
 
   String _gameTitle(BuildContext context) {
+    if (_definition?.source == PuzzleSource.imported) {
+      return context.t.scanner.importedTitle;
+    }
     final kind = _isDaily
         ? context.t.game.dailyTitle
         : context.t.game.standardTitle;

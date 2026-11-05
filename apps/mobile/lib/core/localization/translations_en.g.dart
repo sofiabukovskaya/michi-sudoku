@@ -306,7 +306,41 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	final TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Camera import will follow the core game.';
+	@override String get title => 'Scan Sudoku';
+	@override String get intro => 'Frame the whole grid, then take a photo or choose one.';
+	@override String get openCamera => 'Use camera';
+	@override String get choosePhoto => 'Choose photo';
+	@override String get shutter => 'Take photo';
+	@override String get frameGuide => 'Keep all four corners inside the frame.';
+	@override String get processing => 'Reading your Sudoku…';
+	@override String get reviewTitle => 'Check the digits';
+	@override String get reviewBody => 'Tap any cell to fix it before playing.';
+	@override String get needsReview => 'Needs review';
+	@override String get conflict => 'Conflicting clue';
+	@override String get selected => 'selected';
+	@override String get recognized => 'recognized';
+	@override String get empty => 'empty';
+	@override String get clear => 'Clear';
+	@override String get confirm => 'Import Sudoku';
+	@override String get rescan => 'Scan again';
+	@override String get permissionIntro => 'Allow camera access to take a photo.';
+	@override String get permissionDenied => 'Camera access was denied. You can still choose a photo.';
+	@override String get permissionSettings => 'Enable camera access in Settings, or choose a photo.';
+	@override String get noCamera => 'No camera is available. Choose a photo instead.';
+	@override String get openSettings => 'Open Settings';
+	@override String get imageDecodeFailure => 'We could not read this image. Try another photo.';
+	@override String get noGridFound => 'No Sudoku grid was found. Include the whole grid and try again.';
+	@override String get invalidGeometry => 'The grid could not be straightened. Try a clearer photo.';
+	@override String get segmentationFailure => 'The grid could not be divided into cells. Try again.';
+	@override String get recognitionFailure => 'Some digits could not be read. Please try again.';
+	@override String get duplicateClues => 'Fix the highlighted conflicting clues.';
+	@override String get noSolution => 'These clues have no valid solution. Check the digits.';
+	@override String get multipleSolutions => 'Some clues may be missing; this board has multiple solutions.';
+	@override String get storageFailure => 'The imported puzzle could not be saved. Try again.';
+	@override String get validationFailure => 'Could not check this puzzle. Try confirming again.';
+	@override String get unsupportedCoach => 'MICHI may not yet explain every step in this Sudoku.';
+	@override String get importedTitle => 'Imported Sudoku';
+	@override String lowConfidenceCount({required Object count}) => 'Low-confidence cells: ${count}';
 }
 
 // Path: coach
@@ -741,7 +775,41 @@ extension on TranslationsEn {
 			'learn.wrongPlacement' => 'That cell or digit does not match the deduction. Recheck the highlighted position.',
 			'progress.unavailable' => 'Technique mastery is coming later.',
 			'profile.unavailable' => 'Profile settings are coming later.',
-			'scanner.unavailable' => 'Camera import will follow the core game.',
+			'scanner.title' => 'Scan Sudoku',
+			'scanner.intro' => 'Frame the whole grid, then take a photo or choose one.',
+			'scanner.openCamera' => 'Use camera',
+			'scanner.choosePhoto' => 'Choose photo',
+			'scanner.shutter' => 'Take photo',
+			'scanner.frameGuide' => 'Keep all four corners inside the frame.',
+			'scanner.processing' => 'Reading your Sudoku…',
+			'scanner.reviewTitle' => 'Check the digits',
+			'scanner.reviewBody' => 'Tap any cell to fix it before playing.',
+			'scanner.needsReview' => 'Needs review',
+			'scanner.conflict' => 'Conflicting clue',
+			'scanner.selected' => 'selected',
+			'scanner.recognized' => 'recognized',
+			'scanner.empty' => 'empty',
+			'scanner.clear' => 'Clear',
+			'scanner.confirm' => 'Import Sudoku',
+			'scanner.rescan' => 'Scan again',
+			'scanner.permissionIntro' => 'Allow camera access to take a photo.',
+			'scanner.permissionDenied' => 'Camera access was denied. You can still choose a photo.',
+			'scanner.permissionSettings' => 'Enable camera access in Settings, or choose a photo.',
+			'scanner.noCamera' => 'No camera is available. Choose a photo instead.',
+			'scanner.openSettings' => 'Open Settings',
+			'scanner.imageDecodeFailure' => 'We could not read this image. Try another photo.',
+			'scanner.noGridFound' => 'No Sudoku grid was found. Include the whole grid and try again.',
+			'scanner.invalidGeometry' => 'The grid could not be straightened. Try a clearer photo.',
+			'scanner.segmentationFailure' => 'The grid could not be divided into cells. Try again.',
+			'scanner.recognitionFailure' => 'Some digits could not be read. Please try again.',
+			'scanner.duplicateClues' => 'Fix the highlighted conflicting clues.',
+			'scanner.noSolution' => 'These clues have no valid solution. Check the digits.',
+			'scanner.multipleSolutions' => 'Some clues may be missing; this board has multiple solutions.',
+			'scanner.storageFailure' => 'The imported puzzle could not be saved. Try again.',
+			'scanner.validationFailure' => 'Could not check this puzzle. Try confirming again.',
+			'scanner.unsupportedCoach' => 'MICHI may not yet explain every step in this Sudoku.',
+			'scanner.importedTitle' => 'Imported Sudoku',
+			'scanner.lowConfidenceCount' => ({required Object count}) => 'Low-confidence cells: ${count}',
 			'coach.step' => ({required Object step}) => 'Hint ${step} of 4',
 			'coach.kTry' => 'I\'ll try',
 			'coach.show' => 'Show me',

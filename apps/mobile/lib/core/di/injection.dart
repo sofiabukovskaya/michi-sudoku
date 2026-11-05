@@ -16,7 +16,13 @@ import 'package:michi_mobile/features/recommendation/application/learning_profil
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
 import 'package:michi_mobile/features/recommendation/domain/daily_learning_focus_repository.dart';
+import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
+import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
+import 'package:michi_mobile/features/scanner/data/drift_imported_puzzle_repository.dart';
+import 'package:michi_mobile/features/scanner/data/platform_scanner_image_source.dart';
+import 'package:michi_mobile/features/scanner/domain/imported_puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
+import 'package:sudoku_scanner/sudoku_scanner.dart';
 
 import 'injection.config.dart';
 
@@ -92,5 +98,49 @@ abstract class AppModule {
     profileProvider: profile,
     focusRepository: focus,
     clock: clock,
+  );
+
+  @lazySingleton
+  GridDetector get gridDetector => const LocalGridDetector();
+
+  @lazySingleton
+  PerspectiveCorrector get perspectiveCorrector =>
+      const HomographyPerspectiveCorrector();
+
+  @lazySingleton
+  CellSegmenter get cellSegmenter => const InsetCellSegmenter();
+
+  @lazySingleton
+  DigitClassifier get digitClassifier => const TemplateDigitClassifier();
+
+  @lazySingleton
+  SudokuScannerService scannerService(
+    GridDetector detector,
+    PerspectiveCorrector corrector,
+    CellSegmenter segmenter,
+    DigitClassifier classifier,
+  ) => LocalSudokuScannerService(
+    detector: detector,
+    corrector: corrector,
+    segmenter: segmenter,
+    classifier: classifier,
+  );
+
+  @lazySingleton
+  ImportedPuzzleRepository importedPuzzleRepository(GameDatabase database) =>
+      DriftImportedPuzzleRepository(database);
+
+  ScannerImageSource get scannerImageSource => PlatformScannerImageSource();
+
+  ScannerCubit scannerCubit(
+    ScannerImageSource source,
+    SudokuScannerService service,
+    PuzzleAnalyzer analyzer,
+    ImportedPuzzleRepository imported,
+  ) => ScannerCubit(
+    imageSource: source,
+    scanner: service,
+    analyzer: analyzer,
+    importedPuzzles: imported,
   );
 }

@@ -19,6 +19,7 @@ import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
 import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
+import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
@@ -159,9 +160,10 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Future<void> _startNew() async {
-    final difficulty = await showModalBottomSheet<PuzzleDifficulty>(
+    final choice = await showModalBottomSheet<Object>(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (sheetContext) => MichiBottomSheet(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -202,11 +204,25 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               onPressed: () =>
                   Navigator.of(sheetContext).pop(PuzzleDifficulty.expert),
             ),
+            const SizedBox(height: MichiSpacing.md),
+            MichiButton(
+              key: const ValueKey('scan-sudoku'),
+              label: sheetContext.t.scanner.title,
+              variant: MichiButtonVariant.secondary,
+              onPressed: () => Navigator.of(sheetContext).pop('scanner'),
+            ),
           ],
         ),
       ),
     );
-    if (difficulty == null || !mounted) return;
+    if (choice == null || !mounted) return;
+    if (choice == 'scanner') {
+      if (!await _confirmReplacement() || !mounted) return;
+      await context.router.push(ScannerRoute(cubit: getIt<ScannerCubit>()));
+      if (mounted) await _reload();
+      return;
+    }
+    final difficulty = choice as PuzzleDifficulty;
     try {
       final puzzle = await _puzzles.selectPuzzle(difficulty: difficulty);
       if (!mounted || !await _confirmReplacement()) return;
@@ -573,6 +589,7 @@ final class _DailyCard extends StatelessWidget {
       PuzzleDifficulty.medium => context.t.home.medium,
       PuzzleDifficulty.advanced => context.t.home.advanced,
       PuzzleDifficulty.expert => context.t.home.expert,
+      null => throw StateError('Daily catalog puzzle has no difficulty.'),
     };
     final techniques = daily.puzzle.requiredTechniques
         .where((technique) => technique != SudokuTechnique.nakedSingle)
