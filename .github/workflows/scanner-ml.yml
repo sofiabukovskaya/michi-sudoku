@@ -1,0 +1,39 @@
+name: Scanner ML
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/sudoku_scanner_ml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.3.2
+      - run: uv python install 3.11
+      - run: uv sync --locked --python 3.11
+      - run: uv run --locked ruff format --check src tests
+      - run: uv run --locked ruff check src tests
+      - run: uv run --locked pytest -q
+
+  flutter:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.8'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart run melos run analyze
+      - name: Prepare macOS TFLite test runtime
+        run: |
+          bash tools/sudoku_scanner_ml/scripts/prepare_flutter_test_runtime.sh \
+            "$(dirname "$(dirname "$(command -v flutter)")")" \
+            "$HOME/.pub-cache"
+      - run: dart run melos run test

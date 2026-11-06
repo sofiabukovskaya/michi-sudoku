@@ -32,7 +32,7 @@ final class ScannerReviewData {
   final ScannerReviewIssue? issue;
 
   static const double highConfidence = 0.90;
-  static const double lowConfidence = 0.70;
+  static const double lowConfidence = 0.80;
 
   bool needsReview(CellRef cell) =>
       !edited.contains(cell) &&

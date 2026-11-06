@@ -1,0 +1,613 @@
+{
+  "samples": 3240,
+  "accuracy": 0.9209876543209876,
+  "per_class": {
+    "0": {
+      "samples": 2084,
+      "precision": 0.9838709677419355,
+      "recall": 0.9952015355086372
+    },
+    "1": {
+      "samples": 129,
+      "precision": 0.9369369369369369,
+      "recall": 0.8062015503875969
+    },
+    "2": {
+      "samples": 139,
+      "precision": 0.9369369369369369,
+      "recall": 0.7482014388489209
+    },
+    "3": {
+      "samples": 123,
+      "precision": 0.732824427480916,
+      "recall": 0.7804878048780488
+    },
+    "4": {
+      "samples": 124,
+      "precision": 0.8695652173913043,
+      "recall": 0.8064516129032258
+    },
+    "5": {
+      "samples": 127,
+      "precision": 0.8403361344537815,
+      "recall": 0.7874015748031497
+    },
+    "6": {
+      "samples": 117,
+      "precision": 0.8301886792452831,
+      "recall": 0.7521367521367521
+    },
+    "7": {
+      "samples": 125,
+      "precision": 0.8981481481481481,
+      "recall": 0.776
+    },
+    "8": {
+      "samples": 147,
+      "precision": 0.5515695067264574,
+      "recall": 0.8367346938775511
+    },
+    "9": {
+      "samples": 125,
+      "precision": 0.9074074074074074,
+      "recall": 0.784
+    }
+  },
+  "confusion_matrix": [
+    [
+      2074,
+      0,
+      0,
+      2,
+      1,
+      0,
+      2,
+      0,
+      5,
+      0
+    ],
+    [
+      3,
+      104,
+      0,
+      7,
+      0,
+      3,
+      0,
+      2,
+      9,
+      1
+    ],
+    [
+      1,
+      0,
+      104,
+      9,
+      1,
+      3,
+      3,
+      3,
+      14,
+      1
+    ],
+    [
+      2,
+      2,
+      0,
+      96,
+      0,
+      4,
+      1,
+      0,
+      15,
+      3
+    ],
+    [
+      8,
+      0,
+      3,
+      1,
+      100,
+      0,
+      0,
+      2,
+      10,
+      0
+    ],
+    [
+      2,
+      2,
+      2,
+      3,
+      1,
+      100,
+      3,
+      0,
+      13,
+      1
+    ],
+    [
+      2,
+      0,
+      1,
+      3,
+      4,
+      1,
+      88,
+      1,
+      15,
+      2
+    ],
+    [
+      10,
+      0,
+      0,
+      4,
+      0,
+      2,
+      0,
+      97,
+      12,
+      0
+    ],
+    [
+      4,
+      0,
+      1,
+      3,
+      3,
+      2,
+      8,
+      1,
+      123,
+      2
+    ],
+    [
+      2,
+      3,
+      0,
+      3,
+      5,
+      4,
+      1,
+      2,
+      7,
+      98
+    ]
+  ],
+  "confidence_bins": {
+    "0.7": {
+      "count": 2931,
+      "wrong": 34
+    },
+    "0.8": {
+      "count": 2903,
+      "wrong": 27
+    },
+    "0.9": {
+      "count": 2835,
+      "wrong": 22
+    },
+    "0.95": {
+      "count": 2735,
+      "wrong": 20
+    },
+    "0.98": {
+      "count": 2596,
+      "wrong": 14
+    },
+    "0.99": {
+      "count": 2428,
+      "wrong": 12
+    },
+    "0.995": {
+      "count": 2279,
+      "wrong": 8
+    }
+  },
+  "boards": {
+    "wicht-image1005": {
+      "cells": 81,
+      "recognized_clues": 23,
+      "correct_recognized_clues": 23,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image1009": {
+      "cells": 81,
+      "recognized_clues": 28,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 2,
+      "manual_corrections": 2,
+      "exact_board": false
+    },
+    "wicht-image1019": {
+      "cells": 81,
+      "recognized_clues": 33,
+      "correct_recognized_clues": 33,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image1024": {
+      "cells": 81,
+      "recognized_clues": 25,
+      "correct_recognized_clues": 2,
+      "false_digits": 1,
+      "missed_digits": 0,
+      "wrong_digits": 22,
+      "manual_corrections": 23,
+      "exact_board": false
+    },
+    "wicht-image1041": {
+      "cells": 81,
+      "recognized_clues": 28,
+      "correct_recognized_clues": 3,
+      "false_digits": 4,
+      "missed_digits": 4,
+      "wrong_digits": 21,
+      "manual_corrections": 29,
+      "exact_board": false
+    },
+    "wicht-image1072": {
+      "cells": 81,
+      "recognized_clues": 36,
+      "correct_recognized_clues": 36,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image1073": {
+      "cells": 81,
+      "recognized_clues": 29,
+      "correct_recognized_clues": 29,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image1080": {
+      "cells": 81,
+      "recognized_clues": 29,
+      "correct_recognized_clues": 29,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image1088": {
+      "cells": 81,
+      "recognized_clues": 29,
+      "correct_recognized_clues": 25,
+      "false_digits": 1,
+      "missed_digits": 0,
+      "wrong_digits": 3,
+      "manual_corrections": 4,
+      "exact_board": false
+    },
+    "wicht-image114": {
+      "cells": 81,
+      "recognized_clues": 33,
+      "correct_recognized_clues": 31,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 2,
+      "manual_corrections": 2,
+      "exact_board": false
+    },
+    "wicht-image117": {
+      "cells": 81,
+      "recognized_clues": 33,
+      "correct_recognized_clues": 33,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image120": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 23,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 3,
+      "manual_corrections": 3,
+      "exact_board": false
+    },
+    "wicht-image126": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image140": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image148": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image153": {
+      "cells": 81,
+      "recognized_clues": 34,
+      "correct_recognized_clues": 32,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 2,
+      "manual_corrections": 2,
+      "exact_board": false
+    },
+    "wicht-image166": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image175": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 4,
+      "manual_corrections": 4,
+      "exact_board": false
+    },
+    "wicht-image176": {
+      "cells": 81,
+      "recognized_clues": 34,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 4,
+      "manual_corrections": 4,
+      "exact_board": false
+    },
+    "wicht-image179": {
+      "cells": 81,
+      "recognized_clues": 34,
+      "correct_recognized_clues": 34,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image18": {
+      "cells": 81,
+      "recognized_clues": 28,
+      "correct_recognized_clues": 27,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 1,
+      "manual_corrections": 1,
+      "exact_board": false
+    },
+    "wicht-image193": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "wicht-image205": {
+      "cells": 81,
+      "recognized_clues": 34,
+      "correct_recognized_clues": 10,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 24,
+      "manual_corrections": 24,
+      "exact_board": false
+    },
+    "wicht-image208": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 2,
+      "false_digits": 0,
+      "missed_digits": 2,
+      "wrong_digits": 28,
+      "manual_corrections": 30,
+      "exact_board": false
+    },
+    "wicht-image210": {
+      "cells": 81,
+      "recognized_clues": 23,
+      "correct_recognized_clues": 5,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 18,
+      "manual_corrections": 18,
+      "exact_board": false
+    },
+    "wicht-image211": {
+      "cells": 81,
+      "recognized_clues": 25,
+      "correct_recognized_clues": 4,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 21,
+      "manual_corrections": 21,
+      "exact_board": false
+    },
+    "wicht-image25": {
+      "cells": 81,
+      "recognized_clues": 21,
+      "correct_recognized_clues": 18,
+      "false_digits": 0,
+      "missed_digits": 5,
+      "wrong_digits": 3,
+      "manual_corrections": 8,
+      "exact_board": false
+    },
+    "wicht-image31": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 28,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 2,
+      "manual_corrections": 2,
+      "exact_board": false
+    },
+    "wicht-image32": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 4,
+      "manual_corrections": 4,
+      "exact_board": false
+    },
+    "wicht-image34": {
+      "cells": 81,
+      "recognized_clues": 25,
+      "correct_recognized_clues": 17,
+      "false_digits": 0,
+      "missed_digits": 1,
+      "wrong_digits": 8,
+      "manual_corrections": 9,
+      "exact_board": false
+    },
+    "wicht-image35": {
+      "cells": 81,
+      "recognized_clues": 24,
+      "correct_recognized_clues": 19,
+      "false_digits": 0,
+      "missed_digits": 2,
+      "wrong_digits": 5,
+      "manual_corrections": 7,
+      "exact_board": false
+    },
+    "wicht-image39": {
+      "cells": 81,
+      "recognized_clues": 22,
+      "correct_recognized_clues": 16,
+      "false_digits": 0,
+      "missed_digits": 4,
+      "wrong_digits": 6,
+      "manual_corrections": 10,
+      "exact_board": false
+    },
+    "wicht-image46": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 27,
+      "false_digits": 0,
+      "missed_digits": 6,
+      "wrong_digits": 3,
+      "manual_corrections": 9,
+      "exact_board": false
+    },
+    "wicht-image47": {
+      "cells": 81,
+      "recognized_clues": 28,
+      "correct_recognized_clues": 17,
+      "false_digits": 4,
+      "missed_digits": 2,
+      "wrong_digits": 7,
+      "manual_corrections": 13,
+      "exact_board": false
+    },
+    "wicht-image50": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 29,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 1,
+      "manual_corrections": 1,
+      "exact_board": false
+    },
+    "wicht-image51": {
+      "cells": 81,
+      "recognized_clues": 28,
+      "correct_recognized_clues": 19,
+      "false_digits": 0,
+      "missed_digits": 6,
+      "wrong_digits": 9,
+      "manual_corrections": 15,
+      "exact_board": false
+    },
+    "wicht-image73": {
+      "cells": 81,
+      "recognized_clues": 25,
+      "correct_recognized_clues": 22,
+      "false_digits": 0,
+      "missed_digits": 1,
+      "wrong_digits": 3,
+      "manual_corrections": 4,
+      "exact_board": false
+    },
+    "wicht-image83": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 25,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 1,
+      "manual_corrections": 1,
+      "exact_board": false
+    },
+    "wicht-image85": {
+      "cells": 81,
+      "recognized_clues": 29,
+      "correct_recognized_clues": 24,
+      "false_digits": 0,
+      "missed_digits": 1,
+      "wrong_digits": 5,
+      "manual_corrections": 6,
+      "exact_board": false
+    },
+    "wicht-image91": {
+      "cells": 81,
+      "recognized_clues": 26,
+      "correct_recognized_clues": 26,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    }
+  },
+  "model": "michi_digit_v1.tflite",
+  "manifest": "Wicht V2 official 40-photo test split",
+  "split": "test"
+}

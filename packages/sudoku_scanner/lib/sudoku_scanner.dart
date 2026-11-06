@@ -16,6 +16,7 @@ export 'src/model/scan_image.dart';
 export 'src/model/scan_result.dart';
 export 'src/recognition/digit_classifier.dart';
 export 'src/recognition/template_digit_classifier.dart';
+export 'src/recognition/tflite_digit_classifier.dart';
 export 'src/scanner/local_sudoku_scanner_service.dart';
 export 'src/scanner/sudoku_scanner_service.dart';
 export 'src/tracking/grid_tracker.dart';

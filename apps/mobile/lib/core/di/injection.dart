@@ -111,7 +111,7 @@ abstract class AppModule {
   CellSegmenter get cellSegmenter => const InsetCellSegmenter();
 
   @lazySingleton
-  DigitClassifier get digitClassifier => const TemplateDigitClassifier();
+  DigitClassifier get digitClassifier => TFLiteDigitClassifier();
 
   @lazySingleton
   SudokuScannerService scannerService(

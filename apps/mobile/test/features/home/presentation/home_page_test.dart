@@ -149,4 +149,37 @@ void main() {
     expect(find.textContaining('2026-10-27'), findsOneWidget);
     expect(find.textContaining('2026-10-26'), findsNothing);
   });
+
+  testWidgets('Scan Sudoku remains reachable in a compact puzzle sheet', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    tester.view.physicalSize = const Size(375, 667);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final database = GameDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          theme: AppTheme.light,
+          home: HomePage(
+            repository: DriftGameRepository(database),
+            puzzleRepository: _DailyTestPuzzles(),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Another puzzle'));
+    await tester.pumpAndSettle();
+
+    final scan = find.byKey(const ValueKey('scan-sudoku'));
+    expect(scan, findsOneWidget);
+    await tester.ensureVisible(scan);
+    await tester.pumpAndSettle();
+    expect(scan.hitTestable(), findsOneWidget);
+  });
 }

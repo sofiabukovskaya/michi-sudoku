@@ -84,11 +84,18 @@ final class InsetCellSegmenter implements CellSegmenter {
       for (var position = start + 1; position <= end; position++) {
         if (scores[position] > scores[strongest]) strongest = position;
       }
-      if (scores[strongest] < length * 0.35 ||
-          strongest - lines.last < cell * 0.5) {
+      // The homography already guarantees nine equal cells. Faint newspaper
+      // lines can fall below the projection threshold; use the geometric line
+      // then, while retaining detected positions for visible lines.
+      final position =
+          scores[strongest] < length * 0.35 ||
+              strongest - lines.last < cell * 0.5
+          ? expected.round()
+          : strongest;
+      if (position - lines.last < cell * 0.5) {
         throw const ScanFailure(ScanFailureKind.segmentationFailure);
       }
-      lines.add(strongest);
+      lines.add(position);
     }
     lines.add(length - 1);
     if (lines.last - lines[8] < cell * 0.5) {

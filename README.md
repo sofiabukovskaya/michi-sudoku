@@ -2,9 +2,10 @@
 
 MICHI is a local-first Flutter app for learning to solve Sudoku logically. The
 Coach teaches the reasoning behind a move through progressive hints.
-Phases 1–13 include the workspace foundation, Sudoku engine, playable Game and
+Phases 1–14 include the workspace foundation, Sudoku engine, playable Game and
 Coach, local restoration, bundled puzzles, Learn and Practice, recommendations,
-and a still-image scanner with editable review. Design audits record the visual
+and a still-image scanner with a local printed-digit model and editable review.
+Design audits record the visual
 decisions for [Phase 10](docs/phase10_design_audit.md) and
 [scanner Phase 13](docs/phase13_scanner_design_audit.md).
 
@@ -28,6 +29,7 @@ apps/mobile/                   Flutter app (iOS and Android)
 packages/sudoku_engine/        Pure Dart rules, solvers, Coach planning
 packages/sudoku_scanner/       Flutter still-image recognition pipeline
 packages/michi_design_system/  Flutter tokens and reusable controls
+tools/sudoku_scanner_ml/        Python training, evaluation and export
 ```
 
 Dependency direction:
@@ -174,6 +176,21 @@ The home screen selects a bundled puzzle by difficulty, starts or continues
 today's Daily, or continues the saved game. Game, content, and Coach behavior
 is covered by Cubit, catalog validation, migration, repository, widget, and
 BDD tests under `apps/mobile/test/features/`.
+
+## Printed Sudoku recognition
+
+The scanner runs a bundled 32×32 grayscale, ten-class TFLite model on-device.
+Python tooling trains and exports the model; the app does not use Python,
+remote inference or image uploads. The classifier implements the existing
+`DigitClassifier` contract, while editable Review and Sudoku validation remain
+in the import flow. The model's official Wicht V2 real-photo holdout cell
+accuracy is **92.10%** with **6.40 corrections per board on average**; this is
+measured with annotated grid outlines, so grid detection quality is separate.
+See the [evaluation](docs/phase14_scanner_ml_evaluation.md),
+[model card](docs/phase14_digit_model_card.md), and
+[reproduction guide](tools/sudoku_scanner_ml/README.md) for data provenance,
+splits, metrics and limitations. CI checks Python tests, model loading,
+Flutter analysis and workspace tests without retraining.
 
 ## Decisions and scope
 

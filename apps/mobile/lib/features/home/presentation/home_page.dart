@@ -165,53 +165,60 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (sheetContext) => MichiBottomSheet(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              sheetContext.t.home.chooseDifficulty,
-              style: MichiTypography.heading,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.8,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  sheetContext.t.home.chooseDifficulty,
+                  style: MichiTypography.heading,
+                ),
+                const SizedBox(height: MichiSpacing.lg),
+                MichiButton(
+                  key: const ValueKey('difficulty-easy'),
+                  label: sheetContext.t.home.easy,
+                  onPressed: () =>
+                      Navigator.of(sheetContext).pop(PuzzleDifficulty.easy),
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                MichiButton(
+                  key: const ValueKey('difficulty-medium'),
+                  label: sheetContext.t.home.medium,
+                  variant: MichiButtonVariant.secondary,
+                  onPressed: () =>
+                      Navigator.of(sheetContext).pop(PuzzleDifficulty.medium),
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                MichiButton(
+                  key: const ValueKey('difficulty-advanced'),
+                  label: sheetContext.t.home.advanced,
+                  variant: MichiButtonVariant.secondary,
+                  onPressed: () =>
+                      Navigator.of(sheetContext).pop(PuzzleDifficulty.advanced),
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                MichiButton(
+                  key: const ValueKey('difficulty-expert'),
+                  label: sheetContext.t.home.expert,
+                  variant: MichiButtonVariant.secondary,
+                  onPressed: () =>
+                      Navigator.of(sheetContext).pop(PuzzleDifficulty.expert),
+                ),
+                const SizedBox(height: MichiSpacing.md),
+                MichiButton(
+                  key: const ValueKey('scan-sudoku'),
+                  label: sheetContext.t.scanner.title,
+                  variant: MichiButtonVariant.secondary,
+                  onPressed: () => Navigator.of(sheetContext).pop('scanner'),
+                ),
+              ],
             ),
-            const SizedBox(height: MichiSpacing.lg),
-            MichiButton(
-              key: const ValueKey('difficulty-easy'),
-              label: sheetContext.t.home.easy,
-              onPressed: () =>
-                  Navigator.of(sheetContext).pop(PuzzleDifficulty.easy),
-            ),
-            const SizedBox(height: MichiSpacing.sm),
-            MichiButton(
-              key: const ValueKey('difficulty-medium'),
-              label: sheetContext.t.home.medium,
-              variant: MichiButtonVariant.secondary,
-              onPressed: () =>
-                  Navigator.of(sheetContext).pop(PuzzleDifficulty.medium),
-            ),
-            const SizedBox(height: MichiSpacing.sm),
-            MichiButton(
-              key: const ValueKey('difficulty-advanced'),
-              label: sheetContext.t.home.advanced,
-              variant: MichiButtonVariant.secondary,
-              onPressed: () =>
-                  Navigator.of(sheetContext).pop(PuzzleDifficulty.advanced),
-            ),
-            const SizedBox(height: MichiSpacing.sm),
-            MichiButton(
-              key: const ValueKey('difficulty-expert'),
-              label: sheetContext.t.home.expert,
-              variant: MichiButtonVariant.secondary,
-              onPressed: () =>
-                  Navigator.of(sheetContext).pop(PuzzleDifficulty.expert),
-            ),
-            const SizedBox(height: MichiSpacing.md),
-            MichiButton(
-              key: const ValueKey('scan-sudoku'),
-              label: sheetContext.t.scanner.title,
-              variant: MichiButtonVariant.secondary,
-              onPressed: () => Navigator.of(sheetContext).pop('scanner'),
-            ),
-          ],
+          ),
         ),
       ),
     );

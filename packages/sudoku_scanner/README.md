@@ -27,18 +27,20 @@ Mobile Review → corrected SudokuBoard → constraints + ExactSolver
 - `SudokuScannerService` coordinates the stages and returns the predictions,
   geometry, and mean confidence. `ScanFailure` has structured failure kinds.
 
-`TemplateDigitClassifier` is the **interim Phase 13 recognizer**. It detects
-blanks and compares simple 5×7 ink patterns. Non-empty confidence is capped at
-0.82. Print fonts, handwriting, blur, shadows, grid contact, and perspective
-artifacts can cause wrong digits. The mobile Review screen must be used before
-import. Confidence thresholds (below 0.70 needs review, 0.90 and above high)
-are application presentation values, not calibrated probabilities.
+`TFLiteDigitClassifier` is the Phase 14 runtime recognizer. It loads the
+versioned float32 model once, runs inference through an isolate worker, and
+returns the existing `DigitPrediction` type. Its 32×32 grayscale input is
+prepared by `ModelCellPreprocessor` with Python/Dart parity fixtures.
+`TemplateDigitClassifier` remains available only for Phase 13 regression
+comparison. Review is still mandatory: real-photo holdout errors include
+high-confidence wrong digits. Current app thresholds are below 0.80 for a
+review marker and 0.90 for high confidence, selected from validation data.
+These categories are not a guarantee of correctness.
 
 The `image` package provides portable decoding, pixels, and encoding without a
 native OpenCV dependency. EXIF orientation is baked before geometry work. The
 pipeline bounds the longest input side to 1400 pixels and runs expensive stages
-off the UI isolate. `DigitClassifier` remains replaceable by a Phase 14 TFLite
-implementation without changing the scanner service or mobile Review flow.
+off the UI isolate. The mobile app's Review and import flow is unchanged.
 
 Run `flutter test` and `flutter analyze` from this directory. Synthetic images
 cover straight, perspective, thick-line, uneven-light, blank, segmentation,
