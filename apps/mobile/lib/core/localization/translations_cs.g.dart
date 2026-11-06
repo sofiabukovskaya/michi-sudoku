@@ -35,7 +35,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsCs _root = this; // ignore: unused_field
 
-	@override 
+	@override
 	TranslationsCs $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsCs(meta: meta ?? this.$meta);
 
 	// Translations
@@ -55,6 +55,8 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$coach$cs coach = _Translations$coach$cs._(_root);
 	@override late final _Translations$why$cs why = _Translations$why$cs._(_root);
 	@override late final _Translations$recommendation$cs recommendation = _Translations$recommendation$cs._(_root);
+	@override late final _Translations$week$cs week = _Translations$week$cs._(_root);
+	@override late final _Translations$settings$cs settings = _Translations$settings$cs._(_root);
 }
 
 // Path: common
@@ -139,7 +141,7 @@ class _Translations$auth$cs extends Translations$auth$uk {
 
 	// Translations
 	@override String get title => 'Účet';
-	@override String get unavailable => 'Synchronizace postupu přijde později.';
+	@override String get unavailable => 'Pokrok se ukládá v tomto zařízení.';
 }
 
 // Path: home
@@ -178,6 +180,13 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get weekTitle => 'Tento týden';
 	@override String get weekDetails => 'Podrobnosti';
 	@override String get weekdaysShort => 'Po|Út|St|Čt|Pá|So|Ne';
+	@override String get newPuzzleTitle => 'Nové sudoku';
+	@override String get catalogSource => 'Vyber hlavolam';
+	@override String get scanSource => 'Naskenovat sudoku';
+	@override String get scanSourceDetail => 'Fotka nebo fotoaparát';
+	@override String get weekStatusDone => 'Dokončeno';
+	@override String get weekStatusToday => 'Dnes';
+	@override String get weekStatusEmpty => 'Bez aktivity';
 }
 
 // Path: game
@@ -277,6 +286,12 @@ class _Translations$learn$cs extends Translations$learn$uk {
 	@override String get extraElimination => 'Jeden vybraný kandidát se tímto vzorem neodstraňuje. Zkontroluj zvýrazněná pole.';
 	@override String get missingElimination => 'Je třeba odstranit další kandidáty. Sleduj zvýrazněnou jednotku.';
 	@override String get wrongPlacement => 'Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici.';
+	@override String minutes({required Object count}) => '${count} min';
+	@override String tasks({required Object count}) => '${count} úloh';
+	@override String get wrongCell => 'Toto políčko není součástí vzoru. Podívej se na zvýrazněná políčka.';
+	@override String get wrongDigit => 'Tuto číslici vzor neurčuje. Zkontroluj kandidáty ve zvýrazněném políčku.';
+	@override String get wrongCellAndDigit => 'Výběr neodpovídá vzoru. Porovnej zvýrazněná políčka a jejich kandidáty.';
+	@override String findTechnique({required Object technique}) => 'Najdi: ${technique}';
 }
 
 // Path: progress
@@ -286,7 +301,19 @@ class _Translations$progress$cs extends Translations$progress$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Přehled zvládnutých technik přijde později.';
+	@override String get doingWell => 'Co ti jde';
+	@override String get learningNow => 'Co se právě učíš';
+	@override String get next => 'Další krok';
+	@override String get noStrong => 'Nejsilnější techniky se ukážou po procvičování.';
+	@override String get startLearning => 'Začít se učit';
+	@override String get thisWeek => 'Tento týden';
+	@override String completed({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
+		one: '${n} dokončený hlavolam',
+		few: '${n} dokončené hlavolamy',
+		other: '${n} dokončených hlavolamů',
+	);
+	@override String mastery({required Object percent}) => 'Zvládnuto ${percent} %';
+	@override String get openTechnique => 'Otevřít techniku';
 }
 
 // Path: profile
@@ -296,7 +323,16 @@ class _Translations$profile$cs extends Translations$profile$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Nastavení profilu přijde později.';
+	@override String get guest => 'Host';
+	@override String get localOnly => 'Postup se ukládá do tohoto zařízení.';
+	@override String get puzzles => 'Hlavolamy';
+	@override String get mastered => 'Zvládnuto';
+	@override String get activeDays => 'Aktivní dny';
+	@override String get learnRow => 'Učení';
+	@override String get learnDetail => 'Techniky a cvičení';
+	@override String get settingsRow => 'Nastavení';
+	@override String get settingsDetail => 'Jazyk';
+	@override String get activity => 'Tvoje aktivita';
 }
 
 // Path: scanner
@@ -409,9 +445,9 @@ class _Translations$why$cs extends Translations$why$uk {
 	@override String get lesson => 'Lekce';
 	@override String get gotIt => 'Rozumím';
 	@override String unitRestrictions({required Object unit, required Object digits}) => 'V ${unit} již jsou číslice: ${digits}.';
-	@override String onlyCandidate({required Object digit}) => 'V této buňce zbývá jen ${digit}.';
+	@override String onlyCandidate({required Object digit}) => 'Řádek, sloupec a blok vylučují ostatní číslice. Sem patří jen ${digit}.';
 	@override String unitSearch({required Object digit, required Object unit}) => 'Hledáme místo pro ${digit} v ${unit}.';
-	@override String solePosition({required Object unit, required Object digit}) => 'Jen tato buňka v ${unit} může obsahovat ${digit}.';
+	@override String solePosition({required Object digit, required Object unit}) => 'Přeškrtnuté ${digit} ukazují, kam v ${unit} číslice nemůže. Zbývá jediné políčko.';
 	@override String placement({required Object digit}) => 'Proto sem patří ${digit}.';
 	@override String unitRow({required Object index}) => 'řádku ${index}';
 	@override String unitColumn({required Object index}) => 'sloupci ${index}';
@@ -437,6 +473,45 @@ class _Translations$recommendation$cs extends Translations$recommendation$uk {
 	@override String get nextTechnique => 'Další krok na vaší cestě.';
 	@override String get masteredNeedsReview => 'Známou techniku je dobré zopakovat.';
 	@override String get allMasteredReview => 'Zopakujte si zvládnutou techniku.';
+}
+
+// Path: week
+class _Translations$week$cs extends Translations$week$uk {
+	_Translations$week$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Tento týden';
+	@override String get empty => 'Tento týden zatím nemáš dokončené sudoku. Aktivita se objeví při hraní.';
+	@override String get puzzles => 'Hlavolamy';
+	@override String get minutes => 'Minuty';
+	@override String get daily => 'Denní';
+	@override String activeDays({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
+		one: '${n} aktivní den',
+		few: '${n} aktivní dny',
+		other: '${n} aktivních dní',
+	);
+	@override String completedDay({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
+		one: '${n} dokončený hlavolam',
+		few: '${n} dokončené hlavolamy',
+		other: '${n} dokončených hlavolamů',
+	);
+	@override String get today => 'Dnes';
+	@override String get noActivity => 'Bez aktivity';
+	@override String get summary => 'Tvoje místní aktivita v sudoku';
+}
+
+// Path: settings
+class _Translations$settings$cs extends Translations$settings$uk {
+	_Translations$settings$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Nastavení';
+	@override String get language => 'Jazyk';
+	@override String get languageDetail => 'Vyber jazyk aplikace MICHI.';
 }
 
 // Path: learn.lessons
@@ -615,7 +690,7 @@ extension on TranslationsCs {
 			'playerLevel.advanced' => 'Chci výzvu',
 			'playerLevel.advancedDetail' => 'X-Wing a dál',
 			'auth.title' => 'Účet',
-			'auth.unavailable' => 'Synchronizace postupu přijde později.',
+			'auth.unavailable' => 'Pokrok se ukládá v tomto zařízení.',
 			'home.title' => 'Tvoje cesta sudoku',
 			'home.game' => 'Hrát',
 			'home.continueGame' => 'Pokračovat ve hře',
@@ -645,6 +720,13 @@ extension on TranslationsCs {
 			'home.weekTitle' => 'Tento týden',
 			'home.weekDetails' => 'Podrobnosti',
 			'home.weekdaysShort' => 'Po|Út|St|Čt|Pá|So|Ne',
+			'home.newPuzzleTitle' => 'Nové sudoku',
+			'home.catalogSource' => 'Vyber hlavolam',
+			'home.scanSource' => 'Naskenovat sudoku',
+			'home.scanSourceDetail' => 'Fotka nebo fotoaparát',
+			'home.weekStatusDone' => 'Dokončeno',
+			'home.weekStatusToday' => 'Dnes',
+			'home.weekStatusEmpty' => 'Bez aktivity',
 			'game.title' => 'Denní sudoku · Střední',
 			'game.undo' => 'Zpět',
 			'game.erase' => 'Smazat',
@@ -773,8 +855,31 @@ extension on TranslationsCs {
 			'learn.extraElimination' => 'Jeden vybraný kandidát se tímto vzorem neodstraňuje. Zkontroluj zvýrazněná pole.',
 			'learn.missingElimination' => 'Je třeba odstranit další kandidáty. Sleduj zvýrazněnou jednotku.',
 			'learn.wrongPlacement' => 'Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici.',
-			'progress.unavailable' => 'Přehled zvládnutých technik přijde později.',
-			'profile.unavailable' => 'Nastavení profilu přijde později.',
+			'learn.minutes' => ({required Object count}) => '${count} min',
+			'learn.tasks' => ({required Object count}) => '${count} úloh',
+			'learn.wrongCell' => 'Toto políčko není součástí vzoru. Podívej se na zvýrazněná políčka.',
+			'learn.wrongDigit' => 'Tuto číslici vzor neurčuje. Zkontroluj kandidáty ve zvýrazněném políčku.',
+			'learn.wrongCellAndDigit' => 'Výběr neodpovídá vzoru. Porovnej zvýrazněná políčka a jejich kandidáty.',
+			'learn.findTechnique' => ({required Object technique}) => 'Najdi: ${technique}',
+			'progress.doingWell' => 'Co ti jde',
+			'progress.learningNow' => 'Co se právě učíš',
+			'progress.next' => 'Další krok',
+			'progress.noStrong' => 'Nejsilnější techniky se ukážou po procvičování.',
+			'progress.startLearning' => 'Začít se učit',
+			'progress.thisWeek' => 'Tento týden',
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ),
+			'progress.mastery' => ({required Object percent}) => 'Zvládnuto ${percent} %',
+			'progress.openTechnique' => 'Otevřít techniku',
+			'profile.guest' => 'Host',
+			'profile.localOnly' => 'Postup se ukládá do tohoto zařízení.',
+			'profile.puzzles' => 'Hlavolamy',
+			'profile.mastered' => 'Zvládnuto',
+			'profile.activeDays' => 'Aktivní dny',
+			'profile.learnRow' => 'Učení',
+			'profile.learnDetail' => 'Techniky a cvičení',
+			'profile.settingsRow' => 'Nastavení',
+			'profile.settingsDetail' => 'Jazyk',
+			'profile.activity' => 'Tvoje aktivita',
 			'scanner.title' => 'Skenovat sudoku',
 			'scanner.intro' => 'Zaberte celou mřížku, vyfoťte ji nebo vyberte snímek.',
 			'scanner.openCamera' => 'Použít fotoaparát',
@@ -860,9 +965,9 @@ extension on TranslationsCs {
 			'why.lesson' => 'Lekce',
 			'why.gotIt' => 'Rozumím',
 			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'V ${unit} již jsou číslice: ${digits}.',
-			'why.onlyCandidate' => ({required Object digit}) => 'V této buňce zbývá jen ${digit}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'Řádek, sloupec a blok vylučují ostatní číslice. Sem patří jen ${digit}.',
 			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Hledáme místo pro ${digit} v ${unit}.',
-			'why.solePosition' => ({required Object unit, required Object digit}) => 'Jen tato buňka v ${unit} může obsahovat ${digit}.',
+			'why.solePosition' => ({required Object digit, required Object unit}) => 'Přeškrtnuté ${digit} ukazují, kam v ${unit} číslice nemůže. Zbývá jediné políčko.',
 			'why.placement' => ({required Object digit}) => 'Proto sem patří ${digit}.',
 			'why.unitRow' => ({required Object index}) => 'řádku ${index}',
 			'why.unitColumn' => ({required Object index}) => 'sloupci ${index}',
@@ -879,6 +984,19 @@ extension on TranslationsCs {
 			'recommendation.nextTechnique' => 'Další krok na vaší cestě.',
 			'recommendation.masteredNeedsReview' => 'Známou techniku je dobré zopakovat.',
 			'recommendation.allMasteredReview' => 'Zopakujte si zvládnutou techniku.',
+			'week.title' => 'Tento týden',
+			'week.empty' => 'Tento týden zatím nemáš dokončené sudoku. Aktivita se objeví při hraní.',
+			'week.puzzles' => 'Hlavolamy',
+			'week.minutes' => 'Minuty',
+			'week.daily' => 'Denní',
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} aktivní den', few: '${n} aktivní dny', other: '${n} aktivních dní', ),
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ),
+			'week.today' => 'Dnes',
+			'week.noActivity' => 'Bez aktivity',
+			'week.summary' => 'Tvoje místní aktivita v sudoku',
+			'settings.title' => 'Nastavení',
+			'settings.language' => 'Jazyk',
+			'settings.languageDetail' => 'Vyber jazyk aplikace MICHI.',
 			_ => null,
 		};
 	}

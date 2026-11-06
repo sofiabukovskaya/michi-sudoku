@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
@@ -108,7 +109,6 @@ final class _PracticePageState extends State<PracticePage> {
         builder: (context, state) => Scaffold(
           backgroundColor: MichiColors.paper,
           appBar: AppBar(
-            backgroundColor: MichiColors.paper,
             title: Text(
               '${context.t.learn.practiceTitle} · '
               '${TechniqueCopy.name(context.t, widget.technique)}',
@@ -154,6 +154,15 @@ final class _PracticePageState extends State<PracticePage> {
                                 ),
                                 const SizedBox(height: MichiSpacing.sm),
                                 Text(
+                                  context.t.learn.findTechnique(
+                                    technique: TechniqueCopy.name(
+                                      context.t,
+                                      widget.technique,
+                                    ),
+                                  ),
+                                  style: MichiTypography.editorialTitle,
+                                ),
+                                Text(
                                   state.isPlacement
                                       ? context.t.learn.placementPrompt
                                       : context.t.learn.eliminationPrompt,
@@ -165,7 +174,16 @@ final class _PracticePageState extends State<PracticePage> {
                           const SizedBox(height: MichiSpacing.sm),
                           if (focusedUnit case final unit?)
                             SizedBox(
-                              height: math.min(constraints.maxWidth - 32, 310),
+                              height: math.min(
+                                constraints.maxWidth - 32,
+                                math.min(
+                                  310,
+                                  constraints.maxHeight *
+                                      (constraints.maxHeight < 650
+                                          ? 0.32
+                                          : 0.43),
+                                ),
+                              ),
                               child: FocusedUnitWidget(
                                 unit: unit,
                                 view: BoardViewState.educational(
@@ -193,28 +211,36 @@ final class _PracticePageState extends State<PracticePage> {
                           const SizedBox(height: MichiSpacing.sm),
                           Expanded(
                             child: state.visibleHint != null
-                                ? CoachPanel(
-                                    model: CoachPresenter.presentPlan(
-                                      context.t,
-                                      state.coachPlan,
-                                      state.hintIndex!,
+                                ? Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: SizedBox(
+                                      height: 220,
+                                      child: CoachPanel(
+                                        model: CoachPresenter.presentPlan(
+                                          context.t,
+                                          state.coachPlan,
+                                          state.hintIndex!,
+                                        ),
+                                        onNext: cubit.requestHint,
+                                        onDismiss: cubit.dismissHint,
+                                        onApply: () {
+                                          final placements =
+                                              state.deduction.placements;
+                                          if (placements.length == 1) {
+                                            cubit
+                                              ..dismissHint()
+                                              ..selectCell(
+                                                placements.single.cell,
+                                              )
+                                              ..selectDigit(
+                                                placements.single.digit,
+                                              );
+                                          } else {
+                                            cubit.dismissHint();
+                                          }
+                                        },
+                                      ),
                                     ),
-                                    onNext: cubit.requestHint,
-                                    onDismiss: cubit.dismissHint,
-                                    onApply: () {
-                                      final placements =
-                                          state.deduction.placements;
-                                      if (placements.length == 1) {
-                                        cubit
-                                          ..dismissHint()
-                                          ..selectCell(placements.single.cell)
-                                          ..selectDigit(
-                                            placements.single.digit,
-                                          );
-                                      } else {
-                                        cubit.dismissHint();
-                                      }
-                                    },
                                   )
                                 : _PracticeControls(
                                     state: state,
@@ -280,21 +306,25 @@ final class _PracticeControls extends StatelessWidget {
           ),
           const SizedBox(height: MichiSpacing.sm),
         ] else ...[
-          Expanded(child: _feedback(context)),
-          MichiButton(
-            key: ValueKey(
-              state.status == PracticeStatus.correct
-                  ? 'practice-next'
-                  : 'practice-retry',
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        _feedback(context),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-            label: state.status == PracticeStatus.correct
-                ? context.t.learn.nextScenario
-                : context.t.learn.tryAgain,
-            onPressed: state.status == PracticeStatus.correct
-                ? cubit.next
-                : cubit.tryAgain,
           ),
-          const SizedBox(height: MichiSpacing.sm),
         ],
       ],
     ),
@@ -318,10 +348,7 @@ final class _PracticeControls extends StatelessWidget {
   Widget _candidateChoices(BuildContext context) {
     final cell = state.selectedCell;
     if (cell == null || state.engineState.board.isFilled(cell)) {
-      return Text(
-        context.t.learn.eliminationPrompt,
-        style: MichiTypography.secondary,
-      );
+      return const SizedBox.shrink();
     }
     return Wrap(
       spacing: MichiSpacing.xs,
@@ -377,65 +404,95 @@ final class _PracticeControls extends StatelessWidget {
         borderRadius: BorderRadius.circular(MichiRadius.card),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(MichiSpacing.md),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        padding: const EdgeInsets.all(MichiSpacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      correct
-                          ? context.t.learn.correctTitle
-                          : context.t.learn.incorrectTitle,
-                      key: ValueKey(
-                        correct ? 'practice-correct' : 'practice-wrong',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          correct
+                              ? context.t.learn.correctTitle
+                              : context.t.learn.incorrectTitle,
+                          key: ValueKey(
+                            correct ? 'practice-correct' : 'practice-wrong',
+                          ),
+                          style: MichiTypography.heading.copyWith(
+                            color: correct
+                                ? MichiColors.success
+                                : MichiColors.almostText,
+                          ),
+                        ),
                       ),
-                      style: MichiTypography.heading.copyWith(
-                        color: correct
-                            ? MichiColors.success
-                            : MichiColors.almostText,
-                      ),
-                    ),
+                      if (correct)
+                        const MichiMascot(
+                          state: MichiMascotState.happy,
+                          size: 64,
+                        ),
+                    ],
                   ),
-                  if (correct)
-                    Image.asset(
-                      'assets/images/coach_mascot.png',
-                      width: 64,
-                      height: 64,
-                      excludeFromSemantics: true,
-                    ),
+                  const SizedBox(height: MichiSpacing.sm),
+                  Text(
+                    correct
+                        ? TechniqueCopy.step(
+                            context.t,
+                            state.scenario.technique,
+                            LessonStepKind.reasoning,
+                          )
+                        : _incorrectExplanation(context),
+                    style: MichiTypography.body,
+                  ),
                 ],
               ),
-              const SizedBox(height: MichiSpacing.sm),
-              Text(
-                correct
-                    ? TechniqueCopy.step(
-                        context.t,
-                        state.scenario.technique,
-                        LessonStepKind.reasoning,
-                      )
-                    : _incorrectExplanation(context),
-                style: MichiTypography.body,
-              ),
-              if (!correct) ...[
-                const SizedBox(height: MichiSpacing.sm),
-                MichiButton(
-                  label: context.t.learn.askMichi,
-                  variant: MichiButtonVariant.text,
-                  onPressed: cubit.requestHint,
+            ),
+            const SizedBox(height: MichiSpacing.lg),
+            Row(
+              children: [
+                if (!correct) ...[
+                  Expanded(
+                    child: MichiButton(
+                      label: context.t.learn.askMichi,
+                      variant: MichiButtonVariant.secondary,
+                      onPressed: cubit.requestHint,
+                    ),
+                  ),
+                  const SizedBox(width: MichiSpacing.sm),
+                ],
+                Expanded(
+                  child: MichiButton(
+                    key: ValueKey(correct ? 'practice-next' : 'practice-retry'),
+                    label: correct
+                        ? context.t.learn.nextScenario
+                        : context.t.learn.tryAgain,
+                    onPressed: correct ? cubit.next : cubit.tryAgain,
+                  ),
                 ),
               ],
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   String _incorrectExplanation(BuildContext context) {
-    if (state.isPlacement) return context.t.learn.wrongPlacement;
+    if (state.isPlacement) {
+      final placement = state.deduction.placements.singleOrNull;
+      if (placement == null) return context.t.learn.wrongCellAndDigit;
+      if (state.selectedCell != placement.cell) {
+        return context.t.learn.wrongCell;
+      }
+      if (state.selectedDigit != placement.digit) {
+        return context.t.learn.wrongDigit;
+      }
+      return context.t.learn.wrongCellAndDigit;
+    }
     final expected = state.deduction.eliminations.toSet();
     if (state.selectedEliminations.difference(expected).isNotEmpty) {
       return context.t.learn.extraElimination;
@@ -501,11 +558,10 @@ final class _PracticeSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Spacer(),
-        Center(
-          child: Image.asset(
-            'assets/images/coach_mascot.png',
-            height: 160,
-            excludeFromSemantics: true,
+        const Center(
+          child: MichiMascot(
+            state: MichiMascotState.happy,
+            size: 160,
           ),
         ),
         const SizedBox(height: MichiSpacing.xl),

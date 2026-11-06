@@ -41,7 +41,7 @@
   },
   "auth": {
     "title": "Cuenta",
-    "unavailable": "La sincronización del progreso llegará más adelante."
+    "unavailable": "Tu progreso se guarda en este dispositivo."
   },
   "home": {
     "title": "Tu camino en el sudoku",
@@ -72,7 +72,14 @@
     "newPuzzle": "Otro sudoku",
     "weekTitle": "Esta semana",
     "weekDetails": "Detalles",
-    "weekdaysShort": "Lu|Ma|Mi|Ju|Vi|Sá|Do"
+    "weekdaysShort": "Lu|Ma|Mi|Ju|Vi|Sá|Do",
+    "newPuzzleTitle": "Nuevo sudoku",
+    "catalogSource": "Elige un sudoku",
+    "scanSource": "Escanear sudoku",
+    "scanSourceDetail": "Foto o cámara",
+    "weekStatusDone": "Completado",
+    "weekStatusToday": "Hoy",
+    "weekStatusEmpty": "Sin actividad"
   },
   "game": {
     "title": "Sudoku diario · Intermedio",
@@ -222,13 +229,36 @@
     "groupProgress": "$completed de $total",
     "extraElimination": "Este patrón no elimina uno de los candidatos elegidos. Revisa las celdas resaltadas.",
     "missingElimination": "Quedan candidatos por eliminar. Sigue la unidad resaltada.",
-    "wrongPlacement": "Esa celda o dígito no coincide con la deducción. Revisa la posición resaltada."
+    "wrongPlacement": "Esa celda o dígito no coincide con la deducción. Revisa la posición resaltada.",
+    "minutes": "$count min",
+    "tasks": "$count ejercicios",
+    "wrongCell": "Esta casilla está fuera del patrón. Mira las casillas resaltadas.",
+    "wrongDigit": "El patrón no coloca ese número. Revisa los candidatos de la casilla resaltada.",
+    "wrongCellAndDigit": "La selección no coincide con el patrón. Compara las casillas resaltadas y sus candidatos.",
+    "findTechnique": "Encuentra: $technique"
   },
   "progress": {
-    "unavailable": "El dominio de las técnicas llegará más adelante."
+    "doingWell": "Lo que haces bien",
+    "learningNow": "Lo que aprendes ahora",
+    "next": "Siguiente paso",
+    "noStrong": "Tus técnicas más fuertes aparecerán después de practicar.",
+    "startLearning": "Empezar a aprender",
+    "thisWeek": "Esta semana",
+    "completed": {"one": "$n sudoku completado", "other": "$n sudokus completados"},
+    "mastery": "Dominio $percent %",
+    "openTechnique": "Abrir técnica"
   },
   "profile": {
-    "unavailable": "La configuración del perfil llegará más adelante."
+    "guest": "Invitado",
+    "localOnly": "El progreso se guarda en este dispositivo.",
+    "puzzles": "Sudokus",
+    "mastered": "Dominadas",
+    "activeDays": "Días activos",
+    "learnRow": "Aprender",
+    "learnDetail": "Técnicas y práctica",
+    "settingsRow": "Ajustes",
+    "settingsDetail": "Idioma",
+    "activity": "Tu actividad"
   },
   "scanner": {
     "title": "Escanear sudoku",
@@ -320,9 +350,9 @@
     "lesson": "Lección",
     "gotIt": "Entendido",
     "unitRestrictions": "En $unit ya están estas cifras: $digits.",
-    "onlyCandidate": "En esta casilla solo queda el $digit.",
+    "onlyCandidate": "La fila, columna y bloque descartan los demás números. Aquí solo cabe $digit.",
     "unitSearch": "Buscamos un lugar para el $digit en $unit.",
-    "solePosition": "Solo esta casilla en $unit admite el $digit.",
+    "solePosition": "Los $digit tachados muestran dónde no puede ir en $unit. Solo queda esta casilla.",
     "placement": "Por eso aquí va el $digit.",
     "unitRow": "la fila $index",
     "unitColumn": "la columna $index",
@@ -341,5 +371,22 @@
     "nextTechnique": "El siguiente paso en tu camino.",
     "masteredNeedsReview": "Conviene repasar una técnica conocida.",
     "allMasteredReview": "Repasa una técnica que ya dominas."
+  },
+  "week": {
+    "title": "Esta semana",
+    "empty": "Aún no has completado sudokus esta semana. Tu actividad aparecerá cuando juegues.",
+    "puzzles": "Sudokus",
+    "minutes": "Minutos",
+    "daily": "Diarios",
+    "activeDays": {"one": "$n día activo", "other": "$n días activos"},
+    "completedDay": {"one": "$n sudoku completado", "other": "$n sudokus completados"},
+    "today": "Hoy",
+    "noActivity": "Sin actividad",
+    "summary": "Tu actividad local de sudoku"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "language": "Idioma",
+    "languageDetail": "Elige el idioma de MICHI."
   }
 }

@@ -1,18 +1,19 @@
-import 'dart:async';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
-import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 
 enum MichiTab { game, learn, progress, profile }
 
 /// The quiet four-tab shell from the approved MICHI navigation specification.
 final class MichiBottomNav extends StatelessWidget {
-  const MichiBottomNav({required this.current, super.key});
+  const MichiBottomNav({
+    required this.current,
+    required this.onSelect,
+    super.key,
+  });
 
   final MichiTab current;
+  final ValueChanged<MichiTab> onSelect;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -69,7 +70,7 @@ final class MichiBottomNav extends StatelessWidget {
         selected: selected,
         label: label,
         child: InkWell(
-          onTap: selected ? null : () => _navigate(context, tab),
+          onTap: () => onSelect(tab),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -105,22 +106,5 @@ final class MichiBottomNav extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _navigate(BuildContext context, MichiTab tab) {
-    switch (tab) {
-      case MichiTab.game:
-        unawaited(context.router.replace(HomeRoute()));
-        return;
-      case MichiTab.learn:
-        unawaited(context.router.replace(LearnRoute()));
-        return;
-      case MichiTab.progress:
-        unawaited(context.router.replace(const ProgressRoute()));
-        return;
-      case MichiTab.profile:
-        unawaited(context.router.replace(const ProfileRoute()));
-        return;
-    }
   }
 }

@@ -41,7 +41,7 @@
   },
   "auth": {
     "title": "Account",
-    "unavailable": "Progress sync is coming later."
+    "unavailable": "Progress is saved on this device."
   },
   "home": {
     "title": "Your path through Sudoku",
@@ -72,7 +72,14 @@
     "newPuzzle": "Another puzzle",
     "weekTitle": "This week",
     "weekDetails": "Details",
-    "weekdaysShort": "Mon|Tue|Wed|Thu|Fri|Sat|Sun"
+    "weekdaysShort": "Mon|Tue|Wed|Thu|Fri|Sat|Sun",
+    "newPuzzleTitle": "New Sudoku",
+    "catalogSource": "Choose a puzzle",
+    "scanSource": "Scan Sudoku",
+    "scanSourceDetail": "Photo or camera",
+    "weekStatusDone": "Completed",
+    "weekStatusToday": "Today",
+    "weekStatusEmpty": "No activity"
   },
   "game": {
     "title": "Daily Sudoku · Medium",
@@ -222,13 +229,36 @@
     "groupProgress": "$completed of $total",
     "extraElimination": "One selected candidate is not removed by this pattern. Check the highlighted cells.",
     "missingElimination": "There are more candidates to remove. Follow the highlighted unit.",
-    "wrongPlacement": "That cell or digit does not match the deduction. Recheck the highlighted position."
+    "wrongPlacement": "That cell or digit does not match the deduction. Recheck the highlighted position.",
+    "minutes": "$count min",
+    "tasks": "$count tasks",
+    "wrongCell": "This cell is outside the pattern. Look at the highlighted cells.",
+    "wrongDigit": "That digit is not the one this pattern places. Check the candidates in the highlighted cell.",
+    "wrongCellAndDigit": "This selection does not match the pattern. Compare the highlighted cells and their candidates.",
+    "findTechnique": "Find $technique"
   },
   "progress": {
-    "unavailable": "Technique mastery is coming later."
+    "doingWell": "What is going well",
+    "learningNow": "What you are learning now",
+    "next": "Next",
+    "noStrong": "Your strongest techniques will appear after practice.",
+    "startLearning": "Start learning",
+    "thisWeek": "This week",
+    "completed": {"one": "$n puzzle completed", "other": "$n puzzles completed"},
+    "mastery": "$percent% mastery",
+    "openTechnique": "Open technique"
   },
   "profile": {
-    "unavailable": "Profile settings are coming later."
+    "guest": "Guest",
+    "localOnly": "Progress is saved on this device.",
+    "puzzles": "Puzzles",
+    "mastered": "Mastered",
+    "activeDays": "Active days",
+    "learnRow": "Learn",
+    "learnDetail": "Techniques and practice",
+    "settingsRow": "Settings",
+    "settingsDetail": "Language",
+    "activity": "Your activity"
   },
   "scanner": {
     "title": "Scan Sudoku",
@@ -320,9 +350,9 @@
     "lesson": "Lesson",
     "gotIt": "Got it",
     "unitRestrictions": "The filled digits in $unit are $digits.",
-    "onlyCandidate": "Only $digit remains possible in this cell.",
+    "onlyCandidate": "The row, column and box rule out the other digits. Only $digit fits here.",
     "unitSearch": "Look for a place for $digit in $unit.",
-    "solePosition": "Only this cell in $unit can take $digit.",
+    "solePosition": "The crossed-out $digit marks show where it cannot go in $unit. This is the only place left.",
     "placement": "Therefore $digit goes here.",
     "unitRow": "row $index",
     "unitColumn": "column $index",
@@ -341,5 +371,22 @@
     "nextTechnique": "The next step in your path.",
     "masteredNeedsReview": "A familiar technique needs a review.",
     "allMasteredReview": "Review a skill you have mastered."
+  },
+  "week": {
+    "title": "This week",
+    "empty": "No puzzles completed yet this week. Your activity will appear here as you play.",
+    "puzzles": "Puzzles",
+    "minutes": "Minutes",
+    "daily": "Daily",
+    "activeDays": {"one": "$n active day", "other": "$n active days"},
+    "completedDay": {"one": "$n puzzle completed", "other": "$n puzzles completed"},
+    "today": "Today",
+    "noActivity": "No activity",
+    "summary": "Your local Sudoku activity"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "languageDetail": "Choose the language for MICHI."
   }
 }

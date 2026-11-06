@@ -41,7 +41,7 @@
   },
   "auth": {
     "title": "Compte",
-    "unavailable": "La synchronisation de la progression arrivera plus tard."
+    "unavailable": "Ta progression est enregistrée sur cet appareil."
   },
   "home": {
     "title": "Ton parcours dans le sudoku",
@@ -72,7 +72,14 @@
     "newPuzzle": "Un autre sudoku",
     "weekTitle": "Cette semaine",
     "weekDetails": "Détails",
-    "weekdaysShort": "Lu|Ma|Me|Je|Ve|Sa|Di"
+    "weekdaysShort": "Lu|Ma|Me|Je|Ve|Sa|Di",
+    "newPuzzleTitle": "Nouveau sudoku",
+    "catalogSource": "Choisir un sudoku",
+    "scanSource": "Scanner un sudoku",
+    "scanSourceDetail": "Photo ou appareil photo",
+    "weekStatusDone": "Terminé",
+    "weekStatusToday": "Aujourd’hui",
+    "weekStatusEmpty": "Aucune activité"
   },
   "game": {
     "title": "Sudoku du jour · Moyen",
@@ -222,13 +229,36 @@
     "groupProgress": "$completed sur $total",
     "extraElimination": "Ce motif ne retire pas l’un des candidats choisis. Vérifie les cases surlignées.",
     "missingElimination": "Il reste des candidats à retirer. Suis l’unité surlignée.",
-    "wrongPlacement": "Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position."
+    "wrongPlacement": "Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position.",
+    "minutes": "$count min",
+    "tasks": "$count exercices",
+    "wrongCell": "Cette case est hors du motif. Regarde les cases surlignées.",
+    "wrongDigit": "Ce motif ne place pas ce chiffre. Vérifie les candidats de la case surlignée.",
+    "wrongCellAndDigit": "Ce choix ne correspond pas au motif. Compare les cases surlignées et leurs candidats.",
+    "findTechnique": "Trouve : $technique"
   },
   "progress": {
-    "unavailable": "Le suivi des techniques maîtrisées arrivera plus tard."
+    "doingWell": "Ce qui va bien",
+    "learningNow": "Ce que tu apprends",
+    "next": "Prochaine étape",
+    "noStrong": "Tes techniques les plus solides apparaîtront après la pratique.",
+    "startLearning": "Commencer à apprendre",
+    "thisWeek": "Cette semaine",
+    "completed": {"one": "$n sudoku terminé", "other": "$n sudokus terminés"},
+    "mastery": "Maîtrise $percent %",
+    "openTechnique": "Ouvrir la technique"
   },
   "profile": {
-    "unavailable": "Les réglages du profil arriveront plus tard."
+    "guest": "Invité",
+    "localOnly": "La progression est enregistrée sur cet appareil.",
+    "puzzles": "Sudokus",
+    "mastered": "Maîtrisées",
+    "activeDays": "Jours actifs",
+    "learnRow": "Apprendre",
+    "learnDetail": "Techniques et pratique",
+    "settingsRow": "Réglages",
+    "settingsDetail": "Langue",
+    "activity": "Ton activité"
   },
   "scanner": {
     "title": "Scanner un sudoku",
@@ -320,9 +350,9 @@
     "lesson": "Leçon",
     "gotIt": "Compris",
     "unitRestrictions": "Dans $unit, ces chiffres sont déjà placés : $digits.",
-    "onlyCandidate": "Il ne reste que $digit pour cette case.",
+    "onlyCandidate": "La ligne, la colonne et le bloc excluent les autres chiffres. Seul $digit convient ici.",
     "unitSearch": "Cherchons où placer $digit dans $unit.",
-    "solePosition": "Seule cette case dans $unit peut contenir $digit.",
+    "solePosition": "Les $digit barrés montrent où ce chiffre ne peut pas aller dans $unit. Il ne reste que cette case.",
     "placement": "Donc $digit va ici.",
     "unitRow": "la ligne $index",
     "unitColumn": "la colonne $index",
@@ -341,5 +371,22 @@
     "nextTechnique": "La prochaine étape de votre parcours.",
     "masteredNeedsReview": "Une technique connue mérite une révision.",
     "allMasteredReview": "Révisez une technique déjà maîtrisée."
+  },
+  "week": {
+    "title": "Cette semaine",
+    "empty": "Aucun sudoku terminé cette semaine. Ton activité apparaîtra quand tu joueras.",
+    "puzzles": "Sudokus",
+    "minutes": "Minutes",
+    "daily": "Quotidiens",
+    "activeDays": {"one": "$n jour actif", "other": "$n jours actifs"},
+    "completedDay": {"one": "$n sudoku terminé", "other": "$n sudokus terminés"},
+    "today": "Aujourd’hui",
+    "noActivity": "Aucune activité",
+    "summary": "Ton activité locale de sudoku"
+  },
+  "settings": {
+    "title": "Réglages",
+    "language": "Langue",
+    "languageDetail": "Choisis la langue de MICHI."
   }
 }

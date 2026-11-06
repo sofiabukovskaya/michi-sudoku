@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
@@ -367,20 +368,32 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                                   ),
                                 )
                               : state.coach != null
-                              ? CoachPanel(
-                                  model: CoachPresenter.present(
-                                    context.t,
-                                    state.coach!,
+                              ? Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: SizedBox(
+                                    height: compact ? 190 : 220,
+                                    child: CoachPanel(
+                                      model: CoachPresenter.present(
+                                        context.t,
+                                        state.coach!,
+                                      ),
+                                      onNext: cubit.requestNextHint,
+                                      onDismiss: cubit.dismissHint,
+                                      onApply: cubit.applyCoachResult,
+                                    ),
                                   ),
-                                  onNext: cubit.requestNextHint,
-                                  onDismiss: cubit.dismissHint,
-                                  onApply: cubit.applyCoachResult,
                                 )
                               : state.hintUnavailable != null
-                              ? HintUnavailablePanel(
-                                  reason: state.hintUnavailable!,
-                                  onDismiss: cubit.dismissHint,
-                                  onShowMistake: cubit.selectWrongCell,
+                              ? Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: SizedBox(
+                                    height: compact ? 190 : 220,
+                                    child: HintUnavailablePanel(
+                                      reason: state.hintUnavailable!,
+                                      onDismiss: cubit.dismissHint,
+                                      onShowMistake: cubit.selectWrongCell,
+                                    ),
+                                  ),
                                 )
                               : input,
                         ),
@@ -610,7 +623,7 @@ final class _CompletedSurface extends StatelessWidget {
                     Expanded(
                       child: Center(
                         child: Image.asset(
-                          'assets/images/completion_hero.png',
+                          MichiMascot.assetFor(MichiMascotState.celebrating),
                           width: math.min(constraints.maxWidth - 48, 400),
                           fit: BoxFit.contain,
                           excludeFromSemantics: true,

@@ -4,14 +4,15 @@ import 'dart:developer' as developer;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
-import 'package:michi_mobile/app/navigation/michi_bottom_nav.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
+import 'package:michi_mobile/features/progress/domain/weekly_activity.dart';
 import 'package:michi_mobile/features/puzzle/domain/daily_puzzle.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
@@ -50,6 +51,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   LearningRecommendation? _focus;
   ActiveGameSummary? _active;
   DailyPuzzle? _daily;
+  WeeklyActivity? _week;
   bool _dailyCompleted = false;
   bool _dailyLoading = true;
   bool _dailyFailed = false;
@@ -103,6 +105,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _loading = false;
       });
       unawaited(_loadFocus(sequence));
+      unawaited(_loadWeek(sequence));
     } on Object catch (error, stackTrace) {
       developer.log(
         'Unable to load Home content',
@@ -152,6 +155,21 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     setState(() => _focus = focus);
   }
 
+  Future<void> _loadWeek(int sequence) async {
+    try {
+      final games = await _repository.loadRecentCompletedGames(limit: 1000);
+      if (!mounted || sequence != _reloadSequence) return;
+      setState(() => _week = WeeklyActivity.current(_clock.now(), games));
+    } on Object catch (error, stackTrace) {
+      developer.log(
+        'Unable to load weekly activity',
+        name: 'michi.home',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
   Future<void> _openFocus() async {
     final focus = _focus;
     if (focus == null) return;
@@ -175,8 +193,13 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  sheetContext.t.home.chooseDifficulty,
+                  sheetContext.t.home.newPuzzleTitle,
                   style: MichiTypography.heading,
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                Text(
+                  sheetContext.t.home.catalogSource,
+                  style: MichiTypography.secondary,
                 ),
                 const SizedBox(height: MichiSpacing.lg),
                 MichiButton(
@@ -209,12 +232,20 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   onPressed: () =>
                       Navigator.of(sheetContext).pop(PuzzleDifficulty.expert),
                 ),
-                const SizedBox(height: MichiSpacing.md),
-                MichiButton(
-                  key: const ValueKey('scan-sudoku'),
-                  label: sheetContext.t.scanner.title,
-                  variant: MichiButtonVariant.secondary,
-                  onPressed: () => Navigator.of(sheetContext).pop('scanner'),
+                const SizedBox(height: MichiSpacing.lg),
+                const Divider(color: MichiColors.hairline),
+                const SizedBox(height: MichiSpacing.sm),
+                Material(
+                  type: MaterialType.transparency,
+                  child: ListTile(
+                    key: const ValueKey('scan-sudoku'),
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.document_scanner_outlined),
+                    title: Text(sheetContext.t.home.scanSource),
+                    subtitle: Text(sheetContext.t.home.scanSourceDetail),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => Navigator.of(sheetContext).pop('scanner'),
+                  ),
                 ),
               ],
             ),
@@ -225,7 +256,9 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (choice == null || !mounted) return;
     if (choice == 'scanner') {
       if (!await _confirmReplacement() || !mounted) return;
-      await context.router.push(ScannerRoute(cubit: getIt<ScannerCubit>()));
+      await context.router.root.push(
+        ScannerRoute(cubit: getIt<ScannerCubit>()),
+      );
       if (mounted) await _reload();
       return;
     }
@@ -234,7 +267,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       final puzzle = await _puzzles.selectPuzzle(difficulty: difficulty);
       if (!mounted || !await _confirmReplacement()) return;
       if (!mounted) return;
-      await context.router.push(
+      await context.router.root.push(
         GameRoute(
           definition: puzzle,
           repository: _repository,
@@ -256,7 +289,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
     if (!await _confirmReplacement() || !mounted) return;
     try {
-      await context.router.push(
+      await context.router.root.push(
         GameRoute(
           definition: daily.puzzle,
           dailyChallengeKey: daily.challengeKey,
@@ -318,7 +351,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Future<void> _continue() async {
-    await context.router.push(
+    await context.router.root.push(
       GameRoute(
         restore: true,
         repository: _repository,
@@ -331,7 +364,6 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: MichiColors.paper,
-    bottomNavigationBar: const MichiBottomNav(current: MichiTab.game),
     body: SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -380,7 +412,10 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   style: MichiTypography.secondary,
                 ),
               ],
-              if (!_loading && _active != null) ...[
+              if (!_loading &&
+                  _active != null &&
+                  (_active!.dailyChallengeKey == null ||
+                      _active!.dailyChallengeKey != _daily?.challengeKey)) ...[
                 const SizedBox(height: MichiSpacing.sm),
                 _ContinueCard(summary: _active!, onTap: _continue),
               ],
@@ -404,9 +439,12 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         style: MichiTypography.heading,
                       ),
                     ),
-                    Text(
-                      context.t.home.weekDetails,
-                      style: MichiTypography.secondary,
+                    TextButton(
+                      key: const ValueKey('week-details'),
+                      onPressed: () => context.router.root.push(
+                        WeekRoute(games: _repository, clock: _clock),
+                      ),
+                      child: Text(context.t.home.weekDetails),
                     ),
                   ],
                 ),
@@ -414,7 +452,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               const SizedBox(height: MichiSpacing.md),
               _WeekStrip(
                 todayIndex: _clock.now().toLocal().weekday - 1,
-                todayCompleted: _dailyCompleted,
+                activity: _week,
               ),
             ],
           ),
@@ -526,10 +564,19 @@ final class _HomeActionRow extends StatelessWidget {
 }
 
 final class _WeekStrip extends StatelessWidget {
-  const _WeekStrip({required this.todayIndex, required this.todayCompleted});
+  const _WeekStrip({required this.todayIndex, required this.activity});
 
   final int todayIndex;
-  final bool todayCompleted;
+  final WeeklyActivity? activity;
+
+  String _statusLabel(BuildContext context, int index, String weekday) {
+    final status = activity?.days[index].isActive == true
+        ? context.t.home.weekStatusDone
+        : context.t.home.weekStatusEmpty;
+    return index == todayIndex
+        ? '$weekday, ${context.t.home.weekStatusToday}, $status'
+        : '$weekday, $status';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -538,32 +585,37 @@ final class _WeekStrip extends StatelessWidget {
       children: [
         for (var index = 0; index < 7; index++)
           Expanded(
-            child: Column(
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: index == todayIndex && todayCompleted
-                        ? MichiColors.indigo
-                        : MichiColors.cream,
-                    border: index == todayIndex && !todayCompleted
-                        ? Border.all(color: MichiColors.indigo, width: 2)
-                        : null,
-                  ),
-                  child: SizedBox.square(
-                    dimension: 30,
-                    child: index == todayIndex && todayCompleted
-                        ? const Icon(
-                            Icons.pets,
-                            size: 16,
-                            color: MichiColors.ivory,
-                          )
-                        : null,
-                  ),
+            child: Semantics(
+              label: _statusLabel(context, index, labels[index]),
+              child: ExcludeSemantics(
+                child: Column(
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: activity?.days[index].isActive == true
+                            ? MichiColors.indigo
+                            : MichiColors.cream,
+                        border: index == todayIndex
+                            ? Border.all(color: MichiColors.indigo, width: 2)
+                            : null,
+                      ),
+                      child: SizedBox.square(
+                        dimension: 30,
+                        child: activity?.days[index].isActive == true
+                            ? const Icon(
+                                Icons.pets,
+                                size: 16,
+                                color: MichiColors.ivory,
+                              )
+                            : null,
+                      ),
+                    ),
+                    const SizedBox(height: MichiSpacing.xs),
+                    Text(labels[index], style: MichiTypography.meta),
+                  ],
                 ),
-                const SizedBox(height: MichiSpacing.xs),
-                Text(labels[index], style: MichiTypography.meta),
-              ],
+              ),
             ),
           ),
       ],
@@ -651,15 +703,12 @@ final class _DailyCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       right: 0,
                       bottom: 0,
-                      child: Image.asset(
-                        'assets/images/coach_mascot.png',
-                        width: 118,
-                        height: 142,
-                        fit: BoxFit.contain,
-                        excludeFromSemantics: true,
+                      child: MichiMascot(
+                        state: MichiMascotState.calm,
+                        size: 126,
                       ),
                     ),
                   ],

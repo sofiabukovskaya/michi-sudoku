@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_hint_ui_model.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
@@ -33,11 +34,9 @@ final class CoachPanel extends StatelessWidget {
               top: compact ? -16 : -6,
               right: compact ? 0 : -12,
               child: IgnorePointer(
-                child: Image.asset(
-                  'assets/images/coach_mascot.png',
-                  width: compact ? 40 : 72,
-                  height: compact ? 40 : 72,
-                  excludeFromSemantics: true,
+                child: MichiMascot(
+                  state: MichiMascotState.pointing,
+                  size: compact ? 40 : 72,
                 ),
               ),
             ),
@@ -201,15 +200,13 @@ final class HintUnavailablePanel extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(
+            const Positioned(
               top: 0,
               right: 0,
               child: IgnorePointer(
-                child: Image.asset(
-                  'assets/images/coach_mascot.png',
-                  width: 40,
-                  height: 40,
-                  excludeFromSemantics: true,
+                child: MichiMascot(
+                  state: MichiMascotState.calm,
+                  size: 40,
                 ),
               ),
             ),

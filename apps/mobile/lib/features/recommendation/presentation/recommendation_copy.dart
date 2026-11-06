@@ -51,12 +51,12 @@ Future<void> openRecommendation(
 ) async {
   switch (recommendation.action) {
     case RecommendationAction.learnTechnique:
-      await context.router.push(
+      await context.router.root.push(
         TechniqueLessonRoute(technique: recommendation.technique),
       );
     case RecommendationAction.practiceTechnique:
     case RecommendationAction.reviewTechnique:
-      await context.router.push(
+      await context.router.root.push(
         PracticeRoute(technique: recommendation.technique),
       );
   }

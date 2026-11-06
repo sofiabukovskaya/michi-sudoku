@@ -29,7 +29,11 @@ abstract final class AppTheme {
     appBarTheme: AppBarTheme(
       backgroundColor: palette.paper,
       foregroundColor: palette.textPrimary,
+      surfaceTintColor: Colors.transparent,
       elevation: 0,
+      scrolledUnderElevation: 0,
+      shadowColor: Colors.transparent,
+      shape: Border(bottom: BorderSide(color: palette.hairline)),
     ),
   );
 }

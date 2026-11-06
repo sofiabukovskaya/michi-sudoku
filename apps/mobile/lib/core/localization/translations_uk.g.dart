@@ -60,6 +60,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$coach$uk coach = Translations$coach$uk.internal(_root);
 	late final Translations$why$uk why = Translations$why$uk.internal(_root);
 	late final Translations$recommendation$uk recommendation = Translations$recommendation$uk.internal(_root);
+	late final Translations$week$uk week = Translations$week$uk.internal(_root);
+	late final Translations$settings$uk settings = Translations$settings$uk.internal(_root);
 }
 
 // Path: common
@@ -205,8 +207,8 @@ class Translations$auth$uk {
 	/// uk: 'Акаунт'
 	String get title => 'Акаунт';
 
-	/// uk: 'Синхронізація прогресу з’явиться пізніше.'
-	String get unavailable => 'Синхронізація прогресу з’явиться пізніше.';
+	/// uk: 'Прогрес зберігається на цьому пристрої.'
+	String get unavailable => 'Прогрес зберігається на цьому пристрої.';
 }
 
 // Path: home
@@ -303,6 +305,27 @@ class Translations$home$uk {
 
 	/// uk: 'Пн|Вт|Ср|Чт|Пт|Сб|Нд'
 	String get weekdaysShort => 'Пн|Вт|Ср|Чт|Пт|Сб|Нд';
+
+	/// uk: 'Нове судоку'
+	String get newPuzzleTitle => 'Нове судоку';
+
+	/// uk: 'Обери головоломку'
+	String get catalogSource => 'Обери головоломку';
+
+	/// uk: 'Сканувати судоку'
+	String get scanSource => 'Сканувати судоку';
+
+	/// uk: 'Фото або камера'
+	String get scanSourceDetail => 'Фото або камера';
+
+	/// uk: 'Завершено'
+	String get weekStatusDone => 'Завершено';
+
+	/// uk: 'Сьогодні'
+	String get weekStatusToday => 'Сьогодні';
+
+	/// uk: 'Без активності'
+	String get weekStatusEmpty => 'Без активності';
 }
 
 // Path: game
@@ -563,6 +586,24 @@ class Translations$learn$uk {
 
 	/// uk: 'Ця клітинка або цифра не відповідає висновку. Перевір підсвічену позицію.'
 	String get wrongPlacement => 'Ця клітинка або цифра не відповідає висновку. Перевір підсвічену позицію.';
+
+	/// uk: '$count хв'
+	String minutes({required Object count}) => '${count} хв';
+
+	/// uk: '$count завдань'
+	String tasks({required Object count}) => '${count} завдань';
+
+	/// uk: 'Ця клітинка поза патерном. Подивись на підсвічені клітинки.'
+	String get wrongCell => 'Ця клітинка поза патерном. Подивись на підсвічені клітинки.';
+
+	/// uk: 'Це не та цифра, яку визначає патерн. Перевір кандидатів у підсвіченій клітинці.'
+	String get wrongDigit => 'Це не та цифра, яку визначає патерн. Перевір кандидатів у підсвіченій клітинці.';
+
+	/// uk: 'Вибір не відповідає патерну. Порівняй підсвічені клітинки та кандидатів.'
+	String get wrongCellAndDigit => 'Вибір не відповідає патерну. Порівняй підсвічені клітинки та кандидатів.';
+
+	/// uk: 'Знайди: $technique'
+	String findTechnique({required Object technique}) => 'Знайди: ${technique}';
 }
 
 // Path: progress
@@ -573,8 +614,37 @@ class Translations$progress$uk {
 
 	// Translations
 
-	/// uk: 'Майстерність технік з’явиться пізніше.'
-	String get unavailable => 'Майстерність технік з’явиться пізніше.';
+	/// uk: 'Що вдається'
+	String get doingWell => 'Що вдається';
+
+	/// uk: 'Що вивчаєш зараз'
+	String get learningNow => 'Що вивчаєш зараз';
+
+	/// uk: 'Далі'
+	String get next => 'Далі';
+
+	/// uk: 'Найсильніші техніки з’являться після практики.'
+	String get noStrong => 'Найсильніші техніки з’являться після практики.';
+
+	/// uk: 'Почати навчання'
+	String get startLearning => 'Почати навчання';
+
+	/// uk: 'Цей тиждень'
+	String get thisWeek => 'Цей тиждень';
+
+	/// uk: '(one) {$n завершена головоломка} (few) {$n завершені головоломки} (many) {$n завершених головоломок} (other) {$n завершених головоломок}'
+	String completed({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n,
+		one: '${n} завершена головоломка',
+		few: '${n} завершені головоломки',
+		many: '${n} завершених головоломок',
+		other: '${n} завершених головоломок',
+	);
+
+	/// uk: 'Опанування $percent%'
+	String mastery({required Object percent}) => 'Опанування ${percent}%';
+
+	/// uk: 'Відкрити техніку'
+	String get openTechnique => 'Відкрити техніку';
 }
 
 // Path: profile
@@ -585,8 +655,35 @@ class Translations$profile$uk {
 
 	// Translations
 
-	/// uk: 'Налаштування профілю з’являться пізніше.'
-	String get unavailable => 'Налаштування профілю з’являться пізніше.';
+	/// uk: 'Гість'
+	String get guest => 'Гість';
+
+	/// uk: 'Прогрес зберігається на цьому пристрої.'
+	String get localOnly => 'Прогрес зберігається на цьому пристрої.';
+
+	/// uk: 'Головоломки'
+	String get puzzles => 'Головоломки';
+
+	/// uk: 'Опановано'
+	String get mastered => 'Опановано';
+
+	/// uk: 'Активні дні'
+	String get activeDays => 'Активні дні';
+
+	/// uk: 'Навчання'
+	String get learnRow => 'Навчання';
+
+	/// uk: 'Техніки та практика'
+	String get learnDetail => 'Техніки та практика';
+
+	/// uk: 'Налаштування'
+	String get settingsRow => 'Налаштування';
+
+	/// uk: 'Мова'
+	String get settingsDetail => 'Мова';
+
+	/// uk: 'Твоя активність'
+	String get activity => 'Твоя активність';
 }
 
 // Path: scanner
@@ -870,14 +967,14 @@ class Translations$why$uk {
 	/// uk: 'У $unit вже стоять цифри: $digits.'
 	String unitRestrictions({required Object unit, required Object digits}) => 'У ${unit} вже стоять цифри: ${digits}.';
 
-	/// uk: 'У цій клітинці можлива лише цифра $digit.'
-	String onlyCandidate({required Object digit}) => 'У цій клітинці можлива лише цифра ${digit}.';
+	/// uk: 'Рядок, стовпець і блок виключають інші цифри. Тут може бути лише $digit.'
+	String onlyCandidate({required Object digit}) => 'Рядок, стовпець і блок виключають інші цифри. Тут може бути лише ${digit}.';
 
 	/// uk: 'Шукаємо місце для $digit у $unit.'
 	String unitSearch({required Object digit, required Object unit}) => 'Шукаємо місце для ${digit} у ${unit}.';
 
-	/// uk: 'Лише ця клітинка у $unit може містити $digit.'
-	String solePosition({required Object unit, required Object digit}) => 'Лише ця клітинка у ${unit} може містити ${digit}.';
+	/// uk: 'Закреслені $digit показують, де ця цифра не може стояти в $unit. Лишилася одна клітинка.'
+	String solePosition({required Object digit, required Object unit}) => 'Закреслені ${digit} показують, де ця цифра не може стояти в ${unit}. Лишилася одна клітинка.';
 
 	/// uk: 'Отже, тут стоїть $digit.'
 	String placement({required Object digit}) => 'Отже, тут стоїть ${digit}.';
@@ -935,6 +1032,73 @@ class Translations$recommendation$uk {
 
 	/// uk: 'Повторіть уже опановану техніку.'
 	String get allMasteredReview => 'Повторіть уже опановану техніку.';
+}
+
+// Path: week
+class Translations$week$uk {
+	Translations$week$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Цей тиждень'
+	String get title => 'Цей тиждень';
+
+	/// uk: 'Цього тижня ще немає завершених головоломок. Активність з’явиться, коли гратимеш.'
+	String get empty => 'Цього тижня ще немає завершених головоломок. Активність з’явиться, коли гратимеш.';
+
+	/// uk: 'Головоломки'
+	String get puzzles => 'Головоломки';
+
+	/// uk: 'Хвилини'
+	String get minutes => 'Хвилини';
+
+	/// uk: 'Щоденні'
+	String get daily => 'Щоденні';
+
+	/// uk: '(one) {$n активний день} (few) {$n активні дні} (many) {$n активних днів} (other) {$n активних днів}'
+	String activeDays({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n,
+		one: '${n} активний день',
+		few: '${n} активні дні',
+		many: '${n} активних днів',
+		other: '${n} активних днів',
+	);
+
+	/// uk: '(one) {$n завершена головоломка} (few) {$n завершені головоломки} (many) {$n завершених головоломок} (other) {$n завершених головоломок}'
+	String completedDay({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n,
+		one: '${n} завершена головоломка',
+		few: '${n} завершені головоломки',
+		many: '${n} завершених головоломок',
+		other: '${n} завершених головоломок',
+	);
+
+	/// uk: 'Сьогодні'
+	String get today => 'Сьогодні';
+
+	/// uk: 'Без активності'
+	String get noActivity => 'Без активності';
+
+	/// uk: 'Твоя локальна активність у судоку'
+	String get summary => 'Твоя локальна активність у судоку';
+}
+
+// Path: settings
+class Translations$settings$uk {
+	Translations$settings$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Налаштування'
+	String get title => 'Налаштування';
+
+	/// uk: 'Мова'
+	String get language => 'Мова';
+
+	/// uk: 'Обери мову MICHI.'
+	String get languageDetail => 'Обери мову MICHI.';
 }
 
 // Path: learn.lessons
@@ -1209,7 +1373,7 @@ extension on Translations {
 			'playerLevel.advanced' => 'Хочу складніших задач',
 			'playerLevel.advancedDetail' => 'X-Wing і далі',
 			'auth.title' => 'Акаунт',
-			'auth.unavailable' => 'Синхронізація прогресу з’явиться пізніше.',
+			'auth.unavailable' => 'Прогрес зберігається на цьому пристрої.',
 			'home.title' => 'Твій шлях у судоку',
 			'home.game' => 'Гра',
 			'home.continueGame' => 'Продовжити гру',
@@ -1239,6 +1403,13 @@ extension on Translations {
 			'home.weekTitle' => 'Цей тиждень',
 			'home.weekDetails' => 'Детальніше',
 			'home.weekdaysShort' => 'Пн|Вт|Ср|Чт|Пт|Сб|Нд',
+			'home.newPuzzleTitle' => 'Нове судоку',
+			'home.catalogSource' => 'Обери головоломку',
+			'home.scanSource' => 'Сканувати судоку',
+			'home.scanSourceDetail' => 'Фото або камера',
+			'home.weekStatusDone' => 'Завершено',
+			'home.weekStatusToday' => 'Сьогодні',
+			'home.weekStatusEmpty' => 'Без активності',
 			'game.title' => 'Судоку дня · Середній',
 			'game.undo' => 'Скасувати',
 			'game.erase' => 'Стерти',
@@ -1367,8 +1538,31 @@ extension on Translations {
 			'learn.extraElimination' => 'Один вибраний кандидат цей прийом не виключає. Перевір підсвічені клітинки.',
 			'learn.missingElimination' => 'Є ще кандидати, які треба викреслити. Простеж підсвічену групу.',
 			'learn.wrongPlacement' => 'Ця клітинка або цифра не відповідає висновку. Перевір підсвічену позицію.',
-			'progress.unavailable' => 'Майстерність технік з’явиться пізніше.',
-			'profile.unavailable' => 'Налаштування профілю з’являться пізніше.',
+			'learn.minutes' => ({required Object count}) => '${count} хв',
+			'learn.tasks' => ({required Object count}) => '${count} завдань',
+			'learn.wrongCell' => 'Ця клітинка поза патерном. Подивись на підсвічені клітинки.',
+			'learn.wrongDigit' => 'Це не та цифра, яку визначає патерн. Перевір кандидатів у підсвіченій клітинці.',
+			'learn.wrongCellAndDigit' => 'Вибір не відповідає патерну. Порівняй підсвічені клітинки та кандидатів.',
+			'learn.findTechnique' => ({required Object technique}) => 'Знайди: ${technique}',
+			'progress.doingWell' => 'Що вдається',
+			'progress.learningNow' => 'Що вивчаєш зараз',
+			'progress.next' => 'Далі',
+			'progress.noStrong' => 'Найсильніші техніки з’являться після практики.',
+			'progress.startLearning' => 'Почати навчання',
+			'progress.thisWeek' => 'Цей тиждень',
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ),
+			'progress.mastery' => ({required Object percent}) => 'Опанування ${percent}%',
+			'progress.openTechnique' => 'Відкрити техніку',
+			'profile.guest' => 'Гість',
+			'profile.localOnly' => 'Прогрес зберігається на цьому пристрої.',
+			'profile.puzzles' => 'Головоломки',
+			'profile.mastered' => 'Опановано',
+			'profile.activeDays' => 'Активні дні',
+			'profile.learnRow' => 'Навчання',
+			'profile.learnDetail' => 'Техніки та практика',
+			'profile.settingsRow' => 'Налаштування',
+			'profile.settingsDetail' => 'Мова',
+			'profile.activity' => 'Твоя активність',
 			'scanner.title' => 'Сканувати судоку',
 			'scanner.intro' => 'Помістіть усю сітку в кадр або виберіть фото.',
 			'scanner.openCamera' => 'Відкрити камеру',
@@ -1454,9 +1648,9 @@ extension on Translations {
 			'why.lesson' => 'Урок',
 			'why.gotIt' => 'Зрозуміло',
 			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'У ${unit} вже стоять цифри: ${digits}.',
-			'why.onlyCandidate' => ({required Object digit}) => 'У цій клітинці можлива лише цифра ${digit}.',
+			'why.onlyCandidate' => ({required Object digit}) => 'Рядок, стовпець і блок виключають інші цифри. Тут може бути лише ${digit}.',
 			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Шукаємо місце для ${digit} у ${unit}.',
-			'why.solePosition' => ({required Object unit, required Object digit}) => 'Лише ця клітинка у ${unit} може містити ${digit}.',
+			'why.solePosition' => ({required Object digit, required Object unit}) => 'Закреслені ${digit} показують, де ця цифра не може стояти в ${unit}. Лишилася одна клітинка.',
 			'why.placement' => ({required Object digit}) => 'Отже, тут стоїть ${digit}.',
 			'why.unitRow' => ({required Object index}) => 'рядку ${index}',
 			'why.unitColumn' => ({required Object index}) => 'стовпці ${index}',
@@ -1473,6 +1667,19 @@ extension on Translations {
 			'recommendation.nextTechnique' => 'Наступний крок у вашому навчанні.',
 			'recommendation.masteredNeedsReview' => 'Знайому техніку варто повторити.',
 			'recommendation.allMasteredReview' => 'Повторіть уже опановану техніку.',
+			'week.title' => 'Цей тиждень',
+			'week.empty' => 'Цього тижня ще немає завершених головоломок. Активність з’явиться, коли гратимеш.',
+			'week.puzzles' => 'Головоломки',
+			'week.minutes' => 'Хвилини',
+			'week.daily' => 'Щоденні',
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} активний день', few: '${n} активні дні', many: '${n} активних днів', other: '${n} активних днів', ),
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ),
+			'week.today' => 'Сьогодні',
+			'week.noActivity' => 'Без активності',
+			'week.summary' => 'Твоя локальна активність у судоку',
+			'settings.title' => 'Налаштування',
+			'settings.language' => 'Мова',
+			'settings.languageDetail' => 'Обери мову MICHI.',
 			_ => null,
 		};
 	}

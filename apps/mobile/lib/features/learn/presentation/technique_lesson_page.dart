@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
@@ -193,11 +194,9 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
               ],
             ),
           ),
-          Image.asset(
-            'assets/images/coach_mascot.png',
-            height: 180,
-            width: 150,
-            excludeFromSemantics: true,
+          const MichiMascot(
+            state: MichiMascotState.notebook,
+            size: 150,
           ),
         ],
       ),
@@ -254,7 +253,9 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
               ),
             ),
             Text(
-              index == lesson.steps.length ? '5' : '2',
+              index == lesson.steps.length
+                  ? context.t.learn.tasks(count: 5)
+                  : context.t.learn.minutes(count: 2),
               style: MichiTypography.meta,
             ),
           ],

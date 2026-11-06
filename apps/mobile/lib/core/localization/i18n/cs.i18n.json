@@ -41,7 +41,7 @@
   },
   "auth": {
     "title": "Účet",
-    "unavailable": "Synchronizace postupu přijde později."
+    "unavailable": "Pokrok se ukládá v tomto zařízení."
   },
   "home": {
     "title": "Tvoje cesta sudoku",
@@ -72,7 +72,14 @@
     "newPuzzle": "Další sudoku",
     "weekTitle": "Tento týden",
     "weekDetails": "Podrobnosti",
-    "weekdaysShort": "Po|Út|St|Čt|Pá|So|Ne"
+    "weekdaysShort": "Po|Út|St|Čt|Pá|So|Ne",
+    "newPuzzleTitle": "Nové sudoku",
+    "catalogSource": "Vyber hlavolam",
+    "scanSource": "Naskenovat sudoku",
+    "scanSourceDetail": "Fotka nebo fotoaparát",
+    "weekStatusDone": "Dokončeno",
+    "weekStatusToday": "Dnes",
+    "weekStatusEmpty": "Bez aktivity"
   },
   "game": {
     "title": "Denní sudoku · Střední",
@@ -222,13 +229,36 @@
     "groupProgress": "$completed z $total",
     "extraElimination": "Jeden vybraný kandidát se tímto vzorem neodstraňuje. Zkontroluj zvýrazněná pole.",
     "missingElimination": "Je třeba odstranit další kandidáty. Sleduj zvýrazněnou jednotku.",
-    "wrongPlacement": "Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici."
+    "wrongPlacement": "Toto pole nebo číslice neodpovídá závěru. Zkontroluj zvýrazněnou pozici.",
+    "minutes": "$count min",
+    "tasks": "$count úloh",
+    "wrongCell": "Toto políčko není součástí vzoru. Podívej se na zvýrazněná políčka.",
+    "wrongDigit": "Tuto číslici vzor neurčuje. Zkontroluj kandidáty ve zvýrazněném políčku.",
+    "wrongCellAndDigit": "Výběr neodpovídá vzoru. Porovnej zvýrazněná políčka a jejich kandidáty.",
+    "findTechnique": "Najdi: $technique"
   },
   "progress": {
-    "unavailable": "Přehled zvládnutých technik přijde později."
+    "doingWell": "Co ti jde",
+    "learningNow": "Co se právě učíš",
+    "next": "Další krok",
+    "noStrong": "Nejsilnější techniky se ukážou po procvičování.",
+    "startLearning": "Začít se učit",
+    "thisWeek": "Tento týden",
+    "completed": {"one": "$n dokončený hlavolam", "few": "$n dokončené hlavolamy", "other": "$n dokončených hlavolamů"},
+    "mastery": "Zvládnuto $percent %",
+    "openTechnique": "Otevřít techniku"
   },
   "profile": {
-    "unavailable": "Nastavení profilu přijde později."
+    "guest": "Host",
+    "localOnly": "Postup se ukládá do tohoto zařízení.",
+    "puzzles": "Hlavolamy",
+    "mastered": "Zvládnuto",
+    "activeDays": "Aktivní dny",
+    "learnRow": "Učení",
+    "learnDetail": "Techniky a cvičení",
+    "settingsRow": "Nastavení",
+    "settingsDetail": "Jazyk",
+    "activity": "Tvoje aktivita"
   },
   "scanner": {
     "title": "Skenovat sudoku",
@@ -320,9 +350,9 @@
     "lesson": "Lekce",
     "gotIt": "Rozumím",
     "unitRestrictions": "V $unit již jsou číslice: $digits.",
-    "onlyCandidate": "V této buňce zbývá jen $digit.",
+    "onlyCandidate": "Řádek, sloupec a blok vylučují ostatní číslice. Sem patří jen $digit.",
     "unitSearch": "Hledáme místo pro $digit v $unit.",
-    "solePosition": "Jen tato buňka v $unit může obsahovat $digit.",
+    "solePosition": "Přeškrtnuté $digit ukazují, kam v $unit číslice nemůže. Zbývá jediné políčko.",
     "placement": "Proto sem patří $digit.",
     "unitRow": "řádku $index",
     "unitColumn": "sloupci $index",
@@ -341,5 +371,22 @@
     "nextTechnique": "Další krok na vaší cestě.",
     "masteredNeedsReview": "Známou techniku je dobré zopakovat.",
     "allMasteredReview": "Zopakujte si zvládnutou techniku."
+  },
+  "week": {
+    "title": "Tento týden",
+    "empty": "Tento týden zatím nemáš dokončené sudoku. Aktivita se objeví při hraní.",
+    "puzzles": "Hlavolamy",
+    "minutes": "Minuty",
+    "daily": "Denní",
+    "activeDays": {"one": "$n aktivní den", "few": "$n aktivní dny", "other": "$n aktivních dní"},
+    "completedDay": {"one": "$n dokončený hlavolam", "few": "$n dokončené hlavolamy", "other": "$n dokončených hlavolamů"},
+    "today": "Dnes",
+    "noActivity": "Bez aktivity",
+    "summary": "Tvoje místní aktivita v sudoku"
+  },
+  "settings": {
+    "title": "Nastavení",
+    "language": "Jazyk",
+    "languageDetail": "Vyber jazyk aplikace MICHI."
   }
 }

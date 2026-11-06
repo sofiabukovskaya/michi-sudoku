@@ -56,10 +56,11 @@ final class _ScannerPageState extends State<ScannerPage>
       listenWhen: (previous, current) =>
           previous.phase != ScannerPhase.imported &&
           current.phase == ScannerPhase.imported,
-      listener: (context, state) {
+      listener: (context, state) async {
         final puzzle = state.imported;
         if (puzzle != null) {
-          unawaited(context.router.replace(GameRoute(definition: puzzle)));
+          await context.router.push(GameRoute(definition: puzzle));
+          if (context.mounted) await context.router.maybePop();
         }
       },
       child: Scaffold(

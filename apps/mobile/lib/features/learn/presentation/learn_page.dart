@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
-import 'package:michi_mobile/app/navigation/michi_bottom_nav.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
@@ -84,10 +84,30 @@ final class _LearnPageState extends State<LearnPage>
     _loadFocus();
   }
 
+  Future<void> _openTechnique(
+    SudokuTechnique technique, {
+    required bool isCurrent,
+  }) async {
+    if (isCurrent && _focus != null) {
+      await openRecommendation(context, _focus!);
+    } else {
+      await context.router.root.push(
+        TechniqueLessonRoute(
+          technique: technique,
+          catalog: widget.catalog,
+        ),
+      );
+    }
+    if (!mounted) return;
+    setState(() {
+      _progress = _repository.loadAll();
+    });
+    _loadFocus();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: MichiColors.paper,
-    bottomNavigationBar: const MichiBottomNav(current: MichiTab.learn),
     body: SafeArea(
       child: FutureBuilder<Map<SudokuTechnique, TechniqueProgress>>(
         future: _progress,
@@ -147,20 +167,12 @@ final class _LearnPageState extends State<LearnPage>
                         values[technique] ??
                         TechniqueProgress(technique: technique),
                     current: technique == current,
-                    onTap: () {
-                      if (technique == current && _focus != null) {
-                        openRecommendation(context, _focus!).ignore();
-                      } else {
-                        context.router
-                            .push(
-                              TechniqueLessonRoute(
-                                technique: technique,
-                                catalog: widget.catalog,
-                              ),
-                            )
-                            .ignore();
-                      }
-                    },
+                    onTap: () => unawaited(
+                      _openTechnique(
+                        technique,
+                        isCurrent: technique == current,
+                      ),
+                    ),
                   ),
                 if (group == 2)
                   for (final name in ['XY-Wing', 'Swordfish'])
@@ -313,11 +325,9 @@ final class _PathItem extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Image.asset(
-                              'assets/images/coach_mascot.png',
-                              width: 68,
-                              height: 72,
-                              excludeFromSemantics: true,
+                            const MichiMascot(
+                              state: MichiMascotState.notebook,
+                              size: 72,
                             ),
                           ],
                         ),

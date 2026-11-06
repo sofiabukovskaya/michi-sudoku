@@ -35,7 +35,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsFr _root = this; // ignore: unused_field
 
-	@override 
+	@override
 	TranslationsFr $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsFr(meta: meta ?? this.$meta);
 
 	// Translations
@@ -55,6 +55,8 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$coach$fr coach = _Translations$coach$fr._(_root);
 	@override late final _Translations$why$fr why = _Translations$why$fr._(_root);
 	@override late final _Translations$recommendation$fr recommendation = _Translations$recommendation$fr._(_root);
+	@override late final _Translations$week$fr week = _Translations$week$fr._(_root);
+	@override late final _Translations$settings$fr settings = _Translations$settings$fr._(_root);
 }
 
 // Path: common
@@ -139,7 +141,7 @@ class _Translations$auth$fr extends Translations$auth$uk {
 
 	// Translations
 	@override String get title => 'Compte';
-	@override String get unavailable => 'La synchronisation de la progression arrivera plus tard.';
+	@override String get unavailable => 'Ta progression est enregistrée sur cet appareil.';
 }
 
 // Path: home
@@ -178,6 +180,13 @@ class _Translations$home$fr extends Translations$home$uk {
 	@override String get weekTitle => 'Cette semaine';
 	@override String get weekDetails => 'Détails';
 	@override String get weekdaysShort => 'Lu|Ma|Me|Je|Ve|Sa|Di';
+	@override String get newPuzzleTitle => 'Nouveau sudoku';
+	@override String get catalogSource => 'Choisir un sudoku';
+	@override String get scanSource => 'Scanner un sudoku';
+	@override String get scanSourceDetail => 'Photo ou appareil photo';
+	@override String get weekStatusDone => 'Terminé';
+	@override String get weekStatusToday => 'Aujourd’hui';
+	@override String get weekStatusEmpty => 'Aucune activité';
 }
 
 // Path: game
@@ -277,6 +286,12 @@ class _Translations$learn$fr extends Translations$learn$uk {
 	@override String get extraElimination => 'Ce motif ne retire pas l’un des candidats choisis. Vérifie les cases surlignées.';
 	@override String get missingElimination => 'Il reste des candidats à retirer. Suis l’unité surlignée.';
 	@override String get wrongPlacement => 'Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position.';
+	@override String minutes({required Object count}) => '${count} min';
+	@override String tasks({required Object count}) => '${count} exercices';
+	@override String get wrongCell => 'Cette case est hors du motif. Regarde les cases surlignées.';
+	@override String get wrongDigit => 'Ce motif ne place pas ce chiffre. Vérifie les candidats de la case surlignée.';
+	@override String get wrongCellAndDigit => 'Ce choix ne correspond pas au motif. Compare les cases surlignées et leurs candidats.';
+	@override String findTechnique({required Object technique}) => 'Trouve : ${technique}';
 }
 
 // Path: progress
@@ -286,7 +301,18 @@ class _Translations$progress$fr extends Translations$progress$uk {
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Le suivi des techniques maîtrisées arrivera plus tard.';
+	@override String get doingWell => 'Ce qui va bien';
+	@override String get learningNow => 'Ce que tu apprends';
+	@override String get next => 'Prochaine étape';
+	@override String get noStrong => 'Tes techniques les plus solides apparaîtront après la pratique.';
+	@override String get startLearning => 'Commencer à apprendre';
+	@override String get thisWeek => 'Cette semaine';
+	@override String completed({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n,
+		one: '${n} sudoku terminé',
+		other: '${n} sudokus terminés',
+	);
+	@override String mastery({required Object percent}) => 'Maîtrise ${percent} %';
+	@override String get openTechnique => 'Ouvrir la technique';
 }
 
 // Path: profile
@@ -296,7 +322,16 @@ class _Translations$profile$fr extends Translations$profile$uk {
 	final TranslationsFr _root; // ignore: unused_field
 
 	// Translations
-	@override String get unavailable => 'Les réglages du profil arriveront plus tard.';
+	@override String get guest => 'Invité';
+	@override String get localOnly => 'La progression est enregistrée sur cet appareil.';
+	@override String get puzzles => 'Sudokus';
+	@override String get mastered => 'Maîtrisées';
+	@override String get activeDays => 'Jours actifs';
+	@override String get learnRow => 'Apprendre';
+	@override String get learnDetail => 'Techniques et pratique';
+	@override String get settingsRow => 'Réglages';
+	@override String get settingsDetail => 'Langue';
+	@override String get activity => 'Ton activité';
 }
 
 // Path: scanner
@@ -409,9 +444,9 @@ class _Translations$why$fr extends Translations$why$uk {
 	@override String get lesson => 'Leçon';
 	@override String get gotIt => 'Compris';
 	@override String unitRestrictions({required Object unit, required Object digits}) => 'Dans ${unit}, ces chiffres sont déjà placés : ${digits}.';
-	@override String onlyCandidate({required Object digit}) => 'Il ne reste que ${digit} pour cette case.';
+	@override String onlyCandidate({required Object digit}) => 'La ligne, la colonne et le bloc excluent les autres chiffres. Seul ${digit} convient ici.';
 	@override String unitSearch({required Object digit, required Object unit}) => 'Cherchons où placer ${digit} dans ${unit}.';
-	@override String solePosition({required Object unit, required Object digit}) => 'Seule cette case dans ${unit} peut contenir ${digit}.';
+	@override String solePosition({required Object digit, required Object unit}) => 'Les ${digit} barrés montrent où ce chiffre ne peut pas aller dans ${unit}. Il ne reste que cette case.';
 	@override String placement({required Object digit}) => 'Donc ${digit} va ici.';
 	@override String unitRow({required Object index}) => 'la ligne ${index}';
 	@override String unitColumn({required Object index}) => 'la colonne ${index}';
@@ -437,6 +472,43 @@ class _Translations$recommendation$fr extends Translations$recommendation$uk {
 	@override String get nextTechnique => 'La prochaine étape de votre parcours.';
 	@override String get masteredNeedsReview => 'Une technique connue mérite une révision.';
 	@override String get allMasteredReview => 'Révisez une technique déjà maîtrisée.';
+}
+
+// Path: week
+class _Translations$week$fr extends Translations$week$uk {
+	_Translations$week$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Cette semaine';
+	@override String get empty => 'Aucun sudoku terminé cette semaine. Ton activité apparaîtra quand tu joueras.';
+	@override String get puzzles => 'Sudokus';
+	@override String get minutes => 'Minutes';
+	@override String get daily => 'Quotidiens';
+	@override String activeDays({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n,
+		one: '${n} jour actif',
+		other: '${n} jours actifs',
+	);
+	@override String completedDay({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n,
+		one: '${n} sudoku terminé',
+		other: '${n} sudokus terminés',
+	);
+	@override String get today => 'Aujourd’hui';
+	@override String get noActivity => 'Aucune activité';
+	@override String get summary => 'Ton activité locale de sudoku';
+}
+
+// Path: settings
+class _Translations$settings$fr extends Translations$settings$uk {
+	_Translations$settings$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Réglages';
+	@override String get language => 'Langue';
+	@override String get languageDetail => 'Choisis la langue de MICHI.';
 }
 
 // Path: learn.lessons
@@ -615,7 +687,7 @@ extension on TranslationsFr {
 			'playerLevel.advanced' => 'Je veux un défi',
 			'playerLevel.advancedDetail' => 'X-Wing et au-delà',
 			'auth.title' => 'Compte',
-			'auth.unavailable' => 'La synchronisation de la progression arrivera plus tard.',
+			'auth.unavailable' => 'Ta progression est enregistrée sur cet appareil.',
 			'home.title' => 'Ton parcours dans le sudoku',
 			'home.game' => 'Jouer',
 			'home.continueGame' => 'Continuer la partie',
@@ -645,6 +717,13 @@ extension on TranslationsFr {
 			'home.weekTitle' => 'Cette semaine',
 			'home.weekDetails' => 'Détails',
 			'home.weekdaysShort' => 'Lu|Ma|Me|Je|Ve|Sa|Di',
+			'home.newPuzzleTitle' => 'Nouveau sudoku',
+			'home.catalogSource' => 'Choisir un sudoku',
+			'home.scanSource' => 'Scanner un sudoku',
+			'home.scanSourceDetail' => 'Photo ou appareil photo',
+			'home.weekStatusDone' => 'Terminé',
+			'home.weekStatusToday' => 'Aujourd’hui',
+			'home.weekStatusEmpty' => 'Aucune activité',
 			'game.title' => 'Sudoku du jour · Moyen',
 			'game.undo' => 'Annuler',
 			'game.erase' => 'Effacer',
@@ -773,8 +852,31 @@ extension on TranslationsFr {
 			'learn.extraElimination' => 'Ce motif ne retire pas l’un des candidats choisis. Vérifie les cases surlignées.',
 			'learn.missingElimination' => 'Il reste des candidats à retirer. Suis l’unité surlignée.',
 			'learn.wrongPlacement' => 'Cette case ou ce chiffre ne correspond pas à la déduction. Revérifie la position.',
-			'progress.unavailable' => 'Le suivi des techniques maîtrisées arrivera plus tard.',
-			'profile.unavailable' => 'Les réglages du profil arriveront plus tard.',
+			'learn.minutes' => ({required Object count}) => '${count} min',
+			'learn.tasks' => ({required Object count}) => '${count} exercices',
+			'learn.wrongCell' => 'Cette case est hors du motif. Regarde les cases surlignées.',
+			'learn.wrongDigit' => 'Ce motif ne place pas ce chiffre. Vérifie les candidats de la case surlignée.',
+			'learn.wrongCellAndDigit' => 'Ce choix ne correspond pas au motif. Compare les cases surlignées et leurs candidats.',
+			'learn.findTechnique' => ({required Object technique}) => 'Trouve : ${technique}',
+			'progress.doingWell' => 'Ce qui va bien',
+			'progress.learningNow' => 'Ce que tu apprends',
+			'progress.next' => 'Prochaine étape',
+			'progress.noStrong' => 'Tes techniques les plus solides apparaîtront après la pratique.',
+			'progress.startLearning' => 'Commencer à apprendre',
+			'progress.thisWeek' => 'Cette semaine',
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ),
+			'progress.mastery' => ({required Object percent}) => 'Maîtrise ${percent} %',
+			'progress.openTechnique' => 'Ouvrir la technique',
+			'profile.guest' => 'Invité',
+			'profile.localOnly' => 'La progression est enregistrée sur cet appareil.',
+			'profile.puzzles' => 'Sudokus',
+			'profile.mastered' => 'Maîtrisées',
+			'profile.activeDays' => 'Jours actifs',
+			'profile.learnRow' => 'Apprendre',
+			'profile.learnDetail' => 'Techniques et pratique',
+			'profile.settingsRow' => 'Réglages',
+			'profile.settingsDetail' => 'Langue',
+			'profile.activity' => 'Ton activité',
 			'scanner.title' => 'Scanner un sudoku',
 			'scanner.intro' => 'Cadrez toute la grille, puis prenez ou choisissez une photo.',
 			'scanner.openCamera' => 'Utiliser l’appareil photo',
@@ -860,9 +962,9 @@ extension on TranslationsFr {
 			'why.lesson' => 'Leçon',
 			'why.gotIt' => 'Compris',
 			'why.unitRestrictions' => ({required Object unit, required Object digits}) => 'Dans ${unit}, ces chiffres sont déjà placés : ${digits}.',
-			'why.onlyCandidate' => ({required Object digit}) => 'Il ne reste que ${digit} pour cette case.',
+			'why.onlyCandidate' => ({required Object digit}) => 'La ligne, la colonne et le bloc excluent les autres chiffres. Seul ${digit} convient ici.',
 			'why.unitSearch' => ({required Object digit, required Object unit}) => 'Cherchons où placer ${digit} dans ${unit}.',
-			'why.solePosition' => ({required Object unit, required Object digit}) => 'Seule cette case dans ${unit} peut contenir ${digit}.',
+			'why.solePosition' => ({required Object digit, required Object unit}) => 'Les ${digit} barrés montrent où ce chiffre ne peut pas aller dans ${unit}. Il ne reste que cette case.',
 			'why.placement' => ({required Object digit}) => 'Donc ${digit} va ici.',
 			'why.unitRow' => ({required Object index}) => 'la ligne ${index}',
 			'why.unitColumn' => ({required Object index}) => 'la colonne ${index}',
@@ -879,6 +981,19 @@ extension on TranslationsFr {
 			'recommendation.nextTechnique' => 'La prochaine étape de votre parcours.',
 			'recommendation.masteredNeedsReview' => 'Une technique connue mérite une révision.',
 			'recommendation.allMasteredReview' => 'Révisez une technique déjà maîtrisée.',
+			'week.title' => 'Cette semaine',
+			'week.empty' => 'Aucun sudoku terminé cette semaine. Ton activité apparaîtra quand tu joueras.',
+			'week.puzzles' => 'Sudokus',
+			'week.minutes' => 'Minutes',
+			'week.daily' => 'Quotidiens',
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} jour actif', other: '${n} jours actifs', ),
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ),
+			'week.today' => 'Aujourd’hui',
+			'week.noActivity' => 'Aucune activité',
+			'week.summary' => 'Ton activité locale de sudoku',
+			'settings.title' => 'Réglages',
+			'settings.language' => 'Langue',
+			'settings.languageDetail' => 'Choisis la langue de MICHI.',
 			_ => null,
 		};
 	}

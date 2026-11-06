@@ -81,6 +81,11 @@ void main() {
         )
         .ignore();
     await tester.pumpAndSettle();
+    expect(find.byType(HomePage), findsOneWidget);
+    expect(
+      tester.widget<HomePage>(find.byType(HomePage)).repository,
+      same(repository),
+    );
     expect(find.byKey(const ValueKey('continue-game')), findsNothing);
 
     final now = DateTime.utc(2026, 10);
@@ -103,8 +108,7 @@ void main() {
       editableCells: DemoPuzzle.standard.givens.emptyCellCount,
     );
     await repository.saveActiveGame(game);
-    await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pumpWidget(MichiApp(router: router));
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('continue-game')), findsOneWidget);
     expect(find.textContaining('18:04'), findsOneWidget);
