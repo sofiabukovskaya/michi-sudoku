@@ -1,10 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
+import 'package:michi_mobile/features/auth/presentation/auth_copy.dart';
+import 'package:michi_mobile/features/auth/presentation/widgets/auth_error_banner.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
@@ -30,6 +34,44 @@ final class _ProfileData {
 final class _ProfilePageState extends State<ProfilePage> {
   late Future<_ProfileData> _data = _load();
 
+  Future<void> _confirmSignOut() async {
+    final accepted = await showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => MichiBottomSheet(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              sheetContext.t.auth.signOutTitle,
+              style: MichiTypography.heading,
+            ),
+            const SizedBox(height: MichiSpacing.sm),
+            Text(
+              sheetContext.t.auth.signOutBody,
+              style: MichiTypography.secondary,
+            ),
+            const SizedBox(height: MichiSpacing.xl),
+            MichiButton(
+              label: sheetContext.t.auth.signOut,
+              onPressed: () => Navigator.of(sheetContext).pop(true),
+            ),
+            const SizedBox(height: MichiSpacing.sm),
+            MichiButton(
+              label: sheetContext.t.auth.cancel,
+              variant: MichiButtonVariant.secondary,
+              onPressed: () => Navigator.of(sheetContext).pop(false),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (accepted == true && mounted) {
+      await context.read<AuthCubit>().signOut();
+    }
+  }
+
   Future<_ProfileData> _load() async => _ProfileData(
     await (widget.games ?? getIt<GameRepository>()).loadRecentCompletedGames(
       limit: 1000,
@@ -52,6 +94,7 @@ final class _ProfilePageState extends State<ProfilePage> {
             );
           }
           final data = snapshot.data!;
+          final auth = context.watch<AuthCubit>().state;
           final mastered = data.progress.values
               .where((item) => item.mastery == TechniqueMastery.mastered)
               .length;
@@ -81,11 +124,15 @@ final class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            context.t.profile.guest,
+                            auth.account?.displayName ??
+                                auth.account?.email ??
+                                context.t.profile.guest,
                             style: MichiTypography.display,
                           ),
                           Text(
-                            context.t.profile.localOnly,
+                            auth.isSignedIn
+                                ? context.t.auth.localNotSynced
+                                : context.t.profile.localOnly,
                             style: MichiTypography.secondary,
                           ),
                         ],
@@ -113,6 +160,85 @@ final class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const Divider(color: MichiColors.hairline),
                 const SizedBox(height: MichiSpacing.xxl),
+                if (auth.problem case final problem?) ...[
+                  AuthErrorBanner(
+                    message: authProblemText(context, problem),
+                  ),
+                  const SizedBox(height: MichiSpacing.lg),
+                ],
+                if (auth.available &&
+                    auth.hasEnabledProvider &&
+                    !auth.isSignedIn) ...[
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: MichiColors.coralTint,
+                      borderRadius: BorderRadius.circular(MichiRadius.card),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(MichiSpacing.lg),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            context.t.auth.createTitle,
+                            style: MichiTypography.heading,
+                          ),
+                          const SizedBox(height: MichiSpacing.sm),
+                          Text(
+                            context.t.auth.createSubtitle,
+                            style: MichiTypography.secondary,
+                          ),
+                          const SizedBox(height: MichiSpacing.lg),
+                          MichiButton(
+                            label: context.t.auth.createAccount,
+                            onPressed: () async =>
+                                context.router.root.push(RegisterRoute()),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: MichiSpacing.xxl),
+                ],
+                if (auth.isSignedIn) ...[
+                  Text(context.t.auth.title, style: MichiTypography.heading),
+                  const SizedBox(height: MichiSpacing.md),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: MichiColors.ivory,
+                      border: Border.all(color: MichiColors.hairline),
+                      borderRadius: BorderRadius.circular(MichiRadius.card),
+                    ),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: Column(
+                        children: [
+                          if (auth.account?.emailVerified == false) ...[
+                            _ProfileRow(
+                              icon: Icons.mark_email_unread_outlined,
+                              title: context.t.auth.verifyEmail,
+                              subtitle: auth.account?.email ?? '',
+                              onTap: () async => context.router.root.push(
+                                EmailVerificationRoute(),
+                              ),
+                            ),
+                            const Divider(
+                              height: 1,
+                              color: MichiColors.hairline,
+                            ),
+                          ],
+                          _ProfileRow(
+                            icon: Icons.logout,
+                            title: context.t.auth.signOut,
+                            subtitle: auth.account?.email ?? '',
+                            onTap: _confirmSignOut,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: MichiSpacing.xxl),
+                ],
                 Text(
                   context.t.profile.activity,
                   style: MichiTypography.heading,

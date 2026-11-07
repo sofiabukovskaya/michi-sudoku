@@ -79,18 +79,100 @@ class AppShellRouteArgs {
 
 /// generated route for
 /// [AuthPage]
-class AuthRoute extends PageRouteInfo<void> {
-  const AuthRoute({List<PageRouteInfo>? children})
-    : super(AuthRoute.name, initialChildren: children);
+class AuthRoute extends PageRouteInfo<AuthRouteArgs> {
+  AuthRoute({bool fromWelcome = false, Key? key, List<PageRouteInfo>? children})
+    : super(
+        AuthRoute.name,
+        args: AuthRouteArgs(fromWelcome: fromWelcome, key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'AuthRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const AuthPage();
+      final args = data.argsAs<AuthRouteArgs>(
+        orElse: () => const AuthRouteArgs(),
+      );
+      return AuthPage(fromWelcome: args.fromWelcome, key: args.key);
     },
   );
+}
+
+class AuthRouteArgs {
+  const AuthRouteArgs({this.fromWelcome = false, this.key});
+
+  final bool fromWelcome;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AuthRouteArgs{fromWelcome: $fromWelcome, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AuthRouteArgs) return false;
+    return fromWelcome == other.fromWelcome && key == other.key;
+  }
+
+  @override
+  int get hashCode => fromWelcome.hashCode ^ key.hashCode;
+}
+
+/// generated route for
+/// [EmailVerificationPage]
+class EmailVerificationRoute extends PageRouteInfo<EmailVerificationRouteArgs> {
+  EmailVerificationRoute({
+    bool fromWelcome = false,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         EmailVerificationRoute.name,
+         args: EmailVerificationRouteArgs(fromWelcome: fromWelcome, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'EmailVerificationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EmailVerificationRouteArgs>(
+        orElse: () => const EmailVerificationRouteArgs(),
+      );
+      return EmailVerificationPage(
+        fromWelcome: args.fromWelcome,
+        key: args.key,
+      );
+    },
+  );
+}
+
+class EmailVerificationRouteArgs {
+  const EmailVerificationRouteArgs({this.fromWelcome = false, this.key});
+
+  final bool fromWelcome;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'EmailVerificationRouteArgs{fromWelcome: $fromWelcome, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EmailVerificationRouteArgs) return false;
+    return fromWelcome == other.fromWelcome && key == other.key;
+  }
+
+  @override
+  int get hashCode => fromWelcome.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -389,6 +471,55 @@ class OnboardingRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PasswordResetPage]
+class PasswordResetRoute extends PageRouteInfo<PasswordResetRouteArgs> {
+  PasswordResetRoute({
+    String initialEmail = '',
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PasswordResetRoute.name,
+         args: PasswordResetRouteArgs(initialEmail: initialEmail, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'PasswordResetRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<PasswordResetRouteArgs>(
+        orElse: () => const PasswordResetRouteArgs(),
+      );
+      return PasswordResetPage(initialEmail: args.initialEmail, key: args.key);
+    },
+  );
+}
+
+class PasswordResetRouteArgs {
+  const PasswordResetRouteArgs({this.initialEmail = '', this.key});
+
+  final String initialEmail;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'PasswordResetRouteArgs{initialEmail: $initialEmail, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PasswordResetRouteArgs) return false;
+    return initialEmail == other.initialEmail && key == other.key;
+  }
+
+  @override
+  int get hashCode => initialEmail.hashCode ^ key.hashCode;
+}
+
+/// generated route for
 /// [PlayerLevelPage]
 class PlayerLevelRoute extends PageRouteInfo<void> {
   const PlayerLevelRoute({List<PageRouteInfo>? children})
@@ -628,6 +759,55 @@ class ProgressRouteArgs {
       gameRepository.hashCode ^
       recommendationService.hashCode ^
       key.hashCode;
+}
+
+/// generated route for
+/// [RegisterPage]
+class RegisterRoute extends PageRouteInfo<RegisterRouteArgs> {
+  RegisterRoute({
+    bool fromWelcome = false,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         RegisterRoute.name,
+         args: RegisterRouteArgs(fromWelcome: fromWelcome, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'RegisterRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RegisterRouteArgs>(
+        orElse: () => const RegisterRouteArgs(),
+      );
+      return RegisterPage(fromWelcome: args.fromWelcome, key: args.key);
+    },
+  );
+}
+
+class RegisterRouteArgs {
+  const RegisterRouteArgs({this.fromWelcome = false, this.key});
+
+  final bool fromWelcome;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'RegisterRouteArgs{fromWelcome: $fromWelcome, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! RegisterRouteArgs) return false;
+    return fromWelcome == other.fromWelcome && key == other.key;
+  }
+
+  @override
+  int get hashCode => fromWelcome.hashCode ^ key.hashCode;
 }
 
 /// generated route for

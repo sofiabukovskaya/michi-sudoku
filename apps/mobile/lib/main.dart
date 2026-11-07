@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:michi_mobile/app/app.dart';
 import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
+import 'package:michi_mobile/core/firebase/firebase_runtime.dart';
 import 'package:michi_mobile/core/localization/locale_preference_store.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 
@@ -19,5 +22,6 @@ Future<void> main() async {
     await LocaleSettings.useDeviceLocale();
   }
   bootstrap();
+  unawaited(getIt<FirebaseRuntime>().initialize());
   runApp(MichiApp(router: getIt<AppRouter>()));
 }

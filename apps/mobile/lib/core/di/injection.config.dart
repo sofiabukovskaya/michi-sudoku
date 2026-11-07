@@ -14,7 +14,12 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:michi_mobile/app/router/app_router.dart' as _i712;
 import 'package:michi_mobile/core/di/injection.dart' as _i857;
+import 'package:michi_mobile/core/firebase/firebase_runtime.dart' as _i891;
 import 'package:michi_mobile/core/time/game_clock.dart' as _i585;
+import 'package:michi_mobile/features/auth/application/auth_cubit.dart'
+    as _i404;
+import 'package:michi_mobile/features/auth/domain/auth_repository.dart'
+    as _i685;
 import 'package:michi_mobile/features/game/data/game_database.dart' as _i520;
 import 'package:michi_mobile/features/game/domain/game_repository.dart'
     as _i263;
@@ -52,6 +57,7 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final appModule = _$AppModule();
     gh.factory<_i78.ScannerImageSource>(() => appModule.scannerImageSource);
+    gh.lazySingleton<_i891.FirebaseRuntime>(() => appModule.firebaseRuntime);
     gh.lazySingleton<_i712.AppRouter>(() => appModule.router);
     gh.lazySingleton<_i247.ExactSolver>(() => appModule.exactSolver);
     gh.lazySingleton<_i247.HumanSolver>(() => appModule.humanSolver);
@@ -94,6 +100,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i263.GameRepository>(),
       ),
     );
+    gh.lazySingleton<_i685.AuthRepository>(
+      () => appModule.authRepository(gh<_i891.FirebaseRuntime>()),
+    );
     gh.lazySingleton<_i866.SudokuScannerService>(
       () => appModule.scannerService(
         gh<_i866.GridDetector>(),
@@ -101,6 +110,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i866.CellSegmenter>(),
         gh<_i866.DigitClassifier>(),
       ),
+    );
+    gh.lazySingleton<_i404.AuthCubit>(
+      () => appModule.authCubit(gh<_i685.AuthRepository>()),
     );
     gh.lazySingleton<_i484.LearningProfileProvider>(
       () => appModule.learningProfileProvider(

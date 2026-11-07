@@ -2,11 +2,16 @@ import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
+import 'package:michi_mobile/features/auth/presentation/auth_copy.dart';
+import 'package:michi_mobile/features/auth/presentation/widgets/auth_error_banner.dart';
+import 'package:michi_mobile/features/auth/presentation/widgets/auth_provider_buttons.dart';
 
 @RoutePage()
 final class WelcomePage extends StatelessWidget {
@@ -49,6 +54,36 @@ final class WelcomePage extends StatelessWidget {
                     onPressed: () =>
                         context.router.push(const OnboardingRoute()),
                   ),
+                  if (context.watch<AuthCubit>().state.available &&
+                      context.watch<AuthCubit>().state.hasEnabledProvider) ...[
+                    const SizedBox(height: MichiSpacing.sm),
+                    if (context.watch<AuthCubit>().state.googleEnabled ||
+                        context.watch<AuthCubit>().state.appleEnabled) ...[
+                      AuthProviderButtons(
+                        onAuthenticated: () async =>
+                            context.router.push(const OnboardingRoute()),
+                      ),
+                      const SizedBox(height: MichiSpacing.sm),
+                    ],
+                    if (context.watch<AuthCubit>().state.emailEnabled)
+                      MichiButton(
+                        label: context.t.auth.emailEntry,
+                        variant: MichiButtonVariant.text,
+                        onPressed: () async {
+                          context.read<AuthCubit>().clearProblem();
+                          await context.router.push(
+                            AuthRoute(fromWelcome: true),
+                          );
+                        },
+                      ),
+                    if (context.watch<AuthCubit>().state.problem
+                        case final problem?) ...[
+                      const SizedBox(height: MichiSpacing.md),
+                      AuthErrorBanner(
+                        message: authProblemText(context, problem),
+                      ),
+                    ],
+                  ],
                 ],
               ),
             ),

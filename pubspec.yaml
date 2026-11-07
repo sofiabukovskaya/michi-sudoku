@@ -24,7 +24,7 @@ melos:
         dart run melos exec --depends-on=test -- "dart test"
       description: Run every workspace test suite.
     format:
-      run: dart format .
+      run: dart format apps packages
       description: Format Dart sources in the workspace.
     generate:
       run: dart run melos exec --depends-on=build_runner -- "dart run build_runner build"
