@@ -170,7 +170,19 @@ cd apps/mobile && flutter run
 system packages. It produces AutoRoute, injectable, Freezed, JSON, Slang and
 Theme Tailor code, plus BDD widget tests. Generated files stay in the source tree so the app can build
 immediately after checkout. For a direct Android build, run
-`cd apps/mobile && flutter build apk --debug`.
+`cd apps/mobile && flutter build apk --debug` with Java 21.
+
+## Firebase authentication foundation
+
+Firebase Core and Authentication SDKs are integrated with the existing Android
+and iOS app IDs. Optional email registration, sign-in, password reset, and email
+verification are integrated with the MICHI account screens. Guest gameplay and
+all Drift records remain local and available without Firebase. Account controls
+stay hidden until each Firebase provider and its platform setup is verified;
+the Auth emulator can exercise email flows now. Firestore rules deny all access, and the TypeScript
+Functions workspace has no deployed endpoints. See the
+[Phase 15 setup guide](docs/phase15_firebase_setup.md) for provider steps,
+emulator commands, privacy defaults, and local data ownership.
 
 The home screen selects a bundled puzzle by difficulty, starts or continues
 today's Daily, or continues the saved game. Game, content, and Coach behavior
@@ -213,6 +225,5 @@ Flutter analysis and workspace tests without retraining.
 The engine supports constraints, candidates, exact solving, structured human
 deductions for eight techniques, and four-level semantic Coach plans.
 See [the engine README](packages/sudoku_engine/README.md) for the APIs and
-responsibility boundaries. Firebase, trained scanner ML, streaks, leaderboards,
-subscriptions, XY-Wing, Swordfish, and unrelated visual screens remain
-future work.
+responsibility boundaries. Cloud sync, streaks, leaderboards, subscriptions,
+XY-Wing, Swordfish, and unrelated visual screens remain future work.
