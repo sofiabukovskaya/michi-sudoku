@@ -10,6 +10,33 @@ import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 void main() {
+  test('schema 5 data survives creation of imported puzzle table', () async {
+    final directory = await Directory.systemTemp.createTemp('michi-v5-');
+    addTearDown(() => directory.delete(recursive: true));
+    final file = File('${directory.path}/games.sqlite');
+    final old = GameDatabase(NativeDatabase(file));
+    await old.customStatement(
+      'INSERT INTO daily_learning_focuses '
+      '(local_date, technique_id, action_id, reason_id, '
+      'estimated_minutes, evidence_json) VALUES (?, ?, ?, ?, ?, ?)',
+      ['2026-11-02', 'nakedSingle', 'practice', 'growth', 5, '{}'],
+    );
+    await old.customStatement('DROP TABLE imported_puzzles');
+    await old.customStatement('PRAGMA user_version = 5');
+    await old.close();
+
+    final upgraded = GameDatabase(NativeDatabase(file));
+    addTearDown(upgraded.close);
+    expect(upgraded.schemaVersion, 6);
+    final focus = await upgraded
+        .customSelect(
+          'SELECT local_date FROM daily_learning_focuses',
+        )
+        .get();
+    expect(focus.single.read<String>('local_date'), '2026-11-02');
+    expect(await upgraded.select(upgraded.importedPuzzles).get(), isEmpty);
+  });
+
   test(
     'schema 1 active and completed games survive both later migrations',
     () async {

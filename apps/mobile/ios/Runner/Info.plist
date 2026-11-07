@@ -17,6 +17,12 @@
 	</array>
 	<key>CFBundleDisplayName</key>
 	<string>MICHI</string>
+	<key>NSCameraUsageDescription</key>
+	<string>MICHI uses the camera to scan a Sudoku you choose to import.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>MICHI does not record audio while scanning Sudoku.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MICHI lets you select a Sudoku photo to import.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

@@ -124,7 +124,7 @@ final class _PlayerLevelPageState extends State<PlayerLevelPage> {
               ),
               MichiButton(
                 label: context.t.common.continueLabel,
-                onPressed: () => context.router.replaceAll([HomeRoute()]),
+                onPressed: () => context.router.replaceAll([AppShellRoute()]),
               ),
             ],
           ),

@@ -1,0 +1,263 @@
+{
+  "samples": 405,
+  "accuracy": 1.0,
+  "per_class": {
+    "0": {
+      "samples": 255,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "1": {
+      "samples": 15,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "2": {
+      "samples": 10,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "3": {
+      "samples": 15,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "4": {
+      "samples": 10,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "5": {
+      "samples": 15,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "6": {
+      "samples": 25,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "7": {
+      "samples": 15,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "8": {
+      "samples": 25,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "9": {
+      "samples": 20,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      255,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20
+    ]
+  ],
+  "confidence_bins": {
+    "0.7": {
+      "count": 405,
+      "wrong": 0
+    },
+    "0.8": {
+      "count": 405,
+      "wrong": 0
+    },
+    "0.9": {
+      "count": 405,
+      "wrong": 0
+    },
+    "0.95": {
+      "count": 404,
+      "wrong": 0
+    },
+    "0.98": {
+      "count": 402,
+      "wrong": 0
+    },
+    "0.99": {
+      "count": 399,
+      "wrong": 0
+    },
+    "0.995": {
+      "count": 393,
+      "wrong": 0
+    }
+  },
+  "boards": {
+    "board-clean_printed": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "board-alternate_typography": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "board-digital_screenshot": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "board-uneven_light": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    },
+    "board-low_resolution": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 30,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 0,
+      "manual_corrections": 0,
+      "exact_board": true
+    }
+  },
+  "model": "michi_digit_v1.tflite",
+  "manifest": "five purpose-created rendered board styles",
+  "split": "test"
+}

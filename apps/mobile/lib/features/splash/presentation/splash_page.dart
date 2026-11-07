@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
@@ -38,11 +39,15 @@ final class _SplashPageState extends State<SplashPage> {
       if (!mounted) return;
       if (active != null) {
         await context.router.replace(
-          HomeRoute(
-            repository: repository,
-            recommendationService: widget.repository == null
-                ? getIt<LearningRecommendationService>()
-                : null,
+          AppShellRoute(
+            children: [
+              HomeRoute(
+                repository: repository,
+                recommendationService: widget.repository == null
+                    ? getIt<LearningRecommendationService>()
+                    : null,
+              ),
+            ],
           ),
         );
       } else {
@@ -93,11 +98,9 @@ final class _SplashPageState extends State<SplashPage> {
                 SizedBox(
                   height: constraints.maxHeight * (compact ? 0.18 : 0.16),
                 ),
-                Image.asset(
-                  'assets/images/splash_mascot.png',
-                  width: mascotSize,
-                  height: mascotSize,
-                  excludeFromSemantics: true,
+                MichiMascot(
+                  state: MichiMascotState.walking,
+                  size: mascotSize,
                 ),
                 SizedBox(height: compact ? 32 : 64),
                 const MichiWordmark(light: true, iconSize: 42),

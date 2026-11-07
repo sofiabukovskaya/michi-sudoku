@@ -1,0 +1,27 @@
+{
+  "model_version": "michi-digit-v1",
+  "input_size": 32,
+  "channels": 1,
+  "input_dtype": "float32",
+  "output_dtype": "float32",
+  "normalization": "RGB mean / 255; black=0, white=1; bilinear pixel-center resize",
+  "labels": [
+    "empty",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "confidence_thresholds": {
+    "high": 0.9,
+    "review": 0.8
+  },
+  "training_dataset_version": "phase14-v1",
+  "sha256": "8c8b94aa89e9457c68ae5166eb144879f3d5efd4ad7befbabdf850153e86aa93",
+  "bytes": 869100
+}

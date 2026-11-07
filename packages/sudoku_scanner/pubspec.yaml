@@ -8,6 +8,12 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+  image: ^4.12.0
+  meta: ^1.19.0
+  tflite_flutter: ^0.12.1
+flutter:
+  assets:
+    - assets/models/michi_digit_v1.tflite
 dev_dependencies:
   flutter_test:
     sdk: flutter

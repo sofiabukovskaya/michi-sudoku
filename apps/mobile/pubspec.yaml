@@ -9,6 +9,8 @@ resolution: workspace
 
 dependencies:
   auto_route: ^10.2.3
+  camera: ^0.12.2
+  crypto: ^3.0.7
   drift: ^2.31.0
   drift_flutter: 0.2.8
   flutter:
@@ -18,10 +20,13 @@ dependencies:
     sdk: flutter
   freezed_annotation: ^3.1.0
   get_it: ^9.2.1
+  image_picker: ^1.2.4
   injectable: ^2.7.1+4
   json_annotation: ^4.9.0
   michi_design_system:
     path: ../../packages/michi_design_system
+  permission_handler: ^12.0.3
+  shared_preferences: ^2.5.6
   slang: ^4.19.0
   slang_flutter: ^4.19.0
   sudoku_engine:
@@ -41,6 +46,7 @@ dev_dependencies:
   injectable_generator: 2.9.0
   json_serializable: 6.11.2
   mocktail: ^1.0.4
+  shared_preferences_platform_interface: ^2.4.2
   slang_build_runner: ^4.19.0
   very_good_analysis: ^10.2.0
 
@@ -53,3 +59,7 @@ flutter:
     - assets/images/splash_mascot.png
     - assets/images/completion_hero.png
     - assets/images/hint_icon.png
+    - assets/images/michi_calm.png
+    - assets/images/michi_pointing.png
+    - assets/images/michi_happy.png
+    - assets/images/michi_notebook.png

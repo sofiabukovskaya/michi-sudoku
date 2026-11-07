@@ -3027,6 +3027,423 @@ class DailyLearningFocusesCompanion
   }
 }
 
+class $ImportedPuzzlesTable extends ImportedPuzzles
+    with TableInfo<$ImportedPuzzlesTable, ImportedPuzzleRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ImportedPuzzlesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _puzzleIdMeta = const VerificationMeta(
+    'puzzleId',
+  );
+  @override
+  late final GeneratedColumn<String> puzzleId = GeneratedColumn<String>(
+    'puzzle_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _initialBoardMeta = const VerificationMeta(
+    'initialBoard',
+  );
+  @override
+  late final GeneratedColumn<String> initialBoard = GeneratedColumn<String>(
+    'initial_board',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _humanSolverFullySupportedMeta =
+      const VerificationMeta('humanSolverFullySupported');
+  @override
+  late final GeneratedColumn<bool> humanSolverFullySupported =
+      GeneratedColumn<bool>(
+        'human_solver_fully_supported',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("human_solver_fully_supported" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _requiredTechniquesJsonMeta =
+      const VerificationMeta('requiredTechniquesJson');
+  @override
+  late final GeneratedColumn<String> requiredTechniquesJson =
+      GeneratedColumn<String>(
+        'required_techniques_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _importedAtMsMeta = const VerificationMeta(
+    'importedAtMs',
+  );
+  @override
+  late final GeneratedColumn<int> importedAtMs = GeneratedColumn<int>(
+    'imported_at_ms',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    puzzleId,
+    initialBoard,
+    humanSolverFullySupported,
+    requiredTechniquesJson,
+    importedAtMs,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'imported_puzzles';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ImportedPuzzleRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('puzzle_id')) {
+      context.handle(
+        _puzzleIdMeta,
+        puzzleId.isAcceptableOrUnknown(data['puzzle_id']!, _puzzleIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_puzzleIdMeta);
+    }
+    if (data.containsKey('initial_board')) {
+      context.handle(
+        _initialBoardMeta,
+        initialBoard.isAcceptableOrUnknown(
+          data['initial_board']!,
+          _initialBoardMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_initialBoardMeta);
+    }
+    if (data.containsKey('human_solver_fully_supported')) {
+      context.handle(
+        _humanSolverFullySupportedMeta,
+        humanSolverFullySupported.isAcceptableOrUnknown(
+          data['human_solver_fully_supported']!,
+          _humanSolverFullySupportedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_humanSolverFullySupportedMeta);
+    }
+    if (data.containsKey('required_techniques_json')) {
+      context.handle(
+        _requiredTechniquesJsonMeta,
+        requiredTechniquesJson.isAcceptableOrUnknown(
+          data['required_techniques_json']!,
+          _requiredTechniquesJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requiredTechniquesJsonMeta);
+    }
+    if (data.containsKey('imported_at_ms')) {
+      context.handle(
+        _importedAtMsMeta,
+        importedAtMs.isAcceptableOrUnknown(
+          data['imported_at_ms']!,
+          _importedAtMsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_importedAtMsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {puzzleId};
+  @override
+  ImportedPuzzleRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ImportedPuzzleRow(
+      puzzleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}puzzle_id'],
+      )!,
+      initialBoard: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}initial_board'],
+      )!,
+      humanSolverFullySupported: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}human_solver_fully_supported'],
+      )!,
+      requiredTechniquesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}required_techniques_json'],
+      )!,
+      importedAtMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}imported_at_ms'],
+      )!,
+    );
+  }
+
+  @override
+  $ImportedPuzzlesTable createAlias(String alias) {
+    return $ImportedPuzzlesTable(attachedDatabase, alias);
+  }
+}
+
+class ImportedPuzzleRow extends DataClass
+    implements Insertable<ImportedPuzzleRow> {
+  final String puzzleId;
+  final String initialBoard;
+  final bool humanSolverFullySupported;
+  final String requiredTechniquesJson;
+  final int importedAtMs;
+  const ImportedPuzzleRow({
+    required this.puzzleId,
+    required this.initialBoard,
+    required this.humanSolverFullySupported,
+    required this.requiredTechniquesJson,
+    required this.importedAtMs,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['puzzle_id'] = Variable<String>(puzzleId);
+    map['initial_board'] = Variable<String>(initialBoard);
+    map['human_solver_fully_supported'] = Variable<bool>(
+      humanSolverFullySupported,
+    );
+    map['required_techniques_json'] = Variable<String>(requiredTechniquesJson);
+    map['imported_at_ms'] = Variable<int>(importedAtMs);
+    return map;
+  }
+
+  ImportedPuzzlesCompanion toCompanion(bool nullToAbsent) {
+    return ImportedPuzzlesCompanion(
+      puzzleId: Value(puzzleId),
+      initialBoard: Value(initialBoard),
+      humanSolverFullySupported: Value(humanSolverFullySupported),
+      requiredTechniquesJson: Value(requiredTechniquesJson),
+      importedAtMs: Value(importedAtMs),
+    );
+  }
+
+  factory ImportedPuzzleRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ImportedPuzzleRow(
+      puzzleId: serializer.fromJson<String>(json['puzzleId']),
+      initialBoard: serializer.fromJson<String>(json['initialBoard']),
+      humanSolverFullySupported: serializer.fromJson<bool>(
+        json['humanSolverFullySupported'],
+      ),
+      requiredTechniquesJson: serializer.fromJson<String>(
+        json['requiredTechniquesJson'],
+      ),
+      importedAtMs: serializer.fromJson<int>(json['importedAtMs']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'puzzleId': serializer.toJson<String>(puzzleId),
+      'initialBoard': serializer.toJson<String>(initialBoard),
+      'humanSolverFullySupported': serializer.toJson<bool>(
+        humanSolverFullySupported,
+      ),
+      'requiredTechniquesJson': serializer.toJson<String>(
+        requiredTechniquesJson,
+      ),
+      'importedAtMs': serializer.toJson<int>(importedAtMs),
+    };
+  }
+
+  ImportedPuzzleRow copyWith({
+    String? puzzleId,
+    String? initialBoard,
+    bool? humanSolverFullySupported,
+    String? requiredTechniquesJson,
+    int? importedAtMs,
+  }) => ImportedPuzzleRow(
+    puzzleId: puzzleId ?? this.puzzleId,
+    initialBoard: initialBoard ?? this.initialBoard,
+    humanSolverFullySupported:
+        humanSolverFullySupported ?? this.humanSolverFullySupported,
+    requiredTechniquesJson:
+        requiredTechniquesJson ?? this.requiredTechniquesJson,
+    importedAtMs: importedAtMs ?? this.importedAtMs,
+  );
+  ImportedPuzzleRow copyWithCompanion(ImportedPuzzlesCompanion data) {
+    return ImportedPuzzleRow(
+      puzzleId: data.puzzleId.present ? data.puzzleId.value : this.puzzleId,
+      initialBoard: data.initialBoard.present
+          ? data.initialBoard.value
+          : this.initialBoard,
+      humanSolverFullySupported: data.humanSolverFullySupported.present
+          ? data.humanSolverFullySupported.value
+          : this.humanSolverFullySupported,
+      requiredTechniquesJson: data.requiredTechniquesJson.present
+          ? data.requiredTechniquesJson.value
+          : this.requiredTechniquesJson,
+      importedAtMs: data.importedAtMs.present
+          ? data.importedAtMs.value
+          : this.importedAtMs,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ImportedPuzzleRow(')
+          ..write('puzzleId: $puzzleId, ')
+          ..write('initialBoard: $initialBoard, ')
+          ..write('humanSolverFullySupported: $humanSolverFullySupported, ')
+          ..write('requiredTechniquesJson: $requiredTechniquesJson, ')
+          ..write('importedAtMs: $importedAtMs')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    puzzleId,
+    initialBoard,
+    humanSolverFullySupported,
+    requiredTechniquesJson,
+    importedAtMs,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ImportedPuzzleRow &&
+          other.puzzleId == this.puzzleId &&
+          other.initialBoard == this.initialBoard &&
+          other.humanSolverFullySupported == this.humanSolverFullySupported &&
+          other.requiredTechniquesJson == this.requiredTechniquesJson &&
+          other.importedAtMs == this.importedAtMs);
+}
+
+class ImportedPuzzlesCompanion extends UpdateCompanion<ImportedPuzzleRow> {
+  final Value<String> puzzleId;
+  final Value<String> initialBoard;
+  final Value<bool> humanSolverFullySupported;
+  final Value<String> requiredTechniquesJson;
+  final Value<int> importedAtMs;
+  final Value<int> rowid;
+  const ImportedPuzzlesCompanion({
+    this.puzzleId = const Value.absent(),
+    this.initialBoard = const Value.absent(),
+    this.humanSolverFullySupported = const Value.absent(),
+    this.requiredTechniquesJson = const Value.absent(),
+    this.importedAtMs = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ImportedPuzzlesCompanion.insert({
+    required String puzzleId,
+    required String initialBoard,
+    required bool humanSolverFullySupported,
+    required String requiredTechniquesJson,
+    required int importedAtMs,
+    this.rowid = const Value.absent(),
+  }) : puzzleId = Value(puzzleId),
+       initialBoard = Value(initialBoard),
+       humanSolverFullySupported = Value(humanSolverFullySupported),
+       requiredTechniquesJson = Value(requiredTechniquesJson),
+       importedAtMs = Value(importedAtMs);
+  static Insertable<ImportedPuzzleRow> custom({
+    Expression<String>? puzzleId,
+    Expression<String>? initialBoard,
+    Expression<bool>? humanSolverFullySupported,
+    Expression<String>? requiredTechniquesJson,
+    Expression<int>? importedAtMs,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (puzzleId != null) 'puzzle_id': puzzleId,
+      if (initialBoard != null) 'initial_board': initialBoard,
+      if (humanSolverFullySupported != null)
+        'human_solver_fully_supported': humanSolverFullySupported,
+      if (requiredTechniquesJson != null)
+        'required_techniques_json': requiredTechniquesJson,
+      if (importedAtMs != null) 'imported_at_ms': importedAtMs,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ImportedPuzzlesCompanion copyWith({
+    Value<String>? puzzleId,
+    Value<String>? initialBoard,
+    Value<bool>? humanSolverFullySupported,
+    Value<String>? requiredTechniquesJson,
+    Value<int>? importedAtMs,
+    Value<int>? rowid,
+  }) {
+    return ImportedPuzzlesCompanion(
+      puzzleId: puzzleId ?? this.puzzleId,
+      initialBoard: initialBoard ?? this.initialBoard,
+      humanSolverFullySupported:
+          humanSolverFullySupported ?? this.humanSolverFullySupported,
+      requiredTechniquesJson:
+          requiredTechniquesJson ?? this.requiredTechniquesJson,
+      importedAtMs: importedAtMs ?? this.importedAtMs,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (puzzleId.present) {
+      map['puzzle_id'] = Variable<String>(puzzleId.value);
+    }
+    if (initialBoard.present) {
+      map['initial_board'] = Variable<String>(initialBoard.value);
+    }
+    if (humanSolverFullySupported.present) {
+      map['human_solver_fully_supported'] = Variable<bool>(
+        humanSolverFullySupported.value,
+      );
+    }
+    if (requiredTechniquesJson.present) {
+      map['required_techniques_json'] = Variable<String>(
+        requiredTechniquesJson.value,
+      );
+    }
+    if (importedAtMs.present) {
+      map['imported_at_ms'] = Variable<int>(importedAtMs.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ImportedPuzzlesCompanion(')
+          ..write('puzzleId: $puzzleId, ')
+          ..write('initialBoard: $initialBoard, ')
+          ..write('humanSolverFullySupported: $humanSolverFullySupported, ')
+          ..write('requiredTechniquesJson: $requiredTechniquesJson, ')
+          ..write('importedAtMs: $importedAtMs, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$GameDatabase extends GeneratedDatabase {
   _$GameDatabase(QueryExecutor e) : super(e);
   $GameDatabaseManager get managers => $GameDatabaseManager(this);
@@ -3036,6 +3453,9 @@ abstract class _$GameDatabase extends GeneratedDatabase {
       $TechniqueProgressEntriesTable(this);
   late final $DailyLearningFocusesTable dailyLearningFocuses =
       $DailyLearningFocusesTable(this);
+  late final $ImportedPuzzlesTable importedPuzzles = $ImportedPuzzlesTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3045,6 +3465,7 @@ abstract class _$GameDatabase extends GeneratedDatabase {
     completedGames,
     techniqueProgressEntries,
     dailyLearningFocuses,
+    importedPuzzles,
   ];
 }
 
@@ -4479,6 +4900,224 @@ typedef $$DailyLearningFocusesTableProcessedTableManager =
       DailyLearningFocusRow,
       PrefetchHooks Function()
     >;
+typedef $$ImportedPuzzlesTableCreateCompanionBuilder =
+    ImportedPuzzlesCompanion Function({
+      required String puzzleId,
+      required String initialBoard,
+      required bool humanSolverFullySupported,
+      required String requiredTechniquesJson,
+      required int importedAtMs,
+      Value<int> rowid,
+    });
+typedef $$ImportedPuzzlesTableUpdateCompanionBuilder =
+    ImportedPuzzlesCompanion Function({
+      Value<String> puzzleId,
+      Value<String> initialBoard,
+      Value<bool> humanSolverFullySupported,
+      Value<String> requiredTechniquesJson,
+      Value<int> importedAtMs,
+      Value<int> rowid,
+    });
+
+class $$ImportedPuzzlesTableFilterComposer
+    extends Composer<_$GameDatabase, $ImportedPuzzlesTable> {
+  $$ImportedPuzzlesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get puzzleId => $composableBuilder(
+    column: $table.puzzleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get initialBoard => $composableBuilder(
+    column: $table.initialBoard,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get humanSolverFullySupported => $composableBuilder(
+    column: $table.humanSolverFullySupported,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requiredTechniquesJson => $composableBuilder(
+    column: $table.requiredTechniquesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get importedAtMs => $composableBuilder(
+    column: $table.importedAtMs,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ImportedPuzzlesTableOrderingComposer
+    extends Composer<_$GameDatabase, $ImportedPuzzlesTable> {
+  $$ImportedPuzzlesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get puzzleId => $composableBuilder(
+    column: $table.puzzleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get initialBoard => $composableBuilder(
+    column: $table.initialBoard,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get humanSolverFullySupported => $composableBuilder(
+    column: $table.humanSolverFullySupported,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requiredTechniquesJson => $composableBuilder(
+    column: $table.requiredTechniquesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get importedAtMs => $composableBuilder(
+    column: $table.importedAtMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ImportedPuzzlesTableAnnotationComposer
+    extends Composer<_$GameDatabase, $ImportedPuzzlesTable> {
+  $$ImportedPuzzlesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get puzzleId =>
+      $composableBuilder(column: $table.puzzleId, builder: (column) => column);
+
+  GeneratedColumn<String> get initialBoard => $composableBuilder(
+    column: $table.initialBoard,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get humanSolverFullySupported => $composableBuilder(
+    column: $table.humanSolverFullySupported,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requiredTechniquesJson => $composableBuilder(
+    column: $table.requiredTechniquesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get importedAtMs => $composableBuilder(
+    column: $table.importedAtMs,
+    builder: (column) => column,
+  );
+}
+
+class $$ImportedPuzzlesTableTableManager
+    extends
+        RootTableManager<
+          _$GameDatabase,
+          $ImportedPuzzlesTable,
+          ImportedPuzzleRow,
+          $$ImportedPuzzlesTableFilterComposer,
+          $$ImportedPuzzlesTableOrderingComposer,
+          $$ImportedPuzzlesTableAnnotationComposer,
+          $$ImportedPuzzlesTableCreateCompanionBuilder,
+          $$ImportedPuzzlesTableUpdateCompanionBuilder,
+          (
+            ImportedPuzzleRow,
+            BaseReferences<
+              _$GameDatabase,
+              $ImportedPuzzlesTable,
+              ImportedPuzzleRow
+            >,
+          ),
+          ImportedPuzzleRow,
+          PrefetchHooks Function()
+        > {
+  $$ImportedPuzzlesTableTableManager(
+    _$GameDatabase db,
+    $ImportedPuzzlesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ImportedPuzzlesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ImportedPuzzlesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ImportedPuzzlesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> puzzleId = const Value.absent(),
+                Value<String> initialBoard = const Value.absent(),
+                Value<bool> humanSolverFullySupported = const Value.absent(),
+                Value<String> requiredTechniquesJson = const Value.absent(),
+                Value<int> importedAtMs = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ImportedPuzzlesCompanion(
+                puzzleId: puzzleId,
+                initialBoard: initialBoard,
+                humanSolverFullySupported: humanSolverFullySupported,
+                requiredTechniquesJson: requiredTechniquesJson,
+                importedAtMs: importedAtMs,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String puzzleId,
+                required String initialBoard,
+                required bool humanSolverFullySupported,
+                required String requiredTechniquesJson,
+                required int importedAtMs,
+                Value<int> rowid = const Value.absent(),
+              }) => ImportedPuzzlesCompanion.insert(
+                puzzleId: puzzleId,
+                initialBoard: initialBoard,
+                humanSolverFullySupported: humanSolverFullySupported,
+                requiredTechniquesJson: requiredTechniquesJson,
+                importedAtMs: importedAtMs,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ImportedPuzzlesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$GameDatabase,
+      $ImportedPuzzlesTable,
+      ImportedPuzzleRow,
+      $$ImportedPuzzlesTableFilterComposer,
+      $$ImportedPuzzlesTableOrderingComposer,
+      $$ImportedPuzzlesTableAnnotationComposer,
+      $$ImportedPuzzlesTableCreateCompanionBuilder,
+      $$ImportedPuzzlesTableUpdateCompanionBuilder,
+      (
+        ImportedPuzzleRow,
+        BaseReferences<
+          _$GameDatabase,
+          $ImportedPuzzlesTable,
+          ImportedPuzzleRow
+        >,
+      ),
+      ImportedPuzzleRow,
+      PrefetchHooks Function()
+    >;
 
 class $GameDatabaseManager {
   final _$GameDatabase _db;
@@ -4494,4 +5133,6 @@ class $GameDatabaseManager {
       );
   $$DailyLearningFocusesTableTableManager get dailyLearningFocuses =>
       $$DailyLearningFocusesTableTableManager(_db, _db.dailyLearningFocuses);
+  $$ImportedPuzzlesTableTableManager get importedPuzzles =>
+      $$ImportedPuzzlesTableTableManager(_db, _db.importedPuzzles);
 }

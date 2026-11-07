@@ -1,0 +1,223 @@
+{
+  "samples": 81,
+  "accuracy": 0.9753086419753086,
+  "per_class": {
+    "0": {
+      "samples": 51,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "1": {
+      "samples": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "2": {
+      "samples": 2,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "3": {
+      "samples": 3,
+      "precision": 0.6,
+      "recall": 1.0
+    },
+    "4": {
+      "samples": 2,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "5": {
+      "samples": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "6": {
+      "samples": 5,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "7": {
+      "samples": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "8": {
+      "samples": 5,
+      "precision": 1.0,
+      "recall": 0.6
+    },
+    "9": {
+      "samples": 4,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      51,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4
+    ]
+  ],
+  "confidence_bins": {
+    "0.7": {
+      "count": 76,
+      "wrong": 0
+    },
+    "0.8": {
+      "count": 74,
+      "wrong": 0
+    },
+    "0.9": {
+      "count": 72,
+      "wrong": 0
+    },
+    "0.95": {
+      "count": 72,
+      "wrong": 0
+    },
+    "0.98": {
+      "count": 66,
+      "wrong": 0
+    },
+    "0.99": {
+      "count": 65,
+      "wrong": 0
+    },
+    "0.995": {
+      "count": 64,
+      "wrong": 0
+    }
+  },
+  "boards": {
+    "baseline-photo": {
+      "cells": 81,
+      "recognized_clues": 30,
+      "correct_recognized_clues": 28,
+      "false_digits": 0,
+      "missed_digits": 0,
+      "wrong_digits": 2,
+      "manual_corrections": 2,
+      "exact_board": false
+    }
+  },
+  "model": "michi_digit_v1.tflite",
+  "manifest": "unchanged purpose-created Phase 13 perspective photo",
+  "split": "test"
+}

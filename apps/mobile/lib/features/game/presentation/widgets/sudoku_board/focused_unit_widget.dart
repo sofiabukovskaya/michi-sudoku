@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
@@ -40,7 +42,9 @@ final class FocusedUnitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final side = (constraints.maxWidth / 3).clamp(70, 102).toDouble();
+        final side = (math.min(constraints.maxWidth, constraints.maxHeight) / 3)
+            .clamp(48, 102)
+            .toDouble();
         return Center(
           child: DecoratedBox(
             decoration: BoxDecoration(
@@ -123,7 +127,7 @@ final class _FocusedCell extends StatelessWidget {
                   ? MichiColors.indigo
                   : focused
                   ? MichiColors.coral
-                  : MichiColors.boardBoxLine,
+                  : MichiColors.boardCellLine,
               width: selected || focused ? 2 : 1,
             ),
           ),

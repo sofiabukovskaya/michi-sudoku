@@ -365,7 +365,16 @@ final class _WhyMarkers extends StatelessWidget {
             if (board.isEmpty(cell))
               Positioned.fromRect(
                 rect: geometry.rectFor(cell).deflate(8),
-                child: const CustomPaint(painter: _WhyExclusionPainter()),
+                child: Center(
+                  child: Text(
+                    '${plan.target.digit}',
+                    style: MichiTypography.body.copyWith(
+                      color: MichiColors.coralText,
+                      decoration: TextDecoration.lineThrough,
+                      decorationThickness: 2,
+                    ),
+                  ),
+                ),
               ),
         Positioned.fromRect(
           rect: geometry.rectFor(plan.target.cell),
@@ -410,22 +419,4 @@ final class _WhyMarkers extends StatelessWidget {
       ],
     );
   }
-}
-
-final class _WhyExclusionPainter extends CustomPainter {
-  const _WhyExclusionPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawLine(
-      Offset(0, size.height),
-      Offset(size.width, 0),
-      Paint()
-        ..color = MichiColors.coral
-        ..strokeWidth = 1.5,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

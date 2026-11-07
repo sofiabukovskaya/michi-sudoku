@@ -1,0 +1,17 @@
+version: michi-digit-v1
+seed: 14013
+input_size: 32
+dataset_version: phase14-v1
+synthetic_samples_per_class_per_font: 700
+batch_size: 128
+epochs: 30
+learning_rate: 0.001
+patience: 5
+minimum_delta: 0.001
+font_split:
+  train: [manrope]
+  validation: [lora]
+  test: [roboto]
+confidence:
+  high: 0.90
+  review: 0.80

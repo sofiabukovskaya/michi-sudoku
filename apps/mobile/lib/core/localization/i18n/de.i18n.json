@@ -41,7 +41,7 @@
   },
   "auth": {
     "title": "Konto",
-    "unavailable": "Die Synchronisierung des Fortschritts kommt später."
+    "unavailable": "Dein Fortschritt wird auf diesem Gerät gespeichert."
   },
   "home": {
     "title": "Dein Weg durch Sudoku",
@@ -72,7 +72,14 @@
     "newPuzzle": "Ein weiteres Sudoku",
     "weekTitle": "Diese Woche",
     "weekDetails": "Details",
-    "weekdaysShort": "Mo|Di|Mi|Do|Fr|Sa|So"
+    "weekdaysShort": "Mo|Di|Mi|Do|Fr|Sa|So",
+    "newPuzzleTitle": "Neues Sudoku",
+    "catalogSource": "Sudoku auswählen",
+    "scanSource": "Sudoku scannen",
+    "scanSourceDetail": "Foto oder Kamera",
+    "weekStatusDone": "Abgeschlossen",
+    "weekStatusToday": "Heute",
+    "weekStatusEmpty": "Keine Aktivität"
   },
   "game": {
     "title": "Tägliches Sudoku · Mittel",
@@ -222,16 +229,73 @@
     "groupProgress": "$completed von $total",
     "extraElimination": "Dieses Muster entfernt einen der gewählten Kandidaten nicht. Prüfe die markierten Felder.",
     "missingElimination": "Weitere Kandidaten müssen entfernt werden. Folge der markierten Einheit.",
-    "wrongPlacement": "Dieses Feld oder diese Ziffer passt nicht zum Schluss. Prüfe die markierte Position."
+    "wrongPlacement": "Dieses Feld oder diese Ziffer passt nicht zum Schluss. Prüfe die markierte Position.",
+    "minutes": "$count Min.",
+    "tasks": "$count Aufgaben",
+    "wrongCell": "Diese Zelle liegt außerhalb des Musters. Sieh dir die markierten Zellen an.",
+    "wrongDigit": "Dieses Muster setzt diese Zahl nicht. Prüfe die Kandidaten in der markierten Zelle.",
+    "wrongCellAndDigit": "Die Auswahl passt nicht zum Muster. Vergleiche die markierten Zellen und Kandidaten.",
+    "findTechnique": "Finde: $technique"
   },
   "progress": {
-    "unavailable": "Die Übersicht deiner Techniken kommt später."
+    "doingWell": "Was gut läuft",
+    "learningNow": "Was du gerade lernst",
+    "next": "Nächster Schritt",
+    "noStrong": "Deine stärksten Techniken erscheinen nach dem Üben.",
+    "startLearning": "Lernen beginnen",
+    "thisWeek": "Diese Woche",
+    "completed": {"one": "$n Sudoku abgeschlossen", "other": "$n Sudokus abgeschlossen"},
+    "mastery": "Beherrschung $percent %",
+    "openTechnique": "Technik öffnen"
   },
   "profile": {
-    "unavailable": "Profileinstellungen kommen später."
+    "guest": "Gast",
+    "localOnly": "Dein Fortschritt wird auf diesem Gerät gespeichert.",
+    "puzzles": "Sudokus",
+    "mastered": "Gemeistert",
+    "activeDays": "Aktive Tage",
+    "learnRow": "Lernen",
+    "learnDetail": "Techniken und Übungen",
+    "settingsRow": "Einstellungen",
+    "settingsDetail": "Sprache",
+    "activity": "Deine Aktivität"
   },
   "scanner": {
-    "unavailable": "Der Kameraimport folgt nach dem Grundspiel."
+    "title": "Sudoku scannen",
+    "intro": "Nimm das ganze Gitter auf oder wähle ein Foto aus.",
+    "openCamera": "Kamera verwenden",
+    "choosePhoto": "Foto auswählen",
+    "shutter": "Foto aufnehmen",
+    "frameGuide": "Alle vier Ecken sollten im Bild sein.",
+    "processing": "Sudoku wird gelesen…",
+    "reviewTitle": "Zahlen prüfen",
+    "reviewBody": "Tippe auf ein Feld, um es vor dem Spielen zu korrigieren.",
+    "needsReview": "Prüfen",
+    "conflict": "Widersprüchliche Zahl",
+    "selected": "ausgewählt",
+    "recognized": "erkannt",
+    "empty": "leer",
+    "clear": "Löschen",
+    "confirm": "Sudoku importieren",
+    "rescan": "Erneut scannen",
+    "permissionIntro": "Erlaube den Kamerazugriff, um ein Foto aufzunehmen.",
+    "permissionDenied": "Der Kamerazugriff wurde verweigert. Du kannst ein Foto wählen.",
+    "permissionSettings": "Aktiviere die Kamera in den Einstellungen oder wähle ein Foto.",
+    "noCamera": "Keine Kamera verfügbar. Wähle ein Foto.",
+    "openSettings": "Einstellungen öffnen",
+    "imageDecodeFailure": "Das Bild konnte nicht gelesen werden. Versuche ein anderes Foto.",
+    "noGridFound": "Kein Sudoku-Gitter gefunden. Nimm das ganze Gitter auf.",
+    "invalidGeometry": "Das Gitter konnte nicht begradigt werden. Versuche ein schärferes Foto.",
+    "segmentationFailure": "Das Gitter konnte nicht in Felder geteilt werden. Versuche es erneut.",
+    "recognitionFailure": "Einige Zahlen konnten nicht gelesen werden. Versuche es erneut.",
+    "duplicateClues": "Korrigiere die markierten widersprüchlichen Zahlen.",
+    "noSolution": "Diese Zahlen haben keine Lösung. Prüfe sie.",
+    "multipleSolutions": "Möglicherweise fehlen Zahlen; dieses Sudoku hat mehrere Lösungen.",
+    "storageFailure": "Das importierte Sudoku konnte nicht gespeichert werden. Versuche es erneut.",
+    "validationFailure": "Dieses Sudoku konnte nicht geprüft werden. Versuche es erneut zu bestätigen.",
+    "unsupportedCoach": "MICHI kann möglicherweise noch nicht jeden Schritt dieses Sudokus erklären.",
+    "importedTitle": "Importiertes Sudoku",
+    "lowConfidenceCount": "Zu prüfende Felder: $count"
   },
   "coach": {
     "step": "Hinweis $step von 4",
@@ -286,9 +350,9 @@
     "lesson": "Lektion",
     "gotIt": "Verstanden",
     "unitRestrictions": "In $unit stehen bereits diese Ziffern: $digits.",
-    "onlyCandidate": "Für dieses Feld bleibt nur $digit übrig.",
+    "onlyCandidate": "Zeile, Spalte und Block schließen die anderen Zahlen aus. Hier passt nur $digit.",
     "unitSearch": "Suche einen Platz für $digit in $unit.",
-    "solePosition": "Nur dieses Feld in $unit kann $digit enthalten.",
+    "solePosition": "Die gestrichenen $digit zeigen, wo die Zahl in $unit nicht stehen kann. Nur dieses Feld bleibt.",
     "placement": "Deshalb gehört $digit hierhin.",
     "unitRow": "Zeile $index",
     "unitColumn": "Spalte $index",
@@ -307,5 +371,22 @@
     "nextTechnique": "Der nächste Schritt auf deinem Weg.",
     "masteredNeedsReview": "Eine bekannte Technik braucht Wiederholung.",
     "allMasteredReview": "Wiederhole eine bereits beherrschte Technik."
+  },
+  "week": {
+    "title": "Diese Woche",
+    "empty": "Diese Woche hast du noch kein Sudoku abgeschlossen. Deine Aktivität erscheint beim Spielen.",
+    "puzzles": "Sudokus",
+    "minutes": "Minuten",
+    "daily": "Täglich",
+    "activeDays": {"one": "$n aktiver Tag", "other": "$n aktive Tage"},
+    "completedDay": {"one": "$n Sudoku abgeschlossen", "other": "$n Sudokus abgeschlossen"},
+    "today": "Heute",
+    "noActivity": "Keine Aktivität",
+    "summary": "Deine lokalen Sudoku-Aktivitäten"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "languageDetail": "Wähle die Sprache für MICHI."
   }
 }

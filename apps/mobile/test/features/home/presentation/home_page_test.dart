@@ -81,6 +81,11 @@ void main() {
         )
         .ignore();
     await tester.pumpAndSettle();
+    expect(find.byType(HomePage), findsOneWidget);
+    expect(
+      tester.widget<HomePage>(find.byType(HomePage)).repository,
+      same(repository),
+    );
     expect(find.byKey(const ValueKey('continue-game')), findsNothing);
 
     final now = DateTime.utc(2026, 10);
@@ -103,8 +108,7 @@ void main() {
       editableCells: DemoPuzzle.standard.givens.emptyCellCount,
     );
     await repository.saveActiveGame(game);
-    await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pumpWidget(MichiApp(router: router));
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('continue-game')), findsOneWidget);
     expect(find.textContaining('18:04'), findsOneWidget);
@@ -148,5 +152,38 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('2026-10-27'), findsOneWidget);
     expect(find.textContaining('2026-10-26'), findsNothing);
+  });
+
+  testWidgets('Scan Sudoku remains reachable in a compact puzzle sheet', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    tester.view.physicalSize = const Size(375, 667);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final database = GameDatabase(NativeDatabase.memory());
+    addTearDown(database.close);
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          theme: AppTheme.light,
+          home: HomePage(
+            repository: DriftGameRepository(database),
+            puzzleRepository: _DailyTestPuzzles(),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Another puzzle'));
+    await tester.pumpAndSettle();
+
+    final scan = find.byKey(const ValueKey('scan-sudoku'));
+    expect(scan, findsOneWidget);
+    await tester.ensureVisible(scan);
+    await tester.pumpAndSettle();
+    expect(scan.hitTestable(), findsOneWidget);
   });
 }

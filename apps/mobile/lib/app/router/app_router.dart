@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
+import 'package:michi_mobile/app/navigation/app_shell_page.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_page.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
@@ -18,10 +19,13 @@ import 'package:michi_mobile/features/onboarding/presentation/welcome_page.dart'
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
 import 'package:michi_mobile/features/practice/presentation/practice_page.dart';
 import 'package:michi_mobile/features/profile/presentation/profile_page.dart';
+import 'package:michi_mobile/features/profile/presentation/settings_page.dart';
 import 'package:michi_mobile/features/progress/presentation/progress_page.dart';
+import 'package:michi_mobile/features/progress/presentation/week_page.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
+import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/presentation/scanner_page.dart';
 import 'package:michi_mobile/features/splash/presentation/splash_page.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
@@ -37,14 +41,21 @@ final class AppRouter extends RootStackRouter {
     AutoRoute(page: OnboardingRoute.page),
     AutoRoute(page: PlayerLevelRoute.page),
     AutoRoute(page: AuthRoute.page),
-    AutoRoute(page: HomeRoute.page),
+    AutoRoute(
+      page: AppShellRoute.page,
+      children: [
+        AutoRoute(page: HomeRoute.page, initial: true),
+        AutoRoute(page: LearnRoute.page),
+        AutoRoute(page: ProgressRoute.page),
+        AutoRoute(page: ProfileRoute.page),
+      ],
+    ),
     AutoRoute(page: GameRoute.page),
     AutoRoute(page: WhyRoute.page),
-    AutoRoute(page: LearnRoute.page),
     AutoRoute(page: TechniqueLessonRoute.page),
     AutoRoute(page: PracticeRoute.page),
-    AutoRoute(page: ProgressRoute.page),
-    AutoRoute(page: ProfileRoute.page),
     AutoRoute(page: ScannerRoute.page),
+    AutoRoute(page: WeekRoute.page),
+    AutoRoute(page: SettingsRoute.page),
   ];
 }

@@ -1,0 +1,30 @@
+[
+  {
+    "image": "cell_00.png",
+    "tensor": "cell_00.f32",
+    "label": 5,
+    "prediction": 5,
+    "confidence": 0.9999990463256836
+  },
+  {
+    "image": "cell_01.png",
+    "tensor": "cell_01.f32",
+    "label": 3,
+    "prediction": 3,
+    "confidence": 0.7309439182281494
+  },
+  {
+    "image": "cell_02.png",
+    "tensor": "cell_02.f32",
+    "label": 0,
+    "prediction": 0,
+    "confidence": 0.9998953342437744
+  },
+  {
+    "image": "cell_40.png",
+    "tensor": "cell_40.f32",
+    "label": 0,
+    "prediction": 0,
+    "confidence": 0.9998277425765991
+  }
+]

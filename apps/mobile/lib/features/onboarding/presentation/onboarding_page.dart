@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 
 @RoutePage()
@@ -125,10 +126,10 @@ final class _OnboardingArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => switch (page) {
-    0 => Stack(
+    0 => const Stack(
       alignment: Alignment.center,
       children: [
-        const SizedBox.square(
+        SizedBox.square(
           dimension: 310,
           child: DecoratedBox(
             decoration: BoxDecoration(
@@ -137,11 +138,9 @@ final class _OnboardingArt extends StatelessWidget {
             ),
           ),
         ),
-        Image.asset(
-          'assets/images/coach_mascot.png',
-          width: 275,
-          height: 275,
-          excludeFromSemantics: true,
+        MichiMascot(
+          state: MichiMascotState.calm,
+          size: 275,
         ),
       ],
     ),
@@ -155,31 +154,27 @@ final class _OnboardingArt extends StatelessWidget {
             painter: _ExampleGridPainter(),
           ),
         ),
-        Positioned(
+        const Positioned(
           right: 0,
           bottom: 0,
-          child: Image.asset(
-            'assets/images/coach_mascot.png',
-            width: 125,
-            height: 125,
-            excludeFromSemantics: true,
+          child: MichiMascot(
+            state: MichiMascotState.pointing,
+            size: 125,
           ),
         ),
       ],
     ),
     2 => const _PatternCards(),
-    _ => Stack(
+    _ => const Stack(
       alignment: Alignment.center,
       children: [
-        const CustomPaint(
+        CustomPaint(
           size: Size(320, 260),
           painter: _PathPainter(),
         ),
-        Image.asset(
-          'assets/images/coach_mascot.png',
-          width: 135,
-          height: 135,
-          excludeFromSemantics: true,
+        MichiMascot(
+          state: MichiMascotState.calm,
+          size: 135,
         ),
       ],
     ),

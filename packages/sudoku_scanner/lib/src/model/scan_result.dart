@@ -13,6 +13,11 @@ final class SudokuScanResult {
             81) {
       throw ArgumentError.value(cells, 'cells', 'Expected 81 unique cells.');
     }
+    for (var index = 0; index < 81; index++) {
+      if (this.cells[index].row * 9 + this.cells[index].column != index) {
+        throw ArgumentError.value(cells, 'cells', 'Expected row-major order.');
+      }
+    }
     if (!overallConfidence.isFinite ||
         overallConfidence < 0 ||
         overallConfidence > 1) {

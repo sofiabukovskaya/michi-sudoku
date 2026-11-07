@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 
@@ -79,14 +80,12 @@ final class WelcomeArt extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
+        const Positioned(
           right: -10,
           bottom: -4,
-          child: Image.asset(
-            'assets/images/coach_mascot.png',
-            width: 187,
-            height: 187,
-            excludeFromSemantics: true,
+          child: MichiMascot(
+            state: MichiMascotState.calm,
+            size: 187,
           ),
         ),
       ],

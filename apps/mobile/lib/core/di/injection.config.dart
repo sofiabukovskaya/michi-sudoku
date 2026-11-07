@@ -34,7 +34,14 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
     as _i539;
 import 'package:michi_mobile/features/recommendation/domain/daily_learning_focus_repository.dart'
     as _i397;
+import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart'
+    as _i738;
+import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart'
+    as _i78;
+import 'package:michi_mobile/features/scanner/domain/imported_puzzle_repository.dart'
+    as _i1055;
 import 'package:sudoku_engine/sudoku_engine.dart' as _i247;
+import 'package:sudoku_scanner/sudoku_scanner.dart' as _i866;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -44,6 +51,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final appModule = _$AppModule();
+    gh.factory<_i78.ScannerImageSource>(() => appModule.scannerImageSource);
     gh.lazySingleton<_i712.AppRouter>(() => appModule.router);
     gh.lazySingleton<_i247.ExactSolver>(() => appModule.exactSolver);
     gh.lazySingleton<_i247.HumanSolver>(() => appModule.humanSolver);
@@ -56,6 +64,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i56.LocalPracticeCatalog>(
       () => appModule.practiceCatalog,
     );
+    gh.lazySingleton<_i866.GridDetector>(() => appModule.gridDetector);
+    gh.lazySingleton<_i866.PerspectiveCorrector>(
+      () => appModule.perspectiveCorrector,
+    );
+    gh.lazySingleton<_i866.CellSegmenter>(() => appModule.cellSegmenter);
+    gh.lazySingleton<_i866.DigitClassifier>(() => appModule.digitClassifier);
     gh.lazySingleton<_i150.PuzzleAnalyzer>(
       () => appModule.puzzleAnalyzer(
         gh<_i247.ExactSolver>(),
@@ -71,10 +85,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i397.DailyLearningFocusRepository>(
       () => appModule.dailyLearningFocusRepository(gh<_i520.GameDatabase>()),
     );
+    gh.lazySingleton<_i1055.ImportedPuzzleRepository>(
+      () => appModule.importedPuzzleRepository(gh<_i520.GameDatabase>()),
+    );
     gh.lazySingleton<_i769.PuzzleRepository>(
       () => appModule.puzzleRepository(
         gh<_i936.LocalPuzzleCatalogLoader>(),
         gh<_i263.GameRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i866.SudokuScannerService>(
+      () => appModule.scannerService(
+        gh<_i866.GridDetector>(),
+        gh<_i866.PerspectiveCorrector>(),
+        gh<_i866.CellSegmenter>(),
+        gh<_i866.DigitClassifier>(),
       ),
     );
     gh.lazySingleton<_i484.LearningProfileProvider>(
@@ -82,6 +107,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i426.TechniqueProgressRepository>(),
         gh<_i263.GameRepository>(),
         gh<_i769.PuzzleRepository>(),
+      ),
+    );
+    gh.factory<_i738.ScannerCubit>(
+      () => appModule.scannerCubit(
+        gh<_i78.ScannerImageSource>(),
+        gh<_i866.SudokuScannerService>(),
+        gh<_i150.PuzzleAnalyzer>(),
+        gh<_i1055.ImportedPuzzleRepository>(),
       ),
     );
     gh.lazySingleton<_i539.LearningRecommendationService>(

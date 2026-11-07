@@ -11,6 +11,73 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [AppShellPage]
+class AppShellRoute extends PageRouteInfo<AppShellRouteArgs> {
+  AppShellRoute({
+    GameRepository? repository,
+    LearningRecommendationService? recommendationService,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         AppShellRoute.name,
+         args: AppShellRouteArgs(
+           repository: repository,
+           recommendationService: recommendationService,
+           key: key,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'AppShellRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<AppShellRouteArgs>(
+        orElse: () => const AppShellRouteArgs(),
+      );
+      return AppShellPage(
+        repository: args.repository,
+        recommendationService: args.recommendationService,
+        key: args.key,
+      );
+    },
+  );
+}
+
+class AppShellRouteArgs {
+  const AppShellRouteArgs({
+    this.repository,
+    this.recommendationService,
+    this.key,
+  });
+
+  final GameRepository? repository;
+
+  final LearningRecommendationService? recommendationService;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AppShellRouteArgs{repository: $repository, recommendationService: $recommendationService, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AppShellRouteArgs) return false;
+    return repository == other.repository &&
+        recommendationService == other.recommendationService &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode =>
+      repository.hashCode ^ recommendationService.hashCode ^ key.hashCode;
+}
+
+/// generated route for
 /// [AuthPage]
 class AuthRoute extends PageRouteInfo<void> {
   const AuthRoute({List<PageRouteInfo>? children})
@@ -430,48 +497,198 @@ class PracticeRouteArgs {
 
 /// generated route for
 /// [ProfilePage]
-class ProfileRoute extends PageRouteInfo<void> {
-  const ProfileRoute({List<PageRouteInfo>? children})
-    : super(ProfileRoute.name, initialChildren: children);
+class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    GameRepository? games,
+    TechniqueProgressRepository? progress,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ProfileRoute.name,
+         args: ProfileRouteArgs(games: games, progress: progress, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'ProfileRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ProfilePage();
+      final args = data.argsAs<ProfileRouteArgs>(
+        orElse: () => const ProfileRouteArgs(),
+      );
+      return ProfilePage(
+        games: args.games,
+        progress: args.progress,
+        key: args.key,
+      );
     },
   );
 }
 
+class ProfileRouteArgs {
+  const ProfileRouteArgs({this.games, this.progress, this.key});
+
+  final GameRepository? games;
+
+  final TechniqueProgressRepository? progress;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{games: $games, progress: $progress, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ProfileRouteArgs) return false;
+    return games == other.games &&
+        progress == other.progress &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode => games.hashCode ^ progress.hashCode ^ key.hashCode;
+}
+
 /// generated route for
 /// [ProgressPage]
-class ProgressRoute extends PageRouteInfo<void> {
-  const ProgressRoute({List<PageRouteInfo>? children})
-    : super(ProgressRoute.name, initialChildren: children);
+class ProgressRoute extends PageRouteInfo<ProgressRouteArgs> {
+  ProgressRoute({
+    TechniqueProgressRepository? progressRepository,
+    GameRepository? gameRepository,
+    LearningRecommendationService? recommendationService,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ProgressRoute.name,
+         args: ProgressRouteArgs(
+           progressRepository: progressRepository,
+           gameRepository: gameRepository,
+           recommendationService: recommendationService,
+           key: key,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'ProgressRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ProgressPage();
+      final args = data.argsAs<ProgressRouteArgs>(
+        orElse: () => const ProgressRouteArgs(),
+      );
+      return ProgressPage(
+        progressRepository: args.progressRepository,
+        gameRepository: args.gameRepository,
+        recommendationService: args.recommendationService,
+        key: args.key,
+      );
     },
   );
 }
 
+class ProgressRouteArgs {
+  const ProgressRouteArgs({
+    this.progressRepository,
+    this.gameRepository,
+    this.recommendationService,
+    this.key,
+  });
+
+  final TechniqueProgressRepository? progressRepository;
+
+  final GameRepository? gameRepository;
+
+  final LearningRecommendationService? recommendationService;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ProgressRouteArgs{progressRepository: $progressRepository, gameRepository: $gameRepository, recommendationService: $recommendationService, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ProgressRouteArgs) return false;
+    return progressRepository == other.progressRepository &&
+        gameRepository == other.gameRepository &&
+        recommendationService == other.recommendationService &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode =>
+      progressRepository.hashCode ^
+      gameRepository.hashCode ^
+      recommendationService.hashCode ^
+      key.hashCode;
+}
+
 /// generated route for
 /// [ScannerPage]
-class ScannerRoute extends PageRouteInfo<void> {
-  const ScannerRoute({List<PageRouteInfo>? children})
-    : super(ScannerRoute.name, initialChildren: children);
+class ScannerRoute extends PageRouteInfo<ScannerRouteArgs> {
+  ScannerRoute({
+    required ScannerCubit cubit,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ScannerRoute.name,
+         args: ScannerRouteArgs(cubit: cubit, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'ScannerRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ScannerPage();
+      final args = data.argsAs<ScannerRouteArgs>();
+      return ScannerPage(cubit: args.cubit, key: args.key);
+    },
+  );
+}
+
+class ScannerRouteArgs {
+  const ScannerRouteArgs({required this.cubit, this.key});
+
+  final ScannerCubit cubit;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ScannerRouteArgs{cubit: $cubit, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ScannerRouteArgs) return false;
+    return cubit == other.cubit && key == other.key;
+  }
+
+  @override
+  int get hashCode => cubit.hashCode ^ key.hashCode;
+}
+
+/// generated route for
+/// [SettingsPage]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
+    : super(SettingsRoute.name, initialChildren: children);
+
+  static const String name = 'SettingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingsPage();
     },
   );
 }
@@ -614,6 +831,58 @@ class TechniqueLessonRouteArgs {
       humanSolver.hashCode ^
       coachEngine.hashCode ^
       key.hashCode;
+}
+
+/// generated route for
+/// [WeekPage]
+class WeekRoute extends PageRouteInfo<WeekRouteArgs> {
+  WeekRoute({
+    GameRepository? games,
+    GameClock? clock,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         WeekRoute.name,
+         args: WeekRouteArgs(games: games, clock: clock, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'WeekRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<WeekRouteArgs>(
+        orElse: () => const WeekRouteArgs(),
+      );
+      return WeekPage(games: args.games, clock: args.clock, key: args.key);
+    },
+  );
+}
+
+class WeekRouteArgs {
+  const WeekRouteArgs({this.games, this.clock, this.key});
+
+  final GameRepository? games;
+
+  final GameClock? clock;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WeekRouteArgs{games: $games, clock: $clock, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! WeekRouteArgs) return false;
+    return games == other.games && clock == other.clock && key == other.key;
+  }
+
+  @override
+  int get hashCode => games.hashCode ^ clock.hashCode ^ key.hashCode;
 }
 
 /// generated route for

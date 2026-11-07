@@ -80,12 +80,25 @@ class DailyLearningFocuses extends Table {
   Set<Column> get primaryKey => {localDate};
 }
 
+@DataClassName('ImportedPuzzleRow')
+class ImportedPuzzles extends Table {
+  TextColumn get puzzleId => text()();
+  TextColumn get initialBoard => text()();
+  BoolColumn get humanSolverFullySupported => boolean()();
+  TextColumn get requiredTechniquesJson => text()();
+  IntColumn get importedAtMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {puzzleId};
+}
+
 @DriftDatabase(
   tables: [
     ActiveGames,
     CompletedGames,
     TechniqueProgressEntries,
     DailyLearningFocuses,
+    ImportedPuzzles,
   ],
 )
 final class GameDatabase extends _$GameDatabase {
@@ -95,7 +108,7 @@ final class GameDatabase extends _$GameDatabase {
       GameDatabase(driftDatabase(name: 'michi_games'));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -121,6 +134,9 @@ final class GameDatabase extends _$GameDatabase {
       }
       if (from <= 4 && to >= 5) {
         await migrator.createTable(dailyLearningFocuses);
+      }
+      if (from <= 5 && to >= 6) {
+        await migrator.createTable(importedPuzzles);
       }
     },
   );
