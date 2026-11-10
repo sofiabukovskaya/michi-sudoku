@@ -57,6 +57,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$en recommendation = _Translations$recommendation$en._(_root);
 	@override late final _Translations$week$en week = _Translations$week$en._(_root);
 	@override late final _Translations$settings$en settings = _Translations$settings$en._(_root);
+	@override late final _Translations$sync$en sync = _Translations$sync$en._(_root);
 }
 
 // Path: common
@@ -553,6 +554,32 @@ class _Translations$settings$en extends Translations$settings$uk {
 	@override String get title => 'Settings';
 	@override String get language => 'Language';
 	@override String get languageDetail => 'Choose the language for MICHI.';
+}
+
+// Path: sync
+class _Translations$sync$en extends Translations$sync$uk {
+	_Translations$sync$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Account';
+	@override String get email => 'Email';
+	@override String get synchronization => 'Synchronization';
+	@override String get syncing => 'Syncing…';
+	@override String get synced => 'Synced recently';
+	@override String lastSynced({required Object time}) => 'Last synced — ${time}';
+	@override String get pending => 'Saved locally · waiting to sync';
+	@override String get offline => 'Offline. Progress will be saved and synced later.';
+	@override String get error => 'Sync error';
+	@override String get retry => 'Retry';
+	@override String get guest => 'Progress is saved only on this device.';
+	@override String get deleteAccount => 'Delete account';
+	@override String get deleteTitle => 'Delete your account?';
+	@override String get deleteBody => 'Your account and synchronized progress will be permanently deleted.';
+	@override String get deleteConfirm => 'Delete account';
+	@override String get deleteFailed => 'Could not delete your account. Sign in again and retry.';
+	@override String get signOut => 'Sign out';
 }
 
 // Path: learn.lessons
@@ -1082,6 +1109,23 @@ extension on TranslationsEn {
 			'settings.title' => 'Settings',
 			'settings.language' => 'Language',
 			'settings.languageDetail' => 'Choose the language for MICHI.',
+			'sync.account' => 'Account',
+			'sync.email' => 'Email',
+			'sync.synchronization' => 'Synchronization',
+			'sync.syncing' => 'Syncing…',
+			'sync.synced' => 'Synced recently',
+			'sync.lastSynced' => ({required Object time}) => 'Last synced — ${time}',
+			'sync.pending' => 'Saved locally · waiting to sync',
+			'sync.offline' => 'Offline. Progress will be saved and synced later.',
+			'sync.error' => 'Sync error',
+			'sync.retry' => 'Retry',
+			'sync.guest' => 'Progress is saved only on this device.',
+			'sync.deleteAccount' => 'Delete account',
+			'sync.deleteTitle' => 'Delete your account?',
+			'sync.deleteBody' => 'Your account and synchronized progress will be permanently deleted.',
+			'sync.deleteConfirm' => 'Delete account',
+			'sync.deleteFailed' => 'Could not delete your account. Sign in again and retry.',
+			'sync.signOut' => 'Sign out',
 			_ => null,
 		};
 	}

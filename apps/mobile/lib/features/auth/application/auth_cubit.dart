@@ -164,6 +164,26 @@ final class AuthCubit extends Cubit<AuthState> {
     signedOut: true,
   );
 
+  Future<bool> deleteAccount() async {
+    if (state.account == null || state.busy) return false;
+    final request = ++_request;
+    emit(_copy(busy: true));
+    try {
+      await _repository.deleteAccount();
+      if (isClosed || request != _request) return false;
+      emit(_copy(clearAccount: true));
+      return true;
+    } on AuthException catch (error) {
+      if (!isClosed && request == _request) emit(_copy(problem: error.problem));
+      return false;
+    } on Object {
+      if (!isClosed && request == _request) {
+        emit(_copy(problem: AuthProblem.unexpected));
+      }
+      return false;
+    }
+  }
+
   Future<bool> _voidAction(
     Future<void> Function() action, {
     bool signedOut = false,

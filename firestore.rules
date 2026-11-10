@@ -1,6 +1,118 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function owner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function nonnegative(value) {
+      return value is int && value >= 0;
+    }
+
+    function validCompleted(data) {
+      return data.keys().hasAll([
+        'schemaVersion', 'puzzleId', 'dailyChallengeKey', 'initialBoard',
+        'completedBoard', 'startedAtMs', 'completedAtMs', 'elapsedMs',
+        'mistakes', 'hintsRequested', 'highestHintLevelUsed',
+        'techniqueHelpJson', 'createdAt', 'updatedAt'
+      ]) && data.keys().hasOnly([
+        'schemaVersion', 'puzzleId', 'dailyChallengeKey', 'initialBoard',
+        'completedBoard', 'startedAtMs', 'completedAtMs', 'elapsedMs',
+        'mistakes', 'hintsRequested', 'highestHintLevelUsed',
+        'techniqueHelpJson', 'createdAt', 'updatedAt'
+      ]) && data.schemaVersion == 1
+        && data.puzzleId is string && data.puzzleId.size() > 0
+        && (data.dailyChallengeKey == null || data.dailyChallengeKey is string)
+        && data.initialBoard is string && data.initialBoard.size() == 81
+        && data.completedBoard is string && data.completedBoard.size() == 81
+        && nonnegative(data.startedAtMs) && nonnegative(data.completedAtMs)
+        && nonnegative(data.elapsedMs) && nonnegative(data.mistakes)
+        && nonnegative(data.hintsRequested)
+        && nonnegative(data.highestHintLevelUsed)
+        && data.techniqueHelpJson is string
+        && data.techniqueHelpJson.size() < 10000
+        && data.createdAt is timestamp && data.updatedAt is timestamp;
+    }
+
+    function validDaily(data) {
+      return data.keys().hasAll([
+        'schemaVersion', 'puzzleId', 'gameId', 'completedAtMs',
+        'createdAt', 'updatedAt'
+      ]) && data.keys().hasOnly([
+        'schemaVersion', 'puzzleId', 'gameId', 'completedAtMs',
+        'createdAt', 'updatedAt'
+      ]) && data.schemaVersion == 1
+        && data.puzzleId is string && data.puzzleId.size() > 0
+        && data.gameId is string && data.gameId.size() > 0
+        && nonnegative(data.completedAtMs)
+        && data.createdAt is timestamp && data.updatedAt is timestamp;
+    }
+
+    function validTechnique(id) {
+      return id in [
+        'nakedSingle', 'hiddenSingle', 'nakedPair', 'hiddenPair',
+        'pointingPair', 'boxLineReduction', 'nakedTriple',
+        'xWing', 'xyWing'
+      ];
+    }
+
+    function validContribution(data) {
+      return data.keys().hasAll([
+        'schemaVersion', 'attempts', 'correctAttempts', 'firstTryCorrect',
+        'independentStreak', 'bestIndependentStreak',
+        'directionHintSuccesses', 'focusHintSuccesses',
+        'reasoningHintSuccesses', 'resultHintSuccesses',
+        'lastPracticedAtMs', 'updatedAt'
+      ]) && data.keys().hasOnly([
+        'schemaVersion', 'attempts', 'correctAttempts', 'firstTryCorrect',
+        'independentStreak', 'bestIndependentStreak',
+        'directionHintSuccesses', 'focusHintSuccesses',
+        'reasoningHintSuccesses', 'resultHintSuccesses',
+        'lastPracticedAtMs', 'updatedAt'
+      ]) && data.schemaVersion == 1
+        && nonnegative(data.attempts)
+        && nonnegative(data.correctAttempts)
+        && nonnegative(data.firstTryCorrect)
+        && nonnegative(data.independentStreak)
+        && nonnegative(data.bestIndependentStreak)
+        && nonnegative(data.directionHintSuccesses)
+        && nonnegative(data.focusHintSuccesses)
+        && nonnegative(data.reasoningHintSuccesses)
+        && nonnegative(data.resultHintSuccesses)
+        && (data.lastPracticedAtMs == null || nonnegative(data.lastPracticedAtMs))
+        && data.updatedAt is timestamp;
+    }
+
+    match /users/{uid} {
+      // No client-owned parent document is required for Phase 16.
+      allow read, write: if false;
+
+      match /completedGames/{gameId} {
+        allow get, list: if owner(uid);
+        allow create: if owner(uid) && gameId.size() > 0
+          && validCompleted(request.resource.data);
+        allow update, delete: if false;
+      }
+
+      match /daily/{challengeKey} {
+        allow get, list: if owner(uid);
+        allow create: if owner(uid) && challengeKey.size() > 0
+          && validDaily(request.resource.data);
+        allow update, delete: if false;
+      }
+
+      match /techniqueProgress/{techniqueId} {
+        allow read, write: if false;
+        match /devices/{sourceId} {
+          allow get, list: if owner(uid) && validTechnique(techniqueId);
+          allow create, update: if owner(uid) && validTechnique(techniqueId)
+            && sourceId.size() > 0 && sourceId.size() < 200
+            && validContribution(request.resource.data);
+          allow delete: if false;
+        }
+      }
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

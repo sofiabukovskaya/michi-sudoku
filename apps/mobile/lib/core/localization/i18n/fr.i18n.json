@@ -441,5 +441,24 @@
     "title": "Réglages",
     "language": "Langue",
     "languageDetail": "Choisis la langue de MICHI."
+  },
+  "sync": {
+    "account": "Compte",
+    "email": "E-mail",
+    "synchronization": "Synchronisation",
+    "syncing": "Synchronisation…",
+    "synced": "Synchronisé récemment",
+    "lastSynced": "Dernière synchronisation — $time",
+    "pending": "Enregistré sur cet appareil · en attente de synchronisation",
+    "offline": "Hors ligne. La progression sera enregistrée et synchronisée plus tard.",
+    "error": "Erreur de synchronisation",
+    "retry": "Réessayer",
+    "guest": "La progression est enregistrée uniquement sur cet appareil.",
+    "deleteAccount": "Supprimer le compte",
+    "deleteTitle": "Supprimer votre compte ?",
+    "deleteBody": "Votre compte et votre progression synchronisée seront supprimés définitivement.",
+    "deleteConfirm": "Supprimer le compte",
+    "deleteFailed": "Impossible de supprimer votre compte. Reconnectez-vous et réessayez.",
+    "signOut": "Se déconnecter"
   }
 }

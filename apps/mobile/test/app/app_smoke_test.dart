@@ -8,7 +8,13 @@ import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/profile/local_profile_manager.dart';
+import 'package:michi_mobile/core/profile/local_profile_scope.dart';
+import 'package:michi_mobile/core/sync/cloud_sync_repository.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
+import 'package:michi_mobile/core/sync/sync_engine.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
+import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
@@ -21,6 +27,10 @@ import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:michi_mobile/features/recommendation/application/learning_profile_provider.dart';
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
+import 'package:mocktail/mocktail.dart';
+
+final class _MockCloudSyncRepository extends Mock
+    implements CloudSyncRepository {}
 
 final class _StartupRepository implements GameRepository {
   StoredGame? active;
@@ -102,6 +112,36 @@ void main() {
       'cs',
     );
     LocaleSettings.setLocaleSync(AppLocale.uk);
+  });
+
+  testWidgets('production listenables can be provided at app startup', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final database = GameDatabase(NativeDatabase.memory());
+    final scope = LocalProfileScope();
+    final router = AppRouter();
+    final sync = SyncCoordinator(
+      auth: getIt<AuthCubit>(),
+      scope: scope,
+      profiles: LocalProfileManager(database, scope),
+      engine: SyncEngine(database, _MockCloudSyncRepository()),
+      database: database,
+      router: router,
+    );
+    addTearDown(sync.dispose);
+    addTearDown(scope.dispose);
+    addTearDown(database.close);
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      MichiApp(router: router, profileScope: scope, syncCoordinator: sync),
+    );
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 900));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Find your way through logic.'), findsOneWidget);
   });
 
   testWidgets('home route opens a playable catalog game', (tester) async {

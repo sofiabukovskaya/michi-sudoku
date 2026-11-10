@@ -53,4 +53,6 @@ abstract interface class AuthRepository {
   Future<bool> refreshEmailVerification();
 
   Future<void> signOut();
+
+  Future<void> deleteAccount();
 }

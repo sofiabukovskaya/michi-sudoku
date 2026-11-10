@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
@@ -43,6 +45,34 @@ final class _ProgressData {
 
 final class _ProgressPageState extends State<ProgressPage> {
   late Future<_ProgressData> _data = _load();
+  SyncCoordinator? _sync;
+  int _syncRevision = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final sync = context.read<SyncCoordinator?>();
+    if (identical(_sync, sync)) return;
+    _sync?.removeListener(_onSynced);
+    _sync = sync;
+    _syncRevision = sync?.dataRevision ?? 0;
+    sync?.addListener(_onSynced);
+  }
+
+  void _onSynced() {
+    final revision = _sync?.dataRevision ?? 0;
+    if (revision == _syncRevision) return;
+    _syncRevision = revision;
+    setState(() {
+      _data = _load();
+    });
+  }
+
+  @override
+  void dispose() {
+    _sync?.removeListener(_onSynced);
+    super.dispose();
+  }
 
   Future<_ProgressData> _load() async {
     final progress =

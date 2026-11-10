@@ -3,12 +3,14 @@ import 'dart:developer' as developer;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
@@ -58,6 +60,8 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _loading = true;
   bool _loadFailed = false;
   int _reloadSequence = 0;
+  SyncCoordinator? _sync;
+  int _syncRevision = 0;
 
   @override
   void initState() {
@@ -82,8 +86,27 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final sync = context.read<SyncCoordinator?>();
+    if (identical(_sync, sync)) return;
+    _sync?.removeListener(_onSynced);
+    _sync = sync;
+    _syncRevision = sync?.dataRevision ?? 0;
+    sync?.addListener(_onSynced);
+  }
+
+  void _onSynced() {
+    final revision = _sync?.dataRevision ?? 0;
+    if (revision == _syncRevision) return;
+    _syncRevision = revision;
+    unawaited(_reload());
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _sync?.removeListener(_onSynced);
     super.dispose();
   }
 

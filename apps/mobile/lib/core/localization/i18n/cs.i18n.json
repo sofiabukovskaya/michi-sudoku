@@ -444,5 +444,24 @@
     "title": "Nastavení",
     "language": "Jazyk",
     "languageDetail": "Vyber jazyk aplikace MICHI."
+  },
+  "sync": {
+    "account": "Účet",
+    "email": "E-mail",
+    "synchronization": "Synchronizace",
+    "syncing": "Synchronizuji…",
+    "synced": "Nedávno synchronizováno",
+    "lastSynced": "Poslední synchronizace — $time",
+    "pending": "Uloženo v zařízení · čeká na synchronizaci",
+    "offline": "Jste offline. Postup se uloží a synchronizuje později.",
+    "error": "Chyba synchronizace",
+    "retry": "Zkusit znovu",
+    "guest": "Postup je uložen pouze na tomto zařízení.",
+    "deleteAccount": "Smazat účet",
+    "deleteTitle": "Smazat účet?",
+    "deleteBody": "Účet a synchronizovaný postup budou trvale smazány.",
+    "deleteConfirm": "Smazat účet",
+    "deleteFailed": "Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.",
+    "signOut": "Odhlásit se"
   }
 }

@@ -8,6 +8,8 @@ import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/firebase/firebase_runtime.dart';
 import 'package:michi_mobile/core/localization/locale_preference_store.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/profile/local_profile_scope.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,5 +25,12 @@ Future<void> main() async {
   }
   bootstrap();
   unawaited(getIt<FirebaseRuntime>().initialize());
-  runApp(MichiApp(router: getIt<AppRouter>()));
+  getIt<SyncCoordinator>().start();
+  runApp(
+    MichiApp(
+      router: getIt<AppRouter>(),
+      profileScope: getIt<LocalProfileScope>(),
+      syncCoordinator: getIt<SyncCoordinator>(),
+    ),
+  );
 }

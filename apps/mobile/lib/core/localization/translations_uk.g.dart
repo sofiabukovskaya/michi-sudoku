@@ -62,6 +62,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$recommendation$uk recommendation = Translations$recommendation$uk.internal(_root);
 	late final Translations$week$uk week = Translations$week$uk.internal(_root);
 	late final Translations$settings$uk settings = Translations$settings$uk.internal(_root);
+	late final Translations$sync$uk sync = Translations$sync$uk.internal(_root);
 }
 
 // Path: common
@@ -1233,6 +1234,66 @@ class Translations$settings$uk {
 	String get languageDetail => 'Обери мову MICHI.';
 }
 
+// Path: sync
+class Translations$sync$uk {
+	Translations$sync$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Обліковий запис'
+	String get account => 'Обліковий запис';
+
+	/// uk: 'Електронна пошта'
+	String get email => 'Електронна пошта';
+
+	/// uk: 'Синхронізація'
+	String get synchronization => 'Синхронізація';
+
+	/// uk: 'Синхронізація…'
+	String get syncing => 'Синхронізація…';
+
+	/// uk: 'Нещодавно синхронізовано'
+	String get synced => 'Нещодавно синхронізовано';
+
+	/// uk: 'Остання синхронізація — $time'
+	String lastSynced({required Object time}) => 'Остання синхронізація — ${time}';
+
+	/// uk: 'Збережено на пристрої · очікує синхронізації'
+	String get pending => 'Збережено на пристрої · очікує синхронізації';
+
+	/// uk: 'Немає мережі. Прогрес збережеться і синхронізується пізніше.'
+	String get offline => 'Немає мережі. Прогрес збережеться і синхронізується пізніше.';
+
+	/// uk: 'Помилка синхронізації'
+	String get error => 'Помилка синхронізації';
+
+	/// uk: 'Повторити'
+	String get retry => 'Повторити';
+
+	/// uk: 'Прогрес зберігається лише на цьому пристрої.'
+	String get guest => 'Прогрес зберігається лише на цьому пристрої.';
+
+	/// uk: 'Видалити обліковий запис'
+	String get deleteAccount => 'Видалити обліковий запис';
+
+	/// uk: 'Видалити обліковий запис?'
+	String get deleteTitle => 'Видалити обліковий запис?';
+
+	/// uk: 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.'
+	String get deleteBody => 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.';
+
+	/// uk: 'Видалити обліковий запис'
+	String get deleteConfirm => 'Видалити обліковий запис';
+
+	/// uk: 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.'
+	String get deleteFailed => 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.';
+
+	/// uk: 'Вийти'
+	String get signOut => 'Вийти';
+}
+
 // Path: learn.lessons
 class Translations$learn$lessons$uk {
 	Translations$learn$lessons$uk.internal(this._root);
@@ -1856,6 +1917,23 @@ extension on Translations {
 			'settings.title' => 'Налаштування',
 			'settings.language' => 'Мова',
 			'settings.languageDetail' => 'Обери мову MICHI.',
+			'sync.account' => 'Обліковий запис',
+			'sync.email' => 'Електронна пошта',
+			'sync.synchronization' => 'Синхронізація',
+			'sync.syncing' => 'Синхронізація…',
+			'sync.synced' => 'Нещодавно синхронізовано',
+			'sync.lastSynced' => ({required Object time}) => 'Остання синхронізація — ${time}',
+			'sync.pending' => 'Збережено на пристрої · очікує синхронізації',
+			'sync.offline' => 'Немає мережі. Прогрес збережеться і синхронізується пізніше.',
+			'sync.error' => 'Помилка синхронізації',
+			'sync.retry' => 'Повторити',
+			'sync.guest' => 'Прогрес зберігається лише на цьому пристрої.',
+			'sync.deleteAccount' => 'Видалити обліковий запис',
+			'sync.deleteTitle' => 'Видалити обліковий запис?',
+			'sync.deleteBody' => 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.',
+			'sync.deleteConfirm' => 'Видалити обліковий запис',
+			'sync.deleteFailed' => 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.',
+			'sync.signOut' => 'Вийти',
 			_ => null,
 		};
 	}

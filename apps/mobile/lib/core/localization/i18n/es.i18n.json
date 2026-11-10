@@ -441,5 +441,24 @@
     "title": "Ajustes",
     "language": "Idioma",
     "languageDetail": "Elige el idioma de MICHI."
+  },
+  "sync": {
+    "account": "Cuenta",
+    "email": "Correo electrónico",
+    "synchronization": "Sincronización",
+    "syncing": "Sincronizando…",
+    "synced": "Sincronizado recientemente",
+    "lastSynced": "Última sincronización — $time",
+    "pending": "Guardado en el dispositivo · pendiente de sincronización",
+    "offline": "Sin conexión. Tu progreso se guardará y se sincronizará después.",
+    "error": "Error de sincronización",
+    "retry": "Reintentar",
+    "guest": "El progreso solo se guarda en este dispositivo.",
+    "deleteAccount": "Eliminar cuenta",
+    "deleteTitle": "¿Eliminar tu cuenta?",
+    "deleteBody": "Tu cuenta y el progreso sincronizado se eliminarán definitivamente.",
+    "deleteConfirm": "Eliminar cuenta",
+    "deleteFailed": "No se pudo eliminar tu cuenta. Vuelve a iniciar sesión e inténtalo.",
+    "signOut": "Cerrar sesión"
   }
 }

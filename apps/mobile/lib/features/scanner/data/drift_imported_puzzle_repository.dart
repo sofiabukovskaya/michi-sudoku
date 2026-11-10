@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:michi_mobile/core/profile/local_profile_scope.dart';
 import 'package:michi_mobile/features/game/data/game_codec.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
@@ -8,9 +9,11 @@ import 'package:michi_mobile/features/scanner/domain/imported_puzzle_repository.
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 final class DriftImportedPuzzleRepository implements ImportedPuzzleRepository {
-  const DriftImportedPuzzleRepository(this.database);
+  DriftImportedPuzzleRepository(this.database, [LocalProfileScope? scope])
+    : scope = scope ?? LocalProfileScope();
 
   final GameDatabase database;
+  final LocalProfileScope scope;
 
   @override
   Future<void> save(PuzzleDefinition puzzle) async {
@@ -21,6 +24,7 @@ final class DriftImportedPuzzleRepository implements ImportedPuzzleRepository {
         .into(database.importedPuzzles)
         .insert(
           ImportedPuzzlesCompanion.insert(
+            profileId: Value(scope.profileId),
             puzzleId: puzzle.id,
             initialBoard: GameCodec.board(puzzle.initialBoard),
             humanSolverFullySupported: puzzle.humanSolverFullySupported,
@@ -37,9 +41,15 @@ final class DriftImportedPuzzleRepository implements ImportedPuzzleRepository {
 
   @override
   Future<PuzzleDefinition?> load(String id) async {
-    final row = await (database.select(
-      database.importedPuzzles,
-    )..where((table) => table.puzzleId.equals(id))).getSingleOrNull();
+    final row =
+        await (database.select(
+              database.importedPuzzles,
+            )..where(
+              (table) =>
+                  table.profileId.equals(scope.profileId) &
+                  table.puzzleId.equals(id),
+            ))
+            .getSingleOrNull();
     if (row == null) return null;
     final names = (jsonDecode(row.requiredTechniquesJson) as List<dynamic>)
         .cast<String>();

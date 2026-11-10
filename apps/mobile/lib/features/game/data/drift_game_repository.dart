@@ -2,15 +2,19 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:drift/drift.dart';
+import 'package:michi_mobile/core/profile/local_profile_scope.dart';
+import 'package:michi_mobile/core/sync/sync_outbox_writer.dart';
 import 'package:michi_mobile/features/game/data/game_codec.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 
 /// Serializes writes from all game sessions sharing this repository instance.
 final class DriftGameRepository implements GameRepository {
-  DriftGameRepository(this.database);
+  DriftGameRepository(this.database, [LocalProfileScope? scope])
+    : scope = scope ?? LocalProfileScope();
 
   final GameDatabase database;
+  final LocalProfileScope scope;
   Future<void> _writeTail = Future<void>.value();
 
   Future<T> _write<T>(Future<T> Function() action) {
@@ -27,10 +31,16 @@ final class DriftGameRepository implements GameRepository {
 
   @override
   Future<StoredGame?> loadActiveGame() async {
+    final profileId = scope.profileId;
     await _writeTail;
-    final row = await (database.select(
-      database.activeGames,
-    )..where((table) => table.slot.equals(1))).getSingleOrNull();
+    final row =
+        await (database.select(
+              database.activeGames,
+            )..where(
+              (table) =>
+                  table.profileId.equals(profileId) & table.slot.equals(1),
+            ))
+            .getSingleOrNull();
     if (row == null) return null;
     try {
       final game = StoredGame(
@@ -80,7 +90,7 @@ final class DriftGameRepository implements GameRepository {
         error: error,
         stackTrace: stackTrace,
       );
-      await deleteActiveGame(row.gameId);
+      await _deleteActiveForProfile(profileId, row.gameId);
       return null;
     }
   }
@@ -101,74 +111,120 @@ final class DriftGameRepository implements GameRepository {
   }
 
   @override
-  Future<void> saveActiveGame(StoredGame game) => _write(() async {
-    GameCodec.validate(game);
-    await database
-        .into(database.activeGames)
-        .insertOnConflictUpdate(
-          ActiveGamesCompanion.insert(
-            slot: const Value(1),
-            gameId: game.gameId,
-            puzzleId: game.puzzleId,
-            dailyChallengeKey: Value(game.dailyChallengeKey),
-            initialBoard: GameCodec.board(game.initialBoard),
-            currentBoard: GameCodec.board(game.currentBoard),
-            notesJson: GameCodec.notes(game.notes),
-            undoJson: GameCodec.history(game.undoHistory),
-            reasoningJson: Value(GameCodec.reasoning(game.reasoning)),
-            mistakes: game.mistakes,
-            elapsedMs: game.elapsedBeforeRun.inMilliseconds,
-            runningSinceMs: Value(game.runningSince?.millisecondsSinceEpoch),
-            startedAtMs: game.startedAt.millisecondsSinceEpoch,
-            updatedAtMs: game.updatedAt.millisecondsSinceEpoch,
-            isPaused: game.isPaused,
-            hintsRequested: game.hintsRequested,
-            highestHintLevelUsed: game.highestHintLevelUsed,
-            techniqueHelpJson: Value(
-              GameCodec.techniqueHelp(game.techniqueHelp),
-            ),
-            correctEditableCells: game.correctEditableCells,
-            editableCells: game.editableCells,
-          ),
-        );
-  });
-
-  @override
-  Future<void> deleteActiveGame(String gameId) => _write(() async {
-    await (database.delete(
-      database.activeGames,
-    )..where((table) => table.gameId.equals(gameId))).go();
-  });
-
-  @override
-  Future<void> completeGame(CompletedGame game) => _write(() async {
-    await database.transaction(() async {
+  Future<void> saveActiveGame(StoredGame game) {
+    final profileId = scope.profileId;
+    return _write(() async {
+      GameCodec.validate(game);
       await database
-          .into(database.completedGames)
-          .insert(
-            CompletedGamesCompanion.insert(
+          .into(database.activeGames)
+          .insertOnConflictUpdate(
+            ActiveGamesCompanion.insert(
+              profileId: Value(profileId),
+              slot: 1,
               gameId: game.gameId,
               puzzleId: game.puzzleId,
               dailyChallengeKey: Value(game.dailyChallengeKey),
               initialBoard: GameCodec.board(game.initialBoard),
-              completedBoard: GameCodec.board(game.completedBoard),
-              startedAtMs: game.startedAt.millisecondsSinceEpoch,
-              completedAtMs: game.completedAt.millisecondsSinceEpoch,
-              elapsedMs: game.elapsed.inMilliseconds,
+              currentBoard: GameCodec.board(game.currentBoard),
+              notesJson: GameCodec.notes(game.notes),
+              undoJson: GameCodec.history(game.undoHistory),
+              reasoningJson: Value(GameCodec.reasoning(game.reasoning)),
               mistakes: game.mistakes,
+              elapsedMs: game.elapsedBeforeRun.inMilliseconds,
+              runningSinceMs: Value(game.runningSince?.millisecondsSinceEpoch),
+              startedAtMs: game.startedAt.millisecondsSinceEpoch,
+              updatedAtMs: game.updatedAt.millisecondsSinceEpoch,
+              isPaused: game.isPaused,
               hintsRequested: game.hintsRequested,
               highestHintLevelUsed: game.highestHintLevelUsed,
               techniqueHelpJson: Value(
                 GameCodec.techniqueHelp(game.techniqueHelp),
               ),
+              correctEditableCells: game.correctEditableCells,
+              editableCells: game.editableCells,
             ),
-            mode: InsertMode.insertOrIgnore,
           );
-      await (database.delete(
-        database.activeGames,
-      )..where((table) => table.gameId.equals(game.gameId))).go();
     });
-  });
+  }
+
+  @override
+  Future<void> deleteActiveGame(String gameId) =>
+      _deleteActiveForProfile(scope.profileId, gameId);
+
+  Future<void> _deleteActiveForProfile(String profileId, String gameId) =>
+      _write(() async {
+        await (database.delete(
+              database.activeGames,
+            )..where(
+              (table) =>
+                  table.profileId.equals(profileId) &
+                  table.gameId.equals(gameId),
+            ))
+            .go();
+      });
+
+  @override
+  Future<void> completeGame(CompletedGame game) {
+    final profileId = scope.profileId;
+    return _write(() async {
+      await database.transaction(() async {
+        await database
+            .into(database.completedGames)
+            .insert(
+              CompletedGamesCompanion.insert(
+                profileId: Value(profileId),
+                gameId: game.gameId,
+                puzzleId: game.puzzleId,
+                dailyChallengeKey: Value(game.dailyChallengeKey),
+                initialBoard: GameCodec.board(game.initialBoard),
+                completedBoard: GameCodec.board(game.completedBoard),
+                startedAtMs: game.startedAt.millisecondsSinceEpoch,
+                completedAtMs: game.completedAt.millisecondsSinceEpoch,
+                elapsedMs: game.elapsed.inMilliseconds,
+                mistakes: game.mistakes,
+                hintsRequested: game.hintsRequested,
+                highestHintLevelUsed: game.highestHintLevelUsed,
+                techniqueHelpJson: Value(
+                  GameCodec.techniqueHelp(game.techniqueHelp),
+                ),
+              ),
+              mode: InsertMode.insertOrIgnore,
+            );
+        await (database.delete(
+              database.activeGames,
+            )..where(
+              (table) =>
+                  table.profileId.equals(profileId) &
+                  table.gameId.equals(game.gameId),
+            ))
+            .go();
+        if (game.dailyChallengeKey case final challengeKey?) {
+          await database
+              .into(database.dailyCompletions)
+              .insert(
+                DailyCompletionsCompanion.insert(
+                  profileId: profileId,
+                  challengeKey: challengeKey,
+                  puzzleId: game.puzzleId,
+                  gameId: game.gameId,
+                  completedAtMs: game.completedAt.millisecondsSinceEpoch,
+                ),
+                mode: InsertMode.insertOrIgnore,
+              );
+          await SyncOutboxWriter(database).enqueue(
+            profileId,
+            'daily',
+            challengeKey,
+          );
+        }
+        await SyncOutboxWriter(database).enqueue(
+          profileId,
+          'completedGame',
+          game.gameId,
+        );
+      });
+    });
+  }
 
   @override
   Future<List<CompletedGame>> loadRecentCompletedGames({
@@ -177,7 +233,8 @@ final class DriftGameRepository implements GameRepository {
   }) async {
     RangeError.checkValueInInterval(limit, 1, 1000, 'limit');
     await _writeTail;
-    final query = database.select(database.completedGames);
+    final query = database.select(database.completedGames)
+      ..where((table) => table.profileId.equals(scope.profileId));
     if (normalOnly) {
       query.where((table) => table.dailyChallengeKey.isNull());
     }
@@ -220,6 +277,7 @@ final class DriftGameRepository implements GameRepository {
     await _writeTail;
     final query = database.selectOnly(database.completedGames)
       ..addColumns([database.completedGames.puzzleId])
+      ..where(database.completedGames.profileId.equals(scope.profileId))
       ..orderBy([
         OrderingTerm.desc(database.completedGames.completedAtMs),
         OrderingTerm.desc(database.completedGames.gameId),
@@ -236,8 +294,12 @@ final class DriftGameRepository implements GameRepository {
     if (challengeKey.isEmpty) throw ArgumentError.value(challengeKey);
     await _writeTail;
     final row =
-        await (database.select(database.completedGames)
-              ..where((table) => table.dailyChallengeKey.equals(challengeKey))
+        await (database.select(database.dailyCompletions)
+              ..where(
+                (table) =>
+                    table.profileId.equals(scope.profileId) &
+                    table.challengeKey.equals(challengeKey),
+              )
               ..limit(1))
             .getSingleOrNull();
     return row != null;

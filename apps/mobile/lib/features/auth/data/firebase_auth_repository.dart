@@ -27,7 +27,7 @@ final class FirebaseAuthRepository implements AuthRepository {
       return;
     }
     try {
-      await for (final user in FirebaseAuth.instance.userChanges()) {
+      await for (final user in _runtime.auth.userChanges()) {
         yield AuthSession(
           available: true,
           account: _account(user),
@@ -45,7 +45,7 @@ final class FirebaseAuthRepository implements AuthRepository {
     if (!await _runtime.ready) {
       throw const AuthException(AuthProblem.unavailable);
     }
-    return FirebaseAuth.instance;
+    return _runtime.auth;
   }
 
   @override
@@ -184,6 +184,17 @@ final class FirebaseAuthRepository implements AuthRepository {
           // Firebase session termination is the security boundary.
         }
       }
+    } on FirebaseAuthException catch (error) {
+      throw _map(error);
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      final user = (await _auth()).currentUser;
+      if (user == null) throw const AuthException(AuthProblem.unavailable);
+      await user.delete();
     } on FirebaseAuthException catch (error) {
       throw _map(error);
     }

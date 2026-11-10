@@ -19,6 +19,11 @@ final class FirebaseRuntime {
 
   final Completer<bool> _ready = Completer<bool>();
   bool _started = false;
+  late final FirebaseApp _app;
+
+  FirebaseAuth get auth => FirebaseAuth.instanceFor(app: _app);
+  FirebaseFirestore get firestore => FirebaseFirestore.instanceFor(app: _app);
+  FirebaseFunctions get functions => FirebaseFunctions.instanceFor(app: _app);
 
   Future<bool> get ready => _ready.future;
 
@@ -27,13 +32,13 @@ final class FirebaseRuntime {
     _started = true;
     try {
       if (useEmulators) {
-        await Firebase.initializeApp(demoProjectId: 'demo-michi');
+        _app = await Firebase.initializeApp(demoProjectId: 'demo-michi');
         final host = Platform.isAndroid ? '10.0.2.2' : 'localhost';
-        await FirebaseAuth.instance.useAuthEmulator(host, 9099);
-        FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
-        FirebaseFunctions.instance.useFunctionsEmulator(host, 5001);
+        await auth.useAuthEmulator(host, 9099);
+        firestore.useFirestoreEmulator(host, 8080);
+        functions.useFunctionsEmulator(host, 5001);
       } else {
-        await Firebase.initializeApp(
+        _app = await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,
         );
         await _activateAppCheck();

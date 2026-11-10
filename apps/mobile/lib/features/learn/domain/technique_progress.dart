@@ -11,6 +11,7 @@ final class TechniqueProgress {
     this.correctAttempts = 0,
     this.firstTryCorrect = 0,
     this.independentStreak = 0,
+    this.masteredEver = false,
     this.directionHintSuccesses = 0,
     this.focusHintSuccesses = 0,
     this.reasoningHintSuccesses = 0,
@@ -23,6 +24,7 @@ final class TechniqueProgress {
   final int correctAttempts;
   final int firstTryCorrect;
   final int independentStreak;
+  final bool masteredEver;
   final int directionHintSuccesses;
   final int focusHintSuccesses;
   final int reasoningHintSuccesses;
@@ -36,13 +38,15 @@ final class TechniqueProgress {
       resultHintSuccesses;
 
   /// Progress toward the three explicit mastery conditions, capped at 100%.
-  int get masteryPercent =>
-      ((correctAttempts / 5).clamp(0, 1) * 40 +
-              (firstTryCorrect / 4).clamp(0, 1) * 35 +
-              (independentStreak / 3).clamp(0, 1) * 25)
-          .round();
+  int get masteryPercent => masteredEver
+      ? 100
+      : ((correctAttempts / 5).clamp(0, 1) * 40 +
+                (firstTryCorrect / 4).clamp(0, 1) * 35 +
+                (independentStreak / 3).clamp(0, 1) * 25)
+            .round();
 
   TechniqueMastery get mastery {
+    if (masteredEver) return TechniqueMastery.mastered;
     if (correctAttempts >= 5 &&
         firstTryCorrect >= 4 &&
         independentStreak >= 3) {
@@ -66,6 +70,7 @@ final class TechniqueProgress {
       correctAttempts: correctAttempts + (correct ? 1 : 0),
       firstTryCorrect: firstTryCorrect + (independent ? 1 : 0),
       independentStreak: independent ? independentStreak + 1 : 0,
+      masteredEver: masteredEver || mastery == TechniqueMastery.mastered,
       directionHintSuccesses:
           directionHintSuccesses +
           (correct && highestHint == CoachHintLevel.direction ? 1 : 0),

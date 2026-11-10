@@ -58,6 +58,9 @@ final class _FakeAuthRepository implements AuthRepository {
     _maybeFail();
     signedOut = true;
   }
+
+  @override
+  Future<void> deleteAccount() async => _maybeFail();
 }
 
 void main() {

@@ -57,6 +57,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$fr recommendation = _Translations$recommendation$fr._(_root);
 	@override late final _Translations$week$fr week = _Translations$week$fr._(_root);
 	@override late final _Translations$settings$fr settings = _Translations$settings$fr._(_root);
+	@override late final _Translations$sync$fr sync = _Translations$sync$fr._(_root);
 }
 
 // Path: common
@@ -553,6 +554,32 @@ class _Translations$settings$fr extends Translations$settings$uk {
 	@override String get title => 'Réglages';
 	@override String get language => 'Langue';
 	@override String get languageDetail => 'Choisis la langue de MICHI.';
+}
+
+// Path: sync
+class _Translations$sync$fr extends Translations$sync$uk {
+	_Translations$sync$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Compte';
+	@override String get email => 'E-mail';
+	@override String get synchronization => 'Synchronisation';
+	@override String get syncing => 'Synchronisation…';
+	@override String get synced => 'Synchronisé récemment';
+	@override String lastSynced({required Object time}) => 'Dernière synchronisation — ${time}';
+	@override String get pending => 'Enregistré sur cet appareil · en attente de synchronisation';
+	@override String get offline => 'Hors ligne. La progression sera enregistrée et synchronisée plus tard.';
+	@override String get error => 'Erreur de synchronisation';
+	@override String get retry => 'Réessayer';
+	@override String get guest => 'La progression est enregistrée uniquement sur cet appareil.';
+	@override String get deleteAccount => 'Supprimer le compte';
+	@override String get deleteTitle => 'Supprimer votre compte ?';
+	@override String get deleteBody => 'Votre compte et votre progression synchronisée seront supprimés définitivement.';
+	@override String get deleteConfirm => 'Supprimer le compte';
+	@override String get deleteFailed => 'Impossible de supprimer votre compte. Reconnectez-vous et réessayez.';
+	@override String get signOut => 'Se déconnecter';
 }
 
 // Path: learn.lessons
@@ -1082,6 +1109,23 @@ extension on TranslationsFr {
 			'settings.title' => 'Réglages',
 			'settings.language' => 'Langue',
 			'settings.languageDetail' => 'Choisis la langue de MICHI.',
+			'sync.account' => 'Compte',
+			'sync.email' => 'E-mail',
+			'sync.synchronization' => 'Synchronisation',
+			'sync.syncing' => 'Synchronisation…',
+			'sync.synced' => 'Synchronisé récemment',
+			'sync.lastSynced' => ({required Object time}) => 'Dernière synchronisation — ${time}',
+			'sync.pending' => 'Enregistré sur cet appareil · en attente de synchronisation',
+			'sync.offline' => 'Hors ligne. La progression sera enregistrée et synchronisée plus tard.',
+			'sync.error' => 'Erreur de synchronisation',
+			'sync.retry' => 'Réessayer',
+			'sync.guest' => 'La progression est enregistrée uniquement sur cet appareil.',
+			'sync.deleteAccount' => 'Supprimer le compte',
+			'sync.deleteTitle' => 'Supprimer votre compte ?',
+			'sync.deleteBody' => 'Votre compte et votre progression synchronisée seront supprimés définitivement.',
+			'sync.deleteConfirm' => 'Supprimer le compte',
+			'sync.deleteFailed' => 'Impossible de supprimer votre compte. Reconnectez-vous et réessayez.',
+			'sync.signOut' => 'Se déconnecter',
 			_ => null,
 		};
 	}

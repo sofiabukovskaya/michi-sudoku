@@ -1,5 +1,9 @@
 # Phase 15 Firebase setup
 
+Phase 16 added scoped local profiles, Firestore rules, a sync outbox and a
+deletion Function. See [Phase 16 sync](phase16_local_first_sync.md) for the
+current data-ownership and deployment state. The notes below record Phase 15.
+
 The Firebase project is `michi-sudoku-coach`. FlutterFire registered the existing
 Android application ID `com.example.michi_sudoku` and iOS bundle ID
 `com.example.michiSudoku`. The generated configuration files are committed; they

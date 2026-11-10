@@ -27,7 +27,7 @@ void main() {
 
     final upgraded = GameDatabase(NativeDatabase(file));
     addTearDown(upgraded.close);
-    expect(upgraded.schemaVersion, 6);
+    expect(upgraded.schemaVersion, 7);
     final focus = await upgraded
         .customSelect(
           'SELECT local_date FROM daily_learning_focuses',
@@ -129,6 +129,12 @@ void main() {
 
       final database = GameDatabase(NativeDatabase(file));
       addTearDown(database.close);
+      final migratedRows = await database
+          .customSelect(
+            'SELECT profile_id, game_id FROM active_games',
+          )
+          .get();
+      expect(migratedRows.single.read<String>('profile_id'), 'guest');
       final games = DriftGameRepository(database);
       final active = await games.loadActiveGame();
       expect(active?.gameId, 'active-v1');

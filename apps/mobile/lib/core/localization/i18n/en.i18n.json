@@ -441,5 +441,24 @@
     "title": "Settings",
     "language": "Language",
     "languageDetail": "Choose the language for MICHI."
+  },
+  "sync": {
+    "account": "Account",
+    "email": "Email",
+    "synchronization": "Synchronization",
+    "syncing": "Syncing…",
+    "synced": "Synced recently",
+    "lastSynced": "Last synced — $time",
+    "pending": "Saved locally · waiting to sync",
+    "offline": "Offline. Progress will be saved and synced later.",
+    "error": "Sync error",
+    "retry": "Retry",
+    "guest": "Progress is saved only on this device.",
+    "deleteAccount": "Delete account",
+    "deleteTitle": "Delete your account?",
+    "deleteBody": "Your account and synchronized progress will be permanently deleted.",
+    "deleteConfirm": "Delete account",
+    "deleteFailed": "Could not delete your account. Sign in again and retry.",
+    "signOut": "Sign out"
   }
 }

@@ -57,6 +57,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$de recommendation = _Translations$recommendation$de._(_root);
 	@override late final _Translations$week$de week = _Translations$week$de._(_root);
 	@override late final _Translations$settings$de settings = _Translations$settings$de._(_root);
+	@override late final _Translations$sync$de sync = _Translations$sync$de._(_root);
 }
 
 // Path: common
@@ -553,6 +554,32 @@ class _Translations$settings$de extends Translations$settings$uk {
 	@override String get title => 'Einstellungen';
 	@override String get language => 'Sprache';
 	@override String get languageDetail => 'Wähle die Sprache für MICHI.';
+}
+
+// Path: sync
+class _Translations$sync$de extends Translations$sync$uk {
+	_Translations$sync$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Konto';
+	@override String get email => 'E-Mail';
+	@override String get synchronization => 'Synchronisierung';
+	@override String get syncing => 'Wird synchronisiert…';
+	@override String get synced => 'Kürzlich synchronisiert';
+	@override String lastSynced({required Object time}) => 'Zuletzt synchronisiert — ${time}';
+	@override String get pending => 'Lokal gespeichert · wartet auf Synchronisierung';
+	@override String get offline => 'Offline. Dein Fortschritt wird gespeichert und später synchronisiert.';
+	@override String get error => 'Synchronisierungsfehler';
+	@override String get retry => 'Erneut versuchen';
+	@override String get guest => 'Der Fortschritt ist nur auf diesem Gerät gespeichert.';
+	@override String get deleteAccount => 'Konto löschen';
+	@override String get deleteTitle => 'Konto löschen?';
+	@override String get deleteBody => 'Dein Konto und dein synchronisierter Fortschritt werden dauerhaft gelöscht.';
+	@override String get deleteConfirm => 'Konto löschen';
+	@override String get deleteFailed => 'Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.';
+	@override String get signOut => 'Abmelden';
 }
 
 // Path: learn.lessons
@@ -1082,6 +1109,23 @@ extension on TranslationsDe {
 			'settings.title' => 'Einstellungen',
 			'settings.language' => 'Sprache',
 			'settings.languageDetail' => 'Wähle die Sprache für MICHI.',
+			'sync.account' => 'Konto',
+			'sync.email' => 'E-Mail',
+			'sync.synchronization' => 'Synchronisierung',
+			'sync.syncing' => 'Wird synchronisiert…',
+			'sync.synced' => 'Kürzlich synchronisiert',
+			'sync.lastSynced' => ({required Object time}) => 'Zuletzt synchronisiert — ${time}',
+			'sync.pending' => 'Lokal gespeichert · wartet auf Synchronisierung',
+			'sync.offline' => 'Offline. Dein Fortschritt wird gespeichert und später synchronisiert.',
+			'sync.error' => 'Synchronisierungsfehler',
+			'sync.retry' => 'Erneut versuchen',
+			'sync.guest' => 'Der Fortschritt ist nur auf diesem Gerät gespeichert.',
+			'sync.deleteAccount' => 'Konto löschen',
+			'sync.deleteTitle' => 'Konto löschen?',
+			'sync.deleteBody' => 'Dein Konto und dein synchronisierter Fortschritt werden dauerhaft gelöscht.',
+			'sync.deleteConfirm' => 'Konto löschen',
+			'sync.deleteFailed' => 'Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.',
+			'sync.signOut' => 'Abmelden',
 			_ => null,
 		};
 	}

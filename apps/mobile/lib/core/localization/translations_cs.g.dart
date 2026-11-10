@@ -57,6 +57,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$cs recommendation = _Translations$recommendation$cs._(_root);
 	@override late final _Translations$week$cs week = _Translations$week$cs._(_root);
 	@override late final _Translations$settings$cs settings = _Translations$settings$cs._(_root);
+	@override late final _Translations$sync$cs sync = _Translations$sync$cs._(_root);
 }
 
 // Path: common
@@ -556,6 +557,32 @@ class _Translations$settings$cs extends Translations$settings$uk {
 	@override String get title => 'Nastavení';
 	@override String get language => 'Jazyk';
 	@override String get languageDetail => 'Vyber jazyk aplikace MICHI.';
+}
+
+// Path: sync
+class _Translations$sync$cs extends Translations$sync$uk {
+	_Translations$sync$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Účet';
+	@override String get email => 'E-mail';
+	@override String get synchronization => 'Synchronizace';
+	@override String get syncing => 'Synchronizuji…';
+	@override String get synced => 'Nedávno synchronizováno';
+	@override String lastSynced({required Object time}) => 'Poslední synchronizace — ${time}';
+	@override String get pending => 'Uloženo v zařízení · čeká na synchronizaci';
+	@override String get offline => 'Jste offline. Postup se uloží a synchronizuje později.';
+	@override String get error => 'Chyba synchronizace';
+	@override String get retry => 'Zkusit znovu';
+	@override String get guest => 'Postup je uložen pouze na tomto zařízení.';
+	@override String get deleteAccount => 'Smazat účet';
+	@override String get deleteTitle => 'Smazat účet?';
+	@override String get deleteBody => 'Účet a synchronizovaný postup budou trvale smazány.';
+	@override String get deleteConfirm => 'Smazat účet';
+	@override String get deleteFailed => 'Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.';
+	@override String get signOut => 'Odhlásit se';
 }
 
 // Path: learn.lessons
@@ -1085,6 +1112,23 @@ extension on TranslationsCs {
 			'settings.title' => 'Nastavení',
 			'settings.language' => 'Jazyk',
 			'settings.languageDetail' => 'Vyber jazyk aplikace MICHI.',
+			'sync.account' => 'Účet',
+			'sync.email' => 'E-mail',
+			'sync.synchronization' => 'Synchronizace',
+			'sync.syncing' => 'Synchronizuji…',
+			'sync.synced' => 'Nedávno synchronizováno',
+			'sync.lastSynced' => ({required Object time}) => 'Poslední synchronizace — ${time}',
+			'sync.pending' => 'Uloženo v zařízení · čeká na synchronizaci',
+			'sync.offline' => 'Jste offline. Postup se uloží a synchronizuje později.',
+			'sync.error' => 'Chyba synchronizace',
+			'sync.retry' => 'Zkusit znovu',
+			'sync.guest' => 'Postup je uložen pouze na tomto zařízení.',
+			'sync.deleteAccount' => 'Smazat účet',
+			'sync.deleteTitle' => 'Smazat účet?',
+			'sync.deleteBody' => 'Účet a synchronizovaný postup budou trvale smazány.',
+			'sync.deleteConfirm' => 'Smazat účet',
+			'sync.deleteFailed' => 'Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.',
+			'sync.signOut' => 'Odhlásit se',
 			_ => null,
 		};
 	}

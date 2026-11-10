@@ -6,6 +6,7 @@ import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_copy.dart';
 import 'package:michi_mobile/features/auth/presentation/widgets/auth_error_banner.dart';
@@ -33,6 +34,34 @@ final class _ProfileData {
 
 final class _ProfilePageState extends State<ProfilePage> {
   late Future<_ProfileData> _data = _load();
+  SyncCoordinator? _sync;
+  int _syncRevision = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final sync = context.read<SyncCoordinator?>();
+    if (identical(_sync, sync)) return;
+    _sync?.removeListener(_onSynced);
+    _sync = sync;
+    _syncRevision = sync?.dataRevision ?? 0;
+    sync?.addListener(_onSynced);
+  }
+
+  void _onSynced() {
+    final revision = _sync?.dataRevision ?? 0;
+    if (revision == _syncRevision) return;
+    _syncRevision = revision;
+    setState(() {
+      _data = _load();
+    });
+  }
+
+  @override
+  void dispose() {
+    _sync?.removeListener(_onSynced);
+    super.dispose();
+  }
 
   Future<void> _confirmSignOut() async {
     final accepted = await showModalBottomSheet<bool>(
@@ -95,6 +124,7 @@ final class _ProfilePageState extends State<ProfilePage> {
           }
           final data = snapshot.data!;
           final auth = context.watch<AuthCubit>().state;
+          final sync = context.read<SyncCoordinator?>();
           final mastered = data.progress.values
               .where((item) => item.mastery == TechniqueMastery.mastered)
               .length;
@@ -129,12 +159,27 @@ final class _ProfilePageState extends State<ProfilePage> {
                                 context.t.profile.guest,
                             style: MichiTypography.display,
                           ),
-                          Text(
-                            auth.isSignedIn
-                                ? context.t.auth.localNotSynced
-                                : context.t.profile.localOnly,
-                            style: MichiTypography.secondary,
-                          ),
+                          if (auth.isSignedIn && sync != null)
+                            AnimatedBuilder(
+                              animation: sync,
+                              builder: (context, _) => Text(
+                                switch (sync.status) {
+                                  SyncStatus.synced => context.t.sync.synced,
+                                  SyncStatus.offline => context.t.sync.offline,
+                                  SyncStatus.error => context.t.sync.error,
+                                  SyncStatus.pending => context.t.sync.pending,
+                                  _ => context.t.sync.syncing,
+                                },
+                                style: MichiTypography.secondary,
+                              ),
+                            )
+                          else
+                            Text(
+                              auth.isSignedIn
+                                  ? context.t.auth.localNotSynced
+                                  : context.t.profile.localOnly,
+                              style: MichiTypography.secondary,
+                            ),
                         ],
                       ),
                     ),

@@ -15,6 +15,11 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:michi_mobile/app/router/app_router.dart' as _i712;
 import 'package:michi_mobile/core/di/injection.dart' as _i857;
 import 'package:michi_mobile/core/firebase/firebase_runtime.dart' as _i891;
+import 'package:michi_mobile/core/profile/local_profile_manager.dart' as _i247;
+import 'package:michi_mobile/core/profile/local_profile_scope.dart' as _i906;
+import 'package:michi_mobile/core/sync/cloud_sync_repository.dart' as _i479;
+import 'package:michi_mobile/core/sync/sync_coordinator.dart' as _i460;
+import 'package:michi_mobile/core/sync/sync_engine.dart' as _i867;
 import 'package:michi_mobile/core/time/game_clock.dart' as _i585;
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart'
     as _i404;
@@ -64,6 +69,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i247.CoachEngine>(() => appModule.coachEngine);
     gh.lazySingleton<_i585.GameClock>(() => appModule.gameClock);
     gh.lazySingleton<_i520.GameDatabase>(() => appModule.gameDatabase);
+    gh.lazySingleton<_i906.LocalProfileScope>(
+      () => appModule.localProfileScope,
+    );
     gh.lazySingleton<_i936.LocalPuzzleCatalogLoader>(
       () => appModule.puzzleCatalogLoader,
     );
@@ -82,17 +90,35 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i247.HumanSolver>(),
       ),
     );
+    gh.lazySingleton<_i247.LocalProfileManager>(
+      () => appModule.localProfileManager(
+        gh<_i520.GameDatabase>(),
+        gh<_i906.LocalProfileScope>(),
+      ),
+    );
     gh.lazySingleton<_i263.GameRepository>(
-      () => appModule.gameRepository(gh<_i520.GameDatabase>()),
+      () => appModule.gameRepository(
+        gh<_i520.GameDatabase>(),
+        gh<_i906.LocalProfileScope>(),
+      ),
     );
     gh.lazySingleton<_i426.TechniqueProgressRepository>(
-      () => appModule.techniqueProgressRepository(gh<_i520.GameDatabase>()),
+      () => appModule.techniqueProgressRepository(
+        gh<_i520.GameDatabase>(),
+        gh<_i906.LocalProfileScope>(),
+      ),
     );
     gh.lazySingleton<_i397.DailyLearningFocusRepository>(
-      () => appModule.dailyLearningFocusRepository(gh<_i520.GameDatabase>()),
+      () => appModule.dailyLearningFocusRepository(
+        gh<_i520.GameDatabase>(),
+        gh<_i906.LocalProfileScope>(),
+      ),
     );
     gh.lazySingleton<_i1055.ImportedPuzzleRepository>(
-      () => appModule.importedPuzzleRepository(gh<_i520.GameDatabase>()),
+      () => appModule.importedPuzzleRepository(
+        gh<_i520.GameDatabase>(),
+        gh<_i906.LocalProfileScope>(),
+      ),
     );
     gh.lazySingleton<_i769.PuzzleRepository>(
       () => appModule.puzzleRepository(
@@ -102,6 +128,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i685.AuthRepository>(
       () => appModule.authRepository(gh<_i891.FirebaseRuntime>()),
+    );
+    gh.lazySingleton<_i479.CloudSyncRepository>(
+      () => appModule.cloudSyncRepository(gh<_i891.FirebaseRuntime>()),
+    );
+    gh.lazySingleton<_i867.SyncEngine>(
+      () => appModule.syncEngine(
+        gh<_i520.GameDatabase>(),
+        gh<_i479.CloudSyncRepository>(),
+      ),
     );
     gh.lazySingleton<_i866.SudokuScannerService>(
       () => appModule.scannerService(
@@ -119,6 +154,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i426.TechniqueProgressRepository>(),
         gh<_i263.GameRepository>(),
         gh<_i769.PuzzleRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i460.SyncCoordinator>(
+      () => appModule.syncCoordinator(
+        gh<_i404.AuthCubit>(),
+        gh<_i906.LocalProfileScope>(),
+        gh<_i247.LocalProfileManager>(),
+        gh<_i867.SyncEngine>(),
+        gh<_i520.GameDatabase>(),
+        gh<_i712.AppRouter>(),
       ),
     );
     gh.factory<_i738.ScannerCubit>(
