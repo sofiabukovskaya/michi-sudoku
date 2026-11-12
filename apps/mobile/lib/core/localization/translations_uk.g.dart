@@ -62,6 +62,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$recommendation$uk recommendation = Translations$recommendation$uk.internal(_root);
 	late final Translations$week$uk week = Translations$week$uk.internal(_root);
 	late final Translations$settings$uk settings = Translations$settings$uk.internal(_root);
+	late final Translations$sync$uk sync = Translations$sync$uk.internal(_root);
 }
 
 // Path: common
@@ -209,6 +210,138 @@ class Translations$auth$uk {
 
 	/// uk: 'Прогрес зберігається на цьому пристрої.'
 	String get unavailable => 'Прогрес зберігається на цьому пристрої.';
+
+	/// uk: 'Продовжити з Apple'
+	String get apple => 'Продовжити з Apple';
+
+	/// uk: 'Продовжити з Google'
+	String get google => 'Продовжити з Google';
+
+	/// uk: 'Увійти через пошту'
+	String get emailEntry => 'Увійти через пошту';
+
+	/// uk: 'Створити акаунт'
+	String get createTitle => 'Створити акаунт';
+
+	/// uk: 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.'
+	String get createSubtitle => 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.';
+
+	/// uk: 'З поверненням'
+	String get signInTitle => 'З поверненням';
+
+	/// uk: 'Ім’я'
+	String get name => 'Ім’я';
+
+	/// uk: 'Пошта'
+	String get email => 'Пошта';
+
+	/// uk: 'Пароль'
+	String get password => 'Пароль';
+
+	/// uk: 'Щонайменше 8 символів'
+	String get passwordHint => 'Щонайменше 8 символів';
+
+	/// uk: 'Створити акаунт'
+	String get createAccount => 'Створити акаунт';
+
+	/// uk: 'Увійти'
+	String get signIn => 'Увійти';
+
+	/// uk: 'Уже маєте акаунт?'
+	String get alreadyAccount => 'Уже маєте акаунт?';
+
+	/// uk: 'Ще немає акаунта?'
+	String get noAccount => 'Ще немає акаунта?';
+
+	/// uk: 'Не пам’ятаєте пароль?'
+	String get forgotPassword => 'Не пам’ятаєте пароль?';
+
+	/// uk: 'Відновлення пароля'
+	String get resetTitle => 'Відновлення пароля';
+
+	/// uk: 'Введіть пошту акаунта — ми надішлемо посилання для відновлення.'
+	String get resetSubtitle => 'Введіть пошту акаунта — ми надішлемо посилання для відновлення.';
+
+	/// uk: 'Надіслати посилання'
+	String get sendLink => 'Надіслати посилання';
+
+	/// uk: 'Якщо акаунт існує, перевірте пошту для відновлення пароля.'
+	String get resetSent => 'Якщо акаунт існує, перевірте пошту для відновлення пароля.';
+
+	/// uk: 'Перевірте пошту'
+	String get verifyTitle => 'Перевірте пошту';
+
+	/// uk: 'Ми надіслали посилання для підтвердження на $email.'
+	String verifySubtitle({required Object email}) => 'Ми надіслали посилання для підтвердження на ${email}.';
+
+	/// uk: 'Я підтвердив(-ла) пошту'
+	String get checkVerification => 'Я підтвердив(-ла) пошту';
+
+	/// uk: 'Надіслати ще раз'
+	String get resendVerification => 'Надіслати ще раз';
+
+	/// uk: 'Пошту підтверджено.'
+	String get verified => 'Пошту підтверджено.';
+
+	/// uk: 'Пошту ще не підтверджено.'
+	String get notVerified => 'Пошту ще не підтверджено.';
+
+	/// uk: 'Вийти'
+	String get signOut => 'Вийти';
+
+	/// uk: 'Ігровий прогрес і надалі зберігається на цьому пристрої.'
+	String get localNotSynced => 'Ігровий прогрес і надалі зберігається на цьому пристрої.';
+
+	/// uk: 'Підтвердити пошту'
+	String get verifyEmail => 'Підтвердити пошту';
+
+	/// uk: 'Введіть правильну адресу пошти.'
+	String get errorInvalidEmail => 'Введіть правильну адресу пошти.';
+
+	/// uk: 'Використайте щонайменше 8 символів.'
+	String get errorPasswordLength => 'Використайте щонайменше 8 символів.';
+
+	/// uk: 'Введіть ім’я.'
+	String get errorNameRequired => 'Введіть ім’я.';
+
+	/// uk: 'Цей пароль надто слабкий.'
+	String get errorWeakPassword => 'Цей пароль надто слабкий.';
+
+	/// uk: 'Акаунт із цією поштою вже існує.'
+	String get errorEmailInUse => 'Акаунт із цією поштою вже існує.';
+
+	/// uk: 'Перевірте пошту й пароль.'
+	String get errorWrongCredentials => 'Перевірте пошту й пароль.';
+
+	/// uk: 'Цей акаунт вимкнено.'
+	String get errorDisabled => 'Цей акаунт вимкнено.';
+
+	/// uk: 'Забагато спроб. Спробуйте пізніше.'
+	String get errorTooMany => 'Забагато спроб. Спробуйте пізніше.';
+
+	/// uk: 'Перевірте з’єднання й спробуйте ще раз.'
+	String get errorNetwork => 'Перевірте з’єднання й спробуйте ще раз.';
+
+	/// uk: 'Сервіс акаунтів недоступний. Можна грати без акаунта.'
+	String get errorUnavailable => 'Сервіс акаунтів недоступний. Можна грати без акаунта.';
+
+	/// uk: 'Щось пішло не так. Спробуйте ще раз.'
+	String get errorUnexpected => 'Щось пішло не так. Спробуйте ще раз.';
+
+	/// uk: 'Показати пароль'
+	String get showPassword => 'Показати пароль';
+
+	/// uk: 'Сховати пароль'
+	String get hidePassword => 'Сховати пароль';
+
+	/// uk: 'Вийти з акаунта?'
+	String get signOutTitle => 'Вийти з акаунта?';
+
+	/// uk: 'Локальні ігри залишаться на цьому пристрої.'
+	String get signOutBody => 'Локальні ігри залишаться на цьому пристрої.';
+
+	/// uk: 'Скасувати'
+	String get cancel => 'Скасувати';
 }
 
 // Path: home
@@ -1091,6 +1224,9 @@ class Translations$settings$uk {
 
 	// Translations
 
+	/// uk: 'Загальні'
+	String get general => 'Загальні';
+
 	/// uk: 'Налаштування'
 	String get title => 'Налаштування';
 
@@ -1099,6 +1235,81 @@ class Translations$settings$uk {
 
 	/// uk: 'Обери мову MICHI.'
 	String get languageDetail => 'Обери мову MICHI.';
+
+	/// uk: 'Нагадування'
+	String get reminders => 'Нагадування';
+
+	/// uk: 'Щодня о 08:00'
+	String get dailyReminder => 'Щодня о 08:00';
+
+	/// uk: 'Увійдіть, щоб увімкнути нагадування.'
+	String get reminderSignIn => 'Увійдіть, щоб увімкнути нагадування.';
+
+	/// uk: 'Дозвольте сповіщення в налаштуваннях пристрою.'
+	String get reminderPermission => 'Дозвольте сповіщення в налаштуваннях пристрою.';
+
+	/// uk: 'Сповіщення недоступні на цьому пристрої.'
+	String get reminderUnavailable => 'Сповіщення недоступні на цьому пристрої.';
+}
+
+// Path: sync
+class Translations$sync$uk {
+	Translations$sync$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Обліковий запис'
+	String get account => 'Обліковий запис';
+
+	/// uk: 'Електронна пошта'
+	String get email => 'Електронна пошта';
+
+	/// uk: 'Синхронізація'
+	String get synchronization => 'Синхронізація';
+
+	/// uk: 'Синхронізація…'
+	String get syncing => 'Синхронізація…';
+
+	/// uk: 'Нещодавно синхронізовано'
+	String get synced => 'Нещодавно синхронізовано';
+
+	/// uk: 'Остання синхронізація — $time'
+	String lastSynced({required Object time}) => 'Остання синхронізація — ${time}';
+
+	/// uk: 'Збережено на пристрої · очікує синхронізації'
+	String get pending => 'Збережено на пристрої · очікує синхронізації';
+
+	/// uk: 'Немає мережі. Прогрес збережеться і синхронізується пізніше.'
+	String get offline => 'Немає мережі. Прогрес збережеться і синхронізується пізніше.';
+
+	/// uk: 'Помилка синхронізації'
+	String get error => 'Помилка синхронізації';
+
+	/// uk: 'Повторити'
+	String get retry => 'Повторити';
+
+	/// uk: 'Прогрес зберігається лише на цьому пристрої.'
+	String get guest => 'Прогрес зберігається лише на цьому пристрої.';
+
+	/// uk: 'Видалити обліковий запис'
+	String get deleteAccount => 'Видалити обліковий запис';
+
+	/// uk: 'Видалити обліковий запис?'
+	String get deleteTitle => 'Видалити обліковий запис?';
+
+	/// uk: 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.'
+	String get deleteBody => 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.';
+
+	/// uk: 'Видалити обліковий запис'
+	String get deleteConfirm => 'Видалити обліковий запис';
+
+	/// uk: 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.'
+	String get deleteFailed => 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.';
+
+	/// uk: 'Вийти'
+	String get signOut => 'Вийти';
 }
 
 // Path: learn.lessons
@@ -1374,6 +1585,50 @@ extension on Translations {
 			'playerLevel.advancedDetail' => 'X-Wing і далі',
 			'auth.title' => 'Акаунт',
 			'auth.unavailable' => 'Прогрес зберігається на цьому пристрої.',
+			'auth.apple' => 'Продовжити з Apple',
+			'auth.google' => 'Продовжити з Google',
+			'auth.emailEntry' => 'Увійти через пошту',
+			'auth.createTitle' => 'Створити акаунт',
+			'auth.createSubtitle' => 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.',
+			'auth.signInTitle' => 'З поверненням',
+			'auth.name' => 'Ім’я',
+			'auth.email' => 'Пошта',
+			'auth.password' => 'Пароль',
+			'auth.passwordHint' => 'Щонайменше 8 символів',
+			'auth.createAccount' => 'Створити акаунт',
+			'auth.signIn' => 'Увійти',
+			'auth.alreadyAccount' => 'Уже маєте акаунт?',
+			'auth.noAccount' => 'Ще немає акаунта?',
+			'auth.forgotPassword' => 'Не пам’ятаєте пароль?',
+			'auth.resetTitle' => 'Відновлення пароля',
+			'auth.resetSubtitle' => 'Введіть пошту акаунта — ми надішлемо посилання для відновлення.',
+			'auth.sendLink' => 'Надіслати посилання',
+			'auth.resetSent' => 'Якщо акаунт існує, перевірте пошту для відновлення пароля.',
+			'auth.verifyTitle' => 'Перевірте пошту',
+			'auth.verifySubtitle' => ({required Object email}) => 'Ми надіслали посилання для підтвердження на ${email}.',
+			'auth.checkVerification' => 'Я підтвердив(-ла) пошту',
+			'auth.resendVerification' => 'Надіслати ще раз',
+			'auth.verified' => 'Пошту підтверджено.',
+			'auth.notVerified' => 'Пошту ще не підтверджено.',
+			'auth.signOut' => 'Вийти',
+			'auth.localNotSynced' => 'Ігровий прогрес і надалі зберігається на цьому пристрої.',
+			'auth.verifyEmail' => 'Підтвердити пошту',
+			'auth.errorInvalidEmail' => 'Введіть правильну адресу пошти.',
+			'auth.errorPasswordLength' => 'Використайте щонайменше 8 символів.',
+			'auth.errorNameRequired' => 'Введіть ім’я.',
+			'auth.errorWeakPassword' => 'Цей пароль надто слабкий.',
+			'auth.errorEmailInUse' => 'Акаунт із цією поштою вже існує.',
+			'auth.errorWrongCredentials' => 'Перевірте пошту й пароль.',
+			'auth.errorDisabled' => 'Цей акаунт вимкнено.',
+			'auth.errorTooMany' => 'Забагато спроб. Спробуйте пізніше.',
+			'auth.errorNetwork' => 'Перевірте з’єднання й спробуйте ще раз.',
+			'auth.errorUnavailable' => 'Сервіс акаунтів недоступний. Можна грати без акаунта.',
+			'auth.errorUnexpected' => 'Щось пішло не так. Спробуйте ще раз.',
+			'auth.showPassword' => 'Показати пароль',
+			'auth.hidePassword' => 'Сховати пароль',
+			'auth.signOutTitle' => 'Вийти з акаунта?',
+			'auth.signOutBody' => 'Локальні ігри залишаться на цьому пристрої.',
+			'auth.cancel' => 'Скасувати',
 			'home.title' => 'Твій шлях у судоку',
 			'home.game' => 'Гра',
 			'home.continueGame' => 'Продовжити гру',
@@ -1677,9 +1932,32 @@ extension on Translations {
 			'week.today' => 'Сьогодні',
 			'week.noActivity' => 'Без активності',
 			'week.summary' => 'Твоя локальна активність у судоку',
+			'settings.general' => 'Загальні',
 			'settings.title' => 'Налаштування',
 			'settings.language' => 'Мова',
 			'settings.languageDetail' => 'Обери мову MICHI.',
+			'settings.reminders' => 'Нагадування',
+			'settings.dailyReminder' => 'Щодня о 08:00',
+			'settings.reminderSignIn' => 'Увійдіть, щоб увімкнути нагадування.',
+			'settings.reminderPermission' => 'Дозвольте сповіщення в налаштуваннях пристрою.',
+			'settings.reminderUnavailable' => 'Сповіщення недоступні на цьому пристрої.',
+			'sync.account' => 'Обліковий запис',
+			'sync.email' => 'Електронна пошта',
+			'sync.synchronization' => 'Синхронізація',
+			'sync.syncing' => 'Синхронізація…',
+			'sync.synced' => 'Нещодавно синхронізовано',
+			'sync.lastSynced' => ({required Object time}) => 'Остання синхронізація — ${time}',
+			'sync.pending' => 'Збережено на пристрої · очікує синхронізації',
+			'sync.offline' => 'Немає мережі. Прогрес збережеться і синхронізується пізніше.',
+			'sync.error' => 'Помилка синхронізації',
+			'sync.retry' => 'Повторити',
+			'sync.guest' => 'Прогрес зберігається лише на цьому пристрої.',
+			'sync.deleteAccount' => 'Видалити обліковий запис',
+			'sync.deleteTitle' => 'Видалити обліковий запис?',
+			'sync.deleteBody' => 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.',
+			'sync.deleteConfirm' => 'Видалити обліковий запис',
+			'sync.deleteFailed' => 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.',
+			'sync.signOut' => 'Вийти',
 			_ => null,
 		};
 	}

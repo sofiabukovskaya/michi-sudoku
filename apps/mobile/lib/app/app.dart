@@ -1,33 +1,62 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/theme/app_theme.dart';
+import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/notifications/reminder_registration.dart';
+import 'package:michi_mobile/core/profile/local_profile_scope.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
+import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
+import 'package:provider/provider.dart';
 
 final class MichiApp extends StatelessWidget {
-  const MichiApp({required this.router, super.key});
+  const MichiApp({
+    required this.router,
+    this.authCubit,
+    this.profileScope,
+    this.syncCoordinator,
+    super.key,
+  });
 
   final AppRouter router;
+  final AuthCubit? authCubit;
+  final LocalProfileScope? profileScope;
+  final SyncCoordinator? syncCoordinator;
 
   @override
-  Widget build(BuildContext context) => TranslationProvider(
-    child: Builder(
-      builder: (context) => MaterialApp.router(
-        title: context.t.appName,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        locale: TranslationProvider.of(context).flutterLocale,
-        supportedLocales: AppLocaleUtils.supportedLocales,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        routerConfig: router.config(
-          navigatorObservers: () => [AutoRouteObserver()],
+  Widget build(BuildContext context) =>
+      ChangeNotifierProvider<SyncCoordinator?>.value(
+        value: syncCoordinator,
+        child: ChangeNotifierProvider<LocalProfileScope?>.value(
+          value: profileScope,
+          child: BlocProvider.value(
+            value: authCubit ?? getIt<AuthCubit>(),
+            child: RepositoryProvider<ReminderRegistration>(
+              create: (_) => getIt<ReminderRegistration>(),
+              child: TranslationProvider(
+                child: Builder(
+                  builder: (context) => MaterialApp.router(
+                    title: context.t.appName,
+                    debugShowCheckedModeBanner: false,
+                    theme: AppTheme.light,
+                    locale: TranslationProvider.of(context).flutterLocale,
+                    supportedLocales: AppLocaleUtils.supportedLocales,
+                    localizationsDelegates: const [
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    routerConfig: router.config(
+                      navigatorObservers: () => [AutoRouteObserver()],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

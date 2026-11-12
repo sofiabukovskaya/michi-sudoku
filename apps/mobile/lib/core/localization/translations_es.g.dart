@@ -57,6 +57,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$es recommendation = _Translations$recommendation$es._(_root);
 	@override late final _Translations$week$es week = _Translations$week$es._(_root);
 	@override late final _Translations$settings$es settings = _Translations$settings$es._(_root);
+	@override late final _Translations$sync$es sync = _Translations$sync$es._(_root);
 }
 
 // Path: common
@@ -142,6 +143,50 @@ class _Translations$auth$es extends Translations$auth$uk {
 	// Translations
 	@override String get title => 'Cuenta';
 	@override String get unavailable => 'Tu progreso se guarda en este dispositivo.';
+	@override String get apple => 'Continuar con Apple';
+	@override String get google => 'Continuar con Google';
+	@override String get emailEntry => 'Iniciar sesión con correo';
+	@override String get createTitle => 'Crear una cuenta';
+	@override String get createSubtitle => 'Tu progreso permanece en este dispositivo hasta que la sincronización esté disponible.';
+	@override String get signInTitle => 'Qué alegría verte de nuevo';
+	@override String get name => 'Nombre';
+	@override String get email => 'Correo electrónico';
+	@override String get password => 'Contraseña';
+	@override String get passwordHint => 'Al menos 8 caracteres';
+	@override String get createAccount => 'Crear cuenta';
+	@override String get signIn => 'Iniciar sesión';
+	@override String get alreadyAccount => '¿Ya tienes una cuenta?';
+	@override String get noAccount => '¿No tienes cuenta?';
+	@override String get forgotPassword => '¿Olvidaste la contraseña?';
+	@override String get resetTitle => 'Restablecer contraseña';
+	@override String get resetSubtitle => 'Introduce el correo de tu cuenta y te enviaremos un enlace.';
+	@override String get sendLink => 'Enviar enlace';
+	@override String get resetSent => 'Si la cuenta existe, revisa tu correo para encontrar el enlace.';
+	@override String get verifyTitle => 'Revisa tu correo';
+	@override String verifySubtitle({required Object email}) => 'Enviamos un enlace de verificación a ${email}.';
+	@override String get checkVerification => 'Ya verifiqué mi correo';
+	@override String get resendVerification => 'Reenviar enlace';
+	@override String get verified => 'Tu correo está verificado.';
+	@override String get notVerified => 'El correo aún no está verificado.';
+	@override String get signOut => 'Cerrar sesión';
+	@override String get localNotSynced => 'El progreso del juego sigue guardado en este dispositivo.';
+	@override String get verifyEmail => 'Verificar correo';
+	@override String get errorInvalidEmail => 'Introduce un correo válido.';
+	@override String get errorPasswordLength => 'Usa al menos 8 caracteres.';
+	@override String get errorNameRequired => 'Introduce tu nombre.';
+	@override String get errorWeakPassword => 'Esta contraseña es demasiado débil.';
+	@override String get errorEmailInUse => 'Ya existe una cuenta con este correo.';
+	@override String get errorWrongCredentials => 'Revisa el correo y la contraseña.';
+	@override String get errorDisabled => 'Esta cuenta está deshabilitada.';
+	@override String get errorTooMany => 'Demasiados intentos. Vuelve más tarde.';
+	@override String get errorNetwork => 'Revisa tu conexión e inténtalo de nuevo.';
+	@override String get errorUnavailable => 'El servicio de cuentas no está disponible. Puedes seguir jugando como invitado.';
+	@override String get errorUnexpected => 'Algo salió mal. Inténtalo de nuevo.';
+	@override String get showPassword => 'Mostrar contraseña';
+	@override String get hidePassword => 'Ocultar contraseña';
+	@override String get signOutTitle => '¿Cerrar sesión?';
+	@override String get signOutBody => 'Tus partidas locales permanecerán en este dispositivo.';
+	@override String get cancel => 'Cancelar';
 }
 
 // Path: home
@@ -506,9 +551,41 @@ class _Translations$settings$es extends Translations$settings$uk {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
+	@override String get general => 'General';
 	@override String get title => 'Ajustes';
 	@override String get language => 'Idioma';
 	@override String get languageDetail => 'Elige el idioma de MICHI.';
+	@override String get reminders => 'Recordatorios';
+	@override String get dailyReminder => 'Cada día a las 08:00';
+	@override String get reminderSignIn => 'Inicia sesión para activar los recordatorios.';
+	@override String get reminderPermission => 'Permite las notificaciones en los ajustes del dispositivo.';
+	@override String get reminderUnavailable => 'Las notificaciones no están disponibles en este dispositivo.';
+}
+
+// Path: sync
+class _Translations$sync$es extends Translations$sync$uk {
+	_Translations$sync$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Cuenta';
+	@override String get email => 'Correo electrónico';
+	@override String get synchronization => 'Sincronización';
+	@override String get syncing => 'Sincronizando…';
+	@override String get synced => 'Sincronizado recientemente';
+	@override String lastSynced({required Object time}) => 'Última sincronización — ${time}';
+	@override String get pending => 'Guardado en el dispositivo · pendiente de sincronización';
+	@override String get offline => 'Sin conexión. Tu progreso se guardará y se sincronizará después.';
+	@override String get error => 'Error de sincronización';
+	@override String get retry => 'Reintentar';
+	@override String get guest => 'El progreso solo se guarda en este dispositivo.';
+	@override String get deleteAccount => 'Eliminar cuenta';
+	@override String get deleteTitle => '¿Eliminar tu cuenta?';
+	@override String get deleteBody => 'Tu cuenta y el progreso sincronizado se eliminarán definitivamente.';
+	@override String get deleteConfirm => 'Eliminar cuenta';
+	@override String get deleteFailed => 'No se pudo eliminar tu cuenta. Vuelve a iniciar sesión e inténtalo.';
+	@override String get signOut => 'Cerrar sesión';
 }
 
 // Path: learn.lessons
@@ -688,6 +765,50 @@ extension on TranslationsEs {
 			'playerLevel.advancedDetail' => 'X-Wing y más',
 			'auth.title' => 'Cuenta',
 			'auth.unavailable' => 'Tu progreso se guarda en este dispositivo.',
+			'auth.apple' => 'Continuar con Apple',
+			'auth.google' => 'Continuar con Google',
+			'auth.emailEntry' => 'Iniciar sesión con correo',
+			'auth.createTitle' => 'Crear una cuenta',
+			'auth.createSubtitle' => 'Tu progreso permanece en este dispositivo hasta que la sincronización esté disponible.',
+			'auth.signInTitle' => 'Qué alegría verte de nuevo',
+			'auth.name' => 'Nombre',
+			'auth.email' => 'Correo electrónico',
+			'auth.password' => 'Contraseña',
+			'auth.passwordHint' => 'Al menos 8 caracteres',
+			'auth.createAccount' => 'Crear cuenta',
+			'auth.signIn' => 'Iniciar sesión',
+			'auth.alreadyAccount' => '¿Ya tienes una cuenta?',
+			'auth.noAccount' => '¿No tienes cuenta?',
+			'auth.forgotPassword' => '¿Olvidaste la contraseña?',
+			'auth.resetTitle' => 'Restablecer contraseña',
+			'auth.resetSubtitle' => 'Introduce el correo de tu cuenta y te enviaremos un enlace.',
+			'auth.sendLink' => 'Enviar enlace',
+			'auth.resetSent' => 'Si la cuenta existe, revisa tu correo para encontrar el enlace.',
+			'auth.verifyTitle' => 'Revisa tu correo',
+			'auth.verifySubtitle' => ({required Object email}) => 'Enviamos un enlace de verificación a ${email}.',
+			'auth.checkVerification' => 'Ya verifiqué mi correo',
+			'auth.resendVerification' => 'Reenviar enlace',
+			'auth.verified' => 'Tu correo está verificado.',
+			'auth.notVerified' => 'El correo aún no está verificado.',
+			'auth.signOut' => 'Cerrar sesión',
+			'auth.localNotSynced' => 'El progreso del juego sigue guardado en este dispositivo.',
+			'auth.verifyEmail' => 'Verificar correo',
+			'auth.errorInvalidEmail' => 'Introduce un correo válido.',
+			'auth.errorPasswordLength' => 'Usa al menos 8 caracteres.',
+			'auth.errorNameRequired' => 'Introduce tu nombre.',
+			'auth.errorWeakPassword' => 'Esta contraseña es demasiado débil.',
+			'auth.errorEmailInUse' => 'Ya existe una cuenta con este correo.',
+			'auth.errorWrongCredentials' => 'Revisa el correo y la contraseña.',
+			'auth.errorDisabled' => 'Esta cuenta está deshabilitada.',
+			'auth.errorTooMany' => 'Demasiados intentos. Vuelve más tarde.',
+			'auth.errorNetwork' => 'Revisa tu conexión e inténtalo de nuevo.',
+			'auth.errorUnavailable' => 'El servicio de cuentas no está disponible. Puedes seguir jugando como invitado.',
+			'auth.errorUnexpected' => 'Algo salió mal. Inténtalo de nuevo.',
+			'auth.showPassword' => 'Mostrar contraseña',
+			'auth.hidePassword' => 'Ocultar contraseña',
+			'auth.signOutTitle' => '¿Cerrar sesión?',
+			'auth.signOutBody' => 'Tus partidas locales permanecerán en este dispositivo.',
+			'auth.cancel' => 'Cancelar',
 			'home.title' => 'Tu camino en el sudoku',
 			'home.game' => 'Jugar',
 			'home.continueGame' => 'Continuar partida',
@@ -991,9 +1112,32 @@ extension on TranslationsEs {
 			'week.today' => 'Hoy',
 			'week.noActivity' => 'Sin actividad',
 			'week.summary' => 'Tu actividad local de sudoku',
+			'settings.general' => 'General',
 			'settings.title' => 'Ajustes',
 			'settings.language' => 'Idioma',
 			'settings.languageDetail' => 'Elige el idioma de MICHI.',
+			'settings.reminders' => 'Recordatorios',
+			'settings.dailyReminder' => 'Cada día a las 08:00',
+			'settings.reminderSignIn' => 'Inicia sesión para activar los recordatorios.',
+			'settings.reminderPermission' => 'Permite las notificaciones en los ajustes del dispositivo.',
+			'settings.reminderUnavailable' => 'Las notificaciones no están disponibles en este dispositivo.',
+			'sync.account' => 'Cuenta',
+			'sync.email' => 'Correo electrónico',
+			'sync.synchronization' => 'Sincronización',
+			'sync.syncing' => 'Sincronizando…',
+			'sync.synced' => 'Sincronizado recientemente',
+			'sync.lastSynced' => ({required Object time}) => 'Última sincronización — ${time}',
+			'sync.pending' => 'Guardado en el dispositivo · pendiente de sincronización',
+			'sync.offline' => 'Sin conexión. Tu progreso se guardará y se sincronizará después.',
+			'sync.error' => 'Error de sincronización',
+			'sync.retry' => 'Reintentar',
+			'sync.guest' => 'El progreso solo se guarda en este dispositivo.',
+			'sync.deleteAccount' => 'Eliminar cuenta',
+			'sync.deleteTitle' => '¿Eliminar tu cuenta?',
+			'sync.deleteBody' => 'Tu cuenta y el progreso sincronizado se eliminarán definitivamente.',
+			'sync.deleteConfirm' => 'Eliminar cuenta',
+			'sync.deleteFailed' => 'No se pudo eliminar tu cuenta. Vuelve a iniciar sesión e inténtalo.',
+			'sync.signOut' => 'Cerrar sesión',
 			_ => null,
 		};
 	}

@@ -1,0 +1,410 @@
+{
+  "releaseId": "remote_v3",
+  "contentVersion": 3,
+  "puzzles": [
+    {
+      "id": "remote_v3_easy_0001",
+      "board": "407030000000026000100005960800000001010000050003000700000000427009003000072008000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0002",
+      "board": "210407000040000000000030850050010209006009000000000070460000025900000608300000900",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0003",
+      "board": "700069402000008600080070010458000170100000520090000000520004060000000090000030800",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0004",
+      "board": "200500370000003408900004050700000000000040006005806000007000000300002010541000000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0005",
+      "board": "100000050007080200006300000005027009000900817000001500000760038000003002090400000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0006",
+      "board": "462500000005002400900003070000300600000000050513080002700400803000000000059007000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0007",
+      "board": "000000100045060087780000000056000000470000000000800200020008930060300000500009460",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0008",
+      "board": "000000420308090000007008030702100000000700140500320070100907060040002000000005000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0009",
+      "board": "000200800910000200080000790100000000200090463070400000000003070300005940000907008",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0010",
+      "board": "800007300706040500000020809000000700400200000097000010008596000000008046000000000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0011",
+      "board": "700900000960200050800007100020000000076004001000050068200010007000000500000340000",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_easy_0012",
+      "board": "000000857003001200900000000005070000107000080600840000000000100000680003406500700",
+      "difficulty": "easy",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0001",
+      "board": "000000000600012030250089000000000070000500021070301006000000090039050000810090560",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0002",
+      "board": "000000007006000090000130005200009001095003070600080000070002053000070000400061008",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0003",
+      "board": "032000000950600000000020017480092500000008000000030000000004058300080001000070046",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0004",
+      "board": "016050800004000070000000160032009000008004750400108000000800300020000004005410000",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0005",
+      "board": "005108720000000000060200008000970000020000500790000600006000800300040006800006042",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0006",
+      "board": "901000000006203000400000200300080000000010608060007000000104007730800009100500020",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0007",
+      "board": "060000007500070400003080050000300020900000006000005100000008762072001004000900001",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_medium_0008",
+      "board": "100005007070000036504000000000107028090000003700042000400006100000204000000070090",
+      "difficulty": "medium",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0001",
+      "board": "560000040000902000010000000000060010300800000900000000020050000000000803000700900",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "pointingPair",
+        "hiddenPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0002",
+      "board": "019020000300000070000000000000403060095000000000700000000050901400600000000000200",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "hiddenPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0003",
+      "board": "030400000074000006900000002600001040000800000000200009098100370000007080007008005",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "boxLineReduction"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0004",
+      "board": "500000400000903000000800000000200098450000000700000000600070000000020500093000000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "hiddenPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0005",
+      "board": "000000082030900000000504000800070060000300400100000000700080000090000500000060000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "pointingPair",
+        "hiddenPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0006",
+      "board": "000000902800300000000607000000800060020000400090000000600000030050090000700040000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "hiddenPair"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0007",
+      "board": "030000000406073001079000400060000000000750903005800100004000002000007000280540000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "boxLineReduction",
+        "nakedTriple"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0008",
+      "board": "200000409070500000000000000304020000000000016900000000060700080000090300050000000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "hiddenPair",
+        "nakedTriple"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0009",
+      "board": "058700060904000003000001000000906007000200000703500000089000620007000050010005008",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "boxLineReduction"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0010",
+      "board": "000008016000002000970030000030084009600000070004005100406000528350000000000000000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "boxLineReduction"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0011",
+      "board": "200008970008009020900300001000000003500020000001006000709000000000060100000001405",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "boxLineReduction"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_advanced_0012",
+      "board": "200000409070500000000000000304020000000000086900000000080600070000090300050000000",
+      "difficulty": "advanced",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "hiddenPair",
+        "boxLineReduction",
+        "nakedTriple"
+      ],
+      "dailyEligible": true
+    },
+    {
+      "id": "remote_v3_expert_0001",
+      "board": "090005060000800400000002000020096000700000300000050000403700000000000052800000040",
+      "difficulty": "expert",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "xWing"
+      ],
+      "dailyEligible": false
+    },
+    {
+      "id": "remote_v3_expert_0002",
+      "board": "090005060000800400000002000020096000700000300000050000403700900000000052800000040",
+      "difficulty": "expert",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "xWing"
+      ],
+      "dailyEligible": false
+    },
+    {
+      "id": "remote_v3_expert_0003",
+      "board": "090005060000860400000000000020096000700000300000057000403700000000000052800000040",
+      "difficulty": "expert",
+      "requiredTechniques": [
+        "nakedSingle",
+        "hiddenSingle",
+        "nakedPair",
+        "pointingPair",
+        "hiddenPair",
+        "xWing"
+      ],
+      "dailyEligible": false
+    }
+  ]
+}

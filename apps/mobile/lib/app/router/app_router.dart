@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:michi_mobile/app/navigation/app_shell_page.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_page.dart';
+import 'package:michi_mobile/features/auth/presentation/email_verification_page.dart';
+import 'package:michi_mobile/features/auth/presentation/password_reset_page.dart';
+import 'package:michi_mobile/features/auth/presentation/register_page.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
@@ -41,6 +44,9 @@ final class AppRouter extends RootStackRouter {
     AutoRoute(page: OnboardingRoute.page),
     AutoRoute(page: PlayerLevelRoute.page),
     AutoRoute(page: AuthRoute.page),
+    AutoRoute(page: RegisterRoute.page),
+    AutoRoute(page: PasswordResetRoute.page),
+    AutoRoute(page: EmailVerificationRoute.page),
     AutoRoute(
       page: AppShellRoute.page,
       children: [

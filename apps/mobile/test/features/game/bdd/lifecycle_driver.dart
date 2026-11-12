@@ -6,6 +6,7 @@ import 'package:michi_mobile/app/app.dart';
 import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/theme/app_theme.dart';
+import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
@@ -17,6 +18,9 @@ import 'package:michi_mobile/features/game/presentation/game_page.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_top_bar.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/home/presentation/home_page.dart';
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart';
+import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
+import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 final class TestGameClock implements GameClock {
@@ -106,6 +110,10 @@ final class LifecycleDriver {
 
   Future<void> reopenFromHome(WidgetTester tester) async {
     bootstrap();
+    await getIt.unregister<PuzzleRepository>();
+    getIt.registerSingleton<PuzzleRepository>(
+      LocalPuzzleRepository(LocalPuzzleCatalogLoader(), repository),
+    );
     final appRouter = AppRouter();
     router = appRouter;
     addTearDown(appRouter.dispose);

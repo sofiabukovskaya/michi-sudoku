@@ -57,6 +57,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$en recommendation = _Translations$recommendation$en._(_root);
 	@override late final _Translations$week$en week = _Translations$week$en._(_root);
 	@override late final _Translations$settings$en settings = _Translations$settings$en._(_root);
+	@override late final _Translations$sync$en sync = _Translations$sync$en._(_root);
 }
 
 // Path: common
@@ -142,6 +143,50 @@ class _Translations$auth$en extends Translations$auth$uk {
 	// Translations
 	@override String get title => 'Account';
 	@override String get unavailable => 'Progress is saved on this device.';
+	@override String get apple => 'Continue with Apple';
+	@override String get google => 'Continue with Google';
+	@override String get emailEntry => 'Sign in with email';
+	@override String get createTitle => 'Create an account';
+	@override String get createSubtitle => 'Your progress stays on this device until sync is available.';
+	@override String get signInTitle => 'Welcome back';
+	@override String get name => 'Name';
+	@override String get email => 'Email';
+	@override String get password => 'Password';
+	@override String get passwordHint => 'At least 8 characters';
+	@override String get createAccount => 'Create account';
+	@override String get signIn => 'Sign in';
+	@override String get alreadyAccount => 'Already have an account?';
+	@override String get noAccount => 'New here?';
+	@override String get forgotPassword => 'Forgot password?';
+	@override String get resetTitle => 'Reset password';
+	@override String get resetSubtitle => 'Enter your account email and we’ll send a reset link.';
+	@override String get sendLink => 'Send link';
+	@override String get resetSent => 'If an account exists, check your email for a reset link.';
+	@override String get verifyTitle => 'Check your email';
+	@override String verifySubtitle({required Object email}) => 'We sent a verification link to ${email}.';
+	@override String get checkVerification => 'I verified my email';
+	@override String get resendVerification => 'Resend link';
+	@override String get verified => 'Your email is verified.';
+	@override String get notVerified => 'The email is not verified yet.';
+	@override String get signOut => 'Sign out';
+	@override String get localNotSynced => 'Game progress is still saved on this device.';
+	@override String get verifyEmail => 'Verify email';
+	@override String get errorInvalidEmail => 'Enter a valid email address.';
+	@override String get errorPasswordLength => 'Use at least 8 characters.';
+	@override String get errorNameRequired => 'Enter your name.';
+	@override String get errorWeakPassword => 'This password is too weak.';
+	@override String get errorEmailInUse => 'An account already uses this email.';
+	@override String get errorWrongCredentials => 'Check your email and password.';
+	@override String get errorDisabled => 'This account is disabled.';
+	@override String get errorTooMany => 'Too many attempts. Try again later.';
+	@override String get errorNetwork => 'Check your connection and try again.';
+	@override String get errorUnavailable => 'Account services are unavailable. You can keep playing as a guest.';
+	@override String get errorUnexpected => 'Something went wrong. Please try again.';
+	@override String get showPassword => 'Show password';
+	@override String get hidePassword => 'Hide password';
+	@override String get signOutTitle => 'Sign out of your account?';
+	@override String get signOutBody => 'Your local games will stay on this device.';
+	@override String get cancel => 'Cancel';
 }
 
 // Path: home
@@ -506,9 +551,41 @@ class _Translations$settings$en extends Translations$settings$uk {
 	final TranslationsEn _root; // ignore: unused_field
 
 	// Translations
+	@override String get general => 'General';
 	@override String get title => 'Settings';
 	@override String get language => 'Language';
 	@override String get languageDetail => 'Choose the language for MICHI.';
+	@override String get reminders => 'Reminders';
+	@override String get dailyReminder => 'Daily at 08:00';
+	@override String get reminderSignIn => 'Sign in to enable reminders.';
+	@override String get reminderPermission => 'Allow notifications in system settings to enable reminders.';
+	@override String get reminderUnavailable => 'Notifications are unavailable on this device.';
+}
+
+// Path: sync
+class _Translations$sync$en extends Translations$sync$uk {
+	_Translations$sync$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Account';
+	@override String get email => 'Email';
+	@override String get synchronization => 'Synchronization';
+	@override String get syncing => 'Syncing…';
+	@override String get synced => 'Synced recently';
+	@override String lastSynced({required Object time}) => 'Last synced — ${time}';
+	@override String get pending => 'Saved locally · waiting to sync';
+	@override String get offline => 'Offline. Progress will be saved and synced later.';
+	@override String get error => 'Sync error';
+	@override String get retry => 'Retry';
+	@override String get guest => 'Progress is saved only on this device.';
+	@override String get deleteAccount => 'Delete account';
+	@override String get deleteTitle => 'Delete your account?';
+	@override String get deleteBody => 'Your account and synchronized progress will be permanently deleted.';
+	@override String get deleteConfirm => 'Delete account';
+	@override String get deleteFailed => 'Could not delete your account. Sign in again and retry.';
+	@override String get signOut => 'Sign out';
 }
 
 // Path: learn.lessons
@@ -688,6 +765,50 @@ extension on TranslationsEn {
 			'playerLevel.advancedDetail' => 'X-Wing and beyond',
 			'auth.title' => 'Account',
 			'auth.unavailable' => 'Progress is saved on this device.',
+			'auth.apple' => 'Continue with Apple',
+			'auth.google' => 'Continue with Google',
+			'auth.emailEntry' => 'Sign in with email',
+			'auth.createTitle' => 'Create an account',
+			'auth.createSubtitle' => 'Your progress stays on this device until sync is available.',
+			'auth.signInTitle' => 'Welcome back',
+			'auth.name' => 'Name',
+			'auth.email' => 'Email',
+			'auth.password' => 'Password',
+			'auth.passwordHint' => 'At least 8 characters',
+			'auth.createAccount' => 'Create account',
+			'auth.signIn' => 'Sign in',
+			'auth.alreadyAccount' => 'Already have an account?',
+			'auth.noAccount' => 'New here?',
+			'auth.forgotPassword' => 'Forgot password?',
+			'auth.resetTitle' => 'Reset password',
+			'auth.resetSubtitle' => 'Enter your account email and we’ll send a reset link.',
+			'auth.sendLink' => 'Send link',
+			'auth.resetSent' => 'If an account exists, check your email for a reset link.',
+			'auth.verifyTitle' => 'Check your email',
+			'auth.verifySubtitle' => ({required Object email}) => 'We sent a verification link to ${email}.',
+			'auth.checkVerification' => 'I verified my email',
+			'auth.resendVerification' => 'Resend link',
+			'auth.verified' => 'Your email is verified.',
+			'auth.notVerified' => 'The email is not verified yet.',
+			'auth.signOut' => 'Sign out',
+			'auth.localNotSynced' => 'Game progress is still saved on this device.',
+			'auth.verifyEmail' => 'Verify email',
+			'auth.errorInvalidEmail' => 'Enter a valid email address.',
+			'auth.errorPasswordLength' => 'Use at least 8 characters.',
+			'auth.errorNameRequired' => 'Enter your name.',
+			'auth.errorWeakPassword' => 'This password is too weak.',
+			'auth.errorEmailInUse' => 'An account already uses this email.',
+			'auth.errorWrongCredentials' => 'Check your email and password.',
+			'auth.errorDisabled' => 'This account is disabled.',
+			'auth.errorTooMany' => 'Too many attempts. Try again later.',
+			'auth.errorNetwork' => 'Check your connection and try again.',
+			'auth.errorUnavailable' => 'Account services are unavailable. You can keep playing as a guest.',
+			'auth.errorUnexpected' => 'Something went wrong. Please try again.',
+			'auth.showPassword' => 'Show password',
+			'auth.hidePassword' => 'Hide password',
+			'auth.signOutTitle' => 'Sign out of your account?',
+			'auth.signOutBody' => 'Your local games will stay on this device.',
+			'auth.cancel' => 'Cancel',
 			'home.title' => 'Your path through Sudoku',
 			'home.game' => 'Play',
 			'home.continueGame' => 'Continue game',
@@ -991,9 +1112,32 @@ extension on TranslationsEn {
 			'week.today' => 'Today',
 			'week.noActivity' => 'No activity',
 			'week.summary' => 'Your local Sudoku activity',
+			'settings.general' => 'General',
 			'settings.title' => 'Settings',
 			'settings.language' => 'Language',
 			'settings.languageDetail' => 'Choose the language for MICHI.',
+			'settings.reminders' => 'Reminders',
+			'settings.dailyReminder' => 'Daily at 08:00',
+			'settings.reminderSignIn' => 'Sign in to enable reminders.',
+			'settings.reminderPermission' => 'Allow notifications in system settings to enable reminders.',
+			'settings.reminderUnavailable' => 'Notifications are unavailable on this device.',
+			'sync.account' => 'Account',
+			'sync.email' => 'Email',
+			'sync.synchronization' => 'Synchronization',
+			'sync.syncing' => 'Syncing…',
+			'sync.synced' => 'Synced recently',
+			'sync.lastSynced' => ({required Object time}) => 'Last synced — ${time}',
+			'sync.pending' => 'Saved locally · waiting to sync',
+			'sync.offline' => 'Offline. Progress will be saved and synced later.',
+			'sync.error' => 'Sync error',
+			'sync.retry' => 'Retry',
+			'sync.guest' => 'Progress is saved only on this device.',
+			'sync.deleteAccount' => 'Delete account',
+			'sync.deleteTitle' => 'Delete your account?',
+			'sync.deleteBody' => 'Your account and synchronized progress will be permanently deleted.',
+			'sync.deleteConfirm' => 'Delete account',
+			'sync.deleteFailed' => 'Could not delete your account. Sign in again and retry.',
+			'sync.signOut' => 'Sign out',
 			_ => null,
 		};
 	}

@@ -61,8 +61,8 @@ void main() {
   });
   tearDown(() async => database.close());
 
-  test('schema version 5 initializes all tables without data loss', () async {
-    expect(database.schemaVersion, 6);
+  test('schema version 8 initializes all tables without data loss', () async {
+    expect(database.schemaVersion, 8);
     await repository.saveActiveGame(_active());
     final tables = await database
         .customSelect(
@@ -75,6 +75,9 @@ void main() {
         'active_games',
         'completed_games',
         'technique_progress_entries',
+        'remote_puzzles',
+        'remote_content_releases',
+        'daily_challenge_cache',
       ]),
     );
     expect(await repository.loadActiveGame(), isNotNull);

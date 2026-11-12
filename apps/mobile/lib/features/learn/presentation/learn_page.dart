@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
@@ -39,6 +41,8 @@ final class _LearnPageState extends State<LearnPage>
   late final TechniqueProgressRepository _repository;
   late Future<Map<SudokuTechnique, TechniqueProgress>> _progress;
   LearningRecommendation? _focus;
+  SyncCoordinator? _sync;
+  int _syncRevision = 0;
 
   // PDF screen 18 places Hidden Pair before Pointing Pair in the path. The
   // engine's complexity priority remains SudokuTechniqueOrder.supported.
@@ -60,6 +64,33 @@ final class _LearnPageState extends State<LearnPage>
         widget.progressRepository ?? getIt<TechniqueProgressRepository>();
     _progress = _repository.loadAll();
     _loadFocus();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final sync = context.read<SyncCoordinator?>();
+    if (identical(_sync, sync)) return;
+    _sync?.removeListener(_onSynced);
+    _sync = sync;
+    _syncRevision = sync?.dataRevision ?? 0;
+    sync?.addListener(_onSynced);
+  }
+
+  void _onSynced() {
+    final revision = _sync?.dataRevision ?? 0;
+    if (revision == _syncRevision) return;
+    _syncRevision = revision;
+    setState(() {
+      _progress = _repository.loadAll();
+    });
+    _loadFocus();
+  }
+
+  @override
+  void dispose() {
+    _sync?.removeListener(_onSynced);
+    super.dispose();
   }
 
   void _loadFocus() {

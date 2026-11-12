@@ -2,7 +2,7 @@
 
 MICHI is a local-first Flutter app for learning to solve Sudoku logically. The
 Coach teaches the reasoning behind a move through progressive hints.
-Phases 1–14 include the workspace foundation, Sudoku engine, playable Game and
+Phases 1–16 include the workspace foundation, Sudoku engine, playable Game and
 Coach, local restoration, bundled puzzles, Learn and Practice, recommendations,
 and a still-image scanner with a local printed-digit model and editable review.
 Design audits record the visual
@@ -55,8 +55,8 @@ mapped from structured engine hints into Slang translations.
 ## Local game storage
 
 The mobile app uses Drift with a SQLite database named `michi_games` (schema
-version 6). `active_games` has a single slot for the unfinished game;
-`completed_games` is keyed by game ID. Completion inserts its history row and
+version 7). `active_games` has one slot per local profile for the unfinished
+game; `completed_games` is keyed by profile and game ID. Completion inserts its history row and
 removes the matching active row in one transaction. Repeating a completion is
 safe. `GameRepository` keeps SQL out of `GameCubit` and exposes active-game,
 summary, completion and recent-history operations.
@@ -68,6 +68,11 @@ the stable puzzle ID and the unique game session ID.
 Later migrations add reasoning, daily learning focus, and imported puzzle
 metadata. Imported puzzle IDs derive from the confirmed 81-cell board hash;
 `gameId` remains a separate session identity.
+Phase 16 scopes user records to guest or Firebase UID profiles and migrates
+legacy records into guest. The transactional outbox and per-device practice
+contributions synchronize completed games, learning progress, and Daily
+completion. See [Phase 16 local-first sync](docs/phase16_local_first_sync.md)
+for merge rules, emulator verification, and live setup still required.
 
 Boards are stored as 81-character `0`–`9` strings. Player pencil notes are
 JSON from zero-based cell index to `CandidateMask` bits. The last 100 meaningful
@@ -170,7 +175,22 @@ cd apps/mobile && flutter run
 system packages. It produces AutoRoute, injectable, Freezed, JSON, Slang and
 Theme Tailor code, plus BDD widget tests. Generated files stay in the source tree so the app can build
 immediately after checkout. For a direct Android build, run
-`cd apps/mobile && flutter build apk --debug`.
+`cd apps/mobile && flutter build apk --debug` with Java 21.
+
+## Accounts and local-first sync
+
+Firebase Core and Authentication SDKs are integrated with the existing Android
+and iOS app IDs. Optional email registration, sign-in, password reset, and email
+verification are integrated with the MICHI account screens. Guest gameplay
+remains local and available without Firebase. Authenticated completed games,
+Daily completion, and technique progress synchronize through a Drift outbox;
+active games stay on their owning device. Firestore rules restrict each UID to
+its own progress, and an Auth deletion Function removes cloud data. Account
+controls stay hidden until each Firebase provider and its platform setup is
+verified; the Auth emulator can exercise email flows now. See the
+[Phase 15 setup guide](docs/phase15_firebase_setup.md) for provider steps and
+[Phase 16 sync](docs/phase16_local_first_sync.md) for the merge policy and
+live deployment prerequisites.
 
 The home screen selects a bundled puzzle by difficulty, starts or continues
 today's Daily, or continues the saved game. Game, content, and Coach behavior
@@ -199,8 +219,8 @@ Flutter analysis and workspace tests without retraining.
   dependencies via constructors or future Cubits.
 - Slang generates typed copy for English, Ukrainian, Czech, Spanish, French
   and German from `apps/mobile/lib/core/localization/i18n/`. Device language
-  is selected at startup; Ukrainian is the fallback. LocaleSettings can be
-  wired to Settings when that screen is implemented.
+  is selected at startup; Ukrainian is the fallback. Settings persists a
+  device-local language preference.
 - The engine uses immutable data and semantic deductions without localized text.
 - The scanner recognizes still photos locally and returns digits with
   confidence. Capture, Review, validation, and import live in the mobile app.
@@ -213,6 +233,8 @@ Flutter analysis and workspace tests without retraining.
 The engine supports constraints, candidates, exact solving, structured human
 deductions for eight techniques, and four-level semantic Coach plans.
 See [the engine README](packages/sudoku_engine/README.md) for the APIs and
-responsibility boundaries. Firebase, trained scanner ML, streaks, leaderboards,
-subscriptions, XY-Wing, Swordfish, and unrelated visual screens remain
-future work.
+responsibility boundaries. Cross-device active games, leaderboards,
+subscriptions, XY-Wing, Swordfish, and unrelated visual screens remain future
+work.
+
+Phase 17 remote content, Daily publishing, cache, and reminder operations are documented in [docs/phase17_remote_content.md](docs/phase17_remote_content.md).

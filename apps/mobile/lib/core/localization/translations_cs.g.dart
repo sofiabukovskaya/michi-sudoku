@@ -57,6 +57,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$cs recommendation = _Translations$recommendation$cs._(_root);
 	@override late final _Translations$week$cs week = _Translations$week$cs._(_root);
 	@override late final _Translations$settings$cs settings = _Translations$settings$cs._(_root);
+	@override late final _Translations$sync$cs sync = _Translations$sync$cs._(_root);
 }
 
 // Path: common
@@ -142,6 +143,50 @@ class _Translations$auth$cs extends Translations$auth$uk {
 	// Translations
 	@override String get title => 'Účet';
 	@override String get unavailable => 'Pokrok se ukládá v tomto zařízení.';
+	@override String get apple => 'Pokračovat přes Apple';
+	@override String get google => 'Pokračovat přes Google';
+	@override String get emailEntry => 'Přihlásit se e-mailem';
+	@override String get createTitle => 'Vytvořit účet';
+	@override String get createSubtitle => 'Pokrok zůstává na tomto zařízení, dokud nebude dostupná synchronizace.';
+	@override String get signInTitle => 'Vítejte zpět';
+	@override String get name => 'Jméno';
+	@override String get email => 'E-mail';
+	@override String get password => 'Heslo';
+	@override String get passwordHint => 'Alespoň 8 znaků';
+	@override String get createAccount => 'Vytvořit účet';
+	@override String get signIn => 'Přihlásit se';
+	@override String get alreadyAccount => 'Máte už účet?';
+	@override String get noAccount => 'Ještě nemáte účet?';
+	@override String get forgotPassword => 'Zapomněli jste heslo?';
+	@override String get resetTitle => 'Obnovení hesla';
+	@override String get resetSubtitle => 'Zadejte e-mail účtu a pošleme vám odkaz pro obnovení.';
+	@override String get sendLink => 'Poslat odkaz';
+	@override String get resetSent => 'Pokud účet existuje, zkontrolujte e-mail s odkazem pro obnovení.';
+	@override String get verifyTitle => 'Zkontrolujte e-mail';
+	@override String verifySubtitle({required Object email}) => 'Poslali jsme ověřovací odkaz na ${email}.';
+	@override String get checkVerification => 'Ověřil(a) jsem e-mail';
+	@override String get resendVerification => 'Poslat odkaz znovu';
+	@override String get verified => 'E-mail je ověřený.';
+	@override String get notVerified => 'E-mail zatím není ověřený.';
+	@override String get signOut => 'Odhlásit se';
+	@override String get localNotSynced => 'Herní pokrok je stále uložený na tomto zařízení.';
+	@override String get verifyEmail => 'Ověřit e-mail';
+	@override String get errorInvalidEmail => 'Zadejte platnou e-mailovou adresu.';
+	@override String get errorPasswordLength => 'Použijte alespoň 8 znaků.';
+	@override String get errorNameRequired => 'Zadejte jméno.';
+	@override String get errorWeakPassword => 'Toto heslo je příliš slabé.';
+	@override String get errorEmailInUse => 'Účet s tímto e-mailem už existuje.';
+	@override String get errorWrongCredentials => 'Zkontrolujte e-mail a heslo.';
+	@override String get errorDisabled => 'Tento účet je zablokovaný.';
+	@override String get errorTooMany => 'Příliš mnoho pokusů. Zkuste to později.';
+	@override String get errorNetwork => 'Zkontrolujte připojení a zkuste to znovu.';
+	@override String get errorUnavailable => 'Služba účtů není dostupná. Můžete dál hrát jako host.';
+	@override String get errorUnexpected => 'Něco se pokazilo. Zkuste to znovu.';
+	@override String get showPassword => 'Zobrazit heslo';
+	@override String get hidePassword => 'Skrýt heslo';
+	@override String get signOutTitle => 'Odhlásit se z účtu?';
+	@override String get signOutBody => 'Místní hry zůstanou v tomto zařízení.';
+	@override String get cancel => 'Zrušit';
 }
 
 // Path: home
@@ -509,9 +554,41 @@ class _Translations$settings$cs extends Translations$settings$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
+	@override String get general => 'Obecné';
 	@override String get title => 'Nastavení';
 	@override String get language => 'Jazyk';
 	@override String get languageDetail => 'Vyber jazyk aplikace MICHI.';
+	@override String get reminders => 'Připomínky';
+	@override String get dailyReminder => 'Denně v 08:00';
+	@override String get reminderSignIn => 'Přihlaste se, chcete-li zapnout připomínky.';
+	@override String get reminderPermission => 'Povolte oznámení v nastavení zařízení.';
+	@override String get reminderUnavailable => 'Oznámení nejsou na tomto zařízení dostupná.';
+}
+
+// Path: sync
+class _Translations$sync$cs extends Translations$sync$uk {
+	_Translations$sync$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Účet';
+	@override String get email => 'E-mail';
+	@override String get synchronization => 'Synchronizace';
+	@override String get syncing => 'Synchronizuji…';
+	@override String get synced => 'Nedávno synchronizováno';
+	@override String lastSynced({required Object time}) => 'Poslední synchronizace — ${time}';
+	@override String get pending => 'Uloženo v zařízení · čeká na synchronizaci';
+	@override String get offline => 'Jste offline. Postup se uloží a synchronizuje později.';
+	@override String get error => 'Chyba synchronizace';
+	@override String get retry => 'Zkusit znovu';
+	@override String get guest => 'Postup je uložen pouze na tomto zařízení.';
+	@override String get deleteAccount => 'Smazat účet';
+	@override String get deleteTitle => 'Smazat účet?';
+	@override String get deleteBody => 'Účet a synchronizovaný postup budou trvale smazány.';
+	@override String get deleteConfirm => 'Smazat účet';
+	@override String get deleteFailed => 'Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.';
+	@override String get signOut => 'Odhlásit se';
 }
 
 // Path: learn.lessons
@@ -691,6 +768,50 @@ extension on TranslationsCs {
 			'playerLevel.advancedDetail' => 'X-Wing a dál',
 			'auth.title' => 'Účet',
 			'auth.unavailable' => 'Pokrok se ukládá v tomto zařízení.',
+			'auth.apple' => 'Pokračovat přes Apple',
+			'auth.google' => 'Pokračovat přes Google',
+			'auth.emailEntry' => 'Přihlásit se e-mailem',
+			'auth.createTitle' => 'Vytvořit účet',
+			'auth.createSubtitle' => 'Pokrok zůstává na tomto zařízení, dokud nebude dostupná synchronizace.',
+			'auth.signInTitle' => 'Vítejte zpět',
+			'auth.name' => 'Jméno',
+			'auth.email' => 'E-mail',
+			'auth.password' => 'Heslo',
+			'auth.passwordHint' => 'Alespoň 8 znaků',
+			'auth.createAccount' => 'Vytvořit účet',
+			'auth.signIn' => 'Přihlásit se',
+			'auth.alreadyAccount' => 'Máte už účet?',
+			'auth.noAccount' => 'Ještě nemáte účet?',
+			'auth.forgotPassword' => 'Zapomněli jste heslo?',
+			'auth.resetTitle' => 'Obnovení hesla',
+			'auth.resetSubtitle' => 'Zadejte e-mail účtu a pošleme vám odkaz pro obnovení.',
+			'auth.sendLink' => 'Poslat odkaz',
+			'auth.resetSent' => 'Pokud účet existuje, zkontrolujte e-mail s odkazem pro obnovení.',
+			'auth.verifyTitle' => 'Zkontrolujte e-mail',
+			'auth.verifySubtitle' => ({required Object email}) => 'Poslali jsme ověřovací odkaz na ${email}.',
+			'auth.checkVerification' => 'Ověřil(a) jsem e-mail',
+			'auth.resendVerification' => 'Poslat odkaz znovu',
+			'auth.verified' => 'E-mail je ověřený.',
+			'auth.notVerified' => 'E-mail zatím není ověřený.',
+			'auth.signOut' => 'Odhlásit se',
+			'auth.localNotSynced' => 'Herní pokrok je stále uložený na tomto zařízení.',
+			'auth.verifyEmail' => 'Ověřit e-mail',
+			'auth.errorInvalidEmail' => 'Zadejte platnou e-mailovou adresu.',
+			'auth.errorPasswordLength' => 'Použijte alespoň 8 znaků.',
+			'auth.errorNameRequired' => 'Zadejte jméno.',
+			'auth.errorWeakPassword' => 'Toto heslo je příliš slabé.',
+			'auth.errorEmailInUse' => 'Účet s tímto e-mailem už existuje.',
+			'auth.errorWrongCredentials' => 'Zkontrolujte e-mail a heslo.',
+			'auth.errorDisabled' => 'Tento účet je zablokovaný.',
+			'auth.errorTooMany' => 'Příliš mnoho pokusů. Zkuste to později.',
+			'auth.errorNetwork' => 'Zkontrolujte připojení a zkuste to znovu.',
+			'auth.errorUnavailable' => 'Služba účtů není dostupná. Můžete dál hrát jako host.',
+			'auth.errorUnexpected' => 'Něco se pokazilo. Zkuste to znovu.',
+			'auth.showPassword' => 'Zobrazit heslo',
+			'auth.hidePassword' => 'Skrýt heslo',
+			'auth.signOutTitle' => 'Odhlásit se z účtu?',
+			'auth.signOutBody' => 'Místní hry zůstanou v tomto zařízení.',
+			'auth.cancel' => 'Zrušit',
 			'home.title' => 'Tvoje cesta sudoku',
 			'home.game' => 'Hrát',
 			'home.continueGame' => 'Pokračovat ve hře',
@@ -994,9 +1115,32 @@ extension on TranslationsCs {
 			'week.today' => 'Dnes',
 			'week.noActivity' => 'Bez aktivity',
 			'week.summary' => 'Tvoje místní aktivita v sudoku',
+			'settings.general' => 'Obecné',
 			'settings.title' => 'Nastavení',
 			'settings.language' => 'Jazyk',
 			'settings.languageDetail' => 'Vyber jazyk aplikace MICHI.',
+			'settings.reminders' => 'Připomínky',
+			'settings.dailyReminder' => 'Denně v 08:00',
+			'settings.reminderSignIn' => 'Přihlaste se, chcete-li zapnout připomínky.',
+			'settings.reminderPermission' => 'Povolte oznámení v nastavení zařízení.',
+			'settings.reminderUnavailable' => 'Oznámení nejsou na tomto zařízení dostupná.',
+			'sync.account' => 'Účet',
+			'sync.email' => 'E-mail',
+			'sync.synchronization' => 'Synchronizace',
+			'sync.syncing' => 'Synchronizuji…',
+			'sync.synced' => 'Nedávno synchronizováno',
+			'sync.lastSynced' => ({required Object time}) => 'Poslední synchronizace — ${time}',
+			'sync.pending' => 'Uloženo v zařízení · čeká na synchronizaci',
+			'sync.offline' => 'Jste offline. Postup se uloží a synchronizuje později.',
+			'sync.error' => 'Chyba synchronizace',
+			'sync.retry' => 'Zkusit znovu',
+			'sync.guest' => 'Postup je uložen pouze na tomto zařízení.',
+			'sync.deleteAccount' => 'Smazat účet',
+			'sync.deleteTitle' => 'Smazat účet?',
+			'sync.deleteBody' => 'Účet a synchronizovaný postup budou trvale smazány.',
+			'sync.deleteConfirm' => 'Smazat účet',
+			'sync.deleteFailed' => 'Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.',
+			'sync.signOut' => 'Odhlásit se',
 			_ => null,
 		};
 	}

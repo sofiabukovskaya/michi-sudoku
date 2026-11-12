@@ -139,7 +139,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Settings'));
     await tester.pumpAndSettle();
-    expect(find.text('Choose the language for MICHI.'), findsOneWidget);
+    expect(find.text('English'), findsOneWidget);
     expect(find.byType(MichiBottomNav), findsNothing);
     await tester.pageBack();
     await tester.pumpAndSettle();
@@ -177,8 +177,12 @@ void main() {
       expect(tester.takeException(), isNull);
       router.push(const SettingsRoute()).ignore();
       await tester.pumpAndSettle();
-      expect(find.text('Français'), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.language_outlined));
+      await tester.pumpAndSettle();
+      expect(find.text('Français'), findsWidgets);
       expect(tester.takeException(), isNull);
+      await tester.tapAt(const Offset(10, 10));
+      await tester.pumpAndSettle();
       await router.maybePop();
       await tester.pumpAndSettle();
     }

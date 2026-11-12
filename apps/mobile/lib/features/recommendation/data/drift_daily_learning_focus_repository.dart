@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:michi_mobile/core/profile/local_profile_scope.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
@@ -10,15 +11,26 @@ import 'package:sudoku_engine/sudoku_engine.dart';
 
 final class DriftDailyLearningFocusRepository
     implements DailyLearningFocusRepository {
-  const DriftDailyLearningFocusRepository(this.database);
+  DriftDailyLearningFocusRepository(this.database, [LocalProfileScope? scope])
+    : scope = scope ?? LocalProfileScope();
 
   final GameDatabase database;
+  final LocalProfileScope scope;
 
   @override
-  Future<LearningRecommendation?> load(LocalDate date) async {
+  Future<LearningRecommendation?> load(LocalDate date) =>
+      _loadFor(scope.profileId, date);
+
+  Future<LearningRecommendation?> _loadFor(
+    String profileId,
+    LocalDate date,
+  ) async {
     final row =
-        await (database.select(database.dailyLearningFocuses)
-              ..where((table) => table.localDate.equals(date.toString())))
+        await (database.select(database.dailyLearningFocuses)..where(
+              (table) =>
+                  table.profileId.equals(profileId) &
+                  table.localDate.equals(date.toString()),
+            ))
             .getSingleOrNull();
     if (row == null) return null;
     final technique = SudokuTechnique.values.byName(row.techniqueId);
@@ -35,22 +47,26 @@ final class DriftDailyLearningFocusRepository
   Future<LearningRecommendation> saveIfAbsent(
     LocalDate date,
     LearningRecommendation recommendation,
-  ) => database.transaction(() async {
-    await database
-        .into(database.dailyLearningFocuses)
-        .insert(
-          DailyLearningFocusesCompanion.insert(
-            localDate: date.toString(),
-            techniqueId: recommendation.technique.name,
-            actionId: recommendation.action.name,
-            reasonId: recommendation.reason.name,
-            estimatedMinutes: recommendation.estimatedMinutes,
-            evidenceJson: _encodeEvidence(recommendation.evidence),
-          ),
-          mode: InsertMode.insertOrIgnore,
-        );
-    return (await load(date))!;
-  });
+  ) {
+    final profileId = scope.profileId;
+    return database.transaction(() async {
+      await database
+          .into(database.dailyLearningFocuses)
+          .insert(
+            DailyLearningFocusesCompanion.insert(
+              profileId: Value(profileId),
+              localDate: date.toString(),
+              techniqueId: recommendation.technique.name,
+              actionId: recommendation.action.name,
+              reasonId: recommendation.reason.name,
+              estimatedMinutes: recommendation.estimatedMinutes,
+              evidenceJson: _encodeEvidence(recommendation.evidence),
+            ),
+            mode: InsertMode.insertOrIgnore,
+          );
+      return (await _loadFor(profileId, date))!;
+    });
+  }
 
   String _encodeEvidence(RecommendationEvidence evidence) => jsonEncode({
     'mastery': evidence.mastery.name,

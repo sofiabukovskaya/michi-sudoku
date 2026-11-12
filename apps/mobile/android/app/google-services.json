@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "936754178748",
+    "project_id": "michi-sudoku-coach",
+    "storage_bucket": "michi-sudoku-coach.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936754178748:android:e9adabe24cd580daa13eb9",
+        "android_client_info": {
+          "package_name": "com.example.michi_sudoku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZt5BmyMPqFBTGAA-9xsB5HRzH4t62dPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

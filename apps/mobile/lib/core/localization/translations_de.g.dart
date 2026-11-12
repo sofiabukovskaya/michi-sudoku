@@ -57,6 +57,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$recommendation$de recommendation = _Translations$recommendation$de._(_root);
 	@override late final _Translations$week$de week = _Translations$week$de._(_root);
 	@override late final _Translations$settings$de settings = _Translations$settings$de._(_root);
+	@override late final _Translations$sync$de sync = _Translations$sync$de._(_root);
 }
 
 // Path: common
@@ -142,6 +143,50 @@ class _Translations$auth$de extends Translations$auth$uk {
 	// Translations
 	@override String get title => 'Konto';
 	@override String get unavailable => 'Dein Fortschritt wird auf diesem Gerät gespeichert.';
+	@override String get apple => 'Mit Apple fortfahren';
+	@override String get google => 'Mit Google fortfahren';
+	@override String get emailEntry => 'Mit E-Mail anmelden';
+	@override String get createTitle => 'Konto erstellen';
+	@override String get createSubtitle => 'Dein Fortschritt bleibt auf diesem Gerät, bis die Synchronisierung verfügbar ist.';
+	@override String get signInTitle => 'Willkommen zurück';
+	@override String get name => 'Name';
+	@override String get email => 'E-Mail';
+	@override String get password => 'Passwort';
+	@override String get passwordHint => 'Mindestens 8 Zeichen';
+	@override String get createAccount => 'Konto erstellen';
+	@override String get signIn => 'Anmelden';
+	@override String get alreadyAccount => 'Du hast schon ein Konto?';
+	@override String get noAccount => 'Noch kein Konto?';
+	@override String get forgotPassword => 'Passwort vergessen?';
+	@override String get resetTitle => 'Passwort zurücksetzen';
+	@override String get resetSubtitle => 'Gib die E-Mail deines Kontos ein. Wir senden dir einen Link.';
+	@override String get sendLink => 'Link senden';
+	@override String get resetSent => 'Falls das Konto existiert, prüfe deine E-Mails auf den Link.';
+	@override String get verifyTitle => 'Prüfe deine E-Mails';
+	@override String verifySubtitle({required Object email}) => 'Wir haben einen Bestätigungslink an ${email} gesendet.';
+	@override String get checkVerification => 'Ich habe meine E-Mail bestätigt';
+	@override String get resendVerification => 'Link erneut senden';
+	@override String get verified => 'Deine E-Mail ist bestätigt.';
+	@override String get notVerified => 'Die E-Mail ist noch nicht bestätigt.';
+	@override String get signOut => 'Abmelden';
+	@override String get localNotSynced => 'Dein Spielfortschritt bleibt auf diesem Gerät gespeichert.';
+	@override String get verifyEmail => 'E-Mail bestätigen';
+	@override String get errorInvalidEmail => 'Gib eine gültige E-Mail-Adresse ein.';
+	@override String get errorPasswordLength => 'Verwende mindestens 8 Zeichen.';
+	@override String get errorNameRequired => 'Gib deinen Namen ein.';
+	@override String get errorWeakPassword => 'Dieses Passwort ist zu schwach.';
+	@override String get errorEmailInUse => 'Für diese E-Mail gibt es bereits ein Konto.';
+	@override String get errorWrongCredentials => 'Prüfe E-Mail und Passwort.';
+	@override String get errorDisabled => 'Dieses Konto ist deaktiviert.';
+	@override String get errorTooMany => 'Zu viele Versuche. Versuche es später erneut.';
+	@override String get errorNetwork => 'Prüfe deine Verbindung und versuche es erneut.';
+	@override String get errorUnavailable => 'Der Kontodienst ist nicht verfügbar. Du kannst als Gast weiterspielen.';
+	@override String get errorUnexpected => 'Etwas ist schiefgegangen. Bitte versuche es erneut.';
+	@override String get showPassword => 'Passwort anzeigen';
+	@override String get hidePassword => 'Passwort verbergen';
+	@override String get signOutTitle => 'Vom Konto abmelden?';
+	@override String get signOutBody => 'Deine lokalen Spiele bleiben auf diesem Gerät.';
+	@override String get cancel => 'Abbrechen';
 }
 
 // Path: home
@@ -506,9 +551,41 @@ class _Translations$settings$de extends Translations$settings$uk {
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
+	@override String get general => 'Allgemein';
 	@override String get title => 'Einstellungen';
 	@override String get language => 'Sprache';
 	@override String get languageDetail => 'Wähle die Sprache für MICHI.';
+	@override String get reminders => 'Erinnerungen';
+	@override String get dailyReminder => 'Täglich um 08:00';
+	@override String get reminderSignIn => 'Melde dich an, um Erinnerungen zu aktivieren.';
+	@override String get reminderPermission => 'Erlaube Mitteilungen in den Systemeinstellungen.';
+	@override String get reminderUnavailable => 'Mitteilungen sind auf diesem Gerät nicht verfügbar.';
+}
+
+// Path: sync
+class _Translations$sync$de extends Translations$sync$uk {
+	_Translations$sync$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get account => 'Konto';
+	@override String get email => 'E-Mail';
+	@override String get synchronization => 'Synchronisierung';
+	@override String get syncing => 'Wird synchronisiert…';
+	@override String get synced => 'Kürzlich synchronisiert';
+	@override String lastSynced({required Object time}) => 'Zuletzt synchronisiert — ${time}';
+	@override String get pending => 'Lokal gespeichert · wartet auf Synchronisierung';
+	@override String get offline => 'Offline. Dein Fortschritt wird gespeichert und später synchronisiert.';
+	@override String get error => 'Synchronisierungsfehler';
+	@override String get retry => 'Erneut versuchen';
+	@override String get guest => 'Der Fortschritt ist nur auf diesem Gerät gespeichert.';
+	@override String get deleteAccount => 'Konto löschen';
+	@override String get deleteTitle => 'Konto löschen?';
+	@override String get deleteBody => 'Dein Konto und dein synchronisierter Fortschritt werden dauerhaft gelöscht.';
+	@override String get deleteConfirm => 'Konto löschen';
+	@override String get deleteFailed => 'Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.';
+	@override String get signOut => 'Abmelden';
 }
 
 // Path: learn.lessons
@@ -688,6 +765,50 @@ extension on TranslationsDe {
 			'playerLevel.advancedDetail' => 'X-Wing und mehr',
 			'auth.title' => 'Konto',
 			'auth.unavailable' => 'Dein Fortschritt wird auf diesem Gerät gespeichert.',
+			'auth.apple' => 'Mit Apple fortfahren',
+			'auth.google' => 'Mit Google fortfahren',
+			'auth.emailEntry' => 'Mit E-Mail anmelden',
+			'auth.createTitle' => 'Konto erstellen',
+			'auth.createSubtitle' => 'Dein Fortschritt bleibt auf diesem Gerät, bis die Synchronisierung verfügbar ist.',
+			'auth.signInTitle' => 'Willkommen zurück',
+			'auth.name' => 'Name',
+			'auth.email' => 'E-Mail',
+			'auth.password' => 'Passwort',
+			'auth.passwordHint' => 'Mindestens 8 Zeichen',
+			'auth.createAccount' => 'Konto erstellen',
+			'auth.signIn' => 'Anmelden',
+			'auth.alreadyAccount' => 'Du hast schon ein Konto?',
+			'auth.noAccount' => 'Noch kein Konto?',
+			'auth.forgotPassword' => 'Passwort vergessen?',
+			'auth.resetTitle' => 'Passwort zurücksetzen',
+			'auth.resetSubtitle' => 'Gib die E-Mail deines Kontos ein. Wir senden dir einen Link.',
+			'auth.sendLink' => 'Link senden',
+			'auth.resetSent' => 'Falls das Konto existiert, prüfe deine E-Mails auf den Link.',
+			'auth.verifyTitle' => 'Prüfe deine E-Mails',
+			'auth.verifySubtitle' => ({required Object email}) => 'Wir haben einen Bestätigungslink an ${email} gesendet.',
+			'auth.checkVerification' => 'Ich habe meine E-Mail bestätigt',
+			'auth.resendVerification' => 'Link erneut senden',
+			'auth.verified' => 'Deine E-Mail ist bestätigt.',
+			'auth.notVerified' => 'Die E-Mail ist noch nicht bestätigt.',
+			'auth.signOut' => 'Abmelden',
+			'auth.localNotSynced' => 'Dein Spielfortschritt bleibt auf diesem Gerät gespeichert.',
+			'auth.verifyEmail' => 'E-Mail bestätigen',
+			'auth.errorInvalidEmail' => 'Gib eine gültige E-Mail-Adresse ein.',
+			'auth.errorPasswordLength' => 'Verwende mindestens 8 Zeichen.',
+			'auth.errorNameRequired' => 'Gib deinen Namen ein.',
+			'auth.errorWeakPassword' => 'Dieses Passwort ist zu schwach.',
+			'auth.errorEmailInUse' => 'Für diese E-Mail gibt es bereits ein Konto.',
+			'auth.errorWrongCredentials' => 'Prüfe E-Mail und Passwort.',
+			'auth.errorDisabled' => 'Dieses Konto ist deaktiviert.',
+			'auth.errorTooMany' => 'Zu viele Versuche. Versuche es später erneut.',
+			'auth.errorNetwork' => 'Prüfe deine Verbindung und versuche es erneut.',
+			'auth.errorUnavailable' => 'Der Kontodienst ist nicht verfügbar. Du kannst als Gast weiterspielen.',
+			'auth.errorUnexpected' => 'Etwas ist schiefgegangen. Bitte versuche es erneut.',
+			'auth.showPassword' => 'Passwort anzeigen',
+			'auth.hidePassword' => 'Passwort verbergen',
+			'auth.signOutTitle' => 'Vom Konto abmelden?',
+			'auth.signOutBody' => 'Deine lokalen Spiele bleiben auf diesem Gerät.',
+			'auth.cancel' => 'Abbrechen',
 			'home.title' => 'Dein Weg durch Sudoku',
 			'home.game' => 'Spielen',
 			'home.continueGame' => 'Spiel fortsetzen',
@@ -991,9 +1112,32 @@ extension on TranslationsDe {
 			'week.today' => 'Heute',
 			'week.noActivity' => 'Keine Aktivität',
 			'week.summary' => 'Deine lokalen Sudoku-Aktivitäten',
+			'settings.general' => 'Allgemein',
 			'settings.title' => 'Einstellungen',
 			'settings.language' => 'Sprache',
 			'settings.languageDetail' => 'Wähle die Sprache für MICHI.',
+			'settings.reminders' => 'Erinnerungen',
+			'settings.dailyReminder' => 'Täglich um 08:00',
+			'settings.reminderSignIn' => 'Melde dich an, um Erinnerungen zu aktivieren.',
+			'settings.reminderPermission' => 'Erlaube Mitteilungen in den Systemeinstellungen.',
+			'settings.reminderUnavailable' => 'Mitteilungen sind auf diesem Gerät nicht verfügbar.',
+			'sync.account' => 'Konto',
+			'sync.email' => 'E-Mail',
+			'sync.synchronization' => 'Synchronisierung',
+			'sync.syncing' => 'Wird synchronisiert…',
+			'sync.synced' => 'Kürzlich synchronisiert',
+			'sync.lastSynced' => ({required Object time}) => 'Zuletzt synchronisiert — ${time}',
+			'sync.pending' => 'Lokal gespeichert · wartet auf Synchronisierung',
+			'sync.offline' => 'Offline. Dein Fortschritt wird gespeichert und später synchronisiert.',
+			'sync.error' => 'Synchronisierungsfehler',
+			'sync.retry' => 'Erneut versuchen',
+			'sync.guest' => 'Der Fortschritt ist nur auf diesem Gerät gespeichert.',
+			'sync.deleteAccount' => 'Konto löschen',
+			'sync.deleteTitle' => 'Konto löschen?',
+			'sync.deleteBody' => 'Dein Konto und dein synchronisierter Fortschritt werden dauerhaft gelöscht.',
+			'sync.deleteConfirm' => 'Konto löschen',
+			'sync.deleteFailed' => 'Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.',
+			'sync.signOut' => 'Abmelden',
 			_ => null,
 		};
 	}

@@ -24,7 +24,12 @@ melos:
         dart run melos exec --depends-on=test -- "dart test"
       description: Run every workspace test suite.
     format:
-      run: dart format .
+      run: >-
+        dart format
+        apps/mobile/lib apps/mobile/test apps/mobile/tool
+        packages/sudoku_engine/lib packages/sudoku_engine/test packages/sudoku_engine/tool
+        packages/sudoku_scanner/lib packages/sudoku_scanner/test packages/sudoku_scanner/tool
+        packages/michi_design_system/lib packages/michi_design_system/test
       description: Format Dart sources in the workspace.
     generate:
       run: dart run melos exec --depends-on=build_runner -- "dart run build_runner build"

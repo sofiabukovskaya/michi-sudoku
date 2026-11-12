@@ -1,0 +1,21 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "contentReleases",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "status", "order": "ASCENDING"},
+        {"fieldPath": "publishedAt", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "devices",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {"fieldPath": "remindersEnabled", "order": "ASCENDING"},
+        {"fieldPath": "nextReminderAt", "order": "ASCENDING"}
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
