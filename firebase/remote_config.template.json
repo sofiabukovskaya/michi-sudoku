@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "remoteContentEnabled": {"defaultValue": {"value": "true"}},
+    "dailyRemoteEnabled": {"defaultValue": {"value": "true"}},
+    "dailyFutureCacheDays": {"defaultValue": {"value": "2"}},
+    "notificationsEnabled": {"defaultValue": {"value": "true"}}
+  }
+}

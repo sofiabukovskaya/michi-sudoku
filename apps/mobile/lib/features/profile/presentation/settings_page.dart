@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,8 +7,10 @@ import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/localization/locale_preference_store.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/notifications/reminder_registration.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 @RoutePage()
 final class SettingsPage extends StatelessWidget {
@@ -137,7 +141,7 @@ final class SettingsPage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(MichiSpacing.xl),
           children: [
-            Text(context.t.settings.language, style: MichiTypography.heading),
+            Text(context.t.settings.general, style: MichiTypography.heading),
             const SizedBox(height: MichiSpacing.md),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -147,30 +151,36 @@ final class SettingsPage extends StatelessWidget {
               ),
               child: Material(
                 type: MaterialType.transparency,
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.language_outlined,
-                    color: MichiColors.textSecondary,
-                  ),
-                  title: Text(
-                    context.t.settings.language,
-                    style: MichiTypography.body,
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _languageNames[LocaleSettings.currentLocale]!,
-                        style: MichiTypography.secondary,
-                      ),
-                      const SizedBox(width: MichiSpacing.xs),
-                      const Icon(
-                        Icons.chevron_right,
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(
+                        Icons.language_outlined,
                         color: MichiColors.textSecondary,
                       ),
-                    ],
-                  ),
-                  onTap: () => _chooseLanguage(context),
+                      title: Text(
+                        context.t.settings.language,
+                        style: MichiTypography.body,
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _languageNames[LocaleSettings.currentLocale]!,
+                            style: MichiTypography.secondary,
+                          ),
+                          const SizedBox(width: MichiSpacing.xs),
+                          const Icon(
+                            Icons.chevron_right,
+                            color: MichiColors.textSecondary,
+                          ),
+                        ],
+                      ),
+                      onTap: () => _chooseLanguage(context),
+                    ),
+                    const Divider(height: 1, color: MichiColors.hairline),
+                    _RemindersTile(uid: account?.uid),
+                  ],
                 ),
               ),
             ),
@@ -274,4 +284,133 @@ final class SettingsPage extends StatelessWidget {
                   ).format(context),
                 ),
       };
+}
+
+final class _RemindersTile extends StatefulWidget {
+  const _RemindersTile({required this.uid});
+
+  final String? uid;
+
+  @override
+  State<_RemindersTile> createState() => _RemindersTileState();
+}
+
+final class _RemindersTileState extends State<_RemindersTile>
+    with WidgetsBindingObserver {
+  ReminderSettings _settings = const ReminderSettings(
+    enabled: false,
+    permission: ReminderPermission.notRequested,
+  );
+  bool _busy = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    unawaited(_load());
+  }
+
+  @override
+  void didUpdateWidget(covariant _RemindersTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.uid != oldWidget.uid) unawaited(_load());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) unawaited(_load());
+  }
+
+  Future<void> _load() async {
+    final uid = widget.uid;
+    final registration = context.read<ReminderRegistration>();
+    try {
+      if (uid != null) {
+        await registration.refreshTimezone(
+          uid,
+          LocaleSettings.currentLocale.languageCode,
+        );
+      }
+      final settings = await registration.load(uid);
+      if (mounted && widget.uid == uid) setState(() => _settings = settings);
+    } on Object {
+      // Settings remain usable offline with the last displayed state.
+    }
+  }
+
+  Future<void> _setEnabled(bool enabled) async {
+    final uid = widget.uid;
+    if (uid == null || _busy) return;
+    setState(() => _busy = true);
+    try {
+      final registration = context.read<ReminderRegistration>();
+      if (enabled) {
+        final settings = await registration.enable(
+          uid,
+          LocaleSettings.currentLocale.languageCode,
+        );
+        if (mounted) setState(() => _settings = settings);
+      } else {
+        await registration.disable(uid);
+        if (mounted) {
+          setState(
+            () => _settings = ReminderSettings(
+              enabled: false,
+              permission: _settings.permission,
+            ),
+          );
+        }
+      }
+    } on Object {
+      if (mounted) await _load();
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final denied = _settings.permission == ReminderPermission.denied;
+    final unavailable = _settings.permission == ReminderPermission.unsupported;
+    return Column(
+      children: [
+        SwitchListTile(
+          secondary: const Icon(
+            Icons.access_time_rounded,
+            color: MichiColors.textSecondary,
+          ),
+          title: Text(
+            context.t.settings.reminders,
+            style: MichiTypography.body,
+          ),
+          subtitle: widget.uid == null
+              ? Text(context.t.settings.reminderSignIn)
+              : denied
+              ? Text(context.t.settings.reminderPermission)
+              : unavailable
+              ? Text(context.t.settings.reminderUnavailable)
+              : Text(context.t.settings.dailyReminder),
+          value: _settings.enabled,
+          activeThumbColor: MichiColors.ivory,
+          activeTrackColor: MichiColors.indigo,
+          inactiveThumbColor: MichiColors.ivory,
+          inactiveTrackColor: MichiColors.cream,
+          onChanged: widget.uid == null || _busy || unavailable || denied
+              ? null
+              : _setEnabled,
+        ),
+        if (denied)
+          TextButton(
+            onPressed: openAppSettings,
+            child: Text(context.t.settings.reminderPermission),
+          ),
+      ],
+    );
+  }
 }

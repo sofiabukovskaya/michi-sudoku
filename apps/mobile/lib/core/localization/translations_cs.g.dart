@@ -554,9 +554,15 @@ class _Translations$settings$cs extends Translations$settings$uk {
 	final TranslationsCs _root; // ignore: unused_field
 
 	// Translations
+	@override String get general => 'Obecné';
 	@override String get title => 'Nastavení';
 	@override String get language => 'Jazyk';
 	@override String get languageDetail => 'Vyber jazyk aplikace MICHI.';
+	@override String get reminders => 'Připomínky';
+	@override String get dailyReminder => 'Denně v 08:00';
+	@override String get reminderSignIn => 'Přihlaste se, chcete-li zapnout připomínky.';
+	@override String get reminderPermission => 'Povolte oznámení v nastavení zařízení.';
+	@override String get reminderUnavailable => 'Oznámení nejsou na tomto zařízení dostupná.';
 }
 
 // Path: sync
@@ -1109,9 +1115,15 @@ extension on TranslationsCs {
 			'week.today' => 'Dnes',
 			'week.noActivity' => 'Bez aktivity',
 			'week.summary' => 'Tvoje místní aktivita v sudoku',
+			'settings.general' => 'Obecné',
 			'settings.title' => 'Nastavení',
 			'settings.language' => 'Jazyk',
 			'settings.languageDetail' => 'Vyber jazyk aplikace MICHI.',
+			'settings.reminders' => 'Připomínky',
+			'settings.dailyReminder' => 'Denně v 08:00',
+			'settings.reminderSignIn' => 'Přihlaste se, chcete-li zapnout připomínky.',
+			'settings.reminderPermission' => 'Povolte oznámení v nastavení zařízení.',
+			'settings.reminderUnavailable' => 'Oznámení nejsou na tomto zařízení dostupná.',
 			'sync.account' => 'Účet',
 			'sync.email' => 'E-mail',
 			'sync.synchronization' => 'Synchronizace',

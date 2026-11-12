@@ -441,9 +441,15 @@
     "summary": "Tvoje místní aktivita v sudoku"
   },
   "settings": {
+    "general": "Obecné",
     "title": "Nastavení",
     "language": "Jazyk",
-    "languageDetail": "Vyber jazyk aplikace MICHI."
+    "languageDetail": "Vyber jazyk aplikace MICHI.",
+    "reminders": "Připomínky",
+    "dailyReminder": "Denně v 08:00",
+    "reminderSignIn": "Přihlaste se, chcete-li zapnout připomínky.",
+    "reminderPermission": "Povolte oznámení v nastavení zařízení.",
+    "reminderUnavailable": "Oznámení nejsou na tomto zařízení dostupná."
   },
   "sync": {
     "account": "Účet",

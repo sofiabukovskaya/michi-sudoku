@@ -5645,6 +5645,1378 @@ class DailyCompletionsCompanion extends UpdateCompanion<DailyCompletion> {
   }
 }
 
+class $RemotePuzzlesTable extends RemotePuzzles
+    with TableInfo<$RemotePuzzlesTable, RemotePuzzle> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RemotePuzzlesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _puzzleIdMeta = const VerificationMeta(
+    'puzzleId',
+  );
+  @override
+  late final GeneratedColumn<String> puzzleId = GeneratedColumn<String>(
+    'puzzle_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _releaseIdMeta = const VerificationMeta(
+    'releaseId',
+  );
+  @override
+  late final GeneratedColumn<String> releaseId = GeneratedColumn<String>(
+    'release_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _boardMeta = const VerificationMeta('board');
+  @override
+  late final GeneratedColumn<String> board = GeneratedColumn<String>(
+    'board',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _difficultyMeta = const VerificationMeta(
+    'difficulty',
+  );
+  @override
+  late final GeneratedColumn<String> difficulty = GeneratedColumn<String>(
+    'difficulty',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requiredTechniquesJsonMeta =
+      const VerificationMeta('requiredTechniquesJson');
+  @override
+  late final GeneratedColumn<String> requiredTechniquesJson =
+      GeneratedColumn<String>(
+        'required_techniques_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _contentVersionMeta = const VerificationMeta(
+    'contentVersion',
+  );
+  @override
+  late final GeneratedColumn<int> contentVersion = GeneratedColumn<int>(
+    'content_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dailyEligibleMeta = const VerificationMeta(
+    'dailyEligible',
+  );
+  @override
+  late final GeneratedColumn<bool> dailyEligible = GeneratedColumn<bool>(
+    'daily_eligible',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("daily_eligible" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _fetchedAtMsMeta = const VerificationMeta(
+    'fetchedAtMs',
+  );
+  @override
+  late final GeneratedColumn<int> fetchedAtMs = GeneratedColumn<int>(
+    'fetched_at_ms',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    puzzleId,
+    releaseId,
+    board,
+    difficulty,
+    requiredTechniquesJson,
+    contentVersion,
+    dailyEligible,
+    fetchedAtMs,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'remote_puzzles';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RemotePuzzle> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('puzzle_id')) {
+      context.handle(
+        _puzzleIdMeta,
+        puzzleId.isAcceptableOrUnknown(data['puzzle_id']!, _puzzleIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_puzzleIdMeta);
+    }
+    if (data.containsKey('release_id')) {
+      context.handle(
+        _releaseIdMeta,
+        releaseId.isAcceptableOrUnknown(data['release_id']!, _releaseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_releaseIdMeta);
+    }
+    if (data.containsKey('board')) {
+      context.handle(
+        _boardMeta,
+        board.isAcceptableOrUnknown(data['board']!, _boardMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_boardMeta);
+    }
+    if (data.containsKey('difficulty')) {
+      context.handle(
+        _difficultyMeta,
+        difficulty.isAcceptableOrUnknown(data['difficulty']!, _difficultyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_difficultyMeta);
+    }
+    if (data.containsKey('required_techniques_json')) {
+      context.handle(
+        _requiredTechniquesJsonMeta,
+        requiredTechniquesJson.isAcceptableOrUnknown(
+          data['required_techniques_json']!,
+          _requiredTechniquesJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requiredTechniquesJsonMeta);
+    }
+    if (data.containsKey('content_version')) {
+      context.handle(
+        _contentVersionMeta,
+        contentVersion.isAcceptableOrUnknown(
+          data['content_version']!,
+          _contentVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_contentVersionMeta);
+    }
+    if (data.containsKey('daily_eligible')) {
+      context.handle(
+        _dailyEligibleMeta,
+        dailyEligible.isAcceptableOrUnknown(
+          data['daily_eligible']!,
+          _dailyEligibleMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_dailyEligibleMeta);
+    }
+    if (data.containsKey('fetched_at_ms')) {
+      context.handle(
+        _fetchedAtMsMeta,
+        fetchedAtMs.isAcceptableOrUnknown(
+          data['fetched_at_ms']!,
+          _fetchedAtMsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_fetchedAtMsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {puzzleId};
+  @override
+  RemotePuzzle map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RemotePuzzle(
+      puzzleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}puzzle_id'],
+      )!,
+      releaseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}release_id'],
+      )!,
+      board: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}board'],
+      )!,
+      difficulty: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}difficulty'],
+      )!,
+      requiredTechniquesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}required_techniques_json'],
+      )!,
+      contentVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}content_version'],
+      )!,
+      dailyEligible: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}daily_eligible'],
+      )!,
+      fetchedAtMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fetched_at_ms'],
+      )!,
+    );
+  }
+
+  @override
+  $RemotePuzzlesTable createAlias(String alias) {
+    return $RemotePuzzlesTable(attachedDatabase, alias);
+  }
+}
+
+class RemotePuzzle extends DataClass implements Insertable<RemotePuzzle> {
+  final String puzzleId;
+  final String releaseId;
+  final String board;
+  final String difficulty;
+  final String requiredTechniquesJson;
+  final int contentVersion;
+  final bool dailyEligible;
+  final int fetchedAtMs;
+  const RemotePuzzle({
+    required this.puzzleId,
+    required this.releaseId,
+    required this.board,
+    required this.difficulty,
+    required this.requiredTechniquesJson,
+    required this.contentVersion,
+    required this.dailyEligible,
+    required this.fetchedAtMs,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['puzzle_id'] = Variable<String>(puzzleId);
+    map['release_id'] = Variable<String>(releaseId);
+    map['board'] = Variable<String>(board);
+    map['difficulty'] = Variable<String>(difficulty);
+    map['required_techniques_json'] = Variable<String>(requiredTechniquesJson);
+    map['content_version'] = Variable<int>(contentVersion);
+    map['daily_eligible'] = Variable<bool>(dailyEligible);
+    map['fetched_at_ms'] = Variable<int>(fetchedAtMs);
+    return map;
+  }
+
+  RemotePuzzlesCompanion toCompanion(bool nullToAbsent) {
+    return RemotePuzzlesCompanion(
+      puzzleId: Value(puzzleId),
+      releaseId: Value(releaseId),
+      board: Value(board),
+      difficulty: Value(difficulty),
+      requiredTechniquesJson: Value(requiredTechniquesJson),
+      contentVersion: Value(contentVersion),
+      dailyEligible: Value(dailyEligible),
+      fetchedAtMs: Value(fetchedAtMs),
+    );
+  }
+
+  factory RemotePuzzle.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RemotePuzzle(
+      puzzleId: serializer.fromJson<String>(json['puzzleId']),
+      releaseId: serializer.fromJson<String>(json['releaseId']),
+      board: serializer.fromJson<String>(json['board']),
+      difficulty: serializer.fromJson<String>(json['difficulty']),
+      requiredTechniquesJson: serializer.fromJson<String>(
+        json['requiredTechniquesJson'],
+      ),
+      contentVersion: serializer.fromJson<int>(json['contentVersion']),
+      dailyEligible: serializer.fromJson<bool>(json['dailyEligible']),
+      fetchedAtMs: serializer.fromJson<int>(json['fetchedAtMs']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'puzzleId': serializer.toJson<String>(puzzleId),
+      'releaseId': serializer.toJson<String>(releaseId),
+      'board': serializer.toJson<String>(board),
+      'difficulty': serializer.toJson<String>(difficulty),
+      'requiredTechniquesJson': serializer.toJson<String>(
+        requiredTechniquesJson,
+      ),
+      'contentVersion': serializer.toJson<int>(contentVersion),
+      'dailyEligible': serializer.toJson<bool>(dailyEligible),
+      'fetchedAtMs': serializer.toJson<int>(fetchedAtMs),
+    };
+  }
+
+  RemotePuzzle copyWith({
+    String? puzzleId,
+    String? releaseId,
+    String? board,
+    String? difficulty,
+    String? requiredTechniquesJson,
+    int? contentVersion,
+    bool? dailyEligible,
+    int? fetchedAtMs,
+  }) => RemotePuzzle(
+    puzzleId: puzzleId ?? this.puzzleId,
+    releaseId: releaseId ?? this.releaseId,
+    board: board ?? this.board,
+    difficulty: difficulty ?? this.difficulty,
+    requiredTechniquesJson:
+        requiredTechniquesJson ?? this.requiredTechniquesJson,
+    contentVersion: contentVersion ?? this.contentVersion,
+    dailyEligible: dailyEligible ?? this.dailyEligible,
+    fetchedAtMs: fetchedAtMs ?? this.fetchedAtMs,
+  );
+  RemotePuzzle copyWithCompanion(RemotePuzzlesCompanion data) {
+    return RemotePuzzle(
+      puzzleId: data.puzzleId.present ? data.puzzleId.value : this.puzzleId,
+      releaseId: data.releaseId.present ? data.releaseId.value : this.releaseId,
+      board: data.board.present ? data.board.value : this.board,
+      difficulty: data.difficulty.present
+          ? data.difficulty.value
+          : this.difficulty,
+      requiredTechniquesJson: data.requiredTechniquesJson.present
+          ? data.requiredTechniquesJson.value
+          : this.requiredTechniquesJson,
+      contentVersion: data.contentVersion.present
+          ? data.contentVersion.value
+          : this.contentVersion,
+      dailyEligible: data.dailyEligible.present
+          ? data.dailyEligible.value
+          : this.dailyEligible,
+      fetchedAtMs: data.fetchedAtMs.present
+          ? data.fetchedAtMs.value
+          : this.fetchedAtMs,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RemotePuzzle(')
+          ..write('puzzleId: $puzzleId, ')
+          ..write('releaseId: $releaseId, ')
+          ..write('board: $board, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('requiredTechniquesJson: $requiredTechniquesJson, ')
+          ..write('contentVersion: $contentVersion, ')
+          ..write('dailyEligible: $dailyEligible, ')
+          ..write('fetchedAtMs: $fetchedAtMs')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    puzzleId,
+    releaseId,
+    board,
+    difficulty,
+    requiredTechniquesJson,
+    contentVersion,
+    dailyEligible,
+    fetchedAtMs,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RemotePuzzle &&
+          other.puzzleId == this.puzzleId &&
+          other.releaseId == this.releaseId &&
+          other.board == this.board &&
+          other.difficulty == this.difficulty &&
+          other.requiredTechniquesJson == this.requiredTechniquesJson &&
+          other.contentVersion == this.contentVersion &&
+          other.dailyEligible == this.dailyEligible &&
+          other.fetchedAtMs == this.fetchedAtMs);
+}
+
+class RemotePuzzlesCompanion extends UpdateCompanion<RemotePuzzle> {
+  final Value<String> puzzleId;
+  final Value<String> releaseId;
+  final Value<String> board;
+  final Value<String> difficulty;
+  final Value<String> requiredTechniquesJson;
+  final Value<int> contentVersion;
+  final Value<bool> dailyEligible;
+  final Value<int> fetchedAtMs;
+  final Value<int> rowid;
+  const RemotePuzzlesCompanion({
+    this.puzzleId = const Value.absent(),
+    this.releaseId = const Value.absent(),
+    this.board = const Value.absent(),
+    this.difficulty = const Value.absent(),
+    this.requiredTechniquesJson = const Value.absent(),
+    this.contentVersion = const Value.absent(),
+    this.dailyEligible = const Value.absent(),
+    this.fetchedAtMs = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RemotePuzzlesCompanion.insert({
+    required String puzzleId,
+    required String releaseId,
+    required String board,
+    required String difficulty,
+    required String requiredTechniquesJson,
+    required int contentVersion,
+    required bool dailyEligible,
+    required int fetchedAtMs,
+    this.rowid = const Value.absent(),
+  }) : puzzleId = Value(puzzleId),
+       releaseId = Value(releaseId),
+       board = Value(board),
+       difficulty = Value(difficulty),
+       requiredTechniquesJson = Value(requiredTechniquesJson),
+       contentVersion = Value(contentVersion),
+       dailyEligible = Value(dailyEligible),
+       fetchedAtMs = Value(fetchedAtMs);
+  static Insertable<RemotePuzzle> custom({
+    Expression<String>? puzzleId,
+    Expression<String>? releaseId,
+    Expression<String>? board,
+    Expression<String>? difficulty,
+    Expression<String>? requiredTechniquesJson,
+    Expression<int>? contentVersion,
+    Expression<bool>? dailyEligible,
+    Expression<int>? fetchedAtMs,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (puzzleId != null) 'puzzle_id': puzzleId,
+      if (releaseId != null) 'release_id': releaseId,
+      if (board != null) 'board': board,
+      if (difficulty != null) 'difficulty': difficulty,
+      if (requiredTechniquesJson != null)
+        'required_techniques_json': requiredTechniquesJson,
+      if (contentVersion != null) 'content_version': contentVersion,
+      if (dailyEligible != null) 'daily_eligible': dailyEligible,
+      if (fetchedAtMs != null) 'fetched_at_ms': fetchedAtMs,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RemotePuzzlesCompanion copyWith({
+    Value<String>? puzzleId,
+    Value<String>? releaseId,
+    Value<String>? board,
+    Value<String>? difficulty,
+    Value<String>? requiredTechniquesJson,
+    Value<int>? contentVersion,
+    Value<bool>? dailyEligible,
+    Value<int>? fetchedAtMs,
+    Value<int>? rowid,
+  }) {
+    return RemotePuzzlesCompanion(
+      puzzleId: puzzleId ?? this.puzzleId,
+      releaseId: releaseId ?? this.releaseId,
+      board: board ?? this.board,
+      difficulty: difficulty ?? this.difficulty,
+      requiredTechniquesJson:
+          requiredTechniquesJson ?? this.requiredTechniquesJson,
+      contentVersion: contentVersion ?? this.contentVersion,
+      dailyEligible: dailyEligible ?? this.dailyEligible,
+      fetchedAtMs: fetchedAtMs ?? this.fetchedAtMs,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (puzzleId.present) {
+      map['puzzle_id'] = Variable<String>(puzzleId.value);
+    }
+    if (releaseId.present) {
+      map['release_id'] = Variable<String>(releaseId.value);
+    }
+    if (board.present) {
+      map['board'] = Variable<String>(board.value);
+    }
+    if (difficulty.present) {
+      map['difficulty'] = Variable<String>(difficulty.value);
+    }
+    if (requiredTechniquesJson.present) {
+      map['required_techniques_json'] = Variable<String>(
+        requiredTechniquesJson.value,
+      );
+    }
+    if (contentVersion.present) {
+      map['content_version'] = Variable<int>(contentVersion.value);
+    }
+    if (dailyEligible.present) {
+      map['daily_eligible'] = Variable<bool>(dailyEligible.value);
+    }
+    if (fetchedAtMs.present) {
+      map['fetched_at_ms'] = Variable<int>(fetchedAtMs.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RemotePuzzlesCompanion(')
+          ..write('puzzleId: $puzzleId, ')
+          ..write('releaseId: $releaseId, ')
+          ..write('board: $board, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('requiredTechniquesJson: $requiredTechniquesJson, ')
+          ..write('contentVersion: $contentVersion, ')
+          ..write('dailyEligible: $dailyEligible, ')
+          ..write('fetchedAtMs: $fetchedAtMs, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RemoteContentReleasesTable extends RemoteContentReleases
+    with TableInfo<$RemoteContentReleasesTable, RemoteContentRelease> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RemoteContentReleasesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _releaseIdMeta = const VerificationMeta(
+    'releaseId',
+  );
+  @override
+  late final GeneratedColumn<String> releaseId = GeneratedColumn<String>(
+    'release_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _contentVersionMeta = const VerificationMeta(
+    'contentVersion',
+  );
+  @override
+  late final GeneratedColumn<int> contentVersion = GeneratedColumn<int>(
+    'content_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _puzzleIdsJsonMeta = const VerificationMeta(
+    'puzzleIdsJson',
+  );
+  @override
+  late final GeneratedColumn<String> puzzleIdsJson = GeneratedColumn<String>(
+    'puzzle_ids_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fetchedAtMsMeta = const VerificationMeta(
+    'fetchedAtMs',
+  );
+  @override
+  late final GeneratedColumn<int> fetchedAtMs = GeneratedColumn<int>(
+    'fetched_at_ms',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    releaseId,
+    contentVersion,
+    status,
+    puzzleIdsJson,
+    fetchedAtMs,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'remote_content_releases';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RemoteContentRelease> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('release_id')) {
+      context.handle(
+        _releaseIdMeta,
+        releaseId.isAcceptableOrUnknown(data['release_id']!, _releaseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_releaseIdMeta);
+    }
+    if (data.containsKey('content_version')) {
+      context.handle(
+        _contentVersionMeta,
+        contentVersion.isAcceptableOrUnknown(
+          data['content_version']!,
+          _contentVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_contentVersionMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('puzzle_ids_json')) {
+      context.handle(
+        _puzzleIdsJsonMeta,
+        puzzleIdsJson.isAcceptableOrUnknown(
+          data['puzzle_ids_json']!,
+          _puzzleIdsJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_puzzleIdsJsonMeta);
+    }
+    if (data.containsKey('fetched_at_ms')) {
+      context.handle(
+        _fetchedAtMsMeta,
+        fetchedAtMs.isAcceptableOrUnknown(
+          data['fetched_at_ms']!,
+          _fetchedAtMsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_fetchedAtMsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {releaseId};
+  @override
+  RemoteContentRelease map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RemoteContentRelease(
+      releaseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}release_id'],
+      )!,
+      contentVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}content_version'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      puzzleIdsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}puzzle_ids_json'],
+      )!,
+      fetchedAtMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fetched_at_ms'],
+      )!,
+    );
+  }
+
+  @override
+  $RemoteContentReleasesTable createAlias(String alias) {
+    return $RemoteContentReleasesTable(attachedDatabase, alias);
+  }
+}
+
+class RemoteContentRelease extends DataClass
+    implements Insertable<RemoteContentRelease> {
+  final String releaseId;
+  final int contentVersion;
+  final String status;
+  final String puzzleIdsJson;
+  final int fetchedAtMs;
+  const RemoteContentRelease({
+    required this.releaseId,
+    required this.contentVersion,
+    required this.status,
+    required this.puzzleIdsJson,
+    required this.fetchedAtMs,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['release_id'] = Variable<String>(releaseId);
+    map['content_version'] = Variable<int>(contentVersion);
+    map['status'] = Variable<String>(status);
+    map['puzzle_ids_json'] = Variable<String>(puzzleIdsJson);
+    map['fetched_at_ms'] = Variable<int>(fetchedAtMs);
+    return map;
+  }
+
+  RemoteContentReleasesCompanion toCompanion(bool nullToAbsent) {
+    return RemoteContentReleasesCompanion(
+      releaseId: Value(releaseId),
+      contentVersion: Value(contentVersion),
+      status: Value(status),
+      puzzleIdsJson: Value(puzzleIdsJson),
+      fetchedAtMs: Value(fetchedAtMs),
+    );
+  }
+
+  factory RemoteContentRelease.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RemoteContentRelease(
+      releaseId: serializer.fromJson<String>(json['releaseId']),
+      contentVersion: serializer.fromJson<int>(json['contentVersion']),
+      status: serializer.fromJson<String>(json['status']),
+      puzzleIdsJson: serializer.fromJson<String>(json['puzzleIdsJson']),
+      fetchedAtMs: serializer.fromJson<int>(json['fetchedAtMs']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'releaseId': serializer.toJson<String>(releaseId),
+      'contentVersion': serializer.toJson<int>(contentVersion),
+      'status': serializer.toJson<String>(status),
+      'puzzleIdsJson': serializer.toJson<String>(puzzleIdsJson),
+      'fetchedAtMs': serializer.toJson<int>(fetchedAtMs),
+    };
+  }
+
+  RemoteContentRelease copyWith({
+    String? releaseId,
+    int? contentVersion,
+    String? status,
+    String? puzzleIdsJson,
+    int? fetchedAtMs,
+  }) => RemoteContentRelease(
+    releaseId: releaseId ?? this.releaseId,
+    contentVersion: contentVersion ?? this.contentVersion,
+    status: status ?? this.status,
+    puzzleIdsJson: puzzleIdsJson ?? this.puzzleIdsJson,
+    fetchedAtMs: fetchedAtMs ?? this.fetchedAtMs,
+  );
+  RemoteContentRelease copyWithCompanion(RemoteContentReleasesCompanion data) {
+    return RemoteContentRelease(
+      releaseId: data.releaseId.present ? data.releaseId.value : this.releaseId,
+      contentVersion: data.contentVersion.present
+          ? data.contentVersion.value
+          : this.contentVersion,
+      status: data.status.present ? data.status.value : this.status,
+      puzzleIdsJson: data.puzzleIdsJson.present
+          ? data.puzzleIdsJson.value
+          : this.puzzleIdsJson,
+      fetchedAtMs: data.fetchedAtMs.present
+          ? data.fetchedAtMs.value
+          : this.fetchedAtMs,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RemoteContentRelease(')
+          ..write('releaseId: $releaseId, ')
+          ..write('contentVersion: $contentVersion, ')
+          ..write('status: $status, ')
+          ..write('puzzleIdsJson: $puzzleIdsJson, ')
+          ..write('fetchedAtMs: $fetchedAtMs')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    releaseId,
+    contentVersion,
+    status,
+    puzzleIdsJson,
+    fetchedAtMs,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RemoteContentRelease &&
+          other.releaseId == this.releaseId &&
+          other.contentVersion == this.contentVersion &&
+          other.status == this.status &&
+          other.puzzleIdsJson == this.puzzleIdsJson &&
+          other.fetchedAtMs == this.fetchedAtMs);
+}
+
+class RemoteContentReleasesCompanion
+    extends UpdateCompanion<RemoteContentRelease> {
+  final Value<String> releaseId;
+  final Value<int> contentVersion;
+  final Value<String> status;
+  final Value<String> puzzleIdsJson;
+  final Value<int> fetchedAtMs;
+  final Value<int> rowid;
+  const RemoteContentReleasesCompanion({
+    this.releaseId = const Value.absent(),
+    this.contentVersion = const Value.absent(),
+    this.status = const Value.absent(),
+    this.puzzleIdsJson = const Value.absent(),
+    this.fetchedAtMs = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RemoteContentReleasesCompanion.insert({
+    required String releaseId,
+    required int contentVersion,
+    required String status,
+    required String puzzleIdsJson,
+    required int fetchedAtMs,
+    this.rowid = const Value.absent(),
+  }) : releaseId = Value(releaseId),
+       contentVersion = Value(contentVersion),
+       status = Value(status),
+       puzzleIdsJson = Value(puzzleIdsJson),
+       fetchedAtMs = Value(fetchedAtMs);
+  static Insertable<RemoteContentRelease> custom({
+    Expression<String>? releaseId,
+    Expression<int>? contentVersion,
+    Expression<String>? status,
+    Expression<String>? puzzleIdsJson,
+    Expression<int>? fetchedAtMs,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (releaseId != null) 'release_id': releaseId,
+      if (contentVersion != null) 'content_version': contentVersion,
+      if (status != null) 'status': status,
+      if (puzzleIdsJson != null) 'puzzle_ids_json': puzzleIdsJson,
+      if (fetchedAtMs != null) 'fetched_at_ms': fetchedAtMs,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RemoteContentReleasesCompanion copyWith({
+    Value<String>? releaseId,
+    Value<int>? contentVersion,
+    Value<String>? status,
+    Value<String>? puzzleIdsJson,
+    Value<int>? fetchedAtMs,
+    Value<int>? rowid,
+  }) {
+    return RemoteContentReleasesCompanion(
+      releaseId: releaseId ?? this.releaseId,
+      contentVersion: contentVersion ?? this.contentVersion,
+      status: status ?? this.status,
+      puzzleIdsJson: puzzleIdsJson ?? this.puzzleIdsJson,
+      fetchedAtMs: fetchedAtMs ?? this.fetchedAtMs,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (releaseId.present) {
+      map['release_id'] = Variable<String>(releaseId.value);
+    }
+    if (contentVersion.present) {
+      map['content_version'] = Variable<int>(contentVersion.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (puzzleIdsJson.present) {
+      map['puzzle_ids_json'] = Variable<String>(puzzleIdsJson.value);
+    }
+    if (fetchedAtMs.present) {
+      map['fetched_at_ms'] = Variable<int>(fetchedAtMs.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RemoteContentReleasesCompanion(')
+          ..write('releaseId: $releaseId, ')
+          ..write('contentVersion: $contentVersion, ')
+          ..write('status: $status, ')
+          ..write('puzzleIdsJson: $puzzleIdsJson, ')
+          ..write('fetchedAtMs: $fetchedAtMs, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DailyChallengeCacheTable extends DailyChallengeCache
+    with TableInfo<$DailyChallengeCacheTable, DailyChallengeCacheData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyChallengeCacheTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _localDateMeta = const VerificationMeta(
+    'localDate',
+  );
+  @override
+  late final GeneratedColumn<String> localDate = GeneratedColumn<String>(
+    'local_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _challengeKeyMeta = const VerificationMeta(
+    'challengeKey',
+  );
+  @override
+  late final GeneratedColumn<String> challengeKey = GeneratedColumn<String>(
+    'challenge_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _puzzleIdMeta = const VerificationMeta(
+    'puzzleId',
+  );
+  @override
+  late final GeneratedColumn<String> puzzleId = GeneratedColumn<String>(
+    'puzzle_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lockedMeta = const VerificationMeta('locked');
+  @override
+  late final GeneratedColumn<bool> locked = GeneratedColumn<bool>(
+    'locked',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("locked" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _fetchedAtMsMeta = const VerificationMeta(
+    'fetchedAtMs',
+  );
+  @override
+  late final GeneratedColumn<int> fetchedAtMs = GeneratedColumn<int>(
+    'fetched_at_ms',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    localDate,
+    challengeKey,
+    puzzleId,
+    source,
+    locked,
+    fetchedAtMs,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_challenge_cache';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyChallengeCacheData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('local_date')) {
+      context.handle(
+        _localDateMeta,
+        localDate.isAcceptableOrUnknown(data['local_date']!, _localDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localDateMeta);
+    }
+    if (data.containsKey('challenge_key')) {
+      context.handle(
+        _challengeKeyMeta,
+        challengeKey.isAcceptableOrUnknown(
+          data['challenge_key']!,
+          _challengeKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_challengeKeyMeta);
+    }
+    if (data.containsKey('puzzle_id')) {
+      context.handle(
+        _puzzleIdMeta,
+        puzzleId.isAcceptableOrUnknown(data['puzzle_id']!, _puzzleIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_puzzleIdMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('locked')) {
+      context.handle(
+        _lockedMeta,
+        locked.isAcceptableOrUnknown(data['locked']!, _lockedMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lockedMeta);
+    }
+    if (data.containsKey('fetched_at_ms')) {
+      context.handle(
+        _fetchedAtMsMeta,
+        fetchedAtMs.isAcceptableOrUnknown(
+          data['fetched_at_ms']!,
+          _fetchedAtMsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_fetchedAtMsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {localDate};
+  @override
+  DailyChallengeCacheData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyChallengeCacheData(
+      localDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_date'],
+      )!,
+      challengeKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}challenge_key'],
+      )!,
+      puzzleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}puzzle_id'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      locked: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}locked'],
+      )!,
+      fetchedAtMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fetched_at_ms'],
+      )!,
+    );
+  }
+
+  @override
+  $DailyChallengeCacheTable createAlias(String alias) {
+    return $DailyChallengeCacheTable(attachedDatabase, alias);
+  }
+}
+
+class DailyChallengeCacheData extends DataClass
+    implements Insertable<DailyChallengeCacheData> {
+  final String localDate;
+  final String challengeKey;
+  final String puzzleId;
+  final String source;
+  final bool locked;
+  final int fetchedAtMs;
+  const DailyChallengeCacheData({
+    required this.localDate,
+    required this.challengeKey,
+    required this.puzzleId,
+    required this.source,
+    required this.locked,
+    required this.fetchedAtMs,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['local_date'] = Variable<String>(localDate);
+    map['challenge_key'] = Variable<String>(challengeKey);
+    map['puzzle_id'] = Variable<String>(puzzleId);
+    map['source'] = Variable<String>(source);
+    map['locked'] = Variable<bool>(locked);
+    map['fetched_at_ms'] = Variable<int>(fetchedAtMs);
+    return map;
+  }
+
+  DailyChallengeCacheCompanion toCompanion(bool nullToAbsent) {
+    return DailyChallengeCacheCompanion(
+      localDate: Value(localDate),
+      challengeKey: Value(challengeKey),
+      puzzleId: Value(puzzleId),
+      source: Value(source),
+      locked: Value(locked),
+      fetchedAtMs: Value(fetchedAtMs),
+    );
+  }
+
+  factory DailyChallengeCacheData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyChallengeCacheData(
+      localDate: serializer.fromJson<String>(json['localDate']),
+      challengeKey: serializer.fromJson<String>(json['challengeKey']),
+      puzzleId: serializer.fromJson<String>(json['puzzleId']),
+      source: serializer.fromJson<String>(json['source']),
+      locked: serializer.fromJson<bool>(json['locked']),
+      fetchedAtMs: serializer.fromJson<int>(json['fetchedAtMs']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'localDate': serializer.toJson<String>(localDate),
+      'challengeKey': serializer.toJson<String>(challengeKey),
+      'puzzleId': serializer.toJson<String>(puzzleId),
+      'source': serializer.toJson<String>(source),
+      'locked': serializer.toJson<bool>(locked),
+      'fetchedAtMs': serializer.toJson<int>(fetchedAtMs),
+    };
+  }
+
+  DailyChallengeCacheData copyWith({
+    String? localDate,
+    String? challengeKey,
+    String? puzzleId,
+    String? source,
+    bool? locked,
+    int? fetchedAtMs,
+  }) => DailyChallengeCacheData(
+    localDate: localDate ?? this.localDate,
+    challengeKey: challengeKey ?? this.challengeKey,
+    puzzleId: puzzleId ?? this.puzzleId,
+    source: source ?? this.source,
+    locked: locked ?? this.locked,
+    fetchedAtMs: fetchedAtMs ?? this.fetchedAtMs,
+  );
+  DailyChallengeCacheData copyWithCompanion(DailyChallengeCacheCompanion data) {
+    return DailyChallengeCacheData(
+      localDate: data.localDate.present ? data.localDate.value : this.localDate,
+      challengeKey: data.challengeKey.present
+          ? data.challengeKey.value
+          : this.challengeKey,
+      puzzleId: data.puzzleId.present ? data.puzzleId.value : this.puzzleId,
+      source: data.source.present ? data.source.value : this.source,
+      locked: data.locked.present ? data.locked.value : this.locked,
+      fetchedAtMs: data.fetchedAtMs.present
+          ? data.fetchedAtMs.value
+          : this.fetchedAtMs,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyChallengeCacheData(')
+          ..write('localDate: $localDate, ')
+          ..write('challengeKey: $challengeKey, ')
+          ..write('puzzleId: $puzzleId, ')
+          ..write('source: $source, ')
+          ..write('locked: $locked, ')
+          ..write('fetchedAtMs: $fetchedAtMs')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    localDate,
+    challengeKey,
+    puzzleId,
+    source,
+    locked,
+    fetchedAtMs,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyChallengeCacheData &&
+          other.localDate == this.localDate &&
+          other.challengeKey == this.challengeKey &&
+          other.puzzleId == this.puzzleId &&
+          other.source == this.source &&
+          other.locked == this.locked &&
+          other.fetchedAtMs == this.fetchedAtMs);
+}
+
+class DailyChallengeCacheCompanion
+    extends UpdateCompanion<DailyChallengeCacheData> {
+  final Value<String> localDate;
+  final Value<String> challengeKey;
+  final Value<String> puzzleId;
+  final Value<String> source;
+  final Value<bool> locked;
+  final Value<int> fetchedAtMs;
+  final Value<int> rowid;
+  const DailyChallengeCacheCompanion({
+    this.localDate = const Value.absent(),
+    this.challengeKey = const Value.absent(),
+    this.puzzleId = const Value.absent(),
+    this.source = const Value.absent(),
+    this.locked = const Value.absent(),
+    this.fetchedAtMs = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DailyChallengeCacheCompanion.insert({
+    required String localDate,
+    required String challengeKey,
+    required String puzzleId,
+    required String source,
+    required bool locked,
+    required int fetchedAtMs,
+    this.rowid = const Value.absent(),
+  }) : localDate = Value(localDate),
+       challengeKey = Value(challengeKey),
+       puzzleId = Value(puzzleId),
+       source = Value(source),
+       locked = Value(locked),
+       fetchedAtMs = Value(fetchedAtMs);
+  static Insertable<DailyChallengeCacheData> custom({
+    Expression<String>? localDate,
+    Expression<String>? challengeKey,
+    Expression<String>? puzzleId,
+    Expression<String>? source,
+    Expression<bool>? locked,
+    Expression<int>? fetchedAtMs,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (localDate != null) 'local_date': localDate,
+      if (challengeKey != null) 'challenge_key': challengeKey,
+      if (puzzleId != null) 'puzzle_id': puzzleId,
+      if (source != null) 'source': source,
+      if (locked != null) 'locked': locked,
+      if (fetchedAtMs != null) 'fetched_at_ms': fetchedAtMs,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DailyChallengeCacheCompanion copyWith({
+    Value<String>? localDate,
+    Value<String>? challengeKey,
+    Value<String>? puzzleId,
+    Value<String>? source,
+    Value<bool>? locked,
+    Value<int>? fetchedAtMs,
+    Value<int>? rowid,
+  }) {
+    return DailyChallengeCacheCompanion(
+      localDate: localDate ?? this.localDate,
+      challengeKey: challengeKey ?? this.challengeKey,
+      puzzleId: puzzleId ?? this.puzzleId,
+      source: source ?? this.source,
+      locked: locked ?? this.locked,
+      fetchedAtMs: fetchedAtMs ?? this.fetchedAtMs,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (localDate.present) {
+      map['local_date'] = Variable<String>(localDate.value);
+    }
+    if (challengeKey.present) {
+      map['challenge_key'] = Variable<String>(challengeKey.value);
+    }
+    if (puzzleId.present) {
+      map['puzzle_id'] = Variable<String>(puzzleId.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (locked.present) {
+      map['locked'] = Variable<bool>(locked.value);
+    }
+    if (fetchedAtMs.present) {
+      map['fetched_at_ms'] = Variable<int>(fetchedAtMs.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyChallengeCacheCompanion(')
+          ..write('localDate: $localDate, ')
+          ..write('challengeKey: $challengeKey, ')
+          ..write('puzzleId: $puzzleId, ')
+          ..write('source: $source, ')
+          ..write('locked: $locked, ')
+          ..write('fetchedAtMs: $fetchedAtMs, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$GameDatabase extends GeneratedDatabase {
   _$GameDatabase(QueryExecutor e) : super(e);
   $GameDatabaseManager get managers => $GameDatabaseManager(this);
@@ -5664,6 +7036,11 @@ abstract class _$GameDatabase extends GeneratedDatabase {
   late final $DailyCompletionsTable dailyCompletions = $DailyCompletionsTable(
     this,
   );
+  late final $RemotePuzzlesTable remotePuzzles = $RemotePuzzlesTable(this);
+  late final $RemoteContentReleasesTable remoteContentReleases =
+      $RemoteContentReleasesTable(this);
+  late final $DailyChallengeCacheTable dailyChallengeCache =
+      $DailyChallengeCacheTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5678,6 +7055,9 @@ abstract class _$GameDatabase extends GeneratedDatabase {
     syncOutbox,
     techniqueContributions,
     dailyCompletions,
+    remotePuzzles,
+    remoteContentReleases,
+    dailyChallengeCache,
   ];
 }
 
@@ -8442,6 +9822,737 @@ typedef $$DailyCompletionsTableProcessedTableManager =
       DailyCompletion,
       PrefetchHooks Function()
     >;
+typedef $$RemotePuzzlesTableCreateCompanionBuilder =
+    RemotePuzzlesCompanion Function({
+      required String puzzleId,
+      required String releaseId,
+      required String board,
+      required String difficulty,
+      required String requiredTechniquesJson,
+      required int contentVersion,
+      required bool dailyEligible,
+      required int fetchedAtMs,
+      Value<int> rowid,
+    });
+typedef $$RemotePuzzlesTableUpdateCompanionBuilder =
+    RemotePuzzlesCompanion Function({
+      Value<String> puzzleId,
+      Value<String> releaseId,
+      Value<String> board,
+      Value<String> difficulty,
+      Value<String> requiredTechniquesJson,
+      Value<int> contentVersion,
+      Value<bool> dailyEligible,
+      Value<int> fetchedAtMs,
+      Value<int> rowid,
+    });
+
+class $$RemotePuzzlesTableFilterComposer
+    extends Composer<_$GameDatabase, $RemotePuzzlesTable> {
+  $$RemotePuzzlesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get puzzleId => $composableBuilder(
+    column: $table.puzzleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get releaseId => $composableBuilder(
+    column: $table.releaseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get board => $composableBuilder(
+    column: $table.board,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requiredTechniquesJson => $composableBuilder(
+    column: $table.requiredTechniquesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get contentVersion => $composableBuilder(
+    column: $table.contentVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dailyEligible => $composableBuilder(
+    column: $table.dailyEligible,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RemotePuzzlesTableOrderingComposer
+    extends Composer<_$GameDatabase, $RemotePuzzlesTable> {
+  $$RemotePuzzlesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get puzzleId => $composableBuilder(
+    column: $table.puzzleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get releaseId => $composableBuilder(
+    column: $table.releaseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get board => $composableBuilder(
+    column: $table.board,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requiredTechniquesJson => $composableBuilder(
+    column: $table.requiredTechniquesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get contentVersion => $composableBuilder(
+    column: $table.contentVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dailyEligible => $composableBuilder(
+    column: $table.dailyEligible,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RemotePuzzlesTableAnnotationComposer
+    extends Composer<_$GameDatabase, $RemotePuzzlesTable> {
+  $$RemotePuzzlesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get puzzleId =>
+      $composableBuilder(column: $table.puzzleId, builder: (column) => column);
+
+  GeneratedColumn<String> get releaseId =>
+      $composableBuilder(column: $table.releaseId, builder: (column) => column);
+
+  GeneratedColumn<String> get board =>
+      $composableBuilder(column: $table.board, builder: (column) => column);
+
+  GeneratedColumn<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get requiredTechniquesJson => $composableBuilder(
+    column: $table.requiredTechniquesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get contentVersion => $composableBuilder(
+    column: $table.contentVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get dailyEligible => $composableBuilder(
+    column: $table.dailyEligible,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => column,
+  );
+}
+
+class $$RemotePuzzlesTableTableManager
+    extends
+        RootTableManager<
+          _$GameDatabase,
+          $RemotePuzzlesTable,
+          RemotePuzzle,
+          $$RemotePuzzlesTableFilterComposer,
+          $$RemotePuzzlesTableOrderingComposer,
+          $$RemotePuzzlesTableAnnotationComposer,
+          $$RemotePuzzlesTableCreateCompanionBuilder,
+          $$RemotePuzzlesTableUpdateCompanionBuilder,
+          (
+            RemotePuzzle,
+            BaseReferences<_$GameDatabase, $RemotePuzzlesTable, RemotePuzzle>,
+          ),
+          RemotePuzzle,
+          PrefetchHooks Function()
+        > {
+  $$RemotePuzzlesTableTableManager(_$GameDatabase db, $RemotePuzzlesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RemotePuzzlesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RemotePuzzlesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RemotePuzzlesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> puzzleId = const Value.absent(),
+                Value<String> releaseId = const Value.absent(),
+                Value<String> board = const Value.absent(),
+                Value<String> difficulty = const Value.absent(),
+                Value<String> requiredTechniquesJson = const Value.absent(),
+                Value<int> contentVersion = const Value.absent(),
+                Value<bool> dailyEligible = const Value.absent(),
+                Value<int> fetchedAtMs = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RemotePuzzlesCompanion(
+                puzzleId: puzzleId,
+                releaseId: releaseId,
+                board: board,
+                difficulty: difficulty,
+                requiredTechniquesJson: requiredTechniquesJson,
+                contentVersion: contentVersion,
+                dailyEligible: dailyEligible,
+                fetchedAtMs: fetchedAtMs,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String puzzleId,
+                required String releaseId,
+                required String board,
+                required String difficulty,
+                required String requiredTechniquesJson,
+                required int contentVersion,
+                required bool dailyEligible,
+                required int fetchedAtMs,
+                Value<int> rowid = const Value.absent(),
+              }) => RemotePuzzlesCompanion.insert(
+                puzzleId: puzzleId,
+                releaseId: releaseId,
+                board: board,
+                difficulty: difficulty,
+                requiredTechniquesJson: requiredTechniquesJson,
+                contentVersion: contentVersion,
+                dailyEligible: dailyEligible,
+                fetchedAtMs: fetchedAtMs,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RemotePuzzlesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$GameDatabase,
+      $RemotePuzzlesTable,
+      RemotePuzzle,
+      $$RemotePuzzlesTableFilterComposer,
+      $$RemotePuzzlesTableOrderingComposer,
+      $$RemotePuzzlesTableAnnotationComposer,
+      $$RemotePuzzlesTableCreateCompanionBuilder,
+      $$RemotePuzzlesTableUpdateCompanionBuilder,
+      (
+        RemotePuzzle,
+        BaseReferences<_$GameDatabase, $RemotePuzzlesTable, RemotePuzzle>,
+      ),
+      RemotePuzzle,
+      PrefetchHooks Function()
+    >;
+typedef $$RemoteContentReleasesTableCreateCompanionBuilder =
+    RemoteContentReleasesCompanion Function({
+      required String releaseId,
+      required int contentVersion,
+      required String status,
+      required String puzzleIdsJson,
+      required int fetchedAtMs,
+      Value<int> rowid,
+    });
+typedef $$RemoteContentReleasesTableUpdateCompanionBuilder =
+    RemoteContentReleasesCompanion Function({
+      Value<String> releaseId,
+      Value<int> contentVersion,
+      Value<String> status,
+      Value<String> puzzleIdsJson,
+      Value<int> fetchedAtMs,
+      Value<int> rowid,
+    });
+
+class $$RemoteContentReleasesTableFilterComposer
+    extends Composer<_$GameDatabase, $RemoteContentReleasesTable> {
+  $$RemoteContentReleasesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get releaseId => $composableBuilder(
+    column: $table.releaseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get contentVersion => $composableBuilder(
+    column: $table.contentVersion,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get puzzleIdsJson => $composableBuilder(
+    column: $table.puzzleIdsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RemoteContentReleasesTableOrderingComposer
+    extends Composer<_$GameDatabase, $RemoteContentReleasesTable> {
+  $$RemoteContentReleasesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get releaseId => $composableBuilder(
+    column: $table.releaseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get contentVersion => $composableBuilder(
+    column: $table.contentVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get puzzleIdsJson => $composableBuilder(
+    column: $table.puzzleIdsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RemoteContentReleasesTableAnnotationComposer
+    extends Composer<_$GameDatabase, $RemoteContentReleasesTable> {
+  $$RemoteContentReleasesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get releaseId =>
+      $composableBuilder(column: $table.releaseId, builder: (column) => column);
+
+  GeneratedColumn<int> get contentVersion => $composableBuilder(
+    column: $table.contentVersion,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get puzzleIdsJson => $composableBuilder(
+    column: $table.puzzleIdsJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => column,
+  );
+}
+
+class $$RemoteContentReleasesTableTableManager
+    extends
+        RootTableManager<
+          _$GameDatabase,
+          $RemoteContentReleasesTable,
+          RemoteContentRelease,
+          $$RemoteContentReleasesTableFilterComposer,
+          $$RemoteContentReleasesTableOrderingComposer,
+          $$RemoteContentReleasesTableAnnotationComposer,
+          $$RemoteContentReleasesTableCreateCompanionBuilder,
+          $$RemoteContentReleasesTableUpdateCompanionBuilder,
+          (
+            RemoteContentRelease,
+            BaseReferences<
+              _$GameDatabase,
+              $RemoteContentReleasesTable,
+              RemoteContentRelease
+            >,
+          ),
+          RemoteContentRelease,
+          PrefetchHooks Function()
+        > {
+  $$RemoteContentReleasesTableTableManager(
+    _$GameDatabase db,
+    $RemoteContentReleasesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RemoteContentReleasesTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$RemoteContentReleasesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$RemoteContentReleasesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> releaseId = const Value.absent(),
+                Value<int> contentVersion = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> puzzleIdsJson = const Value.absent(),
+                Value<int> fetchedAtMs = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RemoteContentReleasesCompanion(
+                releaseId: releaseId,
+                contentVersion: contentVersion,
+                status: status,
+                puzzleIdsJson: puzzleIdsJson,
+                fetchedAtMs: fetchedAtMs,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String releaseId,
+                required int contentVersion,
+                required String status,
+                required String puzzleIdsJson,
+                required int fetchedAtMs,
+                Value<int> rowid = const Value.absent(),
+              }) => RemoteContentReleasesCompanion.insert(
+                releaseId: releaseId,
+                contentVersion: contentVersion,
+                status: status,
+                puzzleIdsJson: puzzleIdsJson,
+                fetchedAtMs: fetchedAtMs,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RemoteContentReleasesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$GameDatabase,
+      $RemoteContentReleasesTable,
+      RemoteContentRelease,
+      $$RemoteContentReleasesTableFilterComposer,
+      $$RemoteContentReleasesTableOrderingComposer,
+      $$RemoteContentReleasesTableAnnotationComposer,
+      $$RemoteContentReleasesTableCreateCompanionBuilder,
+      $$RemoteContentReleasesTableUpdateCompanionBuilder,
+      (
+        RemoteContentRelease,
+        BaseReferences<
+          _$GameDatabase,
+          $RemoteContentReleasesTable,
+          RemoteContentRelease
+        >,
+      ),
+      RemoteContentRelease,
+      PrefetchHooks Function()
+    >;
+typedef $$DailyChallengeCacheTableCreateCompanionBuilder =
+    DailyChallengeCacheCompanion Function({
+      required String localDate,
+      required String challengeKey,
+      required String puzzleId,
+      required String source,
+      required bool locked,
+      required int fetchedAtMs,
+      Value<int> rowid,
+    });
+typedef $$DailyChallengeCacheTableUpdateCompanionBuilder =
+    DailyChallengeCacheCompanion Function({
+      Value<String> localDate,
+      Value<String> challengeKey,
+      Value<String> puzzleId,
+      Value<String> source,
+      Value<bool> locked,
+      Value<int> fetchedAtMs,
+      Value<int> rowid,
+    });
+
+class $$DailyChallengeCacheTableFilterComposer
+    extends Composer<_$GameDatabase, $DailyChallengeCacheTable> {
+  $$DailyChallengeCacheTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get challengeKey => $composableBuilder(
+    column: $table.challengeKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get puzzleId => $composableBuilder(
+    column: $table.puzzleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get locked => $composableBuilder(
+    column: $table.locked,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DailyChallengeCacheTableOrderingComposer
+    extends Composer<_$GameDatabase, $DailyChallengeCacheTable> {
+  $$DailyChallengeCacheTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get challengeKey => $composableBuilder(
+    column: $table.challengeKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get puzzleId => $composableBuilder(
+    column: $table.puzzleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get locked => $composableBuilder(
+    column: $table.locked,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DailyChallengeCacheTableAnnotationComposer
+    extends Composer<_$GameDatabase, $DailyChallengeCacheTable> {
+  $$DailyChallengeCacheTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get localDate =>
+      $composableBuilder(column: $table.localDate, builder: (column) => column);
+
+  GeneratedColumn<String> get challengeKey => $composableBuilder(
+    column: $table.challengeKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get puzzleId =>
+      $composableBuilder(column: $table.puzzleId, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<bool> get locked =>
+      $composableBuilder(column: $table.locked, builder: (column) => column);
+
+  GeneratedColumn<int> get fetchedAtMs => $composableBuilder(
+    column: $table.fetchedAtMs,
+    builder: (column) => column,
+  );
+}
+
+class $$DailyChallengeCacheTableTableManager
+    extends
+        RootTableManager<
+          _$GameDatabase,
+          $DailyChallengeCacheTable,
+          DailyChallengeCacheData,
+          $$DailyChallengeCacheTableFilterComposer,
+          $$DailyChallengeCacheTableOrderingComposer,
+          $$DailyChallengeCacheTableAnnotationComposer,
+          $$DailyChallengeCacheTableCreateCompanionBuilder,
+          $$DailyChallengeCacheTableUpdateCompanionBuilder,
+          (
+            DailyChallengeCacheData,
+            BaseReferences<
+              _$GameDatabase,
+              $DailyChallengeCacheTable,
+              DailyChallengeCacheData
+            >,
+          ),
+          DailyChallengeCacheData,
+          PrefetchHooks Function()
+        > {
+  $$DailyChallengeCacheTableTableManager(
+    _$GameDatabase db,
+    $DailyChallengeCacheTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyChallengeCacheTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyChallengeCacheTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$DailyChallengeCacheTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> localDate = const Value.absent(),
+                Value<String> challengeKey = const Value.absent(),
+                Value<String> puzzleId = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<bool> locked = const Value.absent(),
+                Value<int> fetchedAtMs = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DailyChallengeCacheCompanion(
+                localDate: localDate,
+                challengeKey: challengeKey,
+                puzzleId: puzzleId,
+                source: source,
+                locked: locked,
+                fetchedAtMs: fetchedAtMs,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String localDate,
+                required String challengeKey,
+                required String puzzleId,
+                required String source,
+                required bool locked,
+                required int fetchedAtMs,
+                Value<int> rowid = const Value.absent(),
+              }) => DailyChallengeCacheCompanion.insert(
+                localDate: localDate,
+                challengeKey: challengeKey,
+                puzzleId: puzzleId,
+                source: source,
+                locked: locked,
+                fetchedAtMs: fetchedAtMs,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DailyChallengeCacheTableProcessedTableManager =
+    ProcessedTableManager<
+      _$GameDatabase,
+      $DailyChallengeCacheTable,
+      DailyChallengeCacheData,
+      $$DailyChallengeCacheTableFilterComposer,
+      $$DailyChallengeCacheTableOrderingComposer,
+      $$DailyChallengeCacheTableAnnotationComposer,
+      $$DailyChallengeCacheTableCreateCompanionBuilder,
+      $$DailyChallengeCacheTableUpdateCompanionBuilder,
+      (
+        DailyChallengeCacheData,
+        BaseReferences<
+          _$GameDatabase,
+          $DailyChallengeCacheTable,
+          DailyChallengeCacheData
+        >,
+      ),
+      DailyChallengeCacheData,
+      PrefetchHooks Function()
+    >;
 
 class $GameDatabaseManager {
   final _$GameDatabase _db;
@@ -8470,4 +10581,10 @@ class $GameDatabaseManager {
       );
   $$DailyCompletionsTableTableManager get dailyCompletions =>
       $$DailyCompletionsTableTableManager(_db, _db.dailyCompletions);
+  $$RemotePuzzlesTableTableManager get remotePuzzles =>
+      $$RemotePuzzlesTableTableManager(_db, _db.remotePuzzles);
+  $$RemoteContentReleasesTableTableManager get remoteContentReleases =>
+      $$RemoteContentReleasesTableTableManager(_db, _db.remoteContentReleases);
+  $$DailyChallengeCacheTableTableManager get dailyChallengeCache =>
+      $$DailyChallengeCacheTableTableManager(_db, _db.dailyChallengeCache);
 }

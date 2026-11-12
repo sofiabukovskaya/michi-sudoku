@@ -1224,6 +1224,9 @@ class Translations$settings$uk {
 
 	// Translations
 
+	/// uk: 'Загальні'
+	String get general => 'Загальні';
+
 	/// uk: 'Налаштування'
 	String get title => 'Налаштування';
 
@@ -1232,6 +1235,21 @@ class Translations$settings$uk {
 
 	/// uk: 'Обери мову MICHI.'
 	String get languageDetail => 'Обери мову MICHI.';
+
+	/// uk: 'Нагадування'
+	String get reminders => 'Нагадування';
+
+	/// uk: 'Щодня о 08:00'
+	String get dailyReminder => 'Щодня о 08:00';
+
+	/// uk: 'Увійдіть, щоб увімкнути нагадування.'
+	String get reminderSignIn => 'Увійдіть, щоб увімкнути нагадування.';
+
+	/// uk: 'Дозвольте сповіщення в налаштуваннях пристрою.'
+	String get reminderPermission => 'Дозвольте сповіщення в налаштуваннях пристрою.';
+
+	/// uk: 'Сповіщення недоступні на цьому пристрої.'
+	String get reminderUnavailable => 'Сповіщення недоступні на цьому пристрої.';
 }
 
 // Path: sync
@@ -1914,9 +1932,15 @@ extension on Translations {
 			'week.today' => 'Сьогодні',
 			'week.noActivity' => 'Без активності',
 			'week.summary' => 'Твоя локальна активність у судоку',
+			'settings.general' => 'Загальні',
 			'settings.title' => 'Налаштування',
 			'settings.language' => 'Мова',
 			'settings.languageDetail' => 'Обери мову MICHI.',
+			'settings.reminders' => 'Нагадування',
+			'settings.dailyReminder' => 'Щодня о 08:00',
+			'settings.reminderSignIn' => 'Увійдіть, щоб увімкнути нагадування.',
+			'settings.reminderPermission' => 'Дозвольте сповіщення в налаштуваннях пристрою.',
+			'settings.reminderUnavailable' => 'Сповіщення недоступні на цьому пристрої.',
 			'sync.account' => 'Обліковий запис',
 			'sync.email' => 'Електронна пошта',
 			'sync.synchronization' => 'Синхронізація',

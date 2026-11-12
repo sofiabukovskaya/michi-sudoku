@@ -38,8 +38,8 @@ final class LocalProfileManager {
         );
       }
       await database.customStatement(
-        'DELETE FROM sync_metadata WHERE key IN (?, ?)',
-        ['lastSynced:$profileId', 'pendingDelete:$uid'],
+        'DELETE FROM sync_metadata WHERE key IN (?, ?, ?)',
+        ['lastSynced:$profileId', 'pendingDelete:$uid', 'reminderEnabled:$uid'],
       );
     });
     if (scope.profileId == profileId) scope.selectGuest();

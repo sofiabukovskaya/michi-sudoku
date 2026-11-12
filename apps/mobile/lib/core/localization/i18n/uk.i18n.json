@@ -444,9 +444,15 @@
     "summary": "Твоя локальна активність у судоку"
   },
   "settings": {
+    "general": "Загальні",
     "title": "Налаштування",
     "language": "Мова",
-    "languageDetail": "Обери мову MICHI."
+    "languageDetail": "Обери мову MICHI.",
+    "reminders": "Нагадування",
+    "dailyReminder": "Щодня о 08:00",
+    "reminderSignIn": "Увійдіть, щоб увімкнути нагадування.",
+    "reminderPermission": "Дозвольте сповіщення в налаштуваннях пристрою.",
+    "reminderUnavailable": "Сповіщення недоступні на цьому пристрої."
   },
   "sync": {
     "account": "Обліковий запис",

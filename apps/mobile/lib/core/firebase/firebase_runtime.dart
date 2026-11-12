@@ -20,6 +20,7 @@ final class FirebaseRuntime {
   final Completer<bool> _ready = Completer<bool>();
   bool _started = false;
   late final FirebaseApp _app;
+  FirebaseApp get app => _app;
 
   FirebaseAuth get auth => FirebaseAuth.instanceFor(app: _app);
   FirebaseFirestore get firestore => FirebaseFirestore.instanceFor(app: _app);

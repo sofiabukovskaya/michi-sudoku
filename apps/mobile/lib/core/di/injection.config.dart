@@ -15,6 +15,10 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:michi_mobile/app/router/app_router.dart' as _i712;
 import 'package:michi_mobile/core/di/injection.dart' as _i857;
 import 'package:michi_mobile/core/firebase/firebase_runtime.dart' as _i891;
+import 'package:michi_mobile/core/notifications/notification_coordinator.dart'
+    as _i1043;
+import 'package:michi_mobile/core/notifications/reminder_registration.dart'
+    as _i408;
 import 'package:michi_mobile/core/profile/local_profile_manager.dart' as _i247;
 import 'package:michi_mobile/core/profile/local_profile_scope.dart' as _i906;
 import 'package:michi_mobile/core/sync/cloud_sync_repository.dart' as _i479;
@@ -32,8 +36,13 @@ import 'package:michi_mobile/features/learn/domain/technique_progress_repository
     as _i426;
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart'
     as _i56;
+import 'package:michi_mobile/features/puzzle/data/content_flags.dart' as _i591;
+import 'package:michi_mobile/features/puzzle/data/drift_content_cache.dart'
+    as _i689;
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart'
     as _i936;
+import 'package:michi_mobile/features/puzzle/data/remote_content_source.dart'
+    as _i21;
 import 'package:michi_mobile/features/puzzle/domain/puzzle_analyzer.dart'
     as _i150;
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart'
@@ -120,17 +129,20 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i906.LocalProfileScope>(),
       ),
     );
-    gh.lazySingleton<_i769.PuzzleRepository>(
-      () => appModule.puzzleRepository(
-        gh<_i936.LocalPuzzleCatalogLoader>(),
-        gh<_i263.GameRepository>(),
-      ),
+    gh.lazySingleton<_i689.DriftContentCache>(
+      () => appModule.contentCache(gh<_i520.GameDatabase>()),
     );
     gh.lazySingleton<_i685.AuthRepository>(
       () => appModule.authRepository(gh<_i891.FirebaseRuntime>()),
     );
     gh.lazySingleton<_i479.CloudSyncRepository>(
       () => appModule.cloudSyncRepository(gh<_i891.FirebaseRuntime>()),
+    );
+    gh.lazySingleton<_i591.ContentFlags>(
+      () => appModule.contentFlags(gh<_i891.FirebaseRuntime>()),
+    );
+    gh.lazySingleton<_i21.RemoteContentSource>(
+      () => appModule.remoteContentSource(gh<_i891.FirebaseRuntime>()),
     );
     gh.lazySingleton<_i867.SyncEngine>(
       () => appModule.syncEngine(
@@ -146,8 +158,24 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i866.DigitClassifier>(),
       ),
     );
+    gh.lazySingleton<_i769.PuzzleRepository>(
+      () => appModule.puzzleRepository(
+        gh<_i936.LocalPuzzleCatalogLoader>(),
+        gh<_i263.GameRepository>(),
+        gh<_i21.RemoteContentSource>(),
+        gh<_i689.DriftContentCache>(),
+        gh<_i591.ContentFlags>(),
+      ),
+    );
     gh.lazySingleton<_i404.AuthCubit>(
       () => appModule.authCubit(gh<_i685.AuthRepository>()),
+    );
+    gh.lazySingleton<_i408.ReminderRegistration>(
+      () => appModule.reminderRegistration(
+        gh<_i891.FirebaseRuntime>(),
+        gh<_i520.GameDatabase>(),
+        gh<_i591.ContentFlags>(),
+      ),
     );
     gh.lazySingleton<_i484.LearningProfileProvider>(
       () => appModule.learningProfileProvider(
@@ -172,6 +200,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i866.SudokuScannerService>(),
         gh<_i150.PuzzleAnalyzer>(),
         gh<_i1055.ImportedPuzzleRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i1043.NotificationCoordinator>(
+      () => appModule.notificationCoordinator(
+        gh<_i891.FirebaseRuntime>(),
+        gh<_i712.AppRouter>(),
+        gh<_i404.AuthCubit>(),
+        gh<_i460.SyncCoordinator>(),
       ),
     );
     gh.lazySingleton<_i539.LearningRecommendationService>(

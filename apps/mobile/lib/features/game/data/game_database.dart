@@ -153,6 +153,45 @@ class DailyCompletions extends Table {
   Set<Column> get primaryKey => {profileId, challengeKey};
 }
 
+/// Published content is shared by every profile on this installation.
+class RemotePuzzles extends Table {
+  TextColumn get puzzleId => text()();
+  TextColumn get releaseId => text()();
+  TextColumn get board => text()();
+  TextColumn get difficulty => text()();
+  TextColumn get requiredTechniquesJson => text()();
+  IntColumn get contentVersion => integer()();
+  BoolColumn get dailyEligible => boolean()();
+  IntColumn get fetchedAtMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {puzzleId};
+}
+
+class RemoteContentReleases extends Table {
+  TextColumn get releaseId => text()();
+  IntColumn get contentVersion => integer()();
+  TextColumn get status => text()();
+  TextColumn get puzzleIdsJson => text()();
+  IntColumn get fetchedAtMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {releaseId};
+}
+
+/// `locked` prevents an offline fallback changing later the same day.
+class DailyChallengeCache extends Table {
+  TextColumn get localDate => text()();
+  TextColumn get challengeKey => text()();
+  TextColumn get puzzleId => text()();
+  TextColumn get source => text()();
+  BoolColumn get locked => boolean()();
+  IntColumn get fetchedAtMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {localDate};
+}
+
 @DriftDatabase(
   tables: [
     ActiveGames,
@@ -164,6 +203,9 @@ class DailyCompletions extends Table {
     SyncOutbox,
     TechniqueContributions,
     DailyCompletions,
+    RemotePuzzles,
+    RemoteContentReleases,
+    DailyChallengeCache,
   ],
 )
 final class GameDatabase extends _$GameDatabase {
@@ -173,7 +215,7 @@ final class GameDatabase extends _$GameDatabase {
       GameDatabase(driftDatabase(name: 'michi_games'));
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -270,6 +312,11 @@ final class GameDatabase extends _$GameDatabase {
           WHERE daily_challenge_key IS NOT NULL
           ORDER BY completed_at_ms, game_id
         ''');
+      }
+      if (from <= 7 && to >= 8) {
+        await migrator.createTable(remotePuzzles);
+        await migrator.createTable(remoteContentReleases);
+        await migrator.createTable(dailyChallengeCache);
       }
     },
   );

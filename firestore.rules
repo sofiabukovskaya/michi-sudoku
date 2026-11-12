@@ -111,6 +111,58 @@ service cloud.firestore {
           allow delete: if false;
         }
       }
+
+      match /devices/{deviceId} {
+        allow get, list: if owner(uid);
+        allow create: if owner(uid) && deviceId.size() > 0
+          && deviceId.size() < 200
+          && request.resource.data.keys().hasOnly([
+            'schemaVersion', 'deviceId', 'fcmToken', 'platform', 'locale',
+            'timezone', 'remindersEnabled', 'reminderHour', 'reminderMinute',
+            'nextReminderAt', 'updatedAt'
+          ])
+          && request.resource.data.schemaVersion == 1
+          && request.resource.data.deviceId == deviceId
+          && request.resource.data.fcmToken is string
+          && request.resource.data.fcmToken.size() < 4096
+          && request.resource.data.platform in ['ios', 'android']
+          && request.resource.data.locale is string
+          && request.resource.data.timezone is string
+          && request.resource.data.remindersEnabled is bool
+          && request.resource.data.reminderHour == 8
+          && request.resource.data.reminderMinute == 0
+          && request.resource.data.nextReminderAt is timestamp
+          && request.resource.data.updatedAt is timestamp;
+        allow update: if owner(uid) &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'fcmToken', 'locale', 'timezone', 'remindersEnabled',
+            'reminderHour', 'reminderMinute', 'nextReminderAt', 'updatedAt'
+          ]) && request.resource.data.deviceId == deviceId
+          && request.resource.data.fcmToken is string
+          && request.resource.data.fcmToken.size() < 4096
+          && request.resource.data.reminderHour == 8
+          && request.resource.data.reminderMinute == 0
+          && request.resource.data.nextReminderAt is timestamp
+          && request.resource.data.updatedAt is timestamp;
+        allow delete: if owner(uid);
+      }
+    }
+
+    // Shared editorial content is readable by guests. Only trusted Admin
+    // tooling may write it; draft and retired releases stay hidden.
+    match /puzzles/{puzzleId} {
+      allow get, list: if resource.data.status == 'published';
+      allow write: if false;
+    }
+
+    match /contentReleases/{releaseId} {
+      allow get, list: if resource.data.status == 'published';
+      allow write: if false;
+    }
+
+    match /dailyChallenges/{date} {
+      allow get, list: if resource.data.status == 'published';
+      allow write: if false;
     }
 
     match /{document=**} {

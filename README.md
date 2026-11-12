@@ -236,3 +236,5 @@ See [the engine README](packages/sudoku_engine/README.md) for the APIs and
 responsibility boundaries. Cross-device active games, leaderboards,
 subscriptions, XY-Wing, Swordfish, and unrelated visual screens remain future
 work.
+
+Phase 17 remote content, Daily publishing, cache, and reminder operations are documented in [docs/phase17_remote_content.md](docs/phase17_remote_content.md).

@@ -10,6 +10,44 @@ import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 void main() {
+  test(
+    'schema 7 profile data survives global content cache migration',
+    () async {
+      final directory = await Directory.systemTemp.createTemp('michi-v7-');
+      addTearDown(() => directory.delete(recursive: true));
+      final file = File('${directory.path}/games.sqlite');
+      final old = GameDatabase(NativeDatabase(file));
+      await old.customStatement(
+        'INSERT INTO sync_metadata (key, value) VALUES (?, ?)',
+        ['lastSynced:firebase:alice', '12345'],
+      );
+      for (final table in [
+        'remote_puzzles',
+        'remote_content_releases',
+        'daily_challenge_cache',
+      ]) {
+        await old.customStatement('DROP TABLE $table');
+      }
+      await old.customStatement('PRAGMA user_version = 7');
+      await old.close();
+
+      final upgraded = GameDatabase(NativeDatabase(file));
+      addTearDown(upgraded.close);
+      final metadata = await upgraded
+          .customSelect(
+            'SELECT value FROM sync_metadata WHERE '
+            "key = 'lastSynced:firebase:alice'",
+          )
+          .getSingle();
+      expect(metadata.read<String>('value'), '12345');
+      expect(await upgraded.select(upgraded.remotePuzzles).get(), isEmpty);
+      expect(
+        await upgraded.select(upgraded.dailyChallengeCache).get(),
+        isEmpty,
+      );
+    },
+  );
+
   test('schema 5 data survives creation of imported puzzle table', () async {
     final directory = await Directory.systemTemp.createTemp('michi-v5-');
     addTearDown(() => directory.delete(recursive: true));
@@ -27,7 +65,7 @@ void main() {
 
     final upgraded = GameDatabase(NativeDatabase(file));
     addTearDown(upgraded.close);
-    expect(upgraded.schemaVersion, 7);
+    expect(upgraded.schemaVersion, 8);
     final focus = await upgraded
         .customSelect(
           'SELECT local_date FROM daily_learning_focuses',

@@ -24,10 +24,7 @@ final class FirestoreCloudSyncRepository implements CloudSyncRepository {
       throw StateError('Sync session changed');
     }
     _assertUid(uid);
-    return runtime.firestore
-        .collection('users')
-        .doc(uid)
-        .collection(name);
+    return runtime.firestore.collection('users').doc(uid).collection(name);
   }
 
   @override

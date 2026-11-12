@@ -8,6 +8,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "content:publish": "npm run build && node lib/publish-content.js",
+    "daily:ensure": "npm run build && node lib/ensure-daily.js",
     "lint": "eslint src",
     "test": "node --test test/*.test.mjs"
   },

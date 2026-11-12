@@ -438,9 +438,15 @@
     "summary": "Your local Sudoku activity"
   },
   "settings": {
+    "general": "General",
     "title": "Settings",
     "language": "Language",
-    "languageDetail": "Choose the language for MICHI."
+    "languageDetail": "Choose the language for MICHI.",
+    "reminders": "Reminders",
+    "dailyReminder": "Daily at 08:00",
+    "reminderSignIn": "Sign in to enable reminders.",
+    "reminderPermission": "Allow notifications in system settings to enable reminders.",
+    "reminderUnavailable": "Notifications are unavailable on this device."
   },
   "sync": {
     "account": "Account",

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer' as developer;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +14,7 @@ import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/progress/domain/weekly_activity.dart';
+import 'package:michi_mobile/features/puzzle/data/published_puzzle_repository.dart';
 import 'package:michi_mobile/features/puzzle/domain/daily_puzzle.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
@@ -69,6 +69,9 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _repository = widget.repository ?? getIt<GameRepository>();
     _puzzles = widget.puzzleRepository ?? getIt<PuzzleRepository>();
+    if (_puzzles case final PublishedPuzzleRepository published) {
+      unawaited(published.refresh());
+    }
     _clock = widget.clock ?? getIt<GameClock>();
     // Tests and embedded routes can supply isolated repositories without
     // constructing the production Drift connection.

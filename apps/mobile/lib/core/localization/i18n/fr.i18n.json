@@ -438,9 +438,15 @@
     "summary": "Ton activité locale de sudoku"
   },
   "settings": {
+    "general": "Général",
     "title": "Réglages",
     "language": "Langue",
-    "languageDetail": "Choisis la langue de MICHI."
+    "languageDetail": "Choisis la langue de MICHI.",
+    "reminders": "Rappels",
+    "dailyReminder": "Tous les jours à 08:00",
+    "reminderSignIn": "Connectez-vous pour activer les rappels.",
+    "reminderPermission": "Autorisez les notifications dans les réglages du système.",
+    "reminderUnavailable": "Les notifications ne sont pas disponibles sur cet appareil."
   },
   "sync": {
     "account": "Compte",

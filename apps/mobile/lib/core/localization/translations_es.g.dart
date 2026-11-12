@@ -551,9 +551,15 @@ class _Translations$settings$es extends Translations$settings$uk {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
+	@override String get general => 'General';
 	@override String get title => 'Ajustes';
 	@override String get language => 'Idioma';
 	@override String get languageDetail => 'Elige el idioma de MICHI.';
+	@override String get reminders => 'Recordatorios';
+	@override String get dailyReminder => 'Cada día a las 08:00';
+	@override String get reminderSignIn => 'Inicia sesión para activar los recordatorios.';
+	@override String get reminderPermission => 'Permite las notificaciones en los ajustes del dispositivo.';
+	@override String get reminderUnavailable => 'Las notificaciones no están disponibles en este dispositivo.';
 }
 
 // Path: sync
@@ -1106,9 +1112,15 @@ extension on TranslationsEs {
 			'week.today' => 'Hoy',
 			'week.noActivity' => 'Sin actividad',
 			'week.summary' => 'Tu actividad local de sudoku',
+			'settings.general' => 'General',
 			'settings.title' => 'Ajustes',
 			'settings.language' => 'Idioma',
 			'settings.languageDetail' => 'Elige el idioma de MICHI.',
+			'settings.reminders' => 'Recordatorios',
+			'settings.dailyReminder' => 'Cada día a las 08:00',
+			'settings.reminderSignIn' => 'Inicia sesión para activar los recordatorios.',
+			'settings.reminderPermission' => 'Permite las notificaciones en los ajustes del dispositivo.',
+			'settings.reminderUnavailable' => 'Las notificaciones no están disponibles en este dispositivo.',
 			'sync.account' => 'Cuenta',
 			'sync.email' => 'Correo electrónico',
 			'sync.synchronization' => 'Sincronización',

@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:michi_mobile/core/firebase/firebase_runtime.dart';
+import 'package:michi_mobile/core/notifications/reminder_registration.dart';
 import 'package:michi_mobile/features/auth/data/auth_error_mapper.dart';
 import 'package:michi_mobile/features/auth/domain/auth_account.dart';
 import 'package:michi_mobile/features/auth/domain/auth_repository.dart';
 
 final class FirebaseAuthRepository implements AuthRepository {
-  FirebaseAuthRepository(this._runtime);
+  FirebaseAuthRepository(this._runtime, [this._reminders]);
 
   // Enable each provider only after its console and platform setup is verified.
   static bool get emailEnabled =>
@@ -18,6 +19,7 @@ final class FirebaseAuthRepository implements AuthRepository {
       const bool.fromEnvironment('MICHI_APPLE_AUTH_ENABLED');
 
   final FirebaseRuntime _runtime;
+  final ReminderRegistration Function()? _reminders;
   Future<void>? _googleInitialization;
 
   @override
@@ -176,7 +178,10 @@ final class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<void> signOut() async {
     try {
-      await (await _auth()).signOut();
+      final auth = await _auth();
+      final uid = auth.currentUser?.uid;
+      if (uid != null) await _reminders?.call().disable(uid);
+      await auth.signOut();
       if (_googleInitialization != null) {
         try {
           await GoogleSignIn.instance.signOut();
