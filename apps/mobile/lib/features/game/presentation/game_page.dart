@@ -4,10 +4,12 @@ import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
@@ -67,6 +69,8 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   GameCubit? _cubit;
   Timer? _ticker;
   bool _loading = true;
+  bool _numberFirst = false;
+  int? _armedDigit;
   bool _loadFailed = false;
   PuzzleDifficulty? _difficulty;
   bool _isDaily = false;
@@ -226,6 +230,22 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  void _place(GameCubit cubit, int digit) {
+    final before = cubit.state;
+    cubit.enterDigit(digit);
+    final after = cubit.state;
+    if (identical(before, after)) return;
+    unawaited(
+      after.status == GameStatus.completed
+          ? HapticFeedback.heavyImpact()
+          : after.mistakes > before.mistakes
+          ? HapticFeedback.mediumImpact()
+          : after.notesMode
+          ? HapticFeedback.selectionClick()
+          : HapticFeedback.lightImpact(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = _cubit;
@@ -289,25 +309,27 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                       _postGameRecommendation ??= _recommendAfterGame(state);
                       return FutureBuilder<LearningRecommendation>(
                         future: _postGameRecommendation,
-                        builder: (context, snapshot) => _CompletedSurface(
-                          state: state,
-                          elapsed: cubit.elapsed,
-                          puzzleTitle: _gameTitle(context),
-                          isDaily: _isDaily,
-                          recommendation: snapshot.data,
-                          onContinue: snapshot.data == null
-                              ? null
-                              : () => openRecommendation(
-                                  context,
-                                  snapshot.data!,
-                                ).ignore(),
-                          onHome: () async {
-                            await cubit.flushPersistence();
-                            if (context.mounted &&
-                                cubit.state.storageFailure == null) {
-                              await Navigator.of(context).maybePop();
-                            }
-                          },
+                        builder: (context, snapshot) => MichiReveal(
+                          child: _CompletedSurface(
+                            state: state,
+                            elapsed: cubit.elapsed,
+                            puzzleTitle: _gameTitle(context),
+                            isDaily: _isDaily,
+                            recommendation: snapshot.data,
+                            onContinue: snapshot.data == null
+                                ? null
+                                : () => openRecommendation(
+                                    context,
+                                    snapshot.data!,
+                                  ).ignore(),
+                            onHome: () async {
+                              await cubit.flushPersistence();
+                              if (context.mounted &&
+                                  cubit.state.storageFailure == null) {
+                                await Navigator.of(context).maybePop();
+                              }
+                            },
+                          ),
                         ),
                       );
                     }
@@ -318,7 +340,52 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                       onErase: cubit.erase,
                       onToggleNotes: cubit.toggleNotesMode,
                       onHint: cubit.requestHint,
-                      onDigit: cubit.enterDigit,
+                      armedDigit: _numberFirst ? _armedDigit ?? 0 : null,
+                      onInputOptions: () async {
+                        final action = await showModalBottomSheet<String>(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (sheet) => MichiBottomSheet(
+                            child: Material(
+                              type: MaterialType.transparency,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SwitchListTile(
+                                    title: Text(sheet.t.game.numberFirst),
+                                    value: _numberFirst,
+                                    onChanged: (_) =>
+                                        Navigator.pop(sheet, 'mode'),
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.edit_note),
+                                    title: Text(sheet.t.game.fillNotes),
+                                    enabled: state.wrongCells.isEmpty,
+                                    onTap: () => Navigator.pop(sheet, 'notes'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                        if (!mounted) return;
+                        if (action == 'mode') {
+                          setState(() {
+                            _numberFirst = !_numberFirst;
+                            _armedDigit = null;
+                          });
+                        } else if (action == 'notes') {
+                          cubit.fillPencilNotes();
+                        }
+                      },
+                      onDigit: (digit) {
+                        if (_numberFirst) {
+                          unawaited(HapticFeedback.selectionClick());
+                          setState(() => _armedDigit = digit);
+                        } else {
+                          _place(cubit, digit);
+                        }
+                      },
                       onWhy: _whyAction(context, cubit, state),
                     );
                     return Column(
@@ -355,9 +422,26 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                           )
                         else
                           SudokuBoardWidget(
-                            view: BoardViewState.fromGame(state),
+                            view: BoardViewState.fromGame(
+                              state,
+                              armedDigit: _numberFirst && state.coach == null
+                                  ? _armedDigit
+                                  : null,
+                            ),
                             cellSize: cellSize,
-                            onCellTap: cubit.selectCell,
+                            onCellTap: (cell) {
+                              cubit.selectCell(cell);
+                              if (_numberFirst &&
+                                  _armedDigit != null &&
+                                  state.coach == null &&
+                                  !state.isGiven(cell) &&
+                                  (state.board.isEmpty(cell) ||
+                                      state.isWrong(cell))) {
+                                _place(cubit, _armedDigit!);
+                              } else {
+                                unawaited(HapticFeedback.selectionClick());
+                              }
+                            },
                           ),
                         const SizedBox(height: MichiSpacing.sm),
                         Expanded(
@@ -368,32 +452,27 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                                   ),
                                 )
                               : state.coach != null
-                              ? Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: SizedBox(
-                                    height: compact ? 190 : 220,
-                                    child: CoachPanel(
-                                      model: CoachPresenter.present(
-                                        context.t,
-                                        state.coach!,
-                                      ),
-                                      onNext: cubit.requestNextHint,
-                                      onDismiss: cubit.dismissHint,
-                                      onApply: cubit.applyCoachResult,
-                                    ),
+                              ? CoachPanel(
+                                  model: CoachPresenter.present(
+                                    context.t,
+                                    state.coach!,
                                   ),
+                                  onNext: cubit.requestNextHint,
+                                  onDismiss: cubit.dismissHint,
+                                  onApply: () {
+                                    cubit.applyCoachResult();
+                                    unawaited(
+                                      cubit.state.status == GameStatus.completed
+                                          ? HapticFeedback.heavyImpact()
+                                          : HapticFeedback.lightImpact(),
+                                    );
+                                  },
                                 )
                               : state.hintUnavailable != null
-                              ? Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: SizedBox(
-                                    height: compact ? 190 : 220,
-                                    child: HintUnavailablePanel(
-                                      reason: state.hintUnavailable!,
-                                      onDismiss: cubit.dismissHint,
-                                      onShowMistake: cubit.selectWrongCell,
-                                    ),
-                                  ),
+                              ? HintUnavailablePanel(
+                                  reason: state.hintUnavailable!,
+                                  onDismiss: cubit.dismissHint,
+                                  onShowMistake: cubit.selectWrongCell,
                                 )
                               : input,
                         ),
@@ -478,6 +557,8 @@ final class _GameInputArea extends StatelessWidget {
     required this.onUndo,
     required this.onErase,
     required this.onToggleNotes,
+    required this.armedDigit,
+    required this.onInputOptions,
     required this.onHint,
     required this.onDigit,
     required this.onWhy,
@@ -488,6 +569,8 @@ final class _GameInputArea extends StatelessWidget {
   final VoidCallback onUndo;
   final VoidCallback onErase;
   final VoidCallback onToggleNotes;
+  final int? armedDigit;
+  final VoidCallback onInputOptions;
   final VoidCallback onHint;
   final ValueChanged<int> onDigit;
   final VoidCallback? onWhy;
@@ -505,7 +588,12 @@ final class _GameInputArea extends StatelessWidget {
           onToggleNotes: onToggleNotes,
           onHint: onHint,
         ),
-        SudokuKeypad(state: state, compact: compact, onDigit: onDigit),
+        SudokuKeypad(
+          armedDigit: armedDigit,
+          state: state,
+          compact: compact,
+          onDigit: onDigit,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -521,6 +609,14 @@ final class _GameInputArea extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
+              ),
+            ),
+            IconButton(
+              tooltip: context.t.game.inputOptions,
+              onPressed: onInputOptions,
+              icon: Icon(
+                armedDigit == null ? Icons.tune : Icons.pin_outlined,
+                color: MichiColors.indigo,
               ),
             ),
             if (onWhy != null) ...[

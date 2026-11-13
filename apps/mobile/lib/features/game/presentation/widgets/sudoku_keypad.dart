@@ -7,17 +7,20 @@ final class SudokuKeypad extends StatelessWidget {
     required this.state,
     required this.onDigit,
     required this.compact,
+    this.armedDigit,
     super.key,
   });
 
   final GameState state;
   final ValueChanged<int> onDigit;
   final bool compact;
+  final int? armedDigit;
 
   @override
   Widget build(BuildContext context) {
     final selected = state.selectedCell;
-    final selectedValue = selected == null ? 0 : state.board.valueAt(selected);
+    final selectedValue =
+        armedDigit ?? (selected == null ? 0 : state.board.valueAt(selected));
     return SizedBox(
       height: compact ? 60 : 72,
       child: Row(
@@ -26,12 +29,16 @@ final class SudokuKeypad extends StatelessWidget {
             Expanded(
               child: Semantics(
                 button: true,
+                selected: selectedValue == digit,
                 label: '$digit',
                 child: InkWell(
                   key: ValueKey('keypad-$digit'),
                   onTap: () => onDigit(digit),
                   borderRadius: BorderRadius.circular(MichiRadius.control),
-                  child: DecoratedBox(
+                  child: AnimatedContainer(
+                    duration: MediaQuery.disableAnimationsOf(context)
+                        ? Duration.zero
+                        : MichiMotion.quick,
                     decoration: BoxDecoration(
                       color: selectedValue == digit ? MichiColors.indigo : null,
                       borderRadius: BorderRadius.circular(MichiRadius.control),

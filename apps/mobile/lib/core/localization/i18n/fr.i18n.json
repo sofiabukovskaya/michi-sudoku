@@ -123,7 +123,8 @@
     "scanSourceDetail": "Photo ou appareil photo",
     "weekStatusDone": "Terminé",
     "weekStatusToday": "Aujourd’hui",
-    "weekStatusEmpty": "Aucune activité"
+    "weekStatusEmpty": "Aucune activité",
+    "scanInvite": "Un sudoku ailleurs ? Scanne-le."
   },
   "game": {
     "title": "Sudoku du jour · Moyen",
@@ -159,7 +160,10 @@
     "completionMistakes": "erreurs",
     "completionHints": "indices",
     "dailyStampEarned": "Tampon quotidien obtenu",
-    "completionPracticeTechnique": "Prochaine étape : $technique"
+    "completionPracticeTechnique": "Prochaine étape : $technique",
+    "numberFirst": "Chiffre en premier",
+    "fillNotes": "Remplir les notes",
+    "inputOptions": "Options de saisie"
   },
   "learn": {
     "title": "Apprendre",
@@ -293,7 +297,9 @@
       "other": "$n sudokus terminés"
     },
     "mastery": "Maîtrise $percent %",
-    "openTechnique": "Ouvrir la technique"
+    "openTechnique": "Ouvrir la technique",
+    "firstPuzzle": "Commence par ton premier sudoku",
+    "firstPuzzleDetail": "Tu verras ensuite tes points forts et ce que tu peux travailler."
   },
   "profile": {
     "guest": "Invité",
@@ -323,7 +329,7 @@
     "recognized": "reconnu",
     "empty": "vide",
     "clear": "Effacer",
-    "confirm": "Importer le sudoku",
+    "confirm": "Continuer dans MICHI",
     "rescan": "Scanner à nouveau",
     "permissionIntro": "Autorisez l’appareil photo pour prendre une photo.",
     "permissionDenied": "L’accès à l’appareil photo est refusé. Vous pouvez choisir une photo.",
@@ -342,7 +348,10 @@
     "validationFailure": "Impossible de vérifier cette grille. Réessayez de confirmer.",
     "unsupportedCoach": "MICHI ne peut pas encore expliquer chaque étape de ce sudoku.",
     "importedTitle": "Sudoku importé",
-    "lowConfidenceCount": "Cases à vérifier : $count"
+    "lowConfidenceCount": "Cases à vérifier : $count",
+    "stuck": "Je bloque, aide-moi",
+    "noStep": "MICHI ne trouve pas de prochaine étape avec les techniques disponibles.",
+    "completed": "Toutes les cases sont remplies. Ce sudoku est terminé."
   },
   "coach": {
     "step": "Indice $step sur 4",

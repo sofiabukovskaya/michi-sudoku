@@ -123,7 +123,8 @@
     "scanSourceDetail": "Foto o cámara",
     "weekStatusDone": "Completado",
     "weekStatusToday": "Hoy",
-    "weekStatusEmpty": "Sin actividad"
+    "weekStatusEmpty": "Sin actividad",
+    "scanInvite": "¿Tienes otro sudoku? Escanéalo."
   },
   "game": {
     "title": "Sudoku diario · Intermedio",
@@ -159,7 +160,10 @@
     "completionMistakes": "errores",
     "completionHints": "pistas",
     "dailyStampEarned": "Sello diario conseguido",
-    "completionPracticeTechnique": "Siguiente paso: $technique"
+    "completionPracticeTechnique": "Siguiente paso: $technique",
+    "numberFirst": "Número primero",
+    "fillNotes": "Rellenar notas",
+    "inputOptions": "Opciones de entrada"
   },
   "learn": {
     "title": "Aprender",
@@ -293,7 +297,9 @@
       "other": "$n sudokus completados"
     },
     "mastery": "Dominio $percent %",
-    "openTechnique": "Abrir técnica"
+    "openTechnique": "Abrir técnica",
+    "firstPuzzle": "Empieza con tu primer sudoku",
+    "firstPuzzleDetail": "Después verás qué se te da bien y qué puedes practicar."
   },
   "profile": {
     "guest": "Invitado",
@@ -323,7 +329,7 @@
     "recognized": "reconocido",
     "empty": "vacía",
     "clear": "Borrar",
-    "confirm": "Importar sudoku",
+    "confirm": "Continuar en MICHI",
     "rescan": "Escanear de nuevo",
     "permissionIntro": "Permite el acceso a la cámara para hacer una foto.",
     "permissionDenied": "Se denegó el acceso a la cámara. Puedes elegir una foto.",
@@ -342,7 +348,10 @@
     "validationFailure": "No se pudo comprobar este sudoku. Vuelve a confirmar.",
     "unsupportedCoach": "MICHI quizá aún no pueda explicar todos los pasos de este sudoku.",
     "importedTitle": "Sudoku importado",
-    "lowConfidenceCount": "Casillas para revisar: $count"
+    "lowConfidenceCount": "Casillas para revisar: $count",
+    "stuck": "Necesito una pista",
+    "noStep": "MICHI no encuentra el siguiente paso con las técnicas disponibles.",
+    "completed": "Todas las casillas están llenas. El sudoku está resuelto."
   },
   "coach": {
     "step": "Pista $step de 4",

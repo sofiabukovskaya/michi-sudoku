@@ -22,17 +22,20 @@ final class AppShellPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scope = context.read<LocalProfileScope?>();
-    if (scope == null) return _tabs();
+    if (scope == null) return _tabs(context);
     return ValueListenableBuilder<String>(
       valueListenable: scope,
       builder: (context, _, _) => KeyedSubtree(
         key: ValueKey(scope.viewEpoch),
-        child: _tabs(),
+        child: _tabs(context),
       ),
     );
   }
 
-  Widget _tabs() => AutoTabsRouter(
+  Widget _tabs(BuildContext context) => AutoTabsRouter(
+    duration: MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : MichiMotion.standard,
     routes: [
       HomeRoute(
         repository: repository,

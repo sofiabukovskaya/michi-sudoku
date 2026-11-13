@@ -299,6 +299,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
     GameRepository? repository,
     PuzzleRepository? puzzleRepository,
     GameClock? clock,
+    String? launchAction,
     LearningRecommendationService? recommendationService,
     Key? key,
     List<PageRouteInfo>? children,
@@ -308,6 +309,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
            repository: repository,
            puzzleRepository: puzzleRepository,
            clock: clock,
+           launchAction: launchAction,
            recommendationService: recommendationService,
            key: key,
          ),
@@ -326,6 +328,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
         repository: args.repository,
         puzzleRepository: args.puzzleRepository,
         clock: args.clock,
+        launchAction: args.launchAction,
         recommendationService: args.recommendationService,
         key: args.key,
       );
@@ -338,6 +341,7 @@ class HomeRouteArgs {
     this.repository,
     this.puzzleRepository,
     this.clock,
+    this.launchAction,
     this.recommendationService,
     this.key,
   });
@@ -348,13 +352,15 @@ class HomeRouteArgs {
 
   final GameClock? clock;
 
+  final String? launchAction;
+
   final LearningRecommendationService? recommendationService;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, recommendationService: $recommendationService, key: $key}';
+    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, launchAction: $launchAction, recommendationService: $recommendationService, key: $key}';
   }
 
   @override
@@ -364,6 +370,7 @@ class HomeRouteArgs {
     return repository == other.repository &&
         puzzleRepository == other.puzzleRepository &&
         clock == other.clock &&
+        launchAction == other.launchAction &&
         recommendationService == other.recommendationService &&
         key == other.key;
   }
@@ -373,6 +380,7 @@ class HomeRouteArgs {
       repository.hashCode ^
       puzzleRepository.hashCode ^
       clock.hashCode ^
+      launchAction.hashCode ^
       recommendationService.hashCode ^
       key.hashCode;
 }
@@ -815,11 +823,16 @@ class RegisterRouteArgs {
 class ScannerRoute extends PageRouteInfo<ScannerRouteArgs> {
   ScannerRoute({
     required ScannerCubit cubit,
+    Future<bool> Function()? beforeImport,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          ScannerRoute.name,
-         args: ScannerRouteArgs(cubit: cubit, key: key),
+         args: ScannerRouteArgs(
+           cubit: cubit,
+           beforeImport: beforeImport,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -829,21 +842,27 @@ class ScannerRoute extends PageRouteInfo<ScannerRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ScannerRouteArgs>();
-      return ScannerPage(cubit: args.cubit, key: args.key);
+      return ScannerPage(
+        cubit: args.cubit,
+        beforeImport: args.beforeImport,
+        key: args.key,
+      );
     },
   );
 }
 
 class ScannerRouteArgs {
-  const ScannerRouteArgs({required this.cubit, this.key});
+  const ScannerRouteArgs({required this.cubit, this.beforeImport, this.key});
 
   final ScannerCubit cubit;
+
+  final Future<bool> Function()? beforeImport;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'ScannerRouteArgs{cubit: $cubit, key: $key}';
+    return 'ScannerRouteArgs{cubit: $cubit, beforeImport: $beforeImport, key: $key}';
   }
 
   @override

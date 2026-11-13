@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
-import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 
 @RoutePage()
@@ -125,60 +125,21 @@ final class _OnboardingArt extends StatelessWidget {
   final int page;
 
   @override
-  Widget build(BuildContext context) => switch (page) {
-    0 => const Stack(
-      alignment: Alignment.center,
-      children: [
-        SizedBox.square(
-          dimension: 310,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: MichiColors.coralTint,
-              shape: BoxShape.circle,
-            ),
+  Widget build(BuildContext context) => MichiReveal(
+    key: ValueKey(page),
+    child: page == 2
+        ? const _PatternCards()
+        : Image.asset(
+            switch (page) {
+              0 => 'assets/images/onboarding_see.png',
+              1 => 'assets/images/onboarding_hint.png',
+              _ => 'assets/images/onboarding_path.png',
+            },
+            width: double.infinity,
+            fit: BoxFit.contain,
+            excludeFromSemantics: true,
           ),
-        ),
-        MichiMascot(
-          state: MichiMascotState.calm,
-          size: 275,
-        ),
-      ],
-    ),
-    1 => Stack(
-      alignment: Alignment.center,
-      children: [
-        Transform.rotate(
-          angle: -0.04,
-          child: const CustomPaint(
-            size: Size.square(260),
-            painter: _ExampleGridPainter(),
-          ),
-        ),
-        const Positioned(
-          right: 0,
-          bottom: 0,
-          child: MichiMascot(
-            state: MichiMascotState.pointing,
-            size: 125,
-          ),
-        ),
-      ],
-    ),
-    2 => const _PatternCards(),
-    _ => const Stack(
-      alignment: Alignment.center,
-      children: [
-        CustomPaint(
-          size: Size(320, 260),
-          painter: _PathPainter(),
-        ),
-        MichiMascot(
-          state: MichiMascotState.calm,
-          size: 135,
-        ),
-      ],
-    ),
-  };
+  );
 }
 
 final class _PatternCards extends StatelessWidget {
@@ -191,9 +152,9 @@ final class _PatternCards extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         for (final (index, title, angle, x) in [
-          (0, 'Hidden Single', -0.13, -82.0),
-          (1, 'X-Wing', 0.13, 82.0),
-          (2, 'Naked Pair', 0.0, 0.0),
+          (0, context.t.coach.hiddenSingle, -0.13, -82.0),
+          (1, context.t.coach.xWing, 0.13, 82.0),
+          (2, context.t.coach.nakedPair, 0.0, 0.0),
         ])
           Transform.translate(
             offset: Offset(x, index == 2 ? -12 : 18),
@@ -201,7 +162,7 @@ final class _PatternCards extends StatelessWidget {
               angle: angle,
               child: Container(
                 width: 150,
-                height: 200,
+                height: 204,
                 padding: const EdgeInsets.all(MichiSpacing.md),
                 decoration: BoxDecoration(
                   color: MichiColors.ivory,
@@ -212,8 +173,8 @@ final class _PatternCards extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
-                      width: 110,
-                      height: 110,
+                      width: 98,
+                      height: 98,
                       child: CustomPaint(painter: _ExampleGridPainter()),
                     ),
                     const Spacer(),
@@ -255,49 +216,4 @@ final class _ExampleGridPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ExampleGridPainter oldDelegate) => false;
-}
-
-final class _PathPainter extends CustomPainter {
-  const _PathPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..moveTo(0, size.height * 0.88)
-      ..cubicTo(
-        size.width * 0.45,
-        size.height * 0.8,
-        size.width * 0.15,
-        size.height * 0.3,
-        size.width * 0.6,
-        size.height * 0.52,
-      )
-      ..cubicTo(
-        size.width,
-        size.height * 0.75,
-        size.width * 0.5,
-        size.height * 0.08,
-        size.width,
-        size.height * 0.12,
-      );
-    canvas
-      ..drawPath(
-        path,
-        Paint()
-          ..color = MichiColors.cream
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 28
-          ..strokeCap = StrokeCap.round,
-      )
-      ..drawPath(
-        path,
-        Paint()
-          ..color = MichiColors.coral
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2,
-      );
-  }
-
-  @override
-  bool shouldRepaint(covariant _PathPainter oldDelegate) => false;
 }

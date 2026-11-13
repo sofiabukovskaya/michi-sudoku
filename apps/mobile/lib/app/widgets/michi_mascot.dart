@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:michi_design_system/michi_design_system.dart';
 
 /// Visual intent, rather than a file name, is selected by product surfaces.
 enum MichiMascotState { calm, pointing, happy, notebook, celebrating, walking }
@@ -19,11 +20,17 @@ final class MichiMascot extends StatelessWidget {
   };
 
   @override
-  Widget build(BuildContext context) => Image.asset(
-    assetFor(state),
-    width: size,
-    height: size,
-    fit: BoxFit.contain,
-    excludeFromSemantics: true,
+  Widget build(BuildContext context) => AnimatedSwitcher(
+    duration: MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : MichiMotion.standard,
+    child: Image.asset(
+      assetFor(state),
+      key: ValueKey(state),
+      width: size,
+      height: size,
+      fit: BoxFit.contain,
+      excludeFromSemantics: true,
+    ),
   );
 }

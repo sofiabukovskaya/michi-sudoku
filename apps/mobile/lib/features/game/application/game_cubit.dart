@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_mobile/core/errors/app_failure.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
@@ -217,6 +218,17 @@ final class GameCubit extends Cubit<GameState> {
     return plan == null
         ? const WhySelection(WhyAvailability.unsupported)
         : WhySelection(WhyAvailability.available, plan: plan);
+  }
+
+  /// Explicit, undoable assistance. Never runs when starting a learning game.
+  void fillPencilNotes() {
+    if (state.status != GameStatus.playing ||
+        state.isPaused ||
+        state.wrongCells.isNotEmpty) {
+      return;
+    }
+    final notes = const CandidateCalculator().calculateAll(state.board);
+    if (!mapEquals(notes, state.notes)) _commit(state.board, notes);
   }
 
   void toggleNotesMode() {

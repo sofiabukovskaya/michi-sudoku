@@ -50,6 +50,31 @@ final class MichiApp extends StatelessWidget {
                       GlobalCupertinoLocalizations.delegate,
                     ],
                     routerConfig: router.config(
+                      // AutoRoute dispatches warm links only when the URI
+                      // matches a route. Keep the original action for the
+                      // builder, but match the registered initial path first.
+                      deepLinkTransformer: (uri) async =>
+                          uri.scheme == 'michi' ? Uri(path: '/') : uri,
+                      deepLinkBuilder: (link) {
+                        final uri = link.uri;
+                        if (uri.scheme != 'michi') return link;
+                        final action = uri.pathSegments.lastOrNull;
+                        if (uri.host != 'open' ||
+                            !const {
+                              'scan',
+                              'daily',
+                              'continue',
+                            }.contains(action)) {
+                          return DeepLink.defaultPath;
+                        }
+                        return DeepLink([
+                          AppShellRoute(
+                            children: [
+                              HomeRoute(key: UniqueKey(), launchAction: action),
+                            ],
+                          ),
+                        ]);
+                      },
                       navigatorObservers: () => [AutoRouteObserver()],
                     ),
                   ),

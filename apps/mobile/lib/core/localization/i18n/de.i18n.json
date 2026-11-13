@@ -123,7 +123,8 @@
     "scanSourceDetail": "Foto oder Kamera",
     "weekStatusDone": "Abgeschlossen",
     "weekStatusToday": "Heute",
-    "weekStatusEmpty": "Keine Aktivität"
+    "weekStatusEmpty": "Keine Aktivität",
+    "scanInvite": "Sudoku auf Papier? Scanne es hier."
   },
   "game": {
     "title": "Tägliches Sudoku · Mittel",
@@ -159,7 +160,10 @@
     "completionMistakes": "Fehler",
     "completionHints": "Hinweise",
     "dailyStampEarned": "Tagesstempel erhalten",
-    "completionPracticeTechnique": "Nächster Schritt: $technique"
+    "completionPracticeTechnique": "Nächster Schritt: $technique",
+    "numberFirst": "Zahl zuerst",
+    "fillNotes": "Kandidaten eintragen",
+    "inputOptions": "Eingabeoptionen"
   },
   "learn": {
     "title": "Lernen",
@@ -293,7 +297,9 @@
       "other": "$n Sudokus abgeschlossen"
     },
     "mastery": "Beherrschung $percent %",
-    "openTechnique": "Technik öffnen"
+    "openTechnique": "Technik öffnen",
+    "firstPuzzle": "Beginne mit deinem ersten Sudoku",
+    "firstPuzzleDetail": "Danach siehst du, was du gut kannst und was du als Nächstes üben kannst."
   },
   "profile": {
     "guest": "Gast",
@@ -323,7 +329,7 @@
     "recognized": "erkannt",
     "empty": "leer",
     "clear": "Löschen",
-    "confirm": "Sudoku importieren",
+    "confirm": "In MICHI weiterspielen",
     "rescan": "Erneut scannen",
     "permissionIntro": "Erlaube den Kamerazugriff, um ein Foto aufzunehmen.",
     "permissionDenied": "Der Kamerazugriff wurde verweigert. Du kannst ein Foto wählen.",
@@ -342,7 +348,10 @@
     "validationFailure": "Dieses Sudoku konnte nicht geprüft werden. Versuche es erneut zu bestätigen.",
     "unsupportedCoach": "MICHI kann möglicherweise noch nicht jeden Schritt dieses Sudokus erklären.",
     "importedTitle": "Importiertes Sudoku",
-    "lowConfidenceCount": "Zu prüfende Felder: $count"
+    "lowConfidenceCount": "Zu prüfende Felder: $count",
+    "stuck": "Ich komme nicht weiter",
+    "noStep": "MICHI findet mit den verfügbaren Techniken keinen nächsten Schritt.",
+    "completed": "Alle Felder sind ausgefüllt. Dieses Sudoku ist gelöst."
   },
   "coach": {
     "step": "Hinweis $step von 4",

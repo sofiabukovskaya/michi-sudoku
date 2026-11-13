@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,24 @@ void main() {
   const detector = LocalGridDetector();
   const corrector = HomographyPerspectiveCorrector();
   const segmenter = InsetCellSegmenter();
+
+  test(
+    'shadowed newspaper is located without including the page margin',
+    () async {
+      final bytes = await File(
+        'test/fixtures/newspaper/wicht_image1.jpg',
+      ).readAsBytes();
+      final grid = await detector.detect(
+        ScanImage(bytes: bytes, format: ScanImageFormat.jpeg),
+      );
+      expect(grid, isNotNull);
+      final expected = [(48, 15), (572, 21), (584, 458), (50, 468)];
+      for (var i = 0; i < 4; i++) {
+        expect(grid!.corners[i].x, closeTo(expected[i].$1, 12));
+        expect(grid.corners[i].y, closeTo(expected[i].$2, 12));
+      }
+    },
+  );
 
   test('clean printed grid has ordered deterministic corners', () async {
     final image = syntheticGrid();

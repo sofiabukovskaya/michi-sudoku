@@ -43,7 +43,15 @@ final class _ProgressData {
   final List<CompletedGame> games;
 }
 
-final class _ProgressPageState extends State<ProgressPage> {
+final class _ProgressPageState extends State<ProgressPage>
+    with AutoRouteAwareStateMixin<ProgressPage> {
+  @override
+  void didChangeTabRoute(TabPageRoute previousRoute) {
+    setState(() {
+      _data = _load();
+    });
+  }
+
   late Future<_ProgressData> _data = _load();
   SyncCoordinator? _sync;
   int _syncRevision = 0;
@@ -102,6 +110,42 @@ final class _ProgressPageState extends State<ProgressPage> {
             );
           }
           final data = snapshot.data!;
+          if (data.games.isEmpty && data.techniques.isEmpty) {
+            return ListView(
+              padding: const EdgeInsets.all(MichiSpacing.xl),
+              children: [
+                Text(context.t.home.progress, style: MichiTypography.display),
+                const SizedBox(height: MichiSpacing.xxl),
+                Image.asset(
+                  'assets/images/progress_first_puzzle.png',
+                  height: 180,
+                  fit: BoxFit.contain,
+                  excludeFromSemantics: true,
+                ),
+                const SizedBox(height: MichiSpacing.xxl),
+                Text(
+                  context.t.progress.firstPuzzle,
+                  style: MichiTypography.heading,
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                Text(
+                  context.t.progress.firstPuzzleDetail,
+                  style: MichiTypography.secondary,
+                ),
+                const SizedBox(height: MichiSpacing.lg),
+                MichiButton(
+                  label: context.t.home.dailyStart,
+                  onPressed: () => context.router.root.navigate(
+                    AppShellRoute(
+                      children: [
+                        HomeRoute(key: UniqueKey(), launchAction: 'daily'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
           final strong =
               data.techniques.values
                   .where(

@@ -7,10 +7,17 @@ import 'board_view_state.dart';
 
 /// Draws values and ordinary game states; Coach visuals use another painter.
 final class SudokuBoardPainter extends CustomPainter {
-  const SudokuBoardPainter({required this.view, required this.geometry});
+  const SudokuBoardPainter({
+    required this.view,
+    required this.geometry,
+    this.previous,
+    this.progress = 1,
+  });
 
   final BoardViewState view;
   final BoardGeometry geometry;
+  final BoardViewState? previous;
+  final double progress;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -19,16 +26,32 @@ final class SudokuBoardPainter extends CustomPainter {
       ..save()
       ..clipRRect(RRect.fromRectAndRadius(bounds, const Radius.circular(12)))
       ..drawRect(bounds, Paint()..color = MichiColors.ivory);
+    if (previous != null && progress < 1) {
+      SudokuBoardPainter(view: previous!, geometry: geometry)
+        .._paintCellBackgrounds(canvas)
+        .._paintGrid(canvas)
+        .._paintValues(canvas)
+        .._paintStateOutlines(canvas);
+      canvas
+        ..saveLayer(
+          bounds,
+          Paint()..color = Colors.white.withValues(alpha: progress),
+        )
+        ..drawRect(bounds, Paint()..color = MichiColors.ivory);
+    }
     _paintCellBackgrounds(canvas);
     _paintGrid(canvas);
     _paintValues(canvas);
     _paintStateOutlines(canvas);
+    if (previous != null && progress < 1) canvas.restore();
     canvas.restore();
   }
 
   void _paintCellBackgrounds(Canvas canvas) {
     final selected = view.selectedCell;
-    final selectedValue = selected == null ? 0 : view.board.valueAt(selected);
+    final selectedValue =
+        view.armedDigit ??
+        (selected == null ? 0 : view.board.valueAt(selected));
     for (var index = 0; index < 81; index++) {
       final cell = CellRef.fromIndex(index);
       Color? color;
@@ -36,8 +59,7 @@ final class SudokuBoardPainter extends CustomPainter {
         color = MichiColors.errorTint;
       } else if (cell == selected) {
         color = MichiColors.boardSelected;
-      } else if (selected != null &&
-          selectedValue != 0 &&
+      } else if (selectedValue != 0 &&
           view.board.valueAt(cell) == selectedValue) {
         color = MichiColors.boardSameDigit;
       } else if (selected != null &&
@@ -108,6 +130,17 @@ final class SudokuBoardPainter extends CustomPainter {
             rect.width / 3,
             rect.height / 3,
           );
+          final highlighted =
+              view.armedDigit ??
+              (view.selectedCell == null
+                  ? 0
+                  : view.board.valueAt(view.selectedCell!));
+          if (highlighted == note) {
+            canvas.drawOval(
+              noteRect,
+              Paint()..color = MichiColors.boardSameDigit,
+            );
+          }
           _paintText(
             canvas,
             '$note',
@@ -192,6 +225,8 @@ final class SudokuBoardPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant SudokuBoardPainter oldDelegate) =>
+      oldDelegate.progress != progress ||
+      oldDelegate.previous != previous ||
       oldDelegate.view != view ||
       oldDelegate.geometry.cellSize != geometry.cellSize;
 }

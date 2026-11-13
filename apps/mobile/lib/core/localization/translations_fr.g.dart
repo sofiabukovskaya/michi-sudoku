@@ -232,6 +232,7 @@ class _Translations$home$fr extends Translations$home$uk {
 	@override String get weekStatusDone => 'Terminé';
 	@override String get weekStatusToday => 'Aujourd’hui';
 	@override String get weekStatusEmpty => 'Aucune activité';
+	@override String get scanInvite => 'Un sudoku ailleurs ? Scanne-le.';
 }
 
 // Path: game
@@ -275,6 +276,9 @@ class _Translations$game$fr extends Translations$game$uk {
 	@override String get completionHints => 'indices';
 	@override String get dailyStampEarned => 'Tampon quotidien obtenu';
 	@override String completionPracticeTechnique({required Object technique}) => 'Prochaine étape : ${technique}';
+	@override String get numberFirst => 'Chiffre en premier';
+	@override String get fillNotes => 'Remplir les notes';
+	@override String get inputOptions => 'Options de saisie';
 }
 
 // Path: learn
@@ -358,6 +362,8 @@ class _Translations$progress$fr extends Translations$progress$uk {
 	);
 	@override String mastery({required Object percent}) => 'Maîtrise ${percent} %';
 	@override String get openTechnique => 'Ouvrir la technique';
+	@override String get firstPuzzle => 'Commence par ton premier sudoku';
+	@override String get firstPuzzleDetail => 'Tu verras ensuite tes points forts et ce que tu peux travailler.';
 }
 
 // Path: profile
@@ -401,7 +407,7 @@ class _Translations$scanner$fr extends Translations$scanner$uk {
 	@override String get recognized => 'reconnu';
 	@override String get empty => 'vide';
 	@override String get clear => 'Effacer';
-	@override String get confirm => 'Importer le sudoku';
+	@override String get confirm => 'Continuer dans MICHI';
 	@override String get rescan => 'Scanner à nouveau';
 	@override String get permissionIntro => 'Autorisez l’appareil photo pour prendre une photo.';
 	@override String get permissionDenied => 'L’accès à l’appareil photo est refusé. Vous pouvez choisir une photo.';
@@ -421,6 +427,9 @@ class _Translations$scanner$fr extends Translations$scanner$uk {
 	@override String get unsupportedCoach => 'MICHI ne peut pas encore expliquer chaque étape de ce sudoku.';
 	@override String get importedTitle => 'Sudoku importé';
 	@override String lowConfidenceCount({required Object count}) => 'Cases à vérifier : ${count}';
+	@override String get stuck => 'Je bloque, aide-moi';
+	@override String get noStep => 'MICHI ne trouve pas de prochaine étape avec les techniques disponibles.';
+	@override String get completed => 'Toutes les cases sont remplies. Ce sudoku est terminé.';
 }
 
 // Path: coach
@@ -845,6 +854,7 @@ extension on TranslationsFr {
 			'home.weekStatusDone' => 'Terminé',
 			'home.weekStatusToday' => 'Aujourd’hui',
 			'home.weekStatusEmpty' => 'Aucune activité',
+			'home.scanInvite' => 'Un sudoku ailleurs ? Scanne-le.',
 			'game.title' => 'Sudoku du jour · Moyen',
 			'game.undo' => 'Annuler',
 			'game.erase' => 'Effacer',
@@ -879,6 +889,9 @@ extension on TranslationsFr {
 			'game.completionHints' => 'indices',
 			'game.dailyStampEarned' => 'Tampon quotidien obtenu',
 			'game.completionPracticeTechnique' => ({required Object technique}) => 'Prochaine étape : ${technique}',
+			'game.numberFirst' => 'Chiffre en premier',
+			'game.fillNotes' => 'Remplir les notes',
+			'game.inputOptions' => 'Options de saisie',
 			'learn.title' => 'Apprendre',
 			'learn.intro' => 'Une technique, une étape claire à la fois.',
 			'learn.newLabel' => 'Nouveau',
@@ -988,6 +1001,8 @@ extension on TranslationsFr {
 			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ),
 			'progress.mastery' => ({required Object percent}) => 'Maîtrise ${percent} %',
 			'progress.openTechnique' => 'Ouvrir la technique',
+			'progress.firstPuzzle' => 'Commence par ton premier sudoku',
+			'progress.firstPuzzleDetail' => 'Tu verras ensuite tes points forts et ce que tu peux travailler.',
 			'profile.guest' => 'Invité',
 			'profile.localOnly' => 'La progression est enregistrée sur cet appareil.',
 			'profile.puzzles' => 'Sudokus',
@@ -1013,7 +1028,7 @@ extension on TranslationsFr {
 			'scanner.recognized' => 'reconnu',
 			'scanner.empty' => 'vide',
 			'scanner.clear' => 'Effacer',
-			'scanner.confirm' => 'Importer le sudoku',
+			'scanner.confirm' => 'Continuer dans MICHI',
 			'scanner.rescan' => 'Scanner à nouveau',
 			'scanner.permissionIntro' => 'Autorisez l’appareil photo pour prendre une photo.',
 			'scanner.permissionDenied' => 'L’accès à l’appareil photo est refusé. Vous pouvez choisir une photo.',
@@ -1033,6 +1048,9 @@ extension on TranslationsFr {
 			'scanner.unsupportedCoach' => 'MICHI ne peut pas encore expliquer chaque étape de ce sudoku.',
 			'scanner.importedTitle' => 'Sudoku importé',
 			'scanner.lowConfidenceCount' => ({required Object count}) => 'Cases à vérifier : ${count}',
+			'scanner.stuck' => 'Je bloque, aide-moi',
+			'scanner.noStep' => 'MICHI ne trouve pas de prochaine étape avec les techniques disponibles.',
+			'scanner.completed' => 'Toutes les cases sont remplies. Ce sudoku est terminé.',
 			'coach.step' => ({required Object step}) => 'Indice ${step} sur 4',
 			'coach.kTry' => 'Je vais essayer',
 			'coach.show' => 'Afficher',

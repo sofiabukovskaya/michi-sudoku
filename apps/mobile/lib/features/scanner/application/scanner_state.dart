@@ -11,6 +11,8 @@ enum ScannerReviewIssue {
   multipleSolutions,
   validation,
   storage,
+  unsupportedStep,
+  completed,
 }
 
 final class ScannerReviewData {

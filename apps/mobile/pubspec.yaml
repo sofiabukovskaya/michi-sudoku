@@ -19,8 +19,8 @@ dependencies:
   firebase_app_check: ^0.5.1
   firebase_auth: ^7.0.1
   firebase_core: ^5.1.0
-  firebase_messaging: ^17.0.1
   firebase_crashlytics: ^6.0.1
+  firebase_messaging: ^17.0.1
   firebase_remote_config: ^7.0.1
   flutter:
     sdk: flutter
@@ -69,6 +69,11 @@ flutter:
     - assets/practice/practice_v1.json
     - assets/images/coach_mascot.png
     - assets/images/splash_mascot.png
+    - assets/images/welcome_hero.png
+    - assets/images/onboarding_see.png
+    - assets/images/onboarding_hint.png
+    - assets/images/onboarding_path.png
+    - assets/images/progress_first_puzzle.png
     - assets/images/completion_hero.png
     - assets/images/hint_icon.png
     - assets/images/michi_calm.png

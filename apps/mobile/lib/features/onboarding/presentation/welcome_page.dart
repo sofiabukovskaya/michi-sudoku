@@ -1,11 +1,8 @@
-import 'dart:math' as math;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
-import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
@@ -99,95 +96,10 @@ final class WelcomeArt extends StatelessWidget {
   const WelcomeArt({super.key});
 
   @override
-  Widget build(BuildContext context) => SizedBox(
+  Widget build(BuildContext context) => Image.asset(
+    'assets/images/welcome_hero.png',
     height: 255,
-    child: Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Positioned(
-          left: 0,
-          top: 16,
-          child: Transform.rotate(
-            angle: -math.pi / 28,
-            child: const CustomPaint(
-              size: Size(225, 225),
-              painter: _WelcomeBoardPainter(),
-            ),
-          ),
-        ),
-        const Positioned(
-          right: -10,
-          bottom: -4,
-          child: MichiMascot(
-            state: MichiMascotState.calm,
-            size: 187,
-          ),
-        ),
-      ],
-    ),
+    fit: BoxFit.contain,
+    excludeFromSemantics: true,
   );
-}
-
-final class _WelcomeBoardPainter extends CustomPainter {
-  const _WelcomeBoardPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final board = RRect.fromRectAndRadius(
-      Offset.zero & size,
-      const Radius.circular(18),
-    );
-    canvas
-      ..drawRRect(board, Paint()..color = MichiColors.ivory)
-      ..drawRRect(
-        board,
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2
-          ..color = MichiColors.textPrimary,
-      );
-    final linePaint = Paint()
-      ..color = MichiColors.boardBoxLine
-      ..strokeWidth = 1;
-    for (var index = 1; index < 3; index++) {
-      final offset = size.width * index / 3;
-      canvas
-        ..drawLine(
-          Offset(offset, 0),
-          Offset(offset, size.height),
-          linePaint,
-        )
-        ..drawLine(
-          Offset(0, offset),
-          Offset(size.width, offset),
-          linePaint,
-        );
-    }
-    void number(String value, Offset offset) {
-      TextPainter(
-          text: TextSpan(
-            text: value,
-            style: MichiTypography.heading.copyWith(fontSize: 30),
-          ),
-          textDirection: TextDirection.ltr,
-        )
-        ..layout()
-        ..paint(canvas, offset);
-    }
-
-    number('3', const Offset(27, 24));
-    number('7', const Offset(96, 92));
-    number('1', const Offset(170, 167));
-    canvas.drawCircle(
-      const Offset(190, 42),
-      24,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 4
-        ..color = MichiColors.coral,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant _WelcomeBoardPainter oldDelegate) => false;
 }

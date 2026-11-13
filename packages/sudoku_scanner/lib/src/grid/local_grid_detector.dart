@@ -50,6 +50,7 @@ final class LocalGridDetector implements GridDetector {
       }
     }
     final dark = Uint8List(width * height);
+    final localInk = Uint8List(dark.length);
     const radius = 10;
     for (var y = 0; y < height; y++) {
       final y0 = (y - radius).clamp(0, height - 1);
@@ -64,10 +65,30 @@ final class LocalGridDetector implements GridDetector {
             sums[y0 * stride + x0];
         final mean = total ~/ ((x1 - x0) * (y1 - y0));
         final value = gray[y * width + x];
+        if (value < mean - 12) localInk[y * width + x] = 1;
         if (value < 115 || value < mean - 20) dark[y * width + x] = 1;
       }
     }
 
+    // A shadow on newspaper can merge with the grid when applying an
+    // absolute black threshold. Retry with local contrast only in that case.
+    final geometry =
+        _grid(dark, width, height) ??
+        _grid(localInk, width, height, minimumAxisLines: 4);
+    if (geometry == null) return null;
+    final multiplier = originalWidth / width;
+    return GridGeometry([
+      for (final point in geometry.corners)
+        ImagePoint(point.x * multiplier, point.y * multiplier),
+    ]);
+  }
+
+  static GridGeometry? _grid(
+    Uint8List dark,
+    int width,
+    int height, {
+    int minimumAxisLines = 0,
+  }) {
     final visited = Uint8List(dark.length);
     _Component? best;
     for (var start = 0; start < dark.length; start++) {
@@ -111,12 +132,13 @@ final class LocalGridDetector implements GridDetector {
     final corners = best.corners;
     try {
       final geometry = GridGeometry(corners);
-      if (_lineScore(dark, width, height, geometry) < 6) return null;
-      final multiplier = originalWidth / width;
-      return GridGeometry([
-        for (final point in corners)
-          ImagePoint(point.x * multiplier, point.y * multiplier),
-      ]);
+      final (rows, columns) = _lineScore(dark, width, height, geometry);
+      if (rows + columns < 6 ||
+          rows < minimumAxisLines ||
+          columns < minimumAxisLines) {
+        return null;
+      }
+      return geometry;
       // Detected image geometry is untrusted external input.
       // ignore: avoid_catching_errors
     } on ArgumentError {
@@ -124,13 +146,13 @@ final class LocalGridDetector implements GridDetector {
     }
   }
 
-  static int _lineScore(
+  static (int, int) _lineScore(
     Uint8List dark,
     int width,
     int height,
     GridGeometry geometry,
   ) {
-    var score = 0;
+    final scores = [0, 0];
     for (var axis = 0; axis < 2; axis++) {
       for (var line = 1; line < 9; line++) {
         var hits = 0;
@@ -166,10 +188,10 @@ final class LocalGridDetector implements GridDetector {
           }
           if (found) hits++;
         }
-        if (hits >= 6) score++;
+        if (hits >= 6) scores[axis]++;
       }
     }
-    return score;
+    return (scores[0], scores[1]);
   }
 }
 

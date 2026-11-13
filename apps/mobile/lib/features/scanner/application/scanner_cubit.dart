@@ -176,6 +176,60 @@ final class ScannerCubit extends Cubit<ScannerState> {
     );
   }
 
+  /// Read-only assistance: the reviewed position never enters game storage.
+  Future<CoachPlan?> nextHint() async {
+    final review = state.review;
+    if (state.phase != ScannerPhase.review || review == null) return null;
+    final access = state.cameraAccess;
+    final generation = ++_generation;
+    final board = review.board;
+    final solver = analyzer;
+    emit(ScannerState.validating(access, review));
+    CoachPlan? plan;
+    ScannerReviewIssue? issue;
+    try {
+      if (review.conflicts.isNotEmpty) {
+        issue = ScannerReviewIssue.duplicateClues;
+      } else if (board.isComplete) {
+        issue = ScannerReviewIssue.completed;
+      } else {
+        (plan, issue) = await Isolate.run(() {
+          if (!solver.exactSolver.hasSolution(board)) {
+            return (null, ScannerReviewIssue.noSolution);
+          }
+          final step = solver.humanSolver.findNextDeduction(
+            HumanSolverState.initial(board),
+          );
+          return step == null
+              ? (null, ScannerReviewIssue.unsupportedStep)
+              : (const StructuredCoachEngine().createPlan(step), null);
+        });
+      }
+    } on Object catch (error, stack) {
+      developer.log(
+        'Scan hint unavailable',
+        name: 'michi.scanner',
+        error: error,
+        stackTrace: stack,
+      );
+      issue = ScannerReviewIssue.validation;
+    }
+    if (isClosed || generation != _generation) return null;
+    emit(
+      ScannerState.review(
+        access,
+        _review(
+          review.result,
+          board,
+          review.edited,
+          review.selectedIndex,
+          issue: issue,
+        ),
+      ),
+    );
+    return plan;
+  }
+
   Future<void> confirm() async {
     final review = state.review;
     if (state.phase != ScannerPhase.review || review == null) return;

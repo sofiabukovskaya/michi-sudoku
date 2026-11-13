@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
@@ -31,6 +34,7 @@ final class HomePage extends StatefulWidget {
     this.repository,
     this.puzzleRepository,
     this.clock,
+    this.launchAction,
     this.recommendationService,
     super.key,
   });
@@ -39,6 +43,7 @@ final class HomePage extends StatefulWidget {
   final GameRepository? repository;
   final PuzzleRepository? puzzleRepository;
   final GameClock? clock;
+  final String? launchAction;
   final LearningRecommendationService? recommendationService;
 
   @override
@@ -60,6 +65,31 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _loading = true;
   bool _loadFailed = false;
   int _reloadSequence = 0;
+  bool _handledLaunch = false;
+
+  Future<void> _handleLaunch() async {
+    if (!mounted || _handledLaunch || widget.launchAction == null) return;
+    _handledLaunch = true;
+    switch (widget.launchAction) {
+      case 'daily':
+        await _startDaily();
+      case 'continue':
+        if (_active != null) await _continue();
+      case 'scan':
+        await _openScanner();
+    }
+  }
+
+  Future<void> _openScanner() async {
+    await context.router.root.push(
+      ScannerRoute(
+        cubit: getIt<ScannerCubit>(),
+        beforeImport: _confirmReplacement,
+      ),
+    );
+    if (mounted) await _reload();
+  }
+
   SyncCoordinator? _sync;
   int _syncRevision = 0;
 
@@ -117,8 +147,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final sequence = ++_reloadSequence;
     if (mounted) {
       setState(() {
-        _daily = null;
-        _dailyLoading = true;
+        _dailyLoading = _daily == null;
         _dailyFailed = false;
       });
     }
@@ -130,6 +159,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _loadFailed = false;
         _loading = false;
       });
+      if (widget.launchAction != 'daily') unawaited(_handleLaunch());
       unawaited(_loadFocus(sequence));
       unawaited(_loadWeek(sequence));
     } on Object catch (error, stackTrace) {
@@ -158,6 +188,10 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _dailyCompleted = completed;
         _dailyLoading = false;
       });
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        unawaited(_publishDaily(daily));
+      }
+      unawaited(_handleLaunch());
     } on Object catch (error, stackTrace) {
       developer.log(
         'Unable to load bundled Daily content',
@@ -170,6 +204,19 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _dailyLoading = false;
         _dailyFailed = true;
       });
+    }
+  }
+
+  Future<void> _publishDaily(DailyPuzzle daily) async {
+    try {
+      await const MethodChannel('michi/daily').invokeMethod<void>('publish', {
+        'day': daily.date.toString(),
+        'difficulty': daily.puzzle.difficulty?.name,
+      });
+    } on MissingPluginException {
+      // Widget extensions are optional in embedded/test runners.
+    } on PlatformException catch (error) {
+      developer.log('Daily widget update unavailable', error: error);
     }
   }
 
@@ -281,11 +328,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
     if (choice == null || !mounted) return;
     if (choice == 'scanner') {
-      if (!await _confirmReplacement() || !mounted) return;
-      await context.router.root.push(
-        ScannerRoute(cubit: getIt<ScannerCubit>()),
-      );
-      if (mounted) await _reload();
+      await _openScanner();
       return;
     }
     final difficulty = choice as PuzzleDifficulty;
@@ -419,12 +462,19 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ],
               if (!_loading && !_loadFailed && _daily != null) ...[
                 const SizedBox(height: MichiSpacing.sm),
-                _DailyCard(
-                  daily: _daily!,
-                  completed: _dailyCompleted,
-                  inProgress:
-                      _active?.dailyChallengeKey == _daily!.challengeKey,
-                  onTap: _startDaily,
+                MichiReveal(
+                  key: ValueKey((
+                    _daily!.challengeKey,
+                    _dailyCompleted,
+                    _active?.dailyChallengeKey,
+                  )),
+                  child: _DailyCard(
+                    daily: _daily!,
+                    completed: _dailyCompleted,
+                    inProgress:
+                        _active?.dailyChallengeKey == _daily!.challengeKey,
+                    onTap: _startDaily,
+                  ),
                 ),
               ],
               if (!_loading && _dailyLoading) ...[
@@ -447,7 +497,10 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ],
               if (_focus case final focus?) ...[
                 const SizedBox(height: MichiSpacing.sm),
-                _FocusRow(recommendation: focus, onTap: _openFocus),
+                MichiReveal(
+                  key: ValueKey(focus.technique),
+                  child: _FocusRow(recommendation: focus, onTap: _openFocus),
+                ),
               ],
               const SizedBox(height: MichiSpacing.sm),
               _HomeActionRow(
@@ -572,11 +625,20 @@ final class _HomeActionRow extends StatelessWidget {
           ),
           const SizedBox(width: MichiSpacing.md),
           Expanded(
-            child: Text(
-              label,
-              style: MichiTypography.body.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: MichiTypography.body.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  context.t.home.scanInvite,
+                  style: MichiTypography.secondary,
+                ),
+              ],
             ),
           ),
           const Icon(
@@ -693,7 +755,10 @@ final class _DailyCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 138),
+                constraints: const BoxConstraints(
+                  minHeight: 138,
+                  minWidth: double.infinity,
+                ),
                 child: Stack(
                   children: [
                     Padding(
@@ -729,12 +794,14 @@ final class _DailyCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Positioned(
+                    Positioned(
                       right: 0,
                       bottom: 0,
                       child: MichiMascot(
-                        state: MichiMascotState.calm,
-                        size: 126,
+                        state: completed
+                            ? MichiMascotState.happy
+                            : MichiMascotState.calm,
+                        size: 138,
                       ),
                     ),
                   ],

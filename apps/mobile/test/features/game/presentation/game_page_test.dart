@@ -40,6 +40,45 @@ Future<void> _pumpGame(
 }
 
 void main() {
+  testWidgets('number first arms a digit, respects givens, and fills on tap', (
+    tester,
+  ) async {
+    final cubit = _game();
+    addTearDown(cubit.close);
+    await _pumpGame(tester, cubit);
+    await tester.tap(find.byTooltip('Input options'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Number first'));
+    await tester.pumpAndSettle();
+    final before = cubit.state.board;
+    final cell = CellRef.fromIndex(2);
+    final digit = cubit.state.solution.valueAt(cell);
+    await tester.tap(find.byKey(ValueKey('keypad-$digit')));
+    await tester.tap(find.byKey(const ValueKey('cell-0')));
+    expect(cubit.state.board, before);
+    await tester.tap(find.byKey(const ValueKey('cell-2')));
+    expect(cubit.state.board.valueAt(cell), digit);
+    cubit.undo();
+    expect(cubit.state.board, before);
+  });
+
+  test(
+    'optional notes use legal candidates and undo restores the original notes',
+    () async {
+      final cubit = _game();
+      addTearDown(cubit.close);
+      final initial = cubit.state;
+      expect(initial.notes, isEmpty);
+      cubit.fillPencilNotes();
+      expect(
+        cubit.state.notes,
+        const CandidateCalculator().calculateAll(initial.board),
+      );
+      expect(cubit.state.board, initial.board);
+      cubit.undo();
+      expect(cubit.state.notes, initial.notes);
+    },
+  );
   testWidgets('background lifecycle pauses and hides the board', (
     tester,
   ) async {

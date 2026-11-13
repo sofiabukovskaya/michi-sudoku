@@ -4,10 +4,16 @@ import 'dart:math' as math;
 import 'package:auto_route/auto_route.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
+import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_state.dart';
@@ -16,9 +22,10 @@ import 'package:sudoku_scanner/sudoku_scanner.dart';
 
 @RoutePage()
 final class ScannerPage extends StatefulWidget {
-  const ScannerPage({required this.cubit, super.key});
+  const ScannerPage({required this.cubit, this.beforeImport, super.key});
 
   final ScannerCubit cubit;
+  final Future<bool> Function()? beforeImport;
 
   @override
   State<ScannerPage> createState() => _ScannerPageState();
@@ -26,6 +33,8 @@ final class ScannerPage extends StatefulWidget {
 
 final class _ScannerPageState extends State<ScannerPage>
     with WidgetsBindingObserver {
+  final _scroll = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +53,7 @@ final class _ScannerPageState extends State<ScannerPage>
 
   @override
   void dispose() {
+    _scroll.dispose();
     WidgetsBinding.instance.removeObserver(this);
     unawaited(widget.cubit.close());
     super.dispose();
@@ -54,9 +64,23 @@ final class _ScannerPageState extends State<ScannerPage>
     value: widget.cubit,
     child: BlocListener<ScannerCubit, ScannerState>(
       listenWhen: (previous, current) =>
-          previous.phase != ScannerPhase.imported &&
-          current.phase == ScannerPhase.imported,
+          (previous.phase != ScannerPhase.imported &&
+              current.phase == ScannerPhase.imported) ||
+          (current.review?.issue != null &&
+              previous.review?.issue != current.review?.issue),
       listener: (context, state) async {
+        if (state.review?.issue != null && _scroll.hasClients) {
+          if (MediaQuery.disableAnimationsOf(context)) {
+            _scroll.jumpTo(0);
+          } else {
+            await _scroll.animateTo(
+              0,
+              duration: MichiMotion.standard,
+              curve: MichiMotion.curve,
+            );
+          }
+          return;
+        }
         final puzzle = state.imported;
         if (puzzle != null) {
           await context.router.push(GameRoute(definition: puzzle));
@@ -72,23 +96,33 @@ final class _ScannerPageState extends State<ScannerPage>
                 _Header(onBack: () => context.router.maybePop()),
                 Expanded(
                   child: SingleChildScrollView(
+                    controller: _scroll,
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-                    child: switch (state.phase) {
-                      ScannerPhase.capture => _Capture(
-                        state: state,
-                        cubit: widget.cubit,
+                    child: MichiReveal(
+                      key: ValueKey(
+                        state.phase == ScannerPhase.validating
+                            ? ScannerPhase.review
+                            : state.phase,
                       ),
-                      ScannerPhase.processing => const _Processing(),
-                      ScannerPhase.review || ScannerPhase.validating => _Review(
-                        state: state,
-                        cubit: widget.cubit,
-                      ),
-                      ScannerPhase.failure => _Failure(
-                        state: state,
-                        cubit: widget.cubit,
-                      ),
-                      ScannerPhase.imported => const SizedBox.shrink(),
-                    },
+                      child: switch (state.phase) {
+                        ScannerPhase.capture => _Capture(
+                          state: state,
+                          cubit: widget.cubit,
+                        ),
+                        ScannerPhase.processing => const _Processing(),
+                        ScannerPhase.review ||
+                        ScannerPhase.validating => _Review(
+                          beforeImport: widget.beforeImport,
+                          state: state,
+                          cubit: widget.cubit,
+                        ),
+                        ScannerPhase.failure => _Failure(
+                          state: state,
+                          cubit: widget.cubit,
+                        ),
+                        ScannerPhase.imported => const SizedBox.shrink(),
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -284,7 +318,8 @@ String _failureCopy(Translations t, ScanFailureKind? kind) => switch (kind) {
 };
 
 final class _Review extends StatelessWidget {
-  const _Review({required this.state, required this.cubit});
+  const _Review({required this.state, required this.cubit, this.beforeImport});
+  final Future<bool> Function()? beforeImport;
 
   final ScannerState state;
   final ScannerCubit cubit;
@@ -325,8 +360,14 @@ final class _Review extends StatelessWidget {
                 t.scanner.multipleSolutions,
               ScannerReviewIssue.validation => t.scanner.validationFailure,
               ScannerReviewIssue.storage => t.scanner.storageFailure,
+              ScannerReviewIssue.completed => t.scanner.completed,
+              ScannerReviewIssue.unsupportedStep => t.scanner.noStep,
             },
-            variant: MichiBannerVariant.error,
+            variant:
+                review.issue == ScannerReviewIssue.unsupportedStep ||
+                    review.issue == ScannerReviewIssue.completed
+                ? MichiBannerVariant.information
+                : MichiBannerVariant.error,
           ),
         const SizedBox(height: MichiSpacing.md),
         Center(
@@ -334,7 +375,12 @@ final class _Review extends StatelessWidget {
         ),
         const SizedBox(height: MichiSpacing.lg),
         if (review.selectedIndex != null) ...[
-          _DigitInput(onDigit: cubit.editSelected),
+          _DigitInput(
+            onDigit: (digit) {
+              unawaited(HapticFeedback.selectionClick());
+              cubit.editSelected(digit);
+            },
+          ),
           const SizedBox(height: MichiSpacing.lg),
         ],
         if (state.phase == ScannerPhase.validating)
@@ -345,9 +391,31 @@ final class _Review extends StatelessWidget {
           MichiButton(
             key: const ValueKey('scanner-confirm'),
             label: t.scanner.confirm,
-            onPressed: () => unawaited(cubit.confirm()),
+            onPressed: () async {
+              if (await beforeImport?.call() == false || !context.mounted) {
+                return;
+              }
+              await cubit.confirm();
+            },
           ),
         const SizedBox(height: MichiSpacing.sm),
+        if (state.phase == ScannerPhase.review) ...[
+          MichiButton(
+            key: const ValueKey('scanner-stuck'),
+            label: t.scanner.stuck,
+            variant: MichiButtonVariant.secondary,
+            onPressed: () async {
+              final plan = await cubit.nextHint();
+              if (plan == null || !context.mounted) return;
+              await Navigator.of(context).push<void>(
+                MaterialPageRoute(
+                  builder: (_) => _ScanCoach(board: review.board, plan: plan),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: MichiSpacing.sm),
+        ],
         MichiButton(
           label: t.scanner.rescan,
           variant: MichiButtonVariant.secondary,
@@ -356,6 +424,63 @@ final class _Review extends StatelessWidget {
       ],
     );
   }
+}
+
+final class _ScanCoach extends StatefulWidget {
+  const _ScanCoach({required this.board, required this.plan});
+  final SudokuBoard board;
+  final CoachPlan plan;
+  @override
+  State<_ScanCoach> createState() => _ScanCoachState();
+}
+
+final class _ScanCoachState extends State<_ScanCoach> {
+  int step = 0;
+  late final position = HumanSolverState.initial(widget.board);
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: MichiColors.paper,
+    body: SafeArea(
+      child: LayoutBuilder(
+        builder: (context, bounds) {
+          final size = math.min(bounds.maxWidth - 32, bounds.maxHeight * .53);
+          void close() => Navigator.of(context).pop();
+          return Column(
+            children: [
+              _Header(onBack: close),
+              Expanded(
+                child: Center(
+                  child: SudokuBoardWidget(
+                    view: BoardViewState.educational(
+                      state: position,
+                      coachHint: widget.plan.hints[step],
+                    ),
+                    cellSize: (size - 14) / 9,
+                    onCellTap: null,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: bounds.maxHeight * .35,
+                child: CoachPanel(
+                  model: CoachPresenter.presentPlan(
+                    context.t,
+                    widget.plan,
+                    step,
+                  ),
+                  readOnlyResult: step == widget.plan.hints.length - 1,
+                  onDismiss: close,
+                  onApply: close,
+                  onNext: () => setState(() => step++),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    ),
+  );
 }
 
 final class _ReviewBoard extends StatelessWidget {
@@ -435,7 +560,10 @@ final class _ReviewCell extends StatelessWidget {
       child: InkWell(
         key: ValueKey('scan-cell-${cell.index}'),
         onTap: onTap,
-        child: DecoratedBox(
+        child: AnimatedContainer(
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : MichiMotion.quick,
           decoration: BoxDecoration(
             color: conflict
                 ? MichiColors.errorTint

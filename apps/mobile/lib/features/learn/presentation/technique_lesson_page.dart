@@ -106,11 +106,17 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
                 return Column(
                   children: [
                     Expanded(
-                      child: ListView(
-                        padding: const EdgeInsets.all(MichiSpacing.xl),
-                        children: _step < 0
-                            ? _overview(context, lesson, data)
-                            : _lessonStep(context, lesson, data, cellSize),
+                      child: AnimatedSwitcher(
+                        duration: MediaQuery.disableAnimationsOf(context)
+                            ? Duration.zero
+                            : MichiMotion.standard,
+                        child: ListView(
+                          key: ValueKey(_step),
+                          padding: const EdgeInsets.all(MichiSpacing.xl),
+                          children: _step < 0
+                              ? _overview(context, lesson, data)
+                              : _lessonStep(context, lesson, data, cellSize),
+                        ),
                       ),
                     ),
                     Padding(

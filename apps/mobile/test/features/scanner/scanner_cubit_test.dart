@@ -53,6 +53,56 @@ void main() {
   );
 
   test(
+    'one hint uses the corrected position and never creates a game',
+    () async {
+      final saved = _MemoryImports();
+      final cubit = create(invalid, saved);
+      addTearDown(cubit.close);
+      await cubit.scanImage(ScanImage(bytes: [1], format: ScanImageFormat.png));
+      expect(await cubit.nextHint(), isNull);
+      expect(cubit.state.review!.issue, ScannerReviewIssue.duplicateClues);
+      cubit
+        ..selectCell(1)
+        ..editSelected(3);
+      final plan = (await cubit.nextHint())!;
+      final expected = const DeterministicHumanSolver().findNextDeduction(
+        HumanSolverState.initial(unique),
+      )!;
+      expect(plan.hints.map((hint) => hint.level), CoachHintLevel.values);
+      expect(plan.hints.last.revealedPlacements, expected.placements);
+      expect(cubit.state.phase, ScannerPhase.review);
+      expect(cubit.state.review!.selectedIndex, 1);
+      expect(cubit.state.review!.board, unique);
+      expect(saved.items, isEmpty);
+    },
+  );
+
+  test(
+    'stuck scan distinguishes impossible, unsupported and completed positions',
+    () async {
+      for (final (board, issue) in [
+        (impossible, ScannerReviewIssue.noSolution),
+        (empty, ScannerReviewIssue.unsupportedStep),
+        (
+          const BacktrackingExactSolver().solve(unique)!,
+          ScannerReviewIssue.completed,
+        ),
+      ]) {
+        final saved = _MemoryImports();
+        final cubit = create(board, saved);
+        addTearDown(cubit.close);
+        await cubit.scanImage(
+          ScanImage(bytes: [1], format: ScanImageFormat.png),
+        );
+        expect(await cubit.nextHint(), isNull);
+        expect(cubit.state.review!.issue, issue);
+        expect(cubit.state.review!.board, board);
+        expect(saved.items, isEmpty);
+      }
+    },
+  );
+
+  test(
     'given recognized clues, review edits and clear update an immutable board',
     () async {
       final cubit = create(unique, _MemoryImports(), confidence: 0.55);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_hint_ui_model.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
@@ -11,6 +12,7 @@ final class CoachPanel extends StatelessWidget {
     required this.onNext,
     required this.onDismiss,
     required this.onApply,
+    this.readOnlyResult = false,
     super.key,
   });
 
@@ -18,6 +20,7 @@ final class CoachPanel extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onDismiss;
   final VoidCallback onApply;
+  final bool readOnlyResult;
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +75,13 @@ final class CoachPanel extends StatelessWidget {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: compact ? 0 : 80),
-                              child: Text(
-                                model.instruction,
-                                key: const ValueKey('coach-instruction'),
-                                style: MichiTypography.heading,
+                              child: MichiReveal(
+                                key: ValueKey(model.stepIndex),
+                                child: Text(
+                                  model.instruction,
+                                  key: const ValueKey('coach-instruction'),
+                                  style: MichiTypography.heading,
+                                ),
                               ),
                             ),
                             if (model.techniqueLabel != null) ...[
@@ -110,8 +116,12 @@ final class CoachPanel extends StatelessWidget {
                         Expanded(
                           child: MichiButton(
                             key: const ValueKey('coach-primary-action'),
-                            label: model.primaryActionLabel,
-                            onPressed: model.placementDigit != null
+                            label: readOnlyResult
+                                ? context.t.coach.close
+                                : model.primaryActionLabel,
+                            onPressed: readOnlyResult
+                                ? onDismiss
+                                : model.placementDigit != null
                                 ? onApply
                                 : model.secondaryActionLabel == null
                                 ? onDismiss

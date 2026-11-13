@@ -123,7 +123,8 @@
     "scanSourceDetail": "Fotka nebo fotoaparát",
     "weekStatusDone": "Dokončeno",
     "weekStatusToday": "Dnes",
-    "weekStatusEmpty": "Bez aktivity"
+    "weekStatusEmpty": "Bez aktivity",
+    "scanInvite": "Máš sudoku jinde? Naskenuj ho."
   },
   "game": {
     "title": "Denní sudoku · Střední",
@@ -159,7 +160,10 @@
     "completionMistakes": "chyby",
     "completionHints": "nápovědy",
     "dailyStampEarned": "Denní razítko získáno",
-    "completionPracticeTechnique": "Další krok: $technique"
+    "completionPracticeTechnique": "Další krok: $technique",
+    "numberFirst": "Nejdřív číslo",
+    "fillNotes": "Doplnit poznámky",
+    "inputOptions": "Možnosti zadávání"
   },
   "learn": {
     "title": "Učení",
@@ -294,7 +298,9 @@
       "other": "$n dokončených hlavolamů"
     },
     "mastery": "Zvládnuto $percent %",
-    "openTechnique": "Otevřít techniku"
+    "openTechnique": "Otevřít techniku",
+    "firstPuzzle": "Začni prvním sudoku",
+    "firstPuzzleDetail": "Pak uvidíš, co ti jde a co ještě procvičit."
   },
   "profile": {
     "guest": "Host",
@@ -324,7 +330,7 @@
     "recognized": "rozpoznáno",
     "empty": "prázdné",
     "clear": "Vymazat",
-    "confirm": "Importovat sudoku",
+    "confirm": "Pokračovat v MICHI",
     "rescan": "Skenovat znovu",
     "permissionIntro": "Pro pořízení snímku povolte fotoaparát.",
     "permissionDenied": "Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.",
@@ -343,7 +349,10 @@
     "validationFailure": "Tuto úlohu se nepodařilo ověřit. Zkuste ji potvrdit znovu.",
     "unsupportedCoach": "MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.",
     "importedTitle": "Importované sudoku",
-    "lowConfidenceCount": "Políčka ke kontrole: $count"
+    "lowConfidenceCount": "Políčka ke kontrole: $count",
+    "stuck": "Nevím si rady",
+    "noStep": "MICHI zatím nedokáže najít další logický krok.",
+    "completed": "Všechna políčka jsou vyplněná. Sudoku je hotové."
   },
   "coach": {
     "step": "Nápověda $step ze 4",

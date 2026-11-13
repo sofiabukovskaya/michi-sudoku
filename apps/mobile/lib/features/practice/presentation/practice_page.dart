@@ -3,9 +3,11 @@ import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
@@ -105,7 +107,20 @@ final class _PracticePageState extends State<PracticePage> {
     }
     return BlocProvider.value(
       value: cubit,
-      child: BlocBuilder<PracticeCubit, PracticeState>(
+      child: BlocConsumer<PracticeCubit, PracticeState>(
+        listenWhen: (a, b) => a.status != b.status,
+        listener: (_, state) {
+          switch (state.status) {
+            case PracticeStatus.correct:
+              unawaited(HapticFeedback.lightImpact());
+            case PracticeStatus.incorrect:
+              unawaited(HapticFeedback.mediumImpact());
+            case PracticeStatus.completed:
+              unawaited(HapticFeedback.heavyImpact());
+            case PracticeStatus.answering:
+              break;
+          }
+        },
         builder: (context, state) => Scaffold(
           backgroundColor: MichiColors.paper,
           appBar: AppBar(
@@ -317,7 +332,10 @@ final class _PracticeControls extends StatelessWidget {
                     child: Column(
                       children: [
                         const Spacer(),
-                        _feedback(context),
+                        MichiReveal(
+                          key: ValueKey(state.status),
+                          child: _feedback(context),
+                        ),
                       ],
                     ),
                   ),

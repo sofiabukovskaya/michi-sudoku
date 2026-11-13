@@ -74,7 +74,10 @@ final class MichiBottomNav extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DecoratedBox(
+              AnimatedContainer(
+                duration: MediaQuery.disableAnimationsOf(context)
+                    ? Duration.zero
+                    : MichiMotion.quick,
                 decoration: BoxDecoration(
                   color: selected ? MichiColors.indigoTint : Colors.transparent,
                   borderRadius: BorderRadius.circular(24),

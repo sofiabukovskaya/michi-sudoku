@@ -232,6 +232,7 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get weekStatusDone => 'Dokončeno';
 	@override String get weekStatusToday => 'Dnes';
 	@override String get weekStatusEmpty => 'Bez aktivity';
+	@override String get scanInvite => 'Máš sudoku jinde? Naskenuj ho.';
 }
 
 // Path: game
@@ -275,6 +276,9 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String get completionHints => 'nápovědy';
 	@override String get dailyStampEarned => 'Denní razítko získáno';
 	@override String completionPracticeTechnique({required Object technique}) => 'Další krok: ${technique}';
+	@override String get numberFirst => 'Nejdřív číslo';
+	@override String get fillNotes => 'Doplnit poznámky';
+	@override String get inputOptions => 'Možnosti zadávání';
 }
 
 // Path: learn
@@ -359,6 +363,8 @@ class _Translations$progress$cs extends Translations$progress$uk {
 	);
 	@override String mastery({required Object percent}) => 'Zvládnuto ${percent} %';
 	@override String get openTechnique => 'Otevřít techniku';
+	@override String get firstPuzzle => 'Začni prvním sudoku';
+	@override String get firstPuzzleDetail => 'Pak uvidíš, co ti jde a co ještě procvičit.';
 }
 
 // Path: profile
@@ -402,7 +408,7 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get recognized => 'rozpoznáno';
 	@override String get empty => 'prázdné';
 	@override String get clear => 'Vymazat';
-	@override String get confirm => 'Importovat sudoku';
+	@override String get confirm => 'Pokračovat v MICHI';
 	@override String get rescan => 'Skenovat znovu';
 	@override String get permissionIntro => 'Pro pořízení snímku povolte fotoaparát.';
 	@override String get permissionDenied => 'Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.';
@@ -422,6 +428,9 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get unsupportedCoach => 'MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.';
 	@override String get importedTitle => 'Importované sudoku';
 	@override String lowConfidenceCount({required Object count}) => 'Políčka ke kontrole: ${count}';
+	@override String get stuck => 'Nevím si rady';
+	@override String get noStep => 'MICHI zatím nedokáže najít další logický krok.';
+	@override String get completed => 'Všechna políčka jsou vyplněná. Sudoku je hotové.';
 }
 
 // Path: coach
@@ -848,6 +857,7 @@ extension on TranslationsCs {
 			'home.weekStatusDone' => 'Dokončeno',
 			'home.weekStatusToday' => 'Dnes',
 			'home.weekStatusEmpty' => 'Bez aktivity',
+			'home.scanInvite' => 'Máš sudoku jinde? Naskenuj ho.',
 			'game.title' => 'Denní sudoku · Střední',
 			'game.undo' => 'Zpět',
 			'game.erase' => 'Smazat',
@@ -882,6 +892,9 @@ extension on TranslationsCs {
 			'game.completionHints' => 'nápovědy',
 			'game.dailyStampEarned' => 'Denní razítko získáno',
 			'game.completionPracticeTechnique' => ({required Object technique}) => 'Další krok: ${technique}',
+			'game.numberFirst' => 'Nejdřív číslo',
+			'game.fillNotes' => 'Doplnit poznámky',
+			'game.inputOptions' => 'Možnosti zadávání',
 			'learn.title' => 'Učení',
 			'learn.intro' => 'Jedna technika, jeden jasný krok.',
 			'learn.newLabel' => 'Nové',
@@ -991,6 +1004,8 @@ extension on TranslationsCs {
 			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ),
 			'progress.mastery' => ({required Object percent}) => 'Zvládnuto ${percent} %',
 			'progress.openTechnique' => 'Otevřít techniku',
+			'progress.firstPuzzle' => 'Začni prvním sudoku',
+			'progress.firstPuzzleDetail' => 'Pak uvidíš, co ti jde a co ještě procvičit.',
 			'profile.guest' => 'Host',
 			'profile.localOnly' => 'Postup se ukládá do tohoto zařízení.',
 			'profile.puzzles' => 'Hlavolamy',
@@ -1016,7 +1031,7 @@ extension on TranslationsCs {
 			'scanner.recognized' => 'rozpoznáno',
 			'scanner.empty' => 'prázdné',
 			'scanner.clear' => 'Vymazat',
-			'scanner.confirm' => 'Importovat sudoku',
+			'scanner.confirm' => 'Pokračovat v MICHI',
 			'scanner.rescan' => 'Skenovat znovu',
 			'scanner.permissionIntro' => 'Pro pořízení snímku povolte fotoaparát.',
 			'scanner.permissionDenied' => 'Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.',
@@ -1036,6 +1051,9 @@ extension on TranslationsCs {
 			'scanner.unsupportedCoach' => 'MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.',
 			'scanner.importedTitle' => 'Importované sudoku',
 			'scanner.lowConfidenceCount' => ({required Object count}) => 'Políčka ke kontrole: ${count}',
+			'scanner.stuck' => 'Nevím si rady',
+			'scanner.noStep' => 'MICHI zatím nedokáže najít další logický krok.',
+			'scanner.completed' => 'Všechna políčka jsou vyplněná. Sudoku je hotové.',
 			'coach.step' => ({required Object step}) => 'Nápověda ${step} ze 4',
 			'coach.kTry' => 'Zkusím to',
 			'coach.show' => 'Ukázat',

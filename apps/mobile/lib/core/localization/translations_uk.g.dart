@@ -459,6 +459,9 @@ class Translations$home$uk {
 
 	/// uk: 'Без активності'
 	String get weekStatusEmpty => 'Без активності';
+
+	/// uk: 'Маєш судоку деінде? Відскануй його.'
+	String get scanInvite => 'Маєш судоку деінде? Відскануй його.';
 }
 
 // Path: game
@@ -570,6 +573,15 @@ class Translations$game$uk {
 
 	/// uk: 'Наступний крок: $technique'
 	String completionPracticeTechnique({required Object technique}) => 'Наступний крок: ${technique}';
+
+	/// uk: 'Спочатку цифра'
+	String get numberFirst => 'Спочатку цифра';
+
+	/// uk: 'Заповнити нотатки'
+	String get fillNotes => 'Заповнити нотатки';
+
+	/// uk: 'Спосіб введення'
+	String get inputOptions => 'Спосіб введення';
 }
 
 // Path: learn
@@ -778,6 +790,12 @@ class Translations$progress$uk {
 
 	/// uk: 'Відкрити техніку'
 	String get openTechnique => 'Відкрити техніку';
+
+	/// uk: 'Почнімо з першої головоломки'
+	String get firstPuzzle => 'Почнімо з першої головоломки';
+
+	/// uk: 'Після неї тут з’явиться, що тобі вдається і що варто потренувати.'
+	String get firstPuzzleDetail => 'Після неї тут з’явиться, що тобі вдається і що варто потренувати.';
 }
 
 // Path: profile
@@ -872,8 +890,8 @@ class Translations$scanner$uk {
 	/// uk: 'Очистити'
 	String get clear => 'Очистити';
 
-	/// uk: 'Імпортувати судоку'
-	String get confirm => 'Імпортувати судоку';
+	/// uk: 'Продовжити в MICHI'
+	String get confirm => 'Продовжити в MICHI';
 
 	/// uk: 'Сканувати знову'
 	String get rescan => 'Сканувати знову';
@@ -931,6 +949,15 @@ class Translations$scanner$uk {
 
 	/// uk: 'Клітинок для перевірки: $count'
 	String lowConfidenceCount({required Object count}) => 'Клітинок для перевірки: ${count}';
+
+	/// uk: 'Я застряг — допоможи'
+	String get stuck => 'Я застряг — допоможи';
+
+	/// uk: 'MICHI поки не знаходить наступного логічного кроку.'
+	String get noStep => 'MICHI поки не знаходить наступного логічного кроку.';
+
+	/// uk: 'Усі клітинки заповнені. Судоку завершено.'
+	String get completed => 'Усі клітинки заповнені. Судоку завершено.';
 }
 
 // Path: coach
@@ -1665,6 +1692,7 @@ extension on Translations {
 			'home.weekStatusDone' => 'Завершено',
 			'home.weekStatusToday' => 'Сьогодні',
 			'home.weekStatusEmpty' => 'Без активності',
+			'home.scanInvite' => 'Маєш судоку деінде? Відскануй його.',
 			'game.title' => 'Судоку дня · Середній',
 			'game.undo' => 'Скасувати',
 			'game.erase' => 'Стерти',
@@ -1699,6 +1727,9 @@ extension on Translations {
 			'game.completionHints' => 'підказки',
 			'game.dailyStampEarned' => 'Штамп дня отримано',
 			'game.completionPracticeTechnique' => ({required Object technique}) => 'Наступний крок: ${technique}',
+			'game.numberFirst' => 'Спочатку цифра',
+			'game.fillNotes' => 'Заповнити нотатки',
+			'game.inputOptions' => 'Спосіб введення',
 			'learn.title' => 'Навчання',
 			'learn.intro' => 'Крок за кроком до розуміння технік.',
 			'learn.newLabel' => 'Нове',
@@ -1808,6 +1839,8 @@ extension on Translations {
 			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ),
 			'progress.mastery' => ({required Object percent}) => 'Опанування ${percent}%',
 			'progress.openTechnique' => 'Відкрити техніку',
+			'progress.firstPuzzle' => 'Почнімо з першої головоломки',
+			'progress.firstPuzzleDetail' => 'Після неї тут з’явиться, що тобі вдається і що варто потренувати.',
 			'profile.guest' => 'Гість',
 			'profile.localOnly' => 'Прогрес зберігається на цьому пристрої.',
 			'profile.puzzles' => 'Головоломки',
@@ -1833,7 +1866,7 @@ extension on Translations {
 			'scanner.recognized' => 'розпізнано',
 			'scanner.empty' => 'порожня',
 			'scanner.clear' => 'Очистити',
-			'scanner.confirm' => 'Імпортувати судоку',
+			'scanner.confirm' => 'Продовжити в MICHI',
 			'scanner.rescan' => 'Сканувати знову',
 			'scanner.permissionIntro' => 'Дозвольте доступ до камери, щоб зробити фото.',
 			'scanner.permissionDenied' => 'Доступ до камери відхилено. Ви можете вибрати фото.',
@@ -1853,6 +1886,9 @@ extension on Translations {
 			'scanner.unsupportedCoach' => 'MICHI поки не може пояснити кожен крок цього судоку.',
 			'scanner.importedTitle' => 'Імпортоване судоку',
 			'scanner.lowConfidenceCount' => ({required Object count}) => 'Клітинок для перевірки: ${count}',
+			'scanner.stuck' => 'Я застряг — допоможи',
+			'scanner.noStep' => 'MICHI поки не знаходить наступного логічного кроку.',
+			'scanner.completed' => 'Усі клітинки заповнені. Судоку завершено.',
 			'coach.step' => ({required Object step}) => 'Підказка ${step} з 4',
 			'coach.kTry' => 'Спробую',
 			'coach.show' => 'Показати',

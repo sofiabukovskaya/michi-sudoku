@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
@@ -28,13 +29,7 @@ final class SudokuBoardWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: CustomPaint(
-              painter: SudokuBoardPainter(view: view, geometry: geometry),
-              foregroundPainter: CoachOverlayPainter(
-                hint: view.coachHint,
-                geometry: geometry,
-              ),
-            ),
+            child: _BoardPaint(view: view, geometry: geometry),
           ),
           for (var index = 0; index < 81; index++)
             _cellSemantics(
@@ -84,4 +79,44 @@ final class SudokuBoardWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+// Animate just the painted layers. Hit targets and spoken labels always reflect
+// the current board, even when a player taps several squares in succession.
+class _BoardPaint extends StatefulWidget {
+  const _BoardPaint({required this.view, required this.geometry});
+  final BoardViewState view;
+  final BoardGeometry geometry;
+  @override
+  State<_BoardPaint> createState() => _BoardPaintState();
+}
+
+class _BoardPaintState extends State<_BoardPaint> {
+  BoardViewState? previous;
+  @override
+  void didUpdateWidget(_BoardPaint oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.view != widget.view) previous = oldWidget.view;
+  }
+
+  @override
+  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
+    key: ValueKey(widget.view),
+    tween: Tween(begin: previous == null ? 1 : 0, end: 1),
+    duration: MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : MichiMotion.quick,
+    builder: (_, progress, _) => CustomPaint(
+      painter: SudokuBoardPainter(
+        view: widget.view,
+        geometry: widget.geometry,
+        previous: previous,
+        progress: progress,
+      ),
+      foregroundPainter: CoachOverlayPainter(
+        hint: widget.view.coachHint,
+        geometry: widget.geometry,
+      ),
+    ),
+  );
 }
