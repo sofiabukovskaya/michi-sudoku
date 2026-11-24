@@ -101,12 +101,13 @@ export async function sendDueReminders(db: Firestore, messaging: Messaging, now:
       let item: Awaited<ReturnType<typeof claim>>;
       try { item = await claim(db, doc.ref, now); }
       catch { continue; }
-      if (item === null) continue;
+      const owner = doc.ref.parent.parent;
+      if (item === null || !owner || owner.parent.path !== 'users') continue;
       progressed++;
       try {
         await messaging.send({token: item.token,
           notification: {title: 'MICHI', body: reminderCopy(item.locale)},
-          data: {type: 'dailyReminder', date: item.date},
+          data: {type: 'dailyReminder', date: item.date, uid: owner.id},
           android: {notification: {channelId: 'michi_daily'}},
           apns: {payload: {aps: {sound: 'default'}}},
         });

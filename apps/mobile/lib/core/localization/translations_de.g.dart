@@ -123,7 +123,7 @@ class _Translations$playerLevel$de extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => 'Wie gut kennst du Sudoku?';
 	@override String get goToGame => 'Jetzt spielen';
-	@override String get subtitle => 'Davon hängen die erste Lektion und der Schwierigkeitsgrad ab. Du kannst es später ändern.';
+	@override String get subtitle => 'Wähle die Beschreibung, die am besten zu dir passt.';
 	@override String get beginner => 'Ich fange gerade an';
 	@override String get beginnerDetail => 'Regeln und erste Züge';
 	@override String get basics => 'Ich kenne die Grundlagen';
@@ -147,7 +147,7 @@ class _Translations$auth$de extends Translations$auth$uk {
 	@override String get google => 'Mit Google fortfahren';
 	@override String get emailEntry => 'Mit E-Mail anmelden';
 	@override String get createTitle => 'Konto erstellen';
-	@override String get createSubtitle => 'Dein Fortschritt bleibt auf diesem Gerät, bis die Synchronisierung verfügbar ist.';
+	@override String get createSubtitle => 'Synchronisiere gelöste Sudokus und deinen Lernfortschritt auf deinen Geräten.';
 	@override String get signInTitle => 'Willkommen zurück';
 	@override String get name => 'Name';
 	@override String get email => 'E-Mail';
@@ -181,6 +181,7 @@ class _Translations$auth$de extends Translations$auth$uk {
 	@override String get errorTooMany => 'Zu viele Versuche. Versuche es später erneut.';
 	@override String get errorNetwork => 'Prüfe deine Verbindung und versuche es erneut.';
 	@override String get errorUnavailable => 'Der Kontodienst ist nicht verfügbar. Du kannst als Gast weiterspielen.';
+	@override String get errorSignInAgain => 'Melde dich erneut an und versuche es noch einmal.';
 	@override String get errorUnexpected => 'Etwas ist schiefgegangen. Bitte versuche es erneut.';
 	@override String get showPassword => 'Passwort anzeigen';
 	@override String get hidePassword => 'Passwort verbergen';
@@ -763,7 +764,7 @@ extension on TranslationsDe {
 			'onboarding.pathBody' => 'MICHI erkennt, was dir schwerfällt, und schlägt Übungen vor.',
 			'playerLevel.title' => 'Wie gut kennst du Sudoku?',
 			'playerLevel.goToGame' => 'Jetzt spielen',
-			'playerLevel.subtitle' => 'Davon hängen die erste Lektion und der Schwierigkeitsgrad ab. Du kannst es später ändern.',
+			'playerLevel.subtitle' => 'Wähle die Beschreibung, die am besten zu dir passt.',
 			'playerLevel.beginner' => 'Ich fange gerade an',
 			'playerLevel.beginnerDetail' => 'Regeln und erste Züge',
 			'playerLevel.basics' => 'Ich kenne die Grundlagen',
@@ -778,7 +779,7 @@ extension on TranslationsDe {
 			'auth.google' => 'Mit Google fortfahren',
 			'auth.emailEntry' => 'Mit E-Mail anmelden',
 			'auth.createTitle' => 'Konto erstellen',
-			'auth.createSubtitle' => 'Dein Fortschritt bleibt auf diesem Gerät, bis die Synchronisierung verfügbar ist.',
+			'auth.createSubtitle' => 'Synchronisiere gelöste Sudokus und deinen Lernfortschritt auf deinen Geräten.',
 			'auth.signInTitle' => 'Willkommen zurück',
 			'auth.name' => 'Name',
 			'auth.email' => 'E-Mail',
@@ -812,6 +813,7 @@ extension on TranslationsDe {
 			'auth.errorTooMany' => 'Zu viele Versuche. Versuche es später erneut.',
 			'auth.errorNetwork' => 'Prüfe deine Verbindung und versuche es erneut.',
 			'auth.errorUnavailable' => 'Der Kontodienst ist nicht verfügbar. Du kannst als Gast weiterspielen.',
+			'auth.errorSignInAgain' => 'Melde dich erneut an und versuche es noch einmal.',
 			'auth.errorUnexpected' => 'Etwas ist schiefgegangen. Bitte versuche es erneut.',
 			'auth.showPassword' => 'Passwort anzeigen',
 			'auth.hidePassword' => 'Passwort verbergen',

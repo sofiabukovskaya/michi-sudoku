@@ -123,7 +123,7 @@ class _Translations$playerLevel$en extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => 'How well do you know Sudoku?';
 	@override String get goToGame => 'Start playing';
-	@override String get subtitle => 'Your first lesson and puzzle difficulty follow this choice. You can change it anytime.';
+	@override String get subtitle => 'Choose the description that sounds most like you.';
 	@override String get beginner => 'Just starting';
 	@override String get beginnerDetail => 'Rules and first moves';
 	@override String get basics => 'Know the basics';
@@ -147,7 +147,7 @@ class _Translations$auth$en extends Translations$auth$uk {
 	@override String get google => 'Continue with Google';
 	@override String get emailEntry => 'Sign in with email';
 	@override String get createTitle => 'Create an account';
-	@override String get createSubtitle => 'Your progress stays on this device until sync is available.';
+	@override String get createSubtitle => 'Sync completed puzzles and learning progress across your devices.';
 	@override String get signInTitle => 'Welcome back';
 	@override String get name => 'Name';
 	@override String get email => 'Email';
@@ -181,6 +181,7 @@ class _Translations$auth$en extends Translations$auth$uk {
 	@override String get errorTooMany => 'Too many attempts. Try again later.';
 	@override String get errorNetwork => 'Check your connection and try again.';
 	@override String get errorUnavailable => 'Account services are unavailable. You can keep playing as a guest.';
+	@override String get errorSignInAgain => 'Sign in again, then retry this action.';
 	@override String get errorUnexpected => 'Something went wrong. Please try again.';
 	@override String get showPassword => 'Show password';
 	@override String get hidePassword => 'Hide password';
@@ -763,7 +764,7 @@ extension on TranslationsEn {
 			'onboarding.pathBody' => 'MICHI notices where you struggle and suggests what to practice.',
 			'playerLevel.title' => 'How well do you know Sudoku?',
 			'playerLevel.goToGame' => 'Start playing',
-			'playerLevel.subtitle' => 'Your first lesson and puzzle difficulty follow this choice. You can change it anytime.',
+			'playerLevel.subtitle' => 'Choose the description that sounds most like you.',
 			'playerLevel.beginner' => 'Just starting',
 			'playerLevel.beginnerDetail' => 'Rules and first moves',
 			'playerLevel.basics' => 'Know the basics',
@@ -778,7 +779,7 @@ extension on TranslationsEn {
 			'auth.google' => 'Continue with Google',
 			'auth.emailEntry' => 'Sign in with email',
 			'auth.createTitle' => 'Create an account',
-			'auth.createSubtitle' => 'Your progress stays on this device until sync is available.',
+			'auth.createSubtitle' => 'Sync completed puzzles and learning progress across your devices.',
 			'auth.signInTitle' => 'Welcome back',
 			'auth.name' => 'Name',
 			'auth.email' => 'Email',
@@ -812,6 +813,7 @@ extension on TranslationsEn {
 			'auth.errorTooMany' => 'Too many attempts. Try again later.',
 			'auth.errorNetwork' => 'Check your connection and try again.',
 			'auth.errorUnavailable' => 'Account services are unavailable. You can keep playing as a guest.',
+			'auth.errorSignInAgain' => 'Sign in again, then retry this action.',
 			'auth.errorUnexpected' => 'Something went wrong. Please try again.',
 			'auth.showPassword' => 'Show password',
 			'auth.hidePassword' => 'Hide password',

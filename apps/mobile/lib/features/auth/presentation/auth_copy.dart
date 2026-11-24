@@ -9,6 +9,7 @@ String authProblemText(BuildContext context, AuthProblem problem) {
     AuthProblem.weakPassword => copy.errorWeakPassword,
     AuthProblem.emailInUse => copy.errorEmailInUse,
     AuthProblem.wrongCredentials => copy.errorWrongCredentials,
+    AuthProblem.signInAgain => copy.errorSignInAgain,
     AuthProblem.disabled => copy.errorDisabled,
     AuthProblem.tooManyRequests => copy.errorTooMany,
     AuthProblem.network => copy.errorNetwork,

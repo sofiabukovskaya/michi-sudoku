@@ -31,18 +31,24 @@ final class NotificationCoordinator {
       // Foreground messages are intentionally silent; Home already shows Daily.
     });
     _opened = FirebaseMessaging.onMessageOpenedApp.listen(_handle);
-    final initial = await FirebaseMessaging.instance.getInitialMessage();
-    if (initial != null) _handle(initial);
+    try {
+      final initial = await FirebaseMessaging.instance.getInitialMessage();
+      if (initial != null) _handle(initial);
+    } on Object {
+      // Notification startup is optional when the platform service is offline.
+    }
   }
 
   void _handle(RemoteMessage message) {
     if (message.data['type'] != 'dailyReminder') return;
+    final recipient = message.data['uid'];
+    if (recipient is! String || recipient.isEmpty) return;
     final id = message.messageId;
     if (id != null && !_handledIds.add(id)) return;
-    unawaited(_openHome());
+    unawaited(_openDaily(recipient));
   }
 
-  Future<void> _openHome() async {
+  Future<void> _openDaily(String recipient) async {
     // Route after first frame and account/profile selection. Home resolves its
     // locked Daily and completed/active state; a tap never creates a new game.
     await WidgetsBinding.instance.endOfFrame;
@@ -50,9 +56,11 @@ final class NotificationCoordinator {
       if (_profileReady) break;
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
-    if (!_profileReady) return;
+    if (!_profileReady || auth.state.account?.uid != recipient) return;
     await router.replaceAll([
-      AppShellRoute(children: [HomeRoute()]),
+      AppShellRoute(
+        children: [HomeRoute(key: UniqueKey(), launchAction: 'daily')],
+      ),
     ]);
   }
 

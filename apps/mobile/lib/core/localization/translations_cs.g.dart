@@ -123,7 +123,7 @@ class _Translations$playerLevel$cs extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => 'Jak dobře znáš sudoku?';
 	@override String get goToGame => 'Začít hrát';
-	@override String get subtitle => 'Podle toho vybereme první lekci a obtížnost. Změnit to můžeš kdykoli.';
+	@override String get subtitle => 'Vyber popis, který tě nejlépe vystihuje.';
 	@override String get beginner => 'Teprve začínám';
 	@override String get beginnerDetail => 'Pravidla a první tahy';
 	@override String get basics => 'Znám základy';
@@ -147,7 +147,7 @@ class _Translations$auth$cs extends Translations$auth$uk {
 	@override String get google => 'Pokračovat přes Google';
 	@override String get emailEntry => 'Přihlásit se e-mailem';
 	@override String get createTitle => 'Vytvořit účet';
-	@override String get createSubtitle => 'Pokrok zůstává na tomto zařízení, dokud nebude dostupná synchronizace.';
+	@override String get createSubtitle => 'Synchronizuj dokončená sudoku a pokrok v učení mezi svými zařízeními.';
 	@override String get signInTitle => 'Vítejte zpět';
 	@override String get name => 'Jméno';
 	@override String get email => 'E-mail';
@@ -181,6 +181,7 @@ class _Translations$auth$cs extends Translations$auth$uk {
 	@override String get errorTooMany => 'Příliš mnoho pokusů. Zkuste to později.';
 	@override String get errorNetwork => 'Zkontrolujte připojení a zkuste to znovu.';
 	@override String get errorUnavailable => 'Služba účtů není dostupná. Můžete dál hrát jako host.';
+	@override String get errorSignInAgain => 'Přihlas se znovu a akci zopakuj.';
 	@override String get errorUnexpected => 'Něco se pokazilo. Zkuste to znovu.';
 	@override String get showPassword => 'Zobrazit heslo';
 	@override String get hidePassword => 'Skrýt heslo';
@@ -766,7 +767,7 @@ extension on TranslationsCs {
 			'onboarding.pathBody' => 'MICHI pozná, co je pro tebe těžké, a navrhne procvičení.',
 			'playerLevel.title' => 'Jak dobře znáš sudoku?',
 			'playerLevel.goToGame' => 'Začít hrát',
-			'playerLevel.subtitle' => 'Podle toho vybereme první lekci a obtížnost. Změnit to můžeš kdykoli.',
+			'playerLevel.subtitle' => 'Vyber popis, který tě nejlépe vystihuje.',
 			'playerLevel.beginner' => 'Teprve začínám',
 			'playerLevel.beginnerDetail' => 'Pravidla a první tahy',
 			'playerLevel.basics' => 'Znám základy',
@@ -781,7 +782,7 @@ extension on TranslationsCs {
 			'auth.google' => 'Pokračovat přes Google',
 			'auth.emailEntry' => 'Přihlásit se e-mailem',
 			'auth.createTitle' => 'Vytvořit účet',
-			'auth.createSubtitle' => 'Pokrok zůstává na tomto zařízení, dokud nebude dostupná synchronizace.',
+			'auth.createSubtitle' => 'Synchronizuj dokončená sudoku a pokrok v učení mezi svými zařízeními.',
 			'auth.signInTitle' => 'Vítejte zpět',
 			'auth.name' => 'Jméno',
 			'auth.email' => 'E-mail',
@@ -815,6 +816,7 @@ extension on TranslationsCs {
 			'auth.errorTooMany' => 'Příliš mnoho pokusů. Zkuste to později.',
 			'auth.errorNetwork' => 'Zkontrolujte připojení a zkuste to znovu.',
 			'auth.errorUnavailable' => 'Služba účtů není dostupná. Můžete dál hrát jako host.',
+			'auth.errorSignInAgain' => 'Přihlas se znovu a akci zopakuj.',
 			'auth.errorUnexpected' => 'Něco se pokazilo. Zkuste to znovu.',
 			'auth.showPassword' => 'Zobrazit heslo',
 			'auth.hidePassword' => 'Skrýt heslo',

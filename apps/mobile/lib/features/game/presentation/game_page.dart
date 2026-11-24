@@ -201,7 +201,13 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   void _attach(GameCubit cubit) {
     _cubit = cubit;
     _loading = false;
-    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+    if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+      _startTicker(cubit);
+    }
+  }
+
+  void _startTicker(GameCubit cubit) {
+    _ticker ??= Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted &&
           !cubit.state.isPaused &&
           cubit.state.status != GameStatus.completed) {
@@ -212,10 +218,15 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState lifecycle) {
-    if (lifecycle == AppLifecycleState.inactive ||
+    if (lifecycle == AppLifecycleState.resumed) {
+      final cubit = _cubit;
+      if (cubit != null) _startTicker(cubit);
+    } else if (lifecycle == AppLifecycleState.inactive ||
         lifecycle == AppLifecycleState.paused ||
         lifecycle == AppLifecycleState.detached) {
       final cubit = _cubit;
+      _ticker?.cancel();
+      _ticker = null;
       if (cubit != null) unawaited(cubit.onAppBackground());
     }
   }

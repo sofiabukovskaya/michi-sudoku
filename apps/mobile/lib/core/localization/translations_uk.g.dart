@@ -169,8 +169,8 @@ class Translations$playerLevel$uk {
 	/// uk: 'До гри'
 	String get goToGame => 'До гри';
 
-	/// uk: 'Від цього залежать перший урок і складність. Змінити можна будь-коли.'
-	String get subtitle => 'Від цього залежать перший урок і складність. Змінити можна будь-коли.';
+	/// uk: 'Вибери опис, який найкраще тобі підходить.'
+	String get subtitle => 'Вибери опис, який найкраще тобі підходить.';
 
 	/// uk: 'Тільки починаю'
 	String get beginner => 'Тільки починаю';
@@ -223,8 +223,8 @@ class Translations$auth$uk {
 	/// uk: 'Створити акаунт'
 	String get createTitle => 'Створити акаунт';
 
-	/// uk: 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.'
-	String get createSubtitle => 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.';
+	/// uk: 'Синхронізуй завершені судоку та навчальний прогрес між своїми пристроями.'
+	String get createSubtitle => 'Синхронізуй завершені судоку та навчальний прогрес між своїми пристроями.';
 
 	/// uk: 'З поверненням'
 	String get signInTitle => 'З поверненням';
@@ -324,6 +324,9 @@ class Translations$auth$uk {
 
 	/// uk: 'Сервіс акаунтів недоступний. Можна грати без акаунта.'
 	String get errorUnavailable => 'Сервіс акаунтів недоступний. Можна грати без акаунта.';
+
+	/// uk: 'Увійди ще раз і повтори дію.'
+	String get errorSignInAgain => 'Увійди ще раз і повтори дію.';
 
 	/// uk: 'Щось пішло не так. Спробуйте ще раз.'
 	String get errorUnexpected => 'Щось пішло не так. Спробуйте ще раз.';
@@ -1601,7 +1604,7 @@ extension on Translations {
 			'onboarding.pathBody' => 'MICHI бачить, де тобі складно, і пропонує, що потренувати.',
 			'playerLevel.title' => 'Як добре ти знаєш судоку?',
 			'playerLevel.goToGame' => 'До гри',
-			'playerLevel.subtitle' => 'Від цього залежать перший урок і складність. Змінити можна будь-коли.',
+			'playerLevel.subtitle' => 'Вибери опис, який найкраще тобі підходить.',
 			'playerLevel.beginner' => 'Тільки починаю',
 			'playerLevel.beginnerDetail' => 'Правила й перші ходи',
 			'playerLevel.basics' => 'Знаю основи',
@@ -1616,7 +1619,7 @@ extension on Translations {
 			'auth.google' => 'Продовжити з Google',
 			'auth.emailEntry' => 'Увійти через пошту',
 			'auth.createTitle' => 'Створити акаунт',
-			'auth.createSubtitle' => 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.',
+			'auth.createSubtitle' => 'Синхронізуй завершені судоку та навчальний прогрес між своїми пристроями.',
 			'auth.signInTitle' => 'З поверненням',
 			'auth.name' => 'Ім’я',
 			'auth.email' => 'Пошта',
@@ -1650,6 +1653,7 @@ extension on Translations {
 			'auth.errorTooMany' => 'Забагато спроб. Спробуйте пізніше.',
 			'auth.errorNetwork' => 'Перевірте з’єднання й спробуйте ще раз.',
 			'auth.errorUnavailable' => 'Сервіс акаунтів недоступний. Можна грати без акаунта.',
+			'auth.errorSignInAgain' => 'Увійди ще раз і повтори дію.',
 			'auth.errorUnexpected' => 'Щось пішло не так. Спробуйте ще раз.',
 			'auth.showPassword' => 'Показати пароль',
 			'auth.hidePassword' => 'Сховати пароль',

@@ -12,7 +12,10 @@ final class FirebaseAuthRepository implements AuthRepository {
   // Enable each provider only after its console and platform setup is verified.
   static bool get emailEnabled =>
       FirebaseRuntime.useEmulators ||
-      const bool.fromEnvironment('MICHI_EMAIL_AUTH_ENABLED');
+      const bool.fromEnvironment(
+        'MICHI_EMAIL_AUTH_ENABLED',
+        defaultValue: true,
+      );
   static bool get googleEnabled =>
       const bool.fromEnvironment('MICHI_GOOGLE_AUTH_ENABLED');
   static bool get appleEnabled =>

@@ -123,7 +123,7 @@ class _Translations$playerLevel$fr extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => 'Connais-tu bien le sudoku ?';
 	@override String get goToGame => 'Commencer à jouer';
-	@override String get subtitle => 'Cela détermine ta première leçon et la difficulté. Tu peux changer plus tard.';
+	@override String get subtitle => 'Choisis la description qui te correspond le mieux.';
 	@override String get beginner => 'Je débute';
 	@override String get beginnerDetail => 'Règles et premiers coups';
 	@override String get basics => 'Je connais les bases';
@@ -147,7 +147,7 @@ class _Translations$auth$fr extends Translations$auth$uk {
 	@override String get google => 'Continuer avec Google';
 	@override String get emailEntry => 'Se connecter par e-mail';
 	@override String get createTitle => 'Créer un compte';
-	@override String get createSubtitle => 'Ta progression reste sur cet appareil jusqu’à ce que la synchronisation soit disponible.';
+	@override String get createSubtitle => 'Synchronise tes sudokus terminés et ta progression entre tes appareils.';
 	@override String get signInTitle => 'Bon retour';
 	@override String get name => 'Nom';
 	@override String get email => 'E-mail';
@@ -181,6 +181,7 @@ class _Translations$auth$fr extends Translations$auth$uk {
 	@override String get errorTooMany => 'Trop de tentatives. Réessaie plus tard.';
 	@override String get errorNetwork => 'Vérifie ta connexion et réessaie.';
 	@override String get errorUnavailable => 'Le service de comptes est indisponible. Tu peux continuer sans compte.';
+	@override String get errorSignInAgain => 'Reconnecte-toi, puis réessaie.';
 	@override String get errorUnexpected => 'Une erreur s’est produite. Réessaie.';
 	@override String get showPassword => 'Afficher le mot de passe';
 	@override String get hidePassword => 'Masquer le mot de passe';
@@ -763,7 +764,7 @@ extension on TranslationsFr {
 			'onboarding.pathBody' => 'MICHI repère tes difficultés et te suggère quoi travailler.',
 			'playerLevel.title' => 'Connais-tu bien le sudoku ?',
 			'playerLevel.goToGame' => 'Commencer à jouer',
-			'playerLevel.subtitle' => 'Cela détermine ta première leçon et la difficulté. Tu peux changer plus tard.',
+			'playerLevel.subtitle' => 'Choisis la description qui te correspond le mieux.',
 			'playerLevel.beginner' => 'Je débute',
 			'playerLevel.beginnerDetail' => 'Règles et premiers coups',
 			'playerLevel.basics' => 'Je connais les bases',
@@ -778,7 +779,7 @@ extension on TranslationsFr {
 			'auth.google' => 'Continuer avec Google',
 			'auth.emailEntry' => 'Se connecter par e-mail',
 			'auth.createTitle' => 'Créer un compte',
-			'auth.createSubtitle' => 'Ta progression reste sur cet appareil jusqu’à ce que la synchronisation soit disponible.',
+			'auth.createSubtitle' => 'Synchronise tes sudokus terminés et ta progression entre tes appareils.',
 			'auth.signInTitle' => 'Bon retour',
 			'auth.name' => 'Nom',
 			'auth.email' => 'E-mail',
@@ -812,6 +813,7 @@ extension on TranslationsFr {
 			'auth.errorTooMany' => 'Trop de tentatives. Réessaie plus tard.',
 			'auth.errorNetwork' => 'Vérifie ta connexion et réessaie.',
 			'auth.errorUnavailable' => 'Le service de comptes est indisponible. Tu peux continuer sans compte.',
+			'auth.errorSignInAgain' => 'Reconnecte-toi, puis réessaie.',
 			'auth.errorUnexpected' => 'Une erreur s’est produite. Réessaie.',
 			'auth.showPassword' => 'Afficher le mot de passe',
 			'auth.hidePassword' => 'Masquer le mot de passe',
