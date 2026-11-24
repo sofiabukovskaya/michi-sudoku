@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
@@ -99,175 +100,157 @@ final class _ProgressPageState extends State<ProgressPage>
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: MichiColors.paper,
     body: SafeArea(
-      child: FutureBuilder<_ProgressData>(
-        future: _data,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: snapshot.hasError
-                  ? Text(context.t.learn.unavailable)
-                  : const CircularProgressIndicator(),
-            );
-          }
-          final data = snapshot.data!;
-          if (data.games.isEmpty && data.techniques.isEmpty) {
-            return ListView(
-              padding: const EdgeInsets.all(MichiSpacing.xl),
-              children: [
-                Text(context.t.home.progress, style: MichiTypography.display),
-                const SizedBox(height: MichiSpacing.xxl),
-                Image.asset(
-                  'assets/images/progress_first_puzzle.png',
-                  height: 180,
-                  fit: BoxFit.contain,
-                  excludeFromSemantics: true,
-                ),
-                const SizedBox(height: MichiSpacing.xxl),
-                Text(
-                  context.t.progress.firstPuzzle,
-                  style: MichiTypography.heading,
-                ),
-                const SizedBox(height: MichiSpacing.sm),
-                Text(
-                  context.t.progress.firstPuzzleDetail,
-                  style: MichiTypography.secondary,
-                ),
-                const SizedBox(height: MichiSpacing.lg),
-                MichiButton(
-                  label: context.t.home.dailyStart,
-                  onPressed: () => context.router.root.navigate(
-                    AppShellRoute(
-                      children: [
-                        HomeRoute(key: UniqueKey(), launchAction: 'daily'),
-                      ],
-                    ),
+      child: MichiContentFrame(
+        child: FutureBuilder<_ProgressData>(
+          future: _data,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: snapshot.hasError
+                    ? Text(context.t.learn.unavailable)
+                    : const CircularProgressIndicator(),
+              );
+            }
+            final data = snapshot.data!;
+            if (data.games.isEmpty && data.techniques.isEmpty) {
+              return _EmptyProgress(
+                onStart: () => context.router.root.navigate(
+                  AppShellRoute(
+                    children: [
+                      HomeRoute(key: UniqueKey(), launchAction: 'daily'),
+                    ],
                   ),
                 ),
-              ],
-            );
-          }
-          final strong =
-              data.techniques.values
-                  .where(
-                    (item) =>
-                        item.mastery == TechniqueMastery.practicing ||
-                        item.mastery == TechniqueMastery.mastered,
-                  )
-                  .toList()
-                ..sort((a, b) => b.masteryPercent.compareTo(a.masteryPercent));
-          final current = data.recommendation.technique;
-          final currentProgress =
-              data.techniques[current] ?? TechniqueProgress(technique: current);
-          return RefreshIndicator(
-            onRefresh: () async {
-              setState(() {
-                _data = _load();
-              });
-              await _data;
-            },
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
-              children: [
-                Text(context.t.home.progress, style: MichiTypography.display),
-                const SizedBox(height: MichiSpacing.xxl),
-                Text(
-                  context.t.progress.doingWell,
-                  style: MichiTypography.heading,
-                ),
-                const SizedBox(height: MichiSpacing.md),
-                if (strong.isEmpty)
+              );
+            }
+            final strong =
+                data.techniques.values
+                    .where(
+                      (item) =>
+                          item.mastery == TechniqueMastery.practicing ||
+                          item.mastery == TechniqueMastery.mastered,
+                    )
+                    .toList()
+                  ..sort(
+                    (a, b) => b.masteryPercent.compareTo(a.masteryPercent),
+                  );
+            final current = data.recommendation.technique;
+            final currentProgress =
+                data.techniques[current] ??
+                TechniqueProgress(technique: current);
+            return RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  _data = _load();
+                });
+                await _data;
+              },
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+                children: [
+                  Text(context.t.home.progress, style: MichiTypography.display),
+                  const SizedBox(height: MichiSpacing.xxl),
                   Text(
-                    context.t.progress.noStrong,
-                    style: MichiTypography.secondary,
-                  )
-                else
-                  for (final item in strong.take(2))
-                    _TechniqueRow(
-                      progress: item,
-                      onTap: () => context.router.root.push(
-                        TechniqueLessonRoute(technique: item.technique),
+                    context.t.progress.doingWell,
+                    style: MichiTypography.heading,
+                  ),
+                  const SizedBox(height: MichiSpacing.md),
+                  if (strong.isEmpty)
+                    Text(
+                      context.t.progress.noStrong,
+                      style: MichiTypography.secondary,
+                    )
+                  else
+                    for (final item in strong.take(2))
+                      _TechniqueRow(
+                        progress: item,
+                        onTap: () => context.router.root.push(
+                          TechniqueLessonRoute(technique: item.technique),
+                        ),
+                      ),
+                  const SizedBox(height: MichiSpacing.xxl),
+                  Text(
+                    context.t.progress.learningNow,
+                    style: MichiTypography.heading,
+                  ),
+                  const SizedBox(height: MichiSpacing.md),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: MichiColors.coralTint,
+                      borderRadius: BorderRadius.circular(MichiRadius.card),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(MichiSpacing.md),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            TechniqueCopy.name(context.t, current),
+                            style: MichiTypography.heading,
+                          ),
+                          const SizedBox(height: MichiSpacing.xs),
+                          Text(
+                            context.t.progress.mastery(
+                              percent: currentProgress.masteryPercent,
+                            ),
+                            style: MichiTypography.secondary,
+                          ),
+                          const SizedBox(height: MichiSpacing.sm),
+                          MichiProgressBar(
+                            value: currentProgress.masteryPercent / 100,
+                          ),
+                        ],
                       ),
                     ),
-                const SizedBox(height: MichiSpacing.xxl),
-                Text(
-                  context.t.progress.learningNow,
-                  style: MichiTypography.heading,
-                ),
-                const SizedBox(height: MichiSpacing.md),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: MichiColors.coralTint,
-                    borderRadius: BorderRadius.circular(MichiRadius.card),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(MichiSpacing.md),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          TechniqueCopy.name(context.t, current),
-                          style: MichiTypography.heading,
-                        ),
-                        const SizedBox(height: MichiSpacing.xs),
-                        Text(
-                          context.t.progress.mastery(
-                            percent: currentProgress.masteryPercent,
-                          ),
-                          style: MichiTypography.secondary,
-                        ),
-                        const SizedBox(height: MichiSpacing.sm),
-                        MichiProgressBar(
-                          value: currentProgress.masteryPercent / 100,
-                        ),
-                      ],
+                  const SizedBox(height: MichiSpacing.xxl),
+                  Text(context.t.progress.next, style: MichiTypography.heading),
+                  const SizedBox(height: MichiSpacing.sm),
+                  Text(
+                    RecommendationCopy.reason(context.t, data.recommendation),
+                    style: MichiTypography.secondary,
+                  ),
+                  const SizedBox(height: MichiSpacing.md),
+                  MichiButton(
+                    key: const ValueKey('progress-next'),
+                    label: RecommendationCopy.action(
+                      context.t,
+                      data.recommendation,
+                    ),
+                    onPressed: () => unawaited(
+                      openRecommendation(context, data.recommendation).then((
+                        _,
+                      ) {
+                        if (mounted) {
+                          setState(() {
+                            _data = _load();
+                          });
+                        }
+                      }),
                     ),
                   ),
-                ),
-                const SizedBox(height: MichiSpacing.xxl),
-                Text(context.t.progress.next, style: MichiTypography.heading),
-                const SizedBox(height: MichiSpacing.sm),
-                Text(
-                  RecommendationCopy.reason(context.t, data.recommendation),
-                  style: MichiTypography.secondary,
-                ),
-                const SizedBox(height: MichiSpacing.md),
-                MichiButton(
-                  key: const ValueKey('progress-next'),
-                  label: RecommendationCopy.action(
-                    context.t,
-                    data.recommendation,
-                  ),
-                  onPressed: () => unawaited(
-                    openRecommendation(context, data.recommendation).then((_) {
-                      if (mounted) {
-                        setState(() {
-                          _data = _load();
-                        });
-                      }
-                    }),
-                  ),
-                ),
-                const SizedBox(height: MichiSpacing.xxl),
-                const Divider(color: MichiColors.hairline),
-                ListTile(
-                  key: const ValueKey('progress-week'),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(context.t.progress.thisWeek),
-                  subtitle: Text(
-                    context.t.progress.completed(
-                      n: WeeklyActivity.current(
-                        getIt<GameClock>().now(),
-                        data.games,
-                      ).puzzleCount,
+                  const SizedBox(height: MichiSpacing.xxl),
+                  const Divider(color: MichiColors.hairline),
+                  ListTile(
+                    key: const ValueKey('progress-week'),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(context.t.progress.thisWeek),
+                    subtitle: Text(
+                      context.t.progress.completed(
+                        n: WeeklyActivity.current(
+                          getIt<GameClock>().now(),
+                          data.games,
+                        ).puzzleCount,
+                      ),
                     ),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => context.router.root.push(WeekRoute()),
                   ),
-                  trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => context.router.root.push(WeekRoute()),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     ),
   );
@@ -303,4 +286,71 @@ final class _TechniqueRow extends StatelessWidget {
       ),
     ),
   );
+}
+
+final class _EmptyProgress extends StatelessWidget {
+  const _EmptyProgress({required this.onStart});
+  final VoidCallback onStart;
+
+  @override
+  Widget build(BuildContext context) {
+    final larger =
+        MichiLayout.classify(MediaQuery.sizeOf(context).width) !=
+        MichiWindowClass.compact;
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(
+            MichiSpacing.xl,
+            MichiSpacing.xl,
+            MichiSpacing.xl,
+            MichiSpacing.xxl,
+          ),
+          sliver: SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(context.t.home.progress, style: MichiTypography.display),
+                const SizedBox(height: MichiSpacing.xxl),
+                // One welcoming group placed in the upper third: never a
+                // small island at the top of a tall tablet, never centered
+                // so low that the action feels detached from the title.
+                const Spacer(),
+                MichiReveal(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        'assets/images/progress_first_puzzle.png',
+                        height: larger ? 220 : 180,
+                        fit: BoxFit.contain,
+                        excludeFromSemantics: true,
+                      ),
+                      const SizedBox(height: MichiSpacing.xl),
+                      Text(
+                        context.t.progress.firstPuzzle,
+                        style: MichiTypography.heading,
+                      ),
+                      const SizedBox(height: MichiSpacing.sm),
+                      Text(
+                        context.t.progress.firstPuzzleDetail,
+                        style: MichiTypography.secondary,
+                      ),
+                      const SizedBox(height: MichiSpacing.xl),
+                      MichiButton(
+                        label: context.t.home.dailyStart,
+                        onPressed: onStart,
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(flex: 2),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -14,6 +14,7 @@ import 'package:michi_mobile/features/learn/data/drift_technique_progress_reposi
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
+import '../../../helpers/inline_game_preparation.dart';
 
 final class LearningDriver {
   LearningDriver._(this.database, this.progress, this.router);
@@ -34,6 +35,7 @@ final class LearningDriver {
       bootstrap();
       _bootstrapped = true;
     }
+    await useInlineGamePreparation();
     LocaleSettings.setLocaleSync(AppLocale.en);
     tester.view
       ..devicePixelRatio = 1

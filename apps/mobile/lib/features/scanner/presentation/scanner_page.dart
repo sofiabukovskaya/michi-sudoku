@@ -90,42 +90,44 @@ final class _ScannerPageState extends State<ScannerPage>
       child: Scaffold(
         backgroundColor: MichiColors.paper,
         body: SafeArea(
-          child: BlocBuilder<ScannerCubit, ScannerState>(
-            builder: (context, state) => Column(
-              children: [
-                _Header(onBack: () => context.router.maybePop()),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scroll,
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-                    child: MichiReveal(
-                      key: ValueKey(
-                        state.phase == ScannerPhase.validating
-                            ? ScannerPhase.review
-                            : state.phase,
+          child: MichiContentFrame(
+            child: BlocBuilder<ScannerCubit, ScannerState>(
+              builder: (context, state) => Column(
+                children: [
+                  _Header(onBack: () => context.router.maybePop()),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: _scroll,
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+                      child: MichiReveal(
+                        key: ValueKey(
+                          state.phase == ScannerPhase.validating
+                              ? ScannerPhase.review
+                              : state.phase,
+                        ),
+                        child: switch (state.phase) {
+                          ScannerPhase.capture => _Capture(
+                            state: state,
+                            cubit: widget.cubit,
+                          ),
+                          ScannerPhase.processing => const _Processing(),
+                          ScannerPhase.review ||
+                          ScannerPhase.validating => _Review(
+                            beforeImport: widget.beforeImport,
+                            state: state,
+                            cubit: widget.cubit,
+                          ),
+                          ScannerPhase.failure => _Failure(
+                            state: state,
+                            cubit: widget.cubit,
+                          ),
+                          ScannerPhase.imported => const SizedBox.shrink(),
+                        },
                       ),
-                      child: switch (state.phase) {
-                        ScannerPhase.capture => _Capture(
-                          state: state,
-                          cubit: widget.cubit,
-                        ),
-                        ScannerPhase.processing => const _Processing(),
-                        ScannerPhase.review ||
-                        ScannerPhase.validating => _Review(
-                          beforeImport: widget.beforeImport,
-                          state: state,
-                          cubit: widget.cubit,
-                        ),
-                        ScannerPhase.failure => _Failure(
-                          state: state,
-                          cubit: widget.cubit,
-                        ),
-                        ScannerPhase.imported => const SizedBox.shrink(),
-                      },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

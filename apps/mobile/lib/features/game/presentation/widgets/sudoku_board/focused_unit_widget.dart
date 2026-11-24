@@ -42,12 +42,17 @@ final class FocusedUnitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final side = (math.min(constraints.maxWidth, constraints.maxHeight) / 3)
-            .clamp(48, 102)
+        // Never larger than the space given; never a stretched debug grid.
+        final side = math
+            .min(
+              116,
+              (math.min(constraints.maxWidth, constraints.maxHeight) / 3)
+                  .floor(),
+            )
             .toDouble();
         return Center(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
+          child: Container(
+            foregroundDecoration: BoxDecoration(
               border: Border.all(color: MichiColors.boardBoxLine, width: 2),
               borderRadius: BorderRadius.circular(MichiRadius.control),
             ),
@@ -113,7 +118,11 @@ final class _FocusedCell extends StatelessWidget {
         key: ValueKey('cell-${cell.index}'),
         excludeFromSemantics: true,
         onTap: action == null ? null : () => action(cell),
-        child: Container(
+        child: AnimatedContainer(
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : MichiMotion.quick,
+          curve: MichiMotion.curve,
           width: side,
           height: side,
           decoration: BoxDecoration(
@@ -136,7 +145,7 @@ final class _FocusedCell extends StatelessWidget {
                   child: Text(
                     '$digit',
                     style: MichiTypography.heading.copyWith(
-                      fontSize: 44,
+                      fontSize: (side * 0.44).clamp(24, 44),
                       color: view.isGiven(cell)
                           ? MichiColors.textPrimary
                           : MichiColors.indigo,

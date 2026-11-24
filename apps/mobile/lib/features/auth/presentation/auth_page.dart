@@ -66,110 +66,112 @@ final class _AuthPageState extends State<AuthPage> {
       backgroundColor: MichiColors.paper,
       appBar: AppBar(),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
-          children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: MichiMascot(state: MichiMascotState.calm, size: 48),
-            ),
-            const SizedBox(height: MichiSpacing.sm),
-            Text(
-              context.t.auth.signInTitle,
-              style: MichiTypography.functionalTitle,
-            ),
-            const SizedBox(height: MichiSpacing.xxl),
-            if (!auth.available || !auth.hasEnabledProvider) ...[
-              AuthErrorBanner(message: context.t.auth.errorUnavailable),
-            ] else ...[
-              if (auth.problem case final problem?) ...[
-                AuthErrorBanner(message: authProblemText(context, problem)),
-                const SizedBox(height: MichiSpacing.lg),
-              ],
-              if (auth.emailEnabled)
-                MichiTextField(
-                  key: const ValueKey('auth-email'),
-                  label: context.t.auth.email,
-                  controller: _email,
-                  errorText: _emailError,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  autofillHints: const [AutofillHints.email],
-                  enabled: !auth.busy,
-                  onChanged: (_) => _clearErrors(),
-                ),
-              if (auth.emailEnabled) const SizedBox(height: MichiSpacing.md),
-              if (auth.emailEnabled)
-                MichiTextField(
-                  key: const ValueKey('auth-password'),
-                  label: context.t.auth.password,
-                  controller: _password,
-                  errorText: _passwordError,
-                  obscureText: !_showPassword,
-                  textInputAction: TextInputAction.done,
-                  autofillHints: const [AutofillHints.password],
-                  enabled: !auth.busy,
-                  onChanged: (_) => _clearErrors(),
-                  onSubmitted: (_) => _signIn(),
-                  suffixIcon: IconButton(
-                    tooltip: _showPassword
-                        ? context.t.auth.hidePassword
-                        : context.t.auth.showPassword,
-                    onPressed: () =>
-                        setState(() => _showPassword = !_showPassword),
-                    icon: Icon(
-                      _showPassword
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
+        child: MichiContentFrame(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: MichiMascot(state: MichiMascotState.calm, size: 48),
+              ),
+              const SizedBox(height: MichiSpacing.sm),
+              Text(
+                context.t.auth.signInTitle,
+                style: MichiTypography.functionalTitle,
+              ),
+              const SizedBox(height: MichiSpacing.xxl),
+              if (!auth.available || !auth.hasEnabledProvider) ...[
+                AuthErrorBanner(message: context.t.auth.errorUnavailable),
+              ] else ...[
+                if (auth.problem case final problem?) ...[
+                  AuthErrorBanner(message: authProblemText(context, problem)),
+                  const SizedBox(height: MichiSpacing.lg),
+                ],
+                if (auth.emailEnabled)
+                  MichiTextField(
+                    key: const ValueKey('auth-email'),
+                    label: context.t.auth.email,
+                    controller: _email,
+                    errorText: _emailError,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.email],
+                    enabled: !auth.busy,
+                    onChanged: (_) => _clearErrors(),
+                  ),
+                if (auth.emailEnabled) const SizedBox(height: MichiSpacing.md),
+                if (auth.emailEnabled)
+                  MichiTextField(
+                    key: const ValueKey('auth-password'),
+                    label: context.t.auth.password,
+                    controller: _password,
+                    errorText: _passwordError,
+                    obscureText: !_showPassword,
+                    textInputAction: TextInputAction.done,
+                    autofillHints: const [AutofillHints.password],
+                    enabled: !auth.busy,
+                    onChanged: (_) => _clearErrors(),
+                    onSubmitted: (_) => _signIn(),
+                    suffixIcon: IconButton(
+                      tooltip: _showPassword
+                          ? context.t.auth.hidePassword
+                          : context.t.auth.showPassword,
+                      onPressed: () =>
+                          setState(() => _showPassword = !_showPassword),
+                      icon: Icon(
+                        _showPassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
                     ),
                   ),
-                ),
-              if (auth.emailEnabled)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
+                if (auth.emailEnabled)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: auth.busy
+                          ? null
+                          : () async {
+                              context.read<AuthCubit>().clearProblem();
+                              await context.router.push(
+                                PasswordResetRoute(initialEmail: _email.text),
+                              );
+                            },
+                      child: Text(context.t.auth.forgotPassword),
+                    ),
+                  ),
+                if (auth.emailEnabled) const SizedBox(height: MichiSpacing.lg),
+                if (auth.emailEnabled)
+                  MichiButton(
+                    key: const ValueKey('auth-sign-in'),
+                    label: context.t.auth.signIn,
+                    isLoading: auth.busy,
+                    onPressed: auth.busy ? null : _signIn,
+                  ),
+                if (auth.googleEnabled || auth.appleEnabled) ...[
+                  const SizedBox(height: MichiSpacing.xl),
+                  const Divider(color: MichiColors.hairline),
+                  const SizedBox(height: MichiSpacing.xl),
+                  AuthProviderButtons(onAuthenticated: _finish),
+                ],
+                if (auth.emailEnabled) const SizedBox(height: MichiSpacing.xl),
+                if (auth.emailEnabled)
+                  TextButton(
                     onPressed: auth.busy
                         ? null
                         : () async {
                             context.read<AuthCubit>().clearProblem();
-                            await context.router.push(
-                              PasswordResetRoute(initialEmail: _email.text),
+                            await context.router.replace(
+                              RegisterRoute(fromWelcome: widget.fromWelcome),
                             );
                           },
-                    child: Text(context.t.auth.forgotPassword),
+                    child: Text(
+                      '${copy.noAccount} ${copy.createAccount}',
+                    ),
                   ),
-                ),
-              if (auth.emailEnabled) const SizedBox(height: MichiSpacing.lg),
-              if (auth.emailEnabled)
-                MichiButton(
-                  key: const ValueKey('auth-sign-in'),
-                  label: context.t.auth.signIn,
-                  isLoading: auth.busy,
-                  onPressed: auth.busy ? null : _signIn,
-                ),
-              if (auth.googleEnabled || auth.appleEnabled) ...[
-                const SizedBox(height: MichiSpacing.xl),
-                const Divider(color: MichiColors.hairline),
-                const SizedBox(height: MichiSpacing.xl),
-                AuthProviderButtons(onAuthenticated: _finish),
               ],
-              if (auth.emailEnabled) const SizedBox(height: MichiSpacing.xl),
-              if (auth.emailEnabled)
-                TextButton(
-                  onPressed: auth.busy
-                      ? null
-                      : () async {
-                          context.read<AuthCubit>().clearProblem();
-                          await context.router.replace(
-                            RegisterRoute(fromWelcome: widget.fromWelcome),
-                          );
-                        },
-                  child: Text(
-                    '${copy.noAccount} ${copy.createAccount}',
-                  ),
-                ),
             ],
-          ],
+          ),
         ),
       ),
     );

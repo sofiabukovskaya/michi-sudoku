@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ splash icon: a 240dp canvas whose 160dp circular mask shows
+     the whole mascot disc without cropping ears or pencil. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/launch_mascot"
+    android:inset="40dp" />

@@ -14,6 +14,7 @@ import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
+import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/presentation/game_page.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_top_bar.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
@@ -22,6 +23,8 @@ import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.da
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
+
+import '../../../helpers/inline_game_preparation.dart';
 
 final class TestGameClock implements GameClock {
   DateTime wall = DateTime.utc(2026, 10);
@@ -110,6 +113,10 @@ final class LifecycleDriver {
 
   Future<void> reopenFromHome(WidgetTester tester) async {
     bootstrap();
+    // Splash and Game must use the in-memory store, not the production file.
+    await getIt.unregister<GameRepository>();
+    getIt.registerSingleton<GameRepository>(repository);
+    await useInlineGamePreparation();
     await getIt.unregister<PuzzleRepository>();
     getIt.registerSingleton<PuzzleRepository>(
       LocalPuzzleRepository(LocalPuzzleCatalogLoader(), repository),

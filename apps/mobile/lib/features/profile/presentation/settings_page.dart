@@ -138,131 +138,142 @@ final class SettingsPage extends StatelessWidget {
       backgroundColor: MichiColors.paper,
       appBar: AppBar(title: Text(context.t.settings.title)),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(MichiSpacing.xl),
-          children: [
-            Text(context.t.settings.general, style: MichiTypography.heading),
-            const SizedBox(height: MichiSpacing.md),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: MichiColors.ivory,
-                border: Border.all(color: MichiColors.hairline),
-                borderRadius: BorderRadius.circular(MichiRadius.card),
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: const Icon(
-                        Icons.language_outlined,
-                        color: MichiColors.textSecondary,
-                      ),
-                      title: Text(
-                        context.t.settings.language,
-                        style: MichiTypography.body,
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            _languageNames[LocaleSettings.currentLocale]!,
-                            style: MichiTypography.secondary,
-                          ),
-                          const SizedBox(width: MichiSpacing.xs),
-                          const Icon(
-                            Icons.chevron_right,
-                            color: MichiColors.textSecondary,
-                          ),
-                        ],
-                      ),
-                      onTap: () => _chooseLanguage(context),
-                    ),
-                    const Divider(height: 1, color: MichiColors.hairline),
-                    _RemindersTile(uid: account?.uid),
-                  ],
+        child: MichiContentFrame(
+          child: ListView(
+            padding: const EdgeInsets.all(MichiSpacing.xl),
+            children: [
+              Text(context.t.settings.general, style: MichiTypography.heading),
+              const SizedBox(height: MichiSpacing.md),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: MichiColors.ivory,
+                  border: Border.all(color: MichiColors.hairline),
+                  borderRadius: BorderRadius.circular(MichiRadius.card),
                 ),
-              ),
-            ),
-            const SizedBox(height: MichiSpacing.xxl),
-            Text(context.t.sync.account, style: MichiTypography.heading),
-            const SizedBox(height: MichiSpacing.md),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: MichiColors.ivory,
-                border: Border.all(color: MichiColors.hairline),
-                borderRadius: BorderRadius.circular(MichiRadius.card),
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: account == null
-                    ? ListTile(
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Column(
+                    children: [
+                      ListTile(
                         leading: const Icon(
-                          Icons.person_outline,
+                          Icons.language_outlined,
                           color: MichiColors.textSecondary,
                         ),
-                        title: Text(context.t.sync.guest),
-                      )
-                    : Column(
-                        children: [
-                          ListTile(
-                            leading: const Icon(
-                              Icons.mail_outline,
+                        title: Text(
+                          context.t.settings.language,
+                          style: MichiTypography.body,
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _languageNames[LocaleSettings.currentLocale]!,
+                              style: MichiTypography.secondary,
+                            ),
+                            const SizedBox(width: MichiSpacing.xs),
+                            const Icon(
+                              Icons.chevron_right,
                               color: MichiColors.textSecondary,
                             ),
-                            title: Text(context.t.sync.email),
-                            subtitle: Text(account.email ?? ''),
+                          ],
+                        ),
+                        onTap: () => _chooseLanguage(context),
+                      ),
+                      const Divider(height: 1, color: MichiColors.hairline),
+                      _RemindersTile(uid: account?.uid),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: MichiSpacing.xxl),
+              Text(context.t.sync.account, style: MichiTypography.heading),
+              const SizedBox(height: MichiSpacing.md),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: MichiColors.ivory,
+                  border: Border.all(color: MichiColors.hairline),
+                  borderRadius: BorderRadius.circular(MichiRadius.card),
+                ),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: account == null
+                      ? ListTile(
+                          leading: const Icon(
+                            Icons.person_outline,
+                            color: MichiColors.textSecondary,
                           ),
-                          const Divider(height: 1, color: MichiColors.hairline),
-                          if (sync != null)
-                            AnimatedBuilder(
-                              animation: sync,
-                              builder: (context, _) => ListTile(
-                                leading: const Icon(
-                                  Icons.sync,
-                                  color: MichiColors.textSecondary,
-                                ),
-                                title: Text(context.t.sync.synchronization),
-                                subtitle: Text(_syncDetail(context, sync)),
-                                trailing:
-                                    sync.status == SyncStatus.error ||
-                                        sync.status == SyncStatus.offline ||
-                                        sync.status == SyncStatus.pending
-                                    ? TextButton(
-                                        onPressed: sync.retry,
-                                        child: Text(context.t.sync.retry),
-                                      )
-                                    : null,
+                          title: Text(context.t.sync.guest),
+                        )
+                      : Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(
+                                Icons.mail_outline,
+                                color: MichiColors.textSecondary,
                               ),
+                              title: Text(context.t.sync.email),
+                              subtitle: Text(account.email ?? ''),
                             ),
-                          const Divider(height: 1, color: MichiColors.hairline),
-                          ListTile(
-                            leading: const Icon(
-                              Icons.chevron_left,
-                              color: MichiColors.textSecondary,
+                            const Divider(
+                              height: 1,
+                              color: MichiColors.hairline,
                             ),
-                            title: Text(context.t.sync.signOut),
-                            onTap: () => _confirmSignOut(context),
-                          ),
-                          const Divider(height: 1, color: MichiColors.hairline),
-                          ListTile(
-                            leading: const Icon(
-                              Icons.close,
-                              color: MichiColors.coralText,
+                            if (sync != null)
+                              AnimatedBuilder(
+                                animation: sync,
+                                builder: (context, _) => ListTile(
+                                  leading: const Icon(
+                                    Icons.sync,
+                                    color: MichiColors.textSecondary,
+                                  ),
+                                  title: Text(context.t.sync.synchronization),
+                                  subtitle: Text(_syncDetail(context, sync)),
+                                  trailing:
+                                      sync.status == SyncStatus.error ||
+                                          sync.status == SyncStatus.offline ||
+                                          sync.status == SyncStatus.pending
+                                      ? TextButton(
+                                          onPressed: sync.retry,
+                                          child: Text(context.t.sync.retry),
+                                        )
+                                      : null,
+                                ),
+                              ),
+                            const Divider(
+                              height: 1,
+                              color: MichiColors.hairline,
                             ),
-                            title: Text(
-                              context.t.sync.deleteAccount,
-                              style: MichiTypography.body.copyWith(
+                            ListTile(
+                              leading: const Icon(
+                                Icons.chevron_left,
+                                color: MichiColors.textSecondary,
+                              ),
+                              title: Text(context.t.sync.signOut),
+                              onTap: () => _confirmSignOut(context),
+                            ),
+                            const Divider(
+                              height: 1,
+                              color: MichiColors.hairline,
+                            ),
+                            ListTile(
+                              leading: const Icon(
+                                Icons.close,
                                 color: MichiColors.coralText,
                               ),
+                              title: Text(
+                                context.t.sync.deleteAccount,
+                                style: MichiTypography.body.copyWith(
+                                  color: MichiColors.coralText,
+                                ),
+                              ),
+                              onTap: () => _confirmDelete(context),
                             ),
-                            onTap: () => _confirmDelete(context),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

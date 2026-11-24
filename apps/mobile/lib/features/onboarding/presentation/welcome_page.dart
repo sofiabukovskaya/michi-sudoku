@@ -18,70 +18,95 @@ final class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: MichiColors.paper,
     body: SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: MichiWordmark(),
-                  ),
-                  const SizedBox(height: MichiSpacing.xl),
-                  const WelcomeArt(),
-                  SizedBox(height: constraints.maxHeight * 0.06),
-                  Text(
-                    context.t.welcome.title,
-                    style: MichiTypography.display,
-                  ),
-                  const SizedBox(height: MichiSpacing.md),
-                  Text(
-                    context.t.welcome.subtitle,
-                    style: MichiTypography.body.copyWith(
-                      color: MichiColors.textSecondary,
+      child: MichiContentFrame(
+        expandedMaxHeight: 960,
+        expandedAlignment: Alignment.topCenter,
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  // Phones keep the approved top-down composition. Larger
+                  // windows hold the identity at the top and place the
+                  // invitation as one group in the optical middle.
+                  mainAxisAlignment:
+                      MichiLayout.classify(MediaQuery.sizeOf(context).width) ==
+                          MichiWindowClass.compact
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: MichiWordmark(),
                     ),
-                  ),
-                  SizedBox(height: constraints.maxHeight * 0.04),
-                  MichiButton(
-                    label: context.t.welcome.guest,
-                    onPressed: () =>
-                        context.router.push(const OnboardingRoute()),
-                  ),
-                  if (context.watch<AuthCubit>().state.available &&
-                      context.watch<AuthCubit>().state.hasEnabledProvider) ...[
-                    const SizedBox(height: MichiSpacing.sm),
-                    if (context.watch<AuthCubit>().state.googleEnabled ||
-                        context.watch<AuthCubit>().state.appleEnabled) ...[
-                      AuthProviderButtons(
-                        onAuthenticated: () async =>
-                            context.router.push(const OnboardingRoute()),
-                      ),
-                      const SizedBox(height: MichiSpacing.sm),
-                    ],
-                    if (context.watch<AuthCubit>().state.emailEnabled)
-                      MichiButton(
-                        label: context.t.auth.emailEntry,
-                        variant: MichiButtonVariant.text,
-                        onPressed: () async {
-                          context.read<AuthCubit>().clearProblem();
-                          await context.router.push(
-                            AuthRoute(fromWelcome: true),
-                          );
-                        },
-                      ),
-                    if (context.watch<AuthCubit>().state.problem
-                        case final problem?) ...[
-                      const SizedBox(height: MichiSpacing.md),
-                      AuthErrorBanner(
-                        message: authProblemText(context, problem),
-                      ),
-                    ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: MichiSpacing.xl),
+                        const WelcomeArt(),
+                        SizedBox(height: constraints.maxHeight * 0.06),
+                        Text(
+                          context.t.welcome.title,
+                          style: MichiTypography.display,
+                        ),
+                        const SizedBox(height: MichiSpacing.md),
+                        Text(
+                          context.t.welcome.subtitle,
+                          style: MichiTypography.body.copyWith(
+                            color: MichiColors.textSecondary,
+                          ),
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.04),
+                        MichiButton(
+                          label: context.t.welcome.guest,
+                          onPressed: () =>
+                              context.router.push(const OnboardingRoute()),
+                        ),
+                        if (context.watch<AuthCubit>().state.available &&
+                            context
+                                .watch<AuthCubit>()
+                                .state
+                                .hasEnabledProvider) ...[
+                          const SizedBox(height: MichiSpacing.sm),
+                          if (context.watch<AuthCubit>().state.googleEnabled ||
+                              context
+                                  .watch<AuthCubit>()
+                                  .state
+                                  .appleEnabled) ...[
+                            AuthProviderButtons(
+                              onAuthenticated: () async =>
+                                  context.router.push(const OnboardingRoute()),
+                            ),
+                            const SizedBox(height: MichiSpacing.sm),
+                          ],
+                          if (context.watch<AuthCubit>().state.emailEnabled)
+                            MichiButton(
+                              label: context.t.auth.emailEntry,
+                              variant: MichiButtonVariant.text,
+                              onPressed: () async {
+                                context.read<AuthCubit>().clearProblem();
+                                await context.router.push(
+                                  AuthRoute(fromWelcome: true),
+                                );
+                              },
+                            ),
+                          if (context.watch<AuthCubit>().state.problem
+                              case final problem?) ...[
+                            const SizedBox(height: MichiSpacing.md),
+                            AuthErrorBanner(
+                              message: authProblemText(context, problem),
+                            ),
+                          ],
+                        ],
+                      ],
+                    ),
+                    // Balances the wordmark so the group centers optically.
+                    const SizedBox(height: MichiSpacing.huge),
                   ],
-                ],
+                ),
               ),
             ),
           ),

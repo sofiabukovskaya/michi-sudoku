@@ -35,7 +35,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsDe _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsDe $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsDe(meta: meta ?? this.$meta);
 
 	// Translations
@@ -1000,7 +1000,7 @@ extension on TranslationsDe {
 			'progress.noStrong' => 'Deine stärksten Techniken erscheinen nach dem Üben.',
 			'progress.startLearning' => 'Lernen beginnen',
 			'progress.thisWeek' => 'Diese Woche',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} Sudoku abgeschlossen', other: '${n} Sudokus abgeschlossen', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} Sudoku abgeschlossen', other: '${n} Sudokus abgeschlossen', ), 
 			'progress.mastery' => ({required Object percent}) => 'Beherrschung ${percent} %',
 			'progress.openTechnique' => 'Technik öffnen',
 			'progress.firstPuzzle' => 'Beginne mit deinem ersten Sudoku',
@@ -1127,8 +1127,8 @@ extension on TranslationsDe {
 			'week.puzzles' => 'Sudokus',
 			'week.minutes' => 'Minuten',
 			'week.daily' => 'Täglich',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} aktiver Tag', other: '${n} aktive Tage', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} Sudoku abgeschlossen', other: '${n} Sudokus abgeschlossen', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} aktiver Tag', other: '${n} aktive Tage', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} Sudoku abgeschlossen', other: '${n} Sudokus abgeschlossen', ), 
 			'week.today' => 'Heute',
 			'week.noActivity' => 'Keine Aktivität',
 			'week.summary' => 'Deine lokalen Sudoku-Aktivitäten',

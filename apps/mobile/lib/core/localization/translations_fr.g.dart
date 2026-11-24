@@ -35,7 +35,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsFr _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsFr $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsFr(meta: meta ?? this.$meta);
 
 	// Translations
@@ -1000,7 +1000,7 @@ extension on TranslationsFr {
 			'progress.noStrong' => 'Tes techniques les plus solides apparaîtront après la pratique.',
 			'progress.startLearning' => 'Commencer à apprendre',
 			'progress.thisWeek' => 'Cette semaine',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ), 
 			'progress.mastery' => ({required Object percent}) => 'Maîtrise ${percent} %',
 			'progress.openTechnique' => 'Ouvrir la technique',
 			'progress.firstPuzzle' => 'Commence par ton premier sudoku',
@@ -1127,8 +1127,8 @@ extension on TranslationsFr {
 			'week.puzzles' => 'Sudokus',
 			'week.minutes' => 'Minutes',
 			'week.daily' => 'Quotidiens',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} jour actif', other: '${n} jours actifs', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} jour actif', other: '${n} jours actifs', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('fr'))(n, one: '${n} sudoku terminé', other: '${n} sudokus terminés', ), 
 			'week.today' => 'Aujourd’hui',
 			'week.noActivity' => 'Aucune activité',
 			'week.summary' => 'Ton activité locale de sudoku',

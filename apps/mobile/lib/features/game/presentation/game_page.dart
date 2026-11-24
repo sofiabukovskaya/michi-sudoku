@@ -15,6 +15,7 @@ import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
+import 'package:michi_mobile/features/game/application/game_preparation.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
@@ -118,7 +119,10 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
         }
         _difficulty = widget.definition?.difficulty;
         _isDaily = widget.dailyChallengeKey != null;
+        final prepared = await getIt<GamePreparation>().prepare(puzzle.givens);
+        if (!mounted) return;
         cubit = GameCubit(
+          prepared: prepared,
           puzzle: puzzle,
           dailyChallengeKey: widget.dailyChallengeKey,
           exactSolver: exactSolver,
@@ -147,7 +151,12 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
           }
         }
         try {
+          final prepared = await getIt<GamePreparation>().prepare(
+            stored.initialBoard,
+          );
+          if (!mounted) return;
           cubit = GameCubit.restore(
+            prepared: prepared,
             stored: stored,
             exactSolver: exactSolver,
             humanSolver: humanSolver,
@@ -263,23 +272,23 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     if (cubit == null) {
       return Scaffold(
         backgroundColor: MichiPalette.of(context).paper,
-        body: Center(
-          child: _loading
-              ? Text(context.t.game.loading, style: MichiTypography.secondary)
-              : _loadFailed
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(context.t.game.restoreUnavailable),
-                    const SizedBox(height: MichiSpacing.lg),
-                    MichiButton(
-                      label: context.t.game.backHome,
-                      onPressed: () => Navigator.of(context).maybePop(),
-                    ),
-                  ],
-                )
-              : const SizedBox.shrink(),
-        ),
+        body: _loading
+            ? const _GameSkeleton()
+            : Center(
+                child: _loadFailed
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(context.t.game.restoreUnavailable),
+                          const SizedBox(height: MichiSpacing.lg),
+                          MichiButton(
+                            label: context.t.game.backHome,
+                            onPressed: () => Navigator.of(context).maybePop(),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ),
       );
     }
     return BlocProvider.value(
@@ -302,196 +311,216 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
         child: Scaffold(
           backgroundColor: MichiPalette.of(context).paper,
           body: SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final compact = constraints.maxHeight < 710;
-                final widthCell = ((constraints.maxWidth - 38) / 9)
-                    .floor()
-                    .clamp(36, 44)
-                    .toDouble();
-                final heightCell = ((constraints.maxHeight - 260) / 9)
-                    .floor()
-                    .clamp(36, 44)
-                    .toDouble();
-                final cellSize = math.min(widthCell, heightCell);
-                return BlocBuilder<GameCubit, GameState>(
-                  builder: (context, state) {
-                    if (state.status == GameStatus.completed) {
-                      _postGameRecommendation ??= _recommendAfterGame(state);
-                      return FutureBuilder<LearningRecommendation>(
-                        future: _postGameRecommendation,
-                        builder: (context, snapshot) => MichiReveal(
-                          child: _CompletedSurface(
-                            state: state,
-                            elapsed: cubit.elapsed,
-                            puzzleTitle: _gameTitle(context),
-                            isDaily: _isDaily,
-                            recommendation: snapshot.data,
-                            onContinue: snapshot.data == null
-                                ? null
-                                : () => openRecommendation(
-                                    context,
-                                    snapshot.data!,
-                                  ).ignore(),
-                            onHome: () async {
-                              await cubit.flushPersistence();
-                              if (context.mounted &&
-                                  cubit.state.storageFailure == null) {
-                                await Navigator.of(context).maybePop();
-                              }
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                    final input = _GameInputArea(
-                      state: state,
-                      compact: compact,
-                      onUndo: cubit.undo,
-                      onErase: cubit.erase,
-                      onToggleNotes: cubit.toggleNotesMode,
-                      onHint: cubit.requestHint,
-                      armedDigit: _numberFirst ? _armedDigit ?? 0 : null,
-                      onInputOptions: () async {
-                        final action = await showModalBottomSheet<String>(
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          builder: (sheet) => MichiBottomSheet(
-                            child: Material(
-                              type: MaterialType.transparency,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SwitchListTile(
-                                    title: Text(sheet.t.game.numberFirst),
-                                    value: _numberFirst,
-                                    onChanged: (_) =>
-                                        Navigator.pop(sheet, 'mode'),
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.edit_note),
-                                    title: Text(sheet.t.game.fillNotes),
-                                    enabled: state.wrongCells.isEmpty,
-                                    onTap: () => Navigator.pop(sheet, 'notes'),
-                                  ),
-                                ],
-                              ),
+            // Navigation stays at the top; board and controls use the
+            // window's height and the input area spreads toward the thumbs.
+            child: MichiContentFrame(
+              expandedMaxHeight: 960,
+              expandedAlignment: Alignment.topCenter,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final compact = constraints.maxHeight < 710;
+                  // Phones keep the approved 44 cell; larger windows get a
+                  // bounded step up rather than a board stretched to fit.
+                  final maxCell =
+                      MichiLayout.classify(
+                            MediaQuery.sizeOf(context).width,
+                          ) ==
+                          MichiWindowClass.compact
+                      ? 44
+                      : 52;
+                  final widthCell = ((constraints.maxWidth - 38) / 9)
+                      .floor()
+                      .clamp(36, maxCell)
+                      .toDouble();
+                  final heightCell = ((constraints.maxHeight - 260) / 9)
+                      .floor()
+                      .clamp(36, maxCell)
+                      .toDouble();
+                  final cellSize = math.min(widthCell, heightCell);
+                  return BlocBuilder<GameCubit, GameState>(
+                    builder: (context, state) {
+                      if (state.status == GameStatus.completed) {
+                        _postGameRecommendation ??= _recommendAfterGame(state);
+                        return FutureBuilder<LearningRecommendation>(
+                          future: _postGameRecommendation,
+                          builder: (context, snapshot) => MichiReveal(
+                            child: _CompletedSurface(
+                              state: state,
+                              elapsed: cubit.elapsed,
+                              puzzleTitle: _gameTitle(context),
+                              isDaily: _isDaily,
+                              recommendation: snapshot.data,
+                              onContinue: snapshot.data == null
+                                  ? null
+                                  : () => openRecommendation(
+                                      context,
+                                      snapshot.data!,
+                                    ).ignore(),
+                              onHome: () async {
+                                await cubit.flushPersistence();
+                                if (context.mounted &&
+                                    cubit.state.storageFailure == null) {
+                                  await Navigator.of(context).maybePop();
+                                }
+                              },
                             ),
                           ),
                         );
-                        if (!mounted) return;
-                        if (action == 'mode') {
-                          setState(() {
-                            _numberFirst = !_numberFirst;
-                            _armedDigit = null;
-                          });
-                        } else if (action == 'notes') {
-                          cubit.fillPencilNotes();
-                        }
-                      },
-                      onDigit: (digit) {
-                        if (_numberFirst) {
-                          unawaited(HapticFeedback.selectionClick());
-                          setState(() => _armedDigit = digit);
-                        } else {
-                          _place(cubit, digit);
-                        }
-                      },
-                      onWhy: _whyAction(context, cubit, state),
-                    );
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: MichiSpacing.sm,
-                          ),
-                          child: GameTopBar(
-                            title: _gameTitle(context),
-                            elapsed: cubit.elapsed,
-                            paused: state.isPaused,
-                            onBack: () async {
-                              cubit.pause();
-                              await cubit.flushPersistence();
-                              if (context.mounted &&
-                                  cubit.state.storageFailure == null) {
-                                await Navigator.of(context).maybePop();
-                              }
-                            },
-                            onPause: state.isPaused
-                                ? cubit.resume
-                                : cubit.pause,
-                          ),
-                        ),
-                        SizedBox(
-                          height: compact ? MichiSpacing.sm : MichiSpacing.lg,
-                        ),
-                        if (state.isPaused)
-                          _PausedSurface(
-                            dimension: BoardGeometry(cellSize).size,
-                            elapsed: cubit.elapsed,
-                            onResume: cubit.resume,
-                          )
-                        else
-                          SudokuBoardWidget(
-                            view: BoardViewState.fromGame(
-                              state,
-                              armedDigit: _numberFirst && state.coach == null
-                                  ? _armedDigit
-                                  : null,
+                      }
+                      final input = _GameInputArea(
+                        state: state,
+                        compact: compact,
+                        onUndo: cubit.undo,
+                        onErase: cubit.erase,
+                        onToggleNotes: cubit.toggleNotesMode,
+                        onHint: cubit.requestHint,
+                        armedDigit: _numberFirst ? _armedDigit ?? 0 : null,
+                        onInputOptions: () async {
+                          final action = await showModalBottomSheet<String>(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (sheet) => MichiBottomSheet(
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SwitchListTile(
+                                      title: Text(sheet.t.game.numberFirst),
+                                      value: _numberFirst,
+                                      onChanged: (_) =>
+                                          Navigator.pop(sheet, 'mode'),
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.edit_note),
+                                      title: Text(sheet.t.game.fillNotes),
+                                      enabled: state.wrongCells.isEmpty,
+                                      onTap: () =>
+                                          Navigator.pop(sheet, 'notes'),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            cellSize: cellSize,
-                            onCellTap: (cell) {
-                              cubit.selectCell(cell);
-                              if (_numberFirst &&
-                                  _armedDigit != null &&
-                                  state.coach == null &&
-                                  !state.isGiven(cell) &&
-                                  (state.board.isEmpty(cell) ||
-                                      state.isWrong(cell))) {
-                                _place(cubit, _armedDigit!);
-                              } else {
-                                unawaited(HapticFeedback.selectionClick());
-                              }
-                            },
+                          );
+                          if (!mounted) return;
+                          if (action == 'mode') {
+                            setState(() {
+                              _numberFirst = !_numberFirst;
+                              _armedDigit = null;
+                            });
+                          } else if (action == 'notes') {
+                            cubit.fillPencilNotes();
+                          }
+                        },
+                        onDigit: (digit) {
+                          if (_numberFirst) {
+                            unawaited(HapticFeedback.selectionClick());
+                            setState(() => _armedDigit = digit);
+                          } else {
+                            _place(cubit, digit);
+                          }
+                        },
+                        onWhy: _whyAction(context, cubit, state),
+                      );
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: MichiSpacing.sm,
+                            ),
+                            child: GameTopBar(
+                              title: _gameTitle(context),
+                              elapsed: cubit.elapsed,
+                              paused: state.isPaused,
+                              onBack: () async {
+                                cubit.pause();
+                                await cubit.flushPersistence();
+                                if (context.mounted &&
+                                    cubit.state.storageFailure == null) {
+                                  await Navigator.of(context).maybePop();
+                                }
+                              },
+                              onPause: state.isPaused
+                                  ? cubit.resume
+                                  : cubit.pause,
+                            ),
                           ),
-                        const SizedBox(height: MichiSpacing.sm),
-                        Expanded(
-                          child: state.isPaused
-                              ? ExcludeSemantics(
-                                  child: IgnorePointer(
-                                    child: Opacity(opacity: 0.38, child: input),
-                                  ),
-                                )
-                              : state.coach != null
-                              ? CoachPanel(
-                                  model: CoachPresenter.present(
-                                    context.t,
-                                    state.coach!,
-                                  ),
-                                  onNext: cubit.requestNextHint,
-                                  onDismiss: cubit.dismissHint,
-                                  onApply: () {
-                                    cubit.applyCoachResult();
-                                    unawaited(
-                                      cubit.state.status == GameStatus.completed
-                                          ? HapticFeedback.heavyImpact()
-                                          : HapticFeedback.lightImpact(),
-                                    );
-                                  },
-                                )
-                              : state.hintUnavailable != null
-                              ? HintUnavailablePanel(
-                                  reason: state.hintUnavailable!,
-                                  onDismiss: cubit.dismissHint,
-                                  onShowMistake: cubit.selectWrongCell,
-                                )
-                              : input,
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+                          SizedBox(
+                            height: compact ? MichiSpacing.sm : MichiSpacing.lg,
+                          ),
+                          if (state.isPaused)
+                            _PausedSurface(
+                              dimension: BoardGeometry(cellSize).size,
+                              elapsed: cubit.elapsed,
+                              onResume: cubit.resume,
+                            )
+                          else
+                            SudokuBoardWidget(
+                              view: BoardViewState.fromGame(
+                                state,
+                                armedDigit: _numberFirst && state.coach == null
+                                    ? _armedDigit
+                                    : null,
+                              ),
+                              cellSize: cellSize,
+                              onCellTap: (cell) {
+                                cubit.selectCell(cell);
+                                if (_numberFirst &&
+                                    _armedDigit != null &&
+                                    state.coach == null &&
+                                    !state.isGiven(cell) &&
+                                    (state.board.isEmpty(cell) ||
+                                        state.isWrong(cell))) {
+                                  _place(cubit, _armedDigit!);
+                                } else {
+                                  unawaited(HapticFeedback.selectionClick());
+                                }
+                              },
+                            ),
+                          const SizedBox(height: MichiSpacing.sm),
+                          Expanded(
+                            child: state.isPaused
+                                ? ExcludeSemantics(
+                                    child: IgnorePointer(
+                                      child: Opacity(
+                                        opacity: 0.38,
+                                        child: input,
+                                      ),
+                                    ),
+                                  )
+                                : state.coach != null
+                                ? CoachPanel(
+                                    model: CoachPresenter.present(
+                                      context.t,
+                                      state.coach!,
+                                    ),
+                                    onNext: cubit.requestNextHint,
+                                    onDismiss: cubit.dismissHint,
+                                    onApply: () {
+                                      cubit.applyCoachResult();
+                                      unawaited(
+                                        cubit.state.status ==
+                                                GameStatus.completed
+                                            ? HapticFeedback.heavyImpact()
+                                            : HapticFeedback.lightImpact(),
+                                      );
+                                    },
+                                  )
+                                : state.hintUnavailable != null
+                                ? HintUnavailablePanel(
+                                    reason: state.hintUnavailable!,
+                                    onDismiss: cubit.dismissHint,
+                                    onShowMistake: cubit.selectWrongCell,
+                                  )
+                                : input,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -906,3 +935,108 @@ final class _CompletionMetric extends StatelessWidget {
 String _formatElapsed(Duration elapsed) =>
     '${elapsed.inMinutes.toString().padLeft(2, '0')}:'
     '${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}';
+
+/// Approved Game loading state: the board's shape, a quiet progress line and
+/// an inactive keypad, so opening a puzzle never looks like a frozen screen.
+final class _GameSkeleton extends StatelessWidget {
+  const _GameSkeleton();
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    child: MichiContentFrame(
+      expandedMaxHeight: 960,
+      expandedAlignment: Alignment.topCenter,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final compact =
+              MichiLayout.classify(MediaQuery.sizeOf(context).width) ==
+              MichiWindowClass.compact;
+          final cell = ((constraints.maxWidth - 38) / 9)
+              .floor()
+              .clamp(28, compact ? 44 : 52)
+              .toDouble();
+          return Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                  onPressed: () => Navigator.of(context).maybePop(),
+                ),
+              ),
+              const SizedBox(height: MichiSpacing.sm),
+              ExcludeSemantics(
+                child: CustomPaint(
+                  size: Size.square(cell * 9),
+                  painter: const _EmptyBoardPainter(),
+                ),
+              ),
+              const SizedBox(height: MichiSpacing.xl),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox.square(
+                    dimension: 14,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: MichiColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: MichiSpacing.sm),
+                  Text(
+                    context.t.game.loading,
+                    style: MichiTypography.secondary,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              ExcludeSemantics(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    for (var digit = 1; digit <= 9; digit++)
+                      Text(
+                        '$digit',
+                        style: MichiTypography.heading.copyWith(
+                          fontSize: 26,
+                          color: MichiColors.disabledBackground,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: MichiSpacing.xxl),
+            ],
+          );
+        },
+      ),
+    ),
+  );
+}
+
+final class _EmptyBoardPainter extends CustomPainter {
+  const _EmptyBoardPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cell = size.width / 9;
+    canvas.drawRect(Offset.zero & size, Paint()..color = MichiColors.ivory);
+    final thin = Paint()
+      ..color = MichiColors.boardCellLine
+      ..strokeWidth = 1;
+    final thick = Paint()
+      ..color = MichiColors.boardBoxLine
+      ..strokeWidth = 2;
+    for (var line = 0; line <= 9; line++) {
+      final position = line * cell;
+      final paint = line % 3 == 0 ? thick : thin;
+      canvas
+        ..drawLine(Offset(position, 0), Offset(position, size.height), paint)
+        ..drawLine(Offset(0, position), Offset(size.width, position), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _EmptyBoardPainter oldDelegate) => false;
+}

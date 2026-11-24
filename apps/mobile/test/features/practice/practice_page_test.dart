@@ -50,6 +50,7 @@ void main() {
     SudokuTechnique technique, {
     Size size = const Size(390, 844),
   }) async {
+    await tester.runAsync(catalog.load);
     await tester.pumpWidget(const SizedBox.shrink());
     tester.view
       ..devicePixelRatio = 1
@@ -64,6 +65,34 @@ void main() {
       tester,
       find.byKey(const ValueKey('practice-check')),
     );
+  }
+
+  for (final size in [
+    const Size(360, 640),
+    const Size(390, 844),
+    const Size(430, 932),
+    const Size(601, 1007),
+    const Size(1024, 768),
+  ]) {
+    testWidgets('Hidden Single controls stay usable at $size', (tester) async {
+      await pumpPractice(tester, SudokuTechnique.hiddenSingle, size: size);
+      final board = find.byType(FocusedUnitWidget);
+      expect(board, findsOneWidget);
+      // Phone keeps the approved excerpt size; tablets get a deliberate,
+      // bounded step up instead of a board stretched to the window.
+      expect(
+        tester.getSize(board).height,
+        lessThanOrEqualTo(size.width < 600 ? 280 : 320),
+      );
+      final check = find.byKey(const ValueKey('practice-check'));
+      expect(check.hitTestable(), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('cell-1')));
+      await tester.tap(find.byKey(const ValueKey('practice-digit-5')));
+      await tester.tap(check);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
   }
 
   testWidgets('Naked Single placement checks and advances', (tester) async {

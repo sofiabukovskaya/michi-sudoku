@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 
@@ -23,35 +26,37 @@ final class MichiBottomNav extends StatelessWidget {
     ),
     child: SafeArea(
       top: false,
-      child: SizedBox(
-        height: 64,
-        child: Row(
-          children: [
-            _item(
-              context,
-              MichiTab.game,
-              Icons.grid_on_outlined,
-              context.t.home.game,
-            ),
-            _item(
-              context,
-              MichiTab.learn,
-              Icons.menu_book_outlined,
-              context.t.home.learn,
-            ),
-            _item(
-              context,
-              MichiTab.progress,
-              Icons.timeline_outlined,
-              context.t.home.progress,
-            ),
-            _item(
-              context,
-              MichiTab.profile,
-              Icons.person_outline,
-              context.t.home.profile,
-            ),
-          ],
+      child: MichiContentFrame(
+        child: SizedBox(
+          height: 64,
+          child: Row(
+            children: [
+              _item(
+                context,
+                MichiTab.game,
+                Icons.grid_on_outlined,
+                context.t.home.game,
+              ),
+              _item(
+                context,
+                MichiTab.learn,
+                Icons.menu_book_outlined,
+                context.t.home.learn,
+              ),
+              _item(
+                context,
+                MichiTab.progress,
+                Icons.timeline_outlined,
+                context.t.home.progress,
+              ),
+              _item(
+                context,
+                MichiTab.profile,
+                Icons.person_outline,
+                context.t.home.profile,
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -70,7 +75,10 @@ final class MichiBottomNav extends StatelessWidget {
         selected: selected,
         label: label,
         child: InkWell(
-          onTap: () => onSelect(tab),
+          onTap: () {
+            if (!selected) unawaited(HapticFeedback.selectionClick());
+            onSelect(tab);
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -85,12 +93,19 @@ final class MichiBottomNav extends StatelessWidget {
                 child: SizedBox(
                   width: 56,
                   height: 32,
-                  child: Icon(
-                    icon,
-                    size: 24,
-                    color: selected
-                        ? MichiColors.indigoPressed
-                        : MichiColors.textSecondary,
+                  child: AnimatedScale(
+                    scale: selected ? 1.08 : 1,
+                    duration: MediaQuery.disableAnimationsOf(context)
+                        ? Duration.zero
+                        : MichiMotion.standard,
+                    curve: MichiMotion.curve,
+                    child: Icon(
+                      icon,
+                      size: 24,
+                      color: selected
+                          ? MichiColors.indigoPressed
+                          : MichiColors.textSecondary,
+                    ),
                   ),
                 ),
               ),

@@ -15,8 +15,14 @@ final class MichiReveal extends StatelessWidget {
       tween: Tween(begin: 0, end: 1),
       duration: MichiMotion.standard,
       curve: MichiMotion.curve,
-      builder: (_, opacity, child) =>
-          Opacity(opacity: opacity, alwaysIncludeSemantics: true, child: child),
+      builder: (_, opacity, child) => Opacity(
+        opacity: opacity,
+        alwaysIncludeSemantics: true,
+        child: Transform.translate(
+          offset: Offset(0, 6 * (1 - opacity)),
+          child: child,
+        ),
+      ),
       child: child,
     );
   }

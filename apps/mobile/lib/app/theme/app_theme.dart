@@ -26,6 +26,9 @@ abstract final class AppTheme {
       ),
       labelSmall: MichiTypography.meta.copyWith(color: palette.textSecondary),
     ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      constraints: BoxConstraints(maxWidth: 560),
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: palette.paper,
       foregroundColor: palette.textPrimary,

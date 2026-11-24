@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -44,74 +45,78 @@ final class _OnboardingPageState extends State<OnboardingPage> {
     return Scaffold(
       backgroundColor: dark ? MichiColors.indigo : MichiColors.paper,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () =>
-                      context.router.push(const PlayerLevelRoute()),
-                  child: Text(
-                    context.t.onboarding.skip,
-                    style: MichiTypography.body.copyWith(
-                      color: dark
-                          ? MichiColors.ivory
-                          : MichiColors.textSecondary,
-                      fontWeight: FontWeight.w700,
+        child: MichiContentFrame(
+          expandedMaxHeight: 960,
+          expandedAlignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () =>
+                        context.router.push(const PlayerLevelRoute()),
+                    child: Text(
+                      context.t.onboarding.skip,
+                      style: MichiTypography.body.copyWith(
+                        color: dark
+                            ? MichiColors.ivory
+                            : MichiColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Center(child: _OnboardingArt(page: _page)),
-              ),
-              Text(
-                titles[_page],
-                style: MichiTypography.display.copyWith(
-                  color: dark ? MichiColors.ivory : MichiColors.textPrimary,
+                Expanded(
+                  child: Center(child: _OnboardingArt(page: _page)),
                 ),
-              ),
-              const SizedBox(height: MichiSpacing.md),
-              Text(
-                subtitles[_page],
-                style: MichiTypography.body.copyWith(
-                  color: dark ? MichiColors.ivory : MichiColors.textSecondary,
+                Text(
+                  titles[_page],
+                  style: MichiTypography.display.copyWith(
+                    color: dark ? MichiColors.ivory : MichiColors.textPrimary,
+                  ),
                 ),
-              ),
-              const SizedBox(height: MichiSpacing.huge),
-              Row(
-                children: [
-                  for (var index = 0; index < 4; index++) ...[
-                    Icon(
-                      Icons.pets,
-                      size: 16,
-                      color: index <= _page
-                          ? MichiColors.coral
-                          : dark
-                          ? const Color(0xFF97A3AD)
-                          : MichiColors.boardBoxLine,
+                const SizedBox(height: MichiSpacing.md),
+                Text(
+                  subtitles[_page],
+                  style: MichiTypography.body.copyWith(
+                    color: dark ? MichiColors.ivory : MichiColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: MichiSpacing.huge),
+                Row(
+                  children: [
+                    for (var index = 0; index < 4; index++) ...[
+                      Icon(
+                        Icons.pets,
+                        size: 16,
+                        color: index <= _page
+                            ? MichiColors.coral
+                            : dark
+                            ? const Color(0xFF97A3AD)
+                            : MichiColors.boardBoxLine,
+                      ),
+                      const SizedBox(width: MichiSpacing.xs),
+                    ],
+                    const Spacer(),
+                    SizedBox(
+                      width: 124,
+                      child: MichiButton(
+                        label: _page == 3
+                            ? context.t.common.start
+                            : context.t.onboarding.next,
+                        variant: dark
+                            ? MichiButtonVariant.secondary
+                            : MichiButtonVariant.primary,
+                        onPressed: _next,
+                      ),
                     ),
-                    const SizedBox(width: MichiSpacing.xs),
                   ],
-                  const Spacer(),
-                  SizedBox(
-                    width: 124,
-                    child: MichiButton(
-                      label: _page == 3
-                          ? context.t.common.start
-                          : context.t.onboarding.next,
-                      variant: dark
-                          ? MichiButtonVariant.secondary
-                          : MichiButtonVariant.primary,
-                      onPressed: _next,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -129,6 +134,10 @@ final class _OnboardingArt extends StatelessWidget {
     key: ValueKey(page),
     child: page == 2
         ? const _PatternCards()
+        : page == 0 &&
+              MichiLayout.classify(MediaQuery.sizeOf(context).width) !=
+                  MichiWindowClass.compact
+        ? const _CompletedDiscArt()
         : Image.asset(
             switch (page) {
               0 => 'assets/images/onboarding_see.png',
@@ -216,4 +225,67 @@ final class _ExampleGridPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ExampleGridPainter oldDelegate) => false;
+}
+
+/// The first illustration's coral disc is cut by the raster edge. Phones show
+/// it bleeding off the screen as approved; inside a tablet column the cut
+/// reads as a mistake, so the disc is completed behind the art and the whole
+/// group is centered. Geometry is measured from the 732×716 asset.
+final class _CompletedDiscArt extends StatelessWidget {
+  const _CompletedDiscArt();
+
+  static const _imageWidth = 732.0;
+  static const _imageHeight = 716.0;
+  static const _discCenter = Offset(587, 365);
+  static const _discRadius = 310.0;
+  static const _discColor = Color(0xFFFAE9E1);
+
+  /// Horizontal center of mascot-plus-disc, in image pixels.
+  static const double _groupCenterX = (150 + 587 + 310) / 2;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, box) {
+      final height = math.min(380, box.maxWidth * 0.68).toDouble();
+      final scale = height / _imageHeight;
+      final shift = (_groupCenterX - _imageWidth / 2) * scale;
+      return SizedBox(
+        width: box.maxWidth,
+        height: height,
+        child: Center(
+          child: Transform.translate(
+            offset: Offset(-shift, 0),
+            child: SizedBox(
+              width: _imageWidth * scale,
+              height: height,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    left: (_discCenter.dx - _discRadius) * scale,
+                    top: (_discCenter.dy - _discRadius) * scale,
+                    width: _discRadius * 2 * scale,
+                    height: _discRadius * 2 * scale,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: _discColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Image.asset(
+                      'assets/images/onboarding_see.png',
+                      fit: BoxFit.contain,
+                      excludeFromSemantics: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

@@ -29,6 +29,8 @@ import 'package:michi_mobile/features/auth/application/auth_cubit.dart'
     as _i404;
 import 'package:michi_mobile/features/auth/domain/auth_repository.dart'
     as _i685;
+import 'package:michi_mobile/features/game/application/game_preparation.dart'
+    as _i815;
 import 'package:michi_mobile/features/game/data/game_database.dart' as _i520;
 import 'package:michi_mobile/features/game/domain/game_repository.dart'
     as _i263;
@@ -93,6 +95,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i866.CellSegmenter>(() => appModule.cellSegmenter);
     gh.lazySingleton<_i866.DigitClassifier>(() => appModule.digitClassifier);
+    gh.lazySingleton<_i815.GamePreparation>(
+      () => _i815.GamePreparation(gh<_i247.ExactSolver>()),
+    );
     gh.lazySingleton<_i150.PuzzleAnalyzer>(
       () => appModule.puzzleAnalyzer(
         gh<_i247.ExactSolver>(),

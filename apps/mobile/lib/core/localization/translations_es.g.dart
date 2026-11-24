@@ -35,7 +35,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsEs _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsEs $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsEs(meta: meta ?? this.$meta);
 
 	// Translations
@@ -1000,7 +1000,7 @@ extension on TranslationsEs {
 			'progress.noStrong' => 'Tus técnicas más fuertes aparecerán después de practicar.',
 			'progress.startLearning' => 'Empezar a aprender',
 			'progress.thisWeek' => 'Esta semana',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ), 
 			'progress.mastery' => ({required Object percent}) => 'Dominio ${percent} %',
 			'progress.openTechnique' => 'Abrir técnica',
 			'progress.firstPuzzle' => 'Empieza con tu primer sudoku',
@@ -1127,8 +1127,8 @@ extension on TranslationsEs {
 			'week.puzzles' => 'Sudokus',
 			'week.minutes' => 'Minutos',
 			'week.daily' => 'Diarios',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} día activo', other: '${n} días activos', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} día activo', other: '${n} días activos', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ), 
 			'week.today' => 'Hoy',
 			'week.noActivity' => 'Sin actividad',
 			'week.summary' => 'Tu actividad local de sudoku',

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
+import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/navigation/app_shell_page.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_page.dart';
@@ -40,15 +41,23 @@ final class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
     AutoRoute(page: SplashRoute.page, initial: true),
-    AutoRoute(page: WelcomeRoute.page),
+    CustomRoute<void>(
+      page: WelcomeRoute.page,
+      transitionsBuilder: _brandFade,
+      duration: _brandFadeDuration,
+      reverseDuration: _brandFadeDuration,
+    ),
     AutoRoute(page: OnboardingRoute.page),
     AutoRoute(page: PlayerLevelRoute.page),
     AutoRoute(page: AuthRoute.page),
     AutoRoute(page: RegisterRoute.page),
     AutoRoute(page: PasswordResetRoute.page),
     AutoRoute(page: EmailVerificationRoute.page),
-    AutoRoute(
+    CustomRoute<void>(
       page: AppShellRoute.page,
+      transitionsBuilder: _brandFade,
+      duration: _brandFadeDuration,
+      reverseDuration: _brandFadeDuration,
       children: [
         AutoRoute(page: HomeRoute.page, initial: true),
         AutoRoute(page: LearnRoute.page),
@@ -64,4 +73,48 @@ final class AppRouter extends RootStackRouter {
     AutoRoute(page: WeekRoute.page),
     AutoRoute(page: SettingsRoute.page),
   ];
+}
+
+const _brandFadeDuration = Duration(milliseconds: 480);
+
+/// Entry destinations fade in over the splash, which keeps animating beneath
+/// them: the brand moment overlaps loading instead of delaying the user.
+Widget _brandFade(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  if (MediaQuery.disableAnimationsOf(context)) return child;
+  // Fade-through: the splash dissolves into paper first, then the
+  // destination arrives, so the two compositions never double-expose.
+  final backdrop = CurvedAnimation(
+    parent: animation,
+    curve: const Interval(0, 0.4, curve: Curves.easeOut),
+  );
+  final content = CurvedAnimation(
+    parent: animation,
+    curve: const Interval(0.35, 1, curve: MichiMotion.curve),
+  );
+  return Stack(
+    fit: StackFit.passthrough,
+    children: [
+      Positioned.fill(
+        child: FadeTransition(
+          opacity: backdrop,
+          child: const ColoredBox(color: MichiColors.paper),
+        ),
+      ),
+      FadeTransition(
+        opacity: content,
+        child: SlideTransition(
+          position: Tween(
+            begin: const Offset(0, 0.02),
+            end: Offset.zero,
+          ).animate(content),
+          child: child,
+        ),
+      ),
+    ],
+  );
 }

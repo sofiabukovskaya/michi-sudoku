@@ -89,7 +89,8 @@ void main() {
     await tester.pumpWidget(MichiApp(router: router));
     await router.replaceAll([AppShellRoute()]);
     await tester.pumpAndSettle();
-    expect(find.text('Good morning'), findsOneWidget);
+    expect(find.text('Good morning'), findsNothing);
+    expect(find.byKey(const ValueKey('daily-action')), findsOneWidget);
     await tester.tap(tab('Learn'));
     await tester.pumpAndSettle();
     expect(find.text('Learn'), findsWidgets);
@@ -108,7 +109,8 @@ void main() {
     expect(find.text('1'), findsWidgets);
     await tester.tap(tab('Play'));
     await tester.pumpAndSettle();
-    expect(find.text('Good morning'), findsOneWidget);
+    expect(find.text('Good morning'), findsNothing);
+    expect(find.byKey(const ValueKey('daily-action')), findsOneWidget);
     await tester.ensureVisible(find.byKey(const ValueKey('week-details')));
     await tester.tap(find.byKey(const ValueKey('week-details')));
     await tester.pumpAndSettle();

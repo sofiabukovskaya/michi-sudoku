@@ -28,6 +28,7 @@ import 'package:michi_mobile/features/recommendation/application/learning_profil
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
 import 'package:mocktail/mocktail.dart';
+import '../helpers/inline_game_preparation.dart';
 
 final class _MockCloudSyncRepository extends Mock
     implements CloudSyncRepository {}
@@ -84,6 +85,7 @@ void main() {
     startupRepository = _StartupRepository();
     await getIt.unregister<GameRepository>();
     getIt.registerSingleton<GameRepository>(startupRepository);
+    await useInlineGamePreparation();
     await getIt.unregister<PuzzleRepository>();
     getIt.registerSingleton<PuzzleRepository>(
       LocalPuzzleRepository(LocalPuzzleCatalogLoader(), startupRepository),
@@ -98,10 +100,8 @@ void main() {
     addTearDown(router.dispose);
     await tester.pumpWidget(MichiApp(router: router));
     await tester.pumpAndSettle();
-    expect(find.text('Вчися бачити наступний хід.'), findsOneWidget);
-
-    await tester.pump(const Duration(milliseconds: 900));
-    await tester.pumpAndSettle();
+    // Ready startup goes directly to Welcome without a branding delay.
+    expect(find.text('Вчися бачити наступний хід.'), findsNothing);
     expect(find.text('Знайди свій шлях крізь логіку.'), findsOneWidget);
 
     await LocaleSettings.setLocale(AppLocale.cs);
@@ -206,7 +206,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pumpAndSettle();
-    expect(find.text('Good morning'), findsOneWidget);
+    expect(find.text('Good morning'), findsNothing);
+    expect(find.byType(HomePage), findsOneWidget);
     expect(
       tester.widget<HomePage>(find.byType(HomePage)).repository,
       same(startupRepository),

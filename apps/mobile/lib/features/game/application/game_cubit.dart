@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_mobile/core/errors/app_failure.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
+import 'package:michi_mobile/features/game/application/game_preparation.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/game_timer.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
@@ -22,6 +23,7 @@ final class GameCubit extends Cubit<GameState> {
     String? dailyChallengeKey,
     GameRepository? repository,
     GameClock? clock,
+    PreparedGame? prepared,
   }) {
     final gameClock = clock ?? SystemGameClock();
     final now = gameClock.now();
@@ -33,7 +35,8 @@ final class GameCubit extends Cubit<GameState> {
         startedAt: now,
         puzzle: puzzle,
         dailyChallengeKey: dailyChallengeKey,
-        solution: _solve(puzzle, exactSolver),
+        solution:
+            prepared?.solutionFor(puzzle.givens) ?? _solve(puzzle, exactSolver),
         board: puzzle.givens,
         notes: const {},
         history: const [],
@@ -55,6 +58,7 @@ final class GameCubit extends Cubit<GameState> {
     required CoachEngine coachEngine,
     GameRepository? repository,
     GameClock? clock,
+    PreparedGame? prepared,
   }) {
     final gameClock = clock ?? SystemGameClock();
     _validateStored(stored);
@@ -62,7 +66,8 @@ final class GameCubit extends Cubit<GameState> {
       id: stored.puzzleId,
       givens: stored.initialBoard,
     );
-    final solution = _solve(puzzle, exactSolver);
+    final solution =
+        prepared?.solutionFor(puzzle.givens) ?? _solve(puzzle, exactSolver);
     if (stored.currentBoard == solution) {
       throw const FormatException('Completed board stored as active.');
     }

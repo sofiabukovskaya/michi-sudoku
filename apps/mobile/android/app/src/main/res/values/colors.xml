@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MichiColors.indigo; matches the iOS LaunchScreen and the Flutter splash. -->
+    <color name="michi_indigo">#4D6275</color>
+</resources>

@@ -14,6 +14,7 @@ import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
+import 'package:michi_mobile/features/game/application/game_preparation.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/progress/domain/weekly_activity.dart';
@@ -60,7 +61,6 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   DailyPuzzle? _daily;
   WeeklyActivity? _week;
   bool _dailyCompleted = false;
-  bool _dailyLoading = true;
   bool _dailyFailed = false;
   bool _loading = true;
   bool _loadFailed = false;
@@ -146,10 +146,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Future<void> _reload() async {
     final sequence = ++_reloadSequence;
     if (mounted) {
-      setState(() {
-        _dailyLoading = _daily == null;
-        _dailyFailed = false;
-      });
+      setState(() => _dailyFailed = false);
     }
     try {
       final active = await _repository.loadActiveSummary();
@@ -173,7 +170,6 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       setState(() {
         _loadFailed = true;
         _loading = false;
-        _dailyLoading = false;
       });
       return;
     }
@@ -186,8 +182,16 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       setState(() {
         _daily = daily;
         _dailyCompleted = completed;
-        _dailyLoading = false;
       });
+      if (widget.puzzleRepository == null &&
+          getIt.isRegistered<GamePreparation>()) {
+        // Warm only the visible Daily; failures are handled by Game's error UI.
+        unawaited(
+          getIt<GamePreparation>()
+              .prepare(daily.puzzle.initialBoard)
+              .then<void>((_) {}, onError: (Object _, StackTrace _) {}),
+        );
+      }
       if (defaultTargetPlatform == TargetPlatform.iOS) {
         unawaited(_publishDaily(daily));
       }
@@ -201,7 +205,6 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       );
       if (!mounted || sequence != _reloadSequence) return;
       setState(() {
-        _dailyLoading = false;
         _dailyFailed = true;
       });
     }
@@ -430,38 +433,87 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (mounted) await _reload();
   }
 
+  Widget _focusRow(Translations t, LearningRecommendation focus) {
+    final title = t.recommendation.focusTitle(
+      technique: TechniqueCopy.name(t, focus.technique),
+    );
+    final detail = RecommendationCopy.detail(t, focus);
+    return MichiReveal(
+      key: ValueKey(focus.technique),
+      child: MichiListRow(
+        key: const ValueKey('daily-learning-focus'),
+        icon: Icons.pets,
+        tone: MichiRowTone.coral,
+        title: title,
+        subtitle: detail,
+        semanticLabel:
+            '$title. ${RecommendationCopy.action(t, focus)}. $detail',
+        onTap: _openFocus,
+      ),
+    );
+  }
+
+  List<Widget> _rows(BuildContext context) {
+    final t = context.t;
+    final rows = <Widget>[
+      if (!_loading &&
+          _active != null &&
+          (_active!.dailyChallengeKey == null ||
+              _active!.dailyChallengeKey != _daily?.challengeKey))
+        _ContinueRow(summary: _active!, onTap: _continue),
+      if (_focus case final focus?) _focusRow(t, focus),
+      MichiListRow(
+        key: const ValueKey('home-new-puzzle'),
+        icon: Icons.grid_on_outlined,
+        title: t.home.newPuzzle,
+        subtitle: t.home.scanInvite,
+        onTap: _loading || _loadFailed ? null : _startNew,
+      ),
+    ];
+    return [
+      for (var index = 0; index < rows.length; index++) ...[
+        if (index > 0)
+          const Divider(
+            height: 1,
+            thickness: 1,
+            indent: MichiSpacing.sm + MichiListRow.tileSize + MichiSpacing.lg,
+            endIndent: MichiSpacing.sm,
+            color: MichiColors.hairline,
+          ),
+        rows[index],
+      ],
+    ];
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: MichiColors.paper,
     body: SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      child: MichiContentFrame(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            MichiLayout.cardGutter,
+            MichiSpacing.md,
+            MichiLayout.cardGutter,
+            MichiLayout.sectionGap,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: MichiWordmark(),
-              ),
-              const SizedBox(height: MichiSpacing.lg),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  context.t.home.greeting,
-                  style: MichiTypography.display,
+                padding: EdgeInsets.symmetric(
+                  horizontal: MichiLayout.textInset,
+                  vertical: MichiSpacing.sm,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: MichiWordmark(),
                 ),
               ),
-              const SizedBox(height: MichiSpacing.xl),
-              if (_loading) ...[
-                const SizedBox(height: MichiSpacing.sm),
-                Text(context.t.home.loading, style: MichiTypography.secondary),
-              ] else if (_loadFailed) ...[
-                const SizedBox(height: MichiSpacing.lg),
-                Text(context.t.home.storageUnavailable),
-              ],
-              if (!_loading && !_loadFailed && _daily != null) ...[
-                const SizedBox(height: MichiSpacing.sm),
+              const SizedBox(height: MichiSpacing.lg),
+              if (_loadFailed)
+                _HomeNotice(text: context.t.home.storageUnavailable)
+              else if (_daily != null && !_loading)
                 MichiReveal(
                   key: ValueKey((
                     _daily!.challengeKey,
@@ -475,41 +527,16 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         _active?.dailyChallengeKey == _daily!.challengeKey,
                     onTap: _startDaily,
                   ),
-                ),
-              ],
-              if (!_loading && _dailyLoading) ...[
-                const SizedBox(height: MichiSpacing.xl),
-                Text(context.t.home.loading, style: MichiTypography.secondary),
-              ],
-              if (_dailyFailed) ...[
-                const SizedBox(height: MichiSpacing.xl),
-                Text(
-                  context.t.home.contentUnavailable,
-                  style: MichiTypography.secondary,
-                ),
-              ],
-              if (!_loading &&
-                  _active != null &&
-                  (_active!.dailyChallengeKey == null ||
-                      _active!.dailyChallengeKey != _daily?.challengeKey)) ...[
-                const SizedBox(height: MichiSpacing.sm),
-                _ContinueCard(summary: _active!, onTap: _continue),
-              ],
-              if (_focus case final focus?) ...[
-                const SizedBox(height: MichiSpacing.sm),
-                MichiReveal(
-                  key: ValueKey(focus.technique),
-                  child: _FocusRow(recommendation: focus, onTap: _openFocus),
-                ),
-              ],
+                )
+              else if (_dailyFailed)
+                _HomeNotice(text: context.t.home.contentUnavailable)
+              else
+                const _DailySkeleton(),
               const SizedBox(height: MichiSpacing.sm),
-              _HomeActionRow(
-                label: context.t.home.newPuzzle,
-                onTap: _loading || _loadFailed ? null : _startNew,
-              ),
-              const SizedBox(height: MichiSpacing.xxl),
+              ..._rows(context),
+              const SizedBox(height: MichiLayout.sectionGap),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.only(left: MichiLayout.textInset),
                 child: Row(
                   children: [
                     Expanded(
@@ -541,114 +568,69 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   );
 }
 
-final class _FocusRow extends StatelessWidget {
-  const _FocusRow({required this.recommendation, required this.onTap});
+final class _HomeNotice extends StatelessWidget {
+  const _HomeNotice({required this.text});
 
-  final LearningRecommendation recommendation;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(
+      color: MichiColors.cream,
+      borderRadius: BorderRadius.circular(MichiRadius.card),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(MichiSpacing.lg),
+      child: Text(text, style: MichiTypography.secondary),
+    ),
+  );
+}
+
+/// Approved Daily loading state: a quiet indigo block with the hero's shape.
+final class _DailySkeleton extends StatelessWidget {
+  const _DailySkeleton();
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: context.t.home.loading,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: MichiColors.indigo.withValues(alpha: 0.88),
+        borderRadius: BorderRadius.circular(MichiRadius.hero),
+      ),
+      child: const SizedBox(height: 232, width: double.infinity),
+    ),
+  );
+}
+
+final class _ContinueRow extends StatelessWidget {
+  const _ContinueRow({required this.summary, required this.onTap});
+
+  final ActiveGameSummary summary;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final t = context.t;
-    final title = t.recommendation.focusTitle(
-      technique: TechniqueCopy.name(t, recommendation.technique),
+    final elapsed = summary.elapsed;
+    final time =
+        '${elapsed.inMinutes.toString().padLeft(2, '0')}:'
+        '${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}';
+    final started = MaterialLocalizations.of(context).formatMediumDate(
+      summary.startedAt.toLocal(),
     );
-    final detail = RecommendationCopy.detail(t, recommendation);
-    return Semantics(
-      button: true,
-      label: '$title. ${RecommendationCopy.action(t, recommendation)}. $detail',
-      child: InkWell(
-        key: const ValueKey('daily-learning-focus'),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: MichiSpacing.md),
-          child: Row(
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: MichiColors.coralTint,
-                  borderRadius: BorderRadius.circular(MichiRadius.small),
-                ),
-                child: const SizedBox.square(
-                  dimension: 48,
-                  child: Icon(Icons.pets, color: MichiColors.coralText),
-                ),
-              ),
-              const SizedBox(width: MichiSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: MichiTypography.body.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      detail,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: MichiTypography.secondary,
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right_rounded),
-            ],
-          ),
-        ),
+    return MichiListRow(
+      key: const ValueKey('continue-game'),
+      icon: Icons.play_arrow_rounded,
+      tone: MichiRowTone.indigo,
+      title: context.t.home.continueGame,
+      subtitle: context.t.home.continueDetails(
+        date: started,
+        progress: (summary.progress * 100).round(),
+        time: time,
       ),
+      onTap: onTap,
     );
   }
-}
-
-final class _HomeActionRow extends StatelessWidget {
-  const _HomeActionRow({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: MichiSpacing.md,
-        horizontal: MichiSpacing.sm,
-      ),
-      child: Row(
-        children: [
-          const SizedBox.square(
-            dimension: 48,
-            child: Icon(Icons.grid_on_outlined, color: MichiColors.indigo),
-          ),
-          const SizedBox(width: MichiSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: MichiTypography.body.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  context.t.home.scanInvite,
-                  style: MichiTypography.secondary,
-                ),
-              ],
-            ),
-          ),
-          const Icon(
-            Icons.chevron_right_rounded,
-            color: MichiColors.textSecondary,
-          ),
-        ],
-      ),
-    ),
-  );
 }
 
 final class _WeekStrip extends StatelessWidget {
@@ -855,68 +837,4 @@ final class _DailyCard extends StatelessWidget {
         SudokuTechnique.xWing => context.t.coach.xWing,
         _ => technique.name,
       };
-}
-
-final class _ContinueCard extends StatelessWidget {
-  const _ContinueCard({required this.summary, required this.onTap});
-
-  final ActiveGameSummary summary;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final elapsed = summary.elapsed;
-    final time =
-        '${elapsed.inMinutes.toString().padLeft(2, '0')}:'
-        '${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}';
-    final started = MaterialLocalizations.of(context).formatMediumDate(
-      summary.startedAt.toLocal(),
-    );
-    return InkWell(
-      key: const ValueKey('continue-game'),
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(MichiRadius.control),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: MichiSpacing.md),
-        child: Row(
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: MichiColors.ivory,
-                borderRadius: BorderRadius.circular(MichiRadius.small),
-                border: Border.all(color: MichiColors.hairline),
-              ),
-              child: const SizedBox.square(
-                dimension: 48,
-                child: Icon(Icons.grid_on_rounded, color: MichiColors.indigo),
-              ),
-            ),
-            const SizedBox(width: MichiSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    context.t.home.continueGame,
-                    style: MichiTypography.body,
-                  ),
-                  Text(
-                    context.t.home.continueDetails(
-                      date: started,
-                      progress: (summary.progress * 100).round(),
-                      time: time,
-                    ),
-                    style: MichiTypography.secondary,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right_rounded),
-          ],
-        ),
-      ),
-    );
-  }
 }

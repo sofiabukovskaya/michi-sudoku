@@ -35,7 +35,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsCs _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsCs $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsCs(meta: meta ?? this.$meta);
 
 	// Translations
@@ -1003,7 +1003,7 @@ extension on TranslationsCs {
 			'progress.noStrong' => 'Nejsilnější techniky se ukážou po procvičování.',
 			'progress.startLearning' => 'Začít se učit',
 			'progress.thisWeek' => 'Tento týden',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ), 
 			'progress.mastery' => ({required Object percent}) => 'Zvládnuto ${percent} %',
 			'progress.openTechnique' => 'Otevřít techniku',
 			'progress.firstPuzzle' => 'Začni prvním sudoku',
@@ -1130,8 +1130,8 @@ extension on TranslationsCs {
 			'week.puzzles' => 'Hlavolamy',
 			'week.minutes' => 'Minuty',
 			'week.daily' => 'Denní',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} aktivní den', few: '${n} aktivní dny', other: '${n} aktivních dní', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} aktivní den', few: '${n} aktivní dny', other: '${n} aktivních dní', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ), 
 			'week.today' => 'Dnes',
 			'week.noActivity' => 'Bez aktivity',
 			'week.summary' => 'Tvoje místní aktivita v sudoku',

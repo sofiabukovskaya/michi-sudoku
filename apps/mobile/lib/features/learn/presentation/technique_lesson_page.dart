@@ -78,75 +78,78 @@ final class _TechniqueLessonPageState extends State<TechniqueLessonPage> {
     final lesson = TechniqueLessons.forTechnique(widget.technique);
     return Scaffold(
       backgroundColor: MichiColors.paper,
+      // The step's editorial title names the technique; the approved lesson
+      // header carries only navigation and progress.
       appBar: AppBar(
         backgroundColor: MichiColors.paper,
-        title: _step < 0
-            ? null
-            : Text(TechniqueCopy.name(context.t, widget.technique)),
+        scrolledUnderElevation: 0,
       ),
       body: SafeArea(
-        child: FutureBuilder<_LessonData>(
-          future: _data,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text(context.t.learn.unavailable));
-            }
-            if (!snapshot.hasData) {
-              return Center(child: Text(context.t.learn.loading));
-            }
-            final data = snapshot.data!;
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final cellSize = math
-                    .min(
-                      (constraints.maxWidth - 48) / 9,
-                      36,
-                    )
-                    .toDouble();
-                return Column(
-                  children: [
-                    Expanded(
-                      child: AnimatedSwitcher(
-                        duration: MediaQuery.disableAnimationsOf(context)
-                            ? Duration.zero
-                            : MichiMotion.standard,
-                        child: ListView(
-                          key: ValueKey(_step),
-                          padding: const EdgeInsets.all(MichiSpacing.xl),
-                          children: _step < 0
-                              ? _overview(context, lesson, data)
-                              : _lessonStep(context, lesson, data, cellSize),
+        child: MichiContentFrame(
+          expandedMaxHeight: 800,
+          child: FutureBuilder<_LessonData>(
+            future: _data,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text(context.t.learn.unavailable));
+              }
+              if (!snapshot.hasData) {
+                return Center(child: Text(context.t.learn.loading));
+              }
+              final data = snapshot.data!;
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final cellSize = math
+                      .min(
+                        (constraints.maxWidth - 48) / 9,
+                        36,
+                      )
+                      .toDouble();
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: AnimatedSwitcher(
+                          duration: MediaQuery.disableAnimationsOf(context)
+                              ? Duration.zero
+                              : MichiMotion.standard,
+                          child: ListView(
+                            key: ValueKey(_step),
+                            padding: const EdgeInsets.all(MichiSpacing.xl),
+                            children: _step < 0
+                                ? _overview(context, lesson, data)
+                                : _lessonStep(context, lesson, data, cellSize),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(MichiSpacing.xl),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: MichiButton(
-                          key: const ValueKey('lesson-primary'),
-                          label: _step < 0
-                              ? context.t.learn.lessonStart
-                              : _step == lesson.steps.length - 1
-                              ? context.t.learn.practiceStart
-                              : context.t.learn.next,
-                          onPressed: () async {
-                            if (_step == lesson.steps.length - 1) {
-                              await context.router.push(
-                                PracticeRoute(technique: widget.technique),
-                              );
-                              return;
-                            }
-                            setState(() => _step++);
-                          },
+                      Padding(
+                        padding: const EdgeInsets.all(MichiSpacing.xl),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: MichiButton(
+                            key: const ValueKey('lesson-primary'),
+                            label: _step < 0
+                                ? context.t.learn.lessonStart
+                                : _step == lesson.steps.length - 1
+                                ? context.t.learn.practiceStart
+                                : context.t.learn.next,
+                            onPressed: () async {
+                              if (_step == lesson.steps.length - 1) {
+                                await context.router.push(
+                                  PracticeRoute(technique: widget.technique),
+                                );
+                                return;
+                              }
+                              setState(() => _step++);
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

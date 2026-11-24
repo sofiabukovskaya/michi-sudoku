@@ -1,7 +1,6 @@
-import '../core/candidate_calculator.dart';
+import 'dart:typed_data';
+
 import '../core/sudoku_constraints.dart';
-import '../model/candidate_mask.dart';
-import '../model/cell_ref.dart';
 import '../model/sudoku_board.dart';
 
 /// Mathematical solving and uniqueness checks; never used to invent hints.
@@ -24,17 +23,22 @@ abstract interface class ExactSolver {
 
 /// Deterministic exact search using singles propagation, MRV, and backtracking.
 ///
-/// Search states are immutable [SudokuBoard] copies. The tested candidate and
-/// constraint primitives remain the sole source of Sudoku rules.
+/// [SudokuConstraints] validates the input; the search itself works on
+/// row/column/box bitmasks so each node costs a few integer operations. The
+/// search order is fixed: the lowest-index naked single is placed first, then
+/// the lowest-index cell with the fewest candidates branches on digits in
+/// ascending order. That order defines which solution [solve] returns for a
+/// board with several solutions.
 final class BacktrackingExactSolver implements ExactSolver {
   const BacktrackingExactSolver();
-
-  static const CandidateCalculator _calculator = CandidateCalculator();
 
   @override
   SudokuBoard? solve(SudokuBoard board) {
     if (!SudokuConstraints.validate(board).isValid) return null;
-    return _search(board, 1).firstSolution;
+    if (board.isComplete) return board;
+    final search = _BitmaskSearch(board, 1)..run();
+    final solution = search.firstSolution;
+    return solution == null ? null : SudokuBoard(solution);
   }
 
   @override
@@ -46,80 +50,116 @@ final class BacktrackingExactSolver implements ExactSolver {
       throw ArgumentError.value(limit, 'limit', 'Must be at least 1.');
     }
     if (!SudokuConstraints.validate(board).isValid) return 0;
-    return _search(board, limit).count;
+    return (_BitmaskSearch(board, limit)..run()).count;
   }
 
   @override
   bool hasUniqueSolution(SudokuBoard board) => countSolutions(board) == 1;
+}
 
-  _SearchResult _search(SudokuBoard board, int limit) {
-    final position = _propagate(board);
-    if (position == null) return (count: 0, firstSolution: null);
-
-    final branchCell = position.branchCell;
-    if (branchCell == null) {
-      return (count: 1, firstSolution: position.board);
+/// One search over a rule-valid board. Each recursion level owns a copy of
+/// 81 cell values and 27 unit masks, so backtracking needs no undo log.
+final class _BitmaskSearch {
+  _BitmaskSearch(SudokuBoard board, this._limit) {
+    final values = board.values;
+    final cells = Int8List(81);
+    final units = Int32List(27);
+    for (var index = 0; index < 81; index++) {
+      final digit = values[index];
+      if (digit == 0) continue;
+      cells[index] = digit;
+      final bit = 1 << (digit - 1);
+      units[_row[index]] |= bit;
+      units[_column[index]] |= bit;
+      units[_box[index]] |= bit;
     }
-
-    var count = 0;
-    SudokuBoard? firstSolution;
-    for (final digit in position.candidates.digits) {
-      final next = position.board.withValue(branchCell, digit);
-      final result = _search(next, limit - count);
-      count += result.count;
-      firstSolution ??= result.firstSolution;
-      if (count >= limit) break;
-    }
-    return (count: count, firstSolution: firstSolution);
+    _cells = cells;
+    _units = units;
   }
 
-  /// Repeatedly place the lowest-index cell with one candidate.
-  ///
-  /// A full scan checks zero-candidate contradictions before any placement.
-  /// If no single exists, the lowest-index cell with the fewest candidates
-  /// becomes the next branch. Null means the board is contradictory.
-  _SearchPosition? _propagate(SudokuBoard startingBoard) {
-    var board = startingBoard;
+  static const int _all = 0x1ff;
+  static final Int8List _row = Int8List.fromList([
+    for (var index = 0; index < 81; index++) index ~/ 9,
+  ]);
+  static final Int8List _column = Int8List.fromList([
+    for (var index = 0; index < 81; index++) 9 + index % 9,
+  ]);
+  static final Int8List _box = Int8List.fromList([
+    for (var index = 0; index < 81; index++)
+      18 + (index ~/ 27) * 3 + (index % 9) ~/ 3,
+  ]);
+  static final Int8List _bitCount = Int8List.fromList([
+    for (var bits = 0; bits <= _all; bits++) _countBits(bits),
+  ]);
+
+  static int _countBits(int bits) {
+    var count = 0;
+    for (var remaining = bits; remaining != 0; remaining &= remaining - 1) {
+      count++;
+    }
+    return count;
+  }
+
+  final int _limit;
+  late final Int8List _cells;
+  late final Int32List _units;
+  int count = 0;
+  List<int>? firstSolution;
+
+  void run() => _search(_cells, _units);
+
+  void _search(Int8List cells, Int32List units) {
+    // Repeatedly place the lowest-index cell with one candidate. A full scan
+    // checks zero-candidate contradictions before any placement. Without a
+    // single, the lowest-index cell with the fewest candidates branches.
+    int branchCell;
+    int branchCandidates;
     while (true) {
-      CellRef? forcedCell;
-      int? forcedDigit;
-      CellRef? branchCell;
-      CandidateMask? branchCandidates;
-
+      var forcedCell = -1;
+      var forcedBits = 0;
+      branchCell = -1;
+      branchCandidates = 0;
+      var branchCount = 10;
       for (var index = 0; index < 81; index++) {
-        final cell = CellRef.fromIndex(index);
-        if (board.isFilled(cell)) continue;
-
-        final candidates = _calculator.candidatesFor(board, cell);
-        if (candidates.isEmpty) return null;
-        if (forcedCell == null && candidates.isSingle) {
-          forcedCell = cell;
-          forcedDigit = candidates.singleDigit;
+        if (cells[index] != 0) continue;
+        final candidates =
+            _all &
+            ~(units[_row[index]] | units[_column[index]] | units[_box[index]]);
+        if (candidates == 0) return;
+        final candidateCount = _bitCount[candidates];
+        if (forcedCell < 0 && candidateCount == 1) {
+          forcedCell = index;
+          forcedBits = candidates;
         }
-        if (branchCandidates == null ||
-            candidates.count < branchCandidates.count) {
-          branchCell = cell;
+        if (candidateCount < branchCount) {
+          branchCell = index;
           branchCandidates = candidates;
+          branchCount = candidateCount;
         }
       }
+      if (forcedCell < 0) break;
+      cells[forcedCell] = _bitCount[forcedBits - 1] + 1;
+      units[_row[forcedCell]] |= forcedBits;
+      units[_column[forcedCell]] |= forcedBits;
+      units[_box[forcedCell]] |= forcedBits;
+    }
 
-      if (forcedCell != null) {
-        board = board.withValue(forcedCell, forcedDigit!);
-        continue;
-      }
-      return (
-        board: board,
-        branchCell: branchCell,
-        candidates: branchCandidates ?? CandidateMask.empty,
-      );
+    if (branchCell < 0) {
+      count++;
+      firstSolution ??= List<int>.of(cells);
+      return;
+    }
+
+    for (var digit = 1; digit <= 9; digit++) {
+      final bit = 1 << (digit - 1);
+      if (branchCandidates & bit == 0) continue;
+      final nextCells = Int8List.fromList(cells)..[branchCell] = digit;
+      final nextUnits = Int32List.fromList(units);
+      nextUnits[_row[branchCell]] |= bit;
+      nextUnits[_column[branchCell]] |= bit;
+      nextUnits[_box[branchCell]] |= bit;
+      _search(nextCells, nextUnits);
+      if (count >= _limit) return;
     }
   }
 }
-
-typedef _SearchResult = ({int count, SudokuBoard? firstSolution});
-
-typedef _SearchPosition = ({
-  SudokuBoard board,
-  CellRef? branchCell,
-  CandidateMask candidates,
-});

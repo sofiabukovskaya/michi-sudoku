@@ -35,7 +35,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsEn _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsEn $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsEn(meta: meta ?? this.$meta);
 
 	// Translations
@@ -1000,7 +1000,7 @@ extension on TranslationsEn {
 			'progress.noStrong' => 'Your strongest techniques will appear after practice.',
 			'progress.startLearning' => 'Start learning',
 			'progress.thisWeek' => 'This week',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} puzzle completed', other: '${n} puzzles completed', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} puzzle completed', other: '${n} puzzles completed', ), 
 			'progress.mastery' => ({required Object percent}) => '${percent}% mastery',
 			'progress.openTechnique' => 'Open technique',
 			'progress.firstPuzzle' => 'Start with your first Sudoku',
@@ -1127,8 +1127,8 @@ extension on TranslationsEn {
 			'week.puzzles' => 'Puzzles',
 			'week.minutes' => 'Minutes',
 			'week.daily' => 'Daily',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} active day', other: '${n} active days', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} puzzle completed', other: '${n} puzzles completed', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} active day', other: '${n} active days', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} puzzle completed', other: '${n} puzzles completed', ), 
 			'week.today' => 'Today',
 			'week.noActivity' => 'No activity',
 			'week.summary' => 'Your local Sudoku activity',

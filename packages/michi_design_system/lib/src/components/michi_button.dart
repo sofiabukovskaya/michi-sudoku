@@ -4,6 +4,8 @@ import '../theme/michi_palette.dart';
 import '../tokens/michi_radius.dart';
 import '../tokens/michi_typography.dart';
 
+import 'michi_press_feedback.dart';
+
 enum MichiButtonVariant { primary, secondary, outline, text }
 
 final class MichiButton extends StatelessWidget {
@@ -57,7 +59,7 @@ final class MichiButton extends StatelessWidget {
         ),
       ),
     );
-    return switch (variant) {
+    final button = switch (variant) {
       MichiButtonVariant.primary => FilledButton(
         onPressed: action,
         style: style.copyWith(
@@ -101,5 +103,6 @@ final class MichiButton extends StatelessWidget {
         child: child,
       ),
     };
+    return MichiPressFeedback(enabled: action != null, child: button);
   }
 }

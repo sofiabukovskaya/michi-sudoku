@@ -35,215 +35,223 @@ final class WhyPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: MichiColors.paper,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final sheetGap = selection.availability == WhyAvailability.given
-                ? constraints.maxHeight * 0.08
-                : MichiSpacing.lg;
-            final cellSize = math
-                .min(
-                  ((constraints.maxWidth - 30) / 9).floorToDouble(),
-                  ((constraints.maxHeight * 0.51 - 14) / 9).floorToDouble(),
-                )
-                .clamp(28.0, 44.0);
-            final geometry = BoardGeometry(cellSize);
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 52,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Semantics(
-                            header: true,
-                            child: Text(
-                              t.title,
-                              style: MichiTypography.body.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              tooltip: MaterialLocalizations.of(
-                                context,
-                              ).backButtonTooltip,
-                              onPressed: () => context.router.maybePop(),
-                              icon: const Icon(Icons.arrow_back_ios_new),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: SizedBox.square(
-                        dimension: geometry.size,
+        child: MichiContentFrame(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final sheetGap = selection.availability == WhyAvailability.given
+                  ? constraints.maxHeight * 0.08
+                  : MichiSpacing.lg;
+              final cellSize = math
+                  .min(
+                    ((constraints.maxWidth - 30) / 9).floorToDouble(),
+                    ((constraints.maxHeight * 0.51 - 14) / 9).floorToDouble(),
+                  )
+                  .clamp(28.0, 44.0);
+              final geometry = BoardGeometry(cellSize);
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 52,
                         child: Stack(
+                          alignment: Alignment.center,
                           children: [
-                            SudokuBoardWidget(
-                              view: BoardViewState(
-                                givens: game.puzzle.givens,
-                                board: game.board,
-                                solution: game.solution,
-                                notes: game.notes,
-                                selectedCell: plan == null ? cell : null,
-                                coachHint: null,
-                              ),
-                              cellSize: cellSize,
-                              onCellTap: null,
-                            ),
-                            if (plan != null)
-                              ExcludeSemantics(
-                                child: IgnorePointer(
-                                  child: _WhyMarkers(
-                                    plan: plan,
-                                    geometry: geometry,
-                                    board: game.board,
-                                  ),
+                            Semantics(
+                              header: true,
+                              child: Text(
+                                t.title,
+                                style: MichiTypography.body.copyWith(
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: IconButton(
+                                tooltip: MaterialLocalizations.of(
+                                  context,
+                                ).backButtonTooltip,
+                                onPressed: () => context.router.maybePop(),
+                                icon: const Icon(Icons.arrow_back_ios_new),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: sheetGap),
-                    SizedBox(
-                      width: double.infinity,
-                      height: math.max(
-                        265,
-                        constraints.maxHeight - geometry.size - 52 - sheetGap,
-                      ),
-                      child: DecoratedBox(
-                        decoration: const BoxDecoration(
-                          color: MichiColors.ivory,
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(MichiRadius.hero),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 26, 20, 24),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: SizedBox.square(
+                          dimension: geometry.size,
+                          child: Stack(
                             children: [
-                              if (selection.availability ==
-                                  WhyAvailability.given) ...[
-                                Center(
-                                  child: Container(
-                                    width: 36,
-                                    height: 4,
-                                    decoration: BoxDecoration(
-                                      color: MichiColors.cream,
-                                      borderRadius: BorderRadius.circular(2),
+                              SudokuBoardWidget(
+                                view: BoardViewState(
+                                  givens: game.puzzle.givens,
+                                  board: game.board,
+                                  solution: game.solution,
+                                  notes: game.notes,
+                                  selectedCell: plan == null ? cell : null,
+                                  coachHint: null,
+                                ),
+                                cellSize: cellSize,
+                                onCellTap: null,
+                              ),
+                              if (plan != null)
+                                ExcludeSemantics(
+                                  child: IgnorePointer(
+                                    child: _WhyMarkers(
+                                      plan: plan,
+                                      geometry: geometry,
+                                      board: game.board,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: MichiSpacing.lg),
-                              ],
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      if (selection.availability ==
-                                          WhyAvailability.given) ...[
-                                        Text(
-                                          t.givenTitle,
-                                          style: MichiTypography.heading,
-                                        ),
-                                        const SizedBox(height: MichiSpacing.sm),
-                                        Text(
-                                          t.givenBody,
-                                          style: MichiTypography.secondary,
-                                        ),
-                                      ] else if (plan != null) ...[
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              child: Semantics(
-                                                header: true,
-                                                child: Text(
-                                                  t.whyHere(
-                                                    digit: plan.target.digit,
-                                                  ),
-                                                  style:
-                                                      MichiTypography.heading,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              TechniqueCopy.name(
-                                                context.t,
-                                                plan.technique,
-                                              ),
-                                              style: MichiTypography.meta,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: MichiSpacing.lg),
-                                        for (final step in plan.steps)
-                                          _WhyStepRow(
-                                            step: step,
-                                            text: _stepText(context, step),
-                                          ),
-                                      ] else ...[
-                                        Text(
-                                          t.unavailableTitle,
-                                          style: MichiTypography.heading,
-                                        ),
-                                        const SizedBox(height: MichiSpacing.sm),
-                                        Text(
-                                          t.unavailableBody,
-                                          style: MichiTypography.secondary,
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: MichiSpacing.sm),
-                              Row(
-                                children: [
-                                  if (plan != null) ...[
-                                    Expanded(
-                                      child: MichiButton(
-                                        label: t.lesson,
-                                        variant: MichiButtonVariant.secondary,
-                                        onPressed: () => context.router.push(
-                                          TechniqueLessonRoute(
-                                            technique: plan.technique,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: MichiSpacing.sm),
-                                  ],
-                                  Expanded(
-                                    child: MichiButton(
-                                      label: t.gotIt,
-                                      onPressed: () =>
-                                          context.router.maybePop(),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: sheetGap),
+                      SizedBox(
+                        width: double.infinity,
+                        height: math.max(
+                          265,
+                          constraints.maxHeight - geometry.size - 52 - sheetGap,
+                        ),
+                        child: DecoratedBox(
+                          decoration: const BoxDecoration(
+                            color: MichiColors.ivory,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(MichiRadius.hero),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 26, 20, 24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                if (selection.availability ==
+                                    WhyAvailability.given) ...[
+                                  Center(
+                                    child: Container(
+                                      width: 36,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: MichiColors.cream,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: MichiSpacing.lg),
+                                ],
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        if (selection.availability ==
+                                            WhyAvailability.given) ...[
+                                          Text(
+                                            t.givenTitle,
+                                            style: MichiTypography.heading,
+                                          ),
+                                          const SizedBox(
+                                            height: MichiSpacing.sm,
+                                          ),
+                                          Text(
+                                            t.givenBody,
+                                            style: MichiTypography.secondary,
+                                          ),
+                                        ] else if (plan != null) ...[
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Expanded(
+                                                child: Semantics(
+                                                  header: true,
+                                                  child: Text(
+                                                    t.whyHere(
+                                                      digit: plan.target.digit,
+                                                    ),
+                                                    style:
+                                                        MichiTypography.heading,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                TechniqueCopy.name(
+                                                  context.t,
+                                                  plan.technique,
+                                                ),
+                                                style: MichiTypography.meta,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: MichiSpacing.lg,
+                                          ),
+                                          for (final step in plan.steps)
+                                            _WhyStepRow(
+                                              step: step,
+                                              text: _stepText(context, step),
+                                            ),
+                                        ] else ...[
+                                          Text(
+                                            t.unavailableTitle,
+                                            style: MichiTypography.heading,
+                                          ),
+                                          const SizedBox(
+                                            height: MichiSpacing.sm,
+                                          ),
+                                          Text(
+                                            t.unavailableBody,
+                                            style: MichiTypography.secondary,
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: MichiSpacing.sm),
+                                Row(
+                                  children: [
+                                    if (plan != null) ...[
+                                      Expanded(
+                                        child: MichiButton(
+                                          label: t.lesson,
+                                          variant: MichiButtonVariant.secondary,
+                                          onPressed: () => context.router.push(
+                                            TechniqueLessonRoute(
+                                              technique: plan.technique,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: MichiSpacing.sm),
+                                    ],
+                                    Expanded(
+                                      child: MichiButton(
+                                        label: t.gotIt,
+                                        onPressed: () =>
+                                            context.router.maybePop(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
