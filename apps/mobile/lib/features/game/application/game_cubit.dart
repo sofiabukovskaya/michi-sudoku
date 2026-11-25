@@ -127,6 +127,29 @@ final class GameCubit extends Cubit<GameState> {
 
   final HumanSolver _humanSolver;
   final CoachEngine _coachEngine;
+
+  /// Candidate removals the player accepted from Coach in this session. They
+  /// are proven facts about the position, so later hints build on them
+  /// instead of repeating the same elimination forever.
+  final Set<CandidateElimination> _coachEliminations = {};
+
+  HumanSolverState _solverState() {
+    final base = HumanSolverState.initial(state.board);
+    if (_coachEliminations.isEmpty) return base;
+    final candidates = <CellRef, CandidateMask>{
+      for (final entry in base.candidates.entries) entry.key: entry.value,
+    };
+    for (final removal in _coachEliminations) {
+      final mask = candidates[removal.cell];
+      if (mask == null || !mask.contains(removal.digit)) continue;
+      candidates[removal.cell] = mask.remove(removal.digit);
+    }
+    return HumanSolverState.fromCandidates(
+      board: state.board,
+      candidates: candidates,
+    );
+  }
+
   final GameRepository? _repository;
   final GameClock _clock;
   GameTimer _timer;
@@ -351,6 +374,8 @@ final class GameCubit extends Cubit<GameState> {
     }
     final previous = state.history.last;
     final boardChanged = previous.board != state.board;
+    // An earlier position may not justify removals proven later.
+    if (boardChanged) _coachEliminations.clear();
     emit(
       state.copyWith(
         board: previous.board,
@@ -375,9 +400,7 @@ final class GameCubit extends Cubit<GameState> {
       );
       return;
     }
-    final deduction = _humanSolver.findNextDeduction(
-      HumanSolverState.initial(state.board),
-    );
+    final deduction = _humanSolver.findNextDeduction(_solverState());
     if (deduction == null) {
       emit(
         state.copyWith(
@@ -450,12 +473,27 @@ final class GameCubit extends Cubit<GameState> {
     );
   }
 
-  /// Placement results require an explicit action; eliminations stay visual.
+  /// Result actions are explicit: a placement enters its digit; an
+  /// elimination is remembered for later hints and removed from notes.
   void applyCoachResult() {
     final coach = state.coach;
     if (state.isPaused ||
         coach == null ||
         coach.hint.level != CoachHintLevel.result) {
+      return;
+    }
+    final removals = coach.hint.revealedEliminations;
+    if (removals.isNotEmpty) {
+      _coachEliminations.addAll(removals);
+      final notes = Map<CellRef, CandidateMask>.of(state.notes);
+      for (final removal in removals) {
+        final mask = notes[removal.cell];
+        if (mask != null && mask.contains(removal.digit)) {
+          notes[removal.cell] = mask.remove(removal.digit);
+        }
+      }
+      emit(state.copyWith(notes: notes, keepCoach: false));
+      _scheduleSave();
       return;
     }
     final placements = coach.hint.revealedPlacements;

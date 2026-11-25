@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_page_state.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
@@ -44,11 +46,15 @@ final class _WeekPageState extends State<WeekPage> {
           future: _activity,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
-                child: snapshot.hasError
-                    ? Text(context.t.learn.unavailable)
-                    : const CircularProgressIndicator(),
-              );
+              return snapshot.hasError
+                  ? MichiProblemState(
+                      message: context.t.common.loadProblem,
+                      actionLabel: MaterialLocalizations.of(
+                        context,
+                      ).backButtonTooltip,
+                      onAction: () => Navigator.of(context).maybePop(),
+                    )
+                  : MichiLoadingState(label: context.t.common.justAMoment);
             }
             final activity = snapshot.data!;
             final end = activity.monday.add(const Duration(days: 6));
@@ -133,6 +139,21 @@ final class _WeekPageState extends State<WeekPage> {
                   ),
                 ),
                 const SizedBox(height: MichiSpacing.lg),
+                // An empty week offers the next step, not only a fact.
+                if (activity.puzzleCount == 0) ...[
+                  MichiButton(
+                    key: const ValueKey('week-start-daily'),
+                    label: context.t.home.dailyStart,
+                    onPressed: () => context.router.root.navigate(
+                      AppShellRoute(
+                        children: [
+                          HomeRoute(key: UniqueKey(), launchAction: 'daily'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: MichiSpacing.lg),
+                ],
                 const Divider(color: MichiColors.hairline),
                 Row(
                   children: [

@@ -10,6 +10,7 @@ final class CoachHintUiModel {
     this.secondaryActionLabel,
     this.techniqueLabel,
     this.placementDigit,
+    this.removesCandidates = false,
   });
 
   final String stepLabel;
@@ -19,4 +20,7 @@ final class CoachHintUiModel {
   final String? secondaryActionLabel;
   final String? techniqueLabel;
   final int? placementDigit;
+
+  /// Result step of an elimination technique: the action removes candidates.
+  final bool removesCandidates;
 }

@@ -529,18 +529,51 @@ class PasswordResetRouteArgs {
 
 /// generated route for
 /// [PlayerLevelPage]
-class PlayerLevelRoute extends PageRouteInfo<void> {
-  const PlayerLevelRoute({List<PageRouteInfo>? children})
-    : super(PlayerLevelRoute.name, initialChildren: children);
+class PlayerLevelRoute extends PageRouteInfo<PlayerLevelRouteArgs> {
+  PlayerLevelRoute({
+    OnboardingStore? onboarding,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PlayerLevelRoute.name,
+         args: PlayerLevelRouteArgs(onboarding: onboarding, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'PlayerLevelRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const PlayerLevelPage();
+      final args = data.argsAs<PlayerLevelRouteArgs>(
+        orElse: () => const PlayerLevelRouteArgs(),
+      );
+      return PlayerLevelPage(onboarding: args.onboarding, key: args.key);
     },
   );
+}
+
+class PlayerLevelRouteArgs {
+  const PlayerLevelRouteArgs({this.onboarding, this.key});
+
+  final OnboardingStore? onboarding;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'PlayerLevelRouteArgs{onboarding: $onboarding, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PlayerLevelRouteArgs) return false;
+    return onboarding == other.onboarding && key == other.key;
+  }
+
+  @override
+  int get hashCode => onboarding.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -897,11 +930,16 @@ class SettingsRoute extends PageRouteInfo<void> {
 class SplashRoute extends PageRouteInfo<SplashRouteArgs> {
   SplashRoute({
     GameRepository? repository,
+    OnboardingStore? onboarding,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          SplashRoute.name,
-         args: SplashRouteArgs(repository: repository, key: key),
+         args: SplashRouteArgs(
+           repository: repository,
+           onboarding: onboarding,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -913,32 +951,40 @@ class SplashRoute extends PageRouteInfo<SplashRouteArgs> {
       final args = data.argsAs<SplashRouteArgs>(
         orElse: () => const SplashRouteArgs(),
       );
-      return SplashPage(repository: args.repository, key: args.key);
+      return SplashPage(
+        repository: args.repository,
+        onboarding: args.onboarding,
+        key: args.key,
+      );
     },
   );
 }
 
 class SplashRouteArgs {
-  const SplashRouteArgs({this.repository, this.key});
+  const SplashRouteArgs({this.repository, this.onboarding, this.key});
 
   final GameRepository? repository;
+
+  final OnboardingStore? onboarding;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'SplashRouteArgs{repository: $repository, key: $key}';
+    return 'SplashRouteArgs{repository: $repository, onboarding: $onboarding, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! SplashRouteArgs) return false;
-    return repository == other.repository && key == other.key;
+    return repository == other.repository &&
+        onboarding == other.onboarding &&
+        key == other.key;
   }
 
   @override
-  int get hashCode => repository.hashCode ^ key.hashCode;
+  int get hashCode => repository.hashCode ^ onboarding.hashCode ^ key.hashCode;
 }
 
 /// generated route for

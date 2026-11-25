@@ -21,7 +21,7 @@ final class _OnboardingPageState extends State<OnboardingPage> {
 
   void _next() {
     if (_page == 3) {
-      unawaited(context.router.push(const PlayerLevelRoute()));
+      unawaited(context.router.push(PlayerLevelRoute()));
       return;
     }
     setState(() => _page++);
@@ -56,8 +56,7 @@ final class _OnboardingPageState extends State<OnboardingPage> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () =>
-                        context.router.push(const PlayerLevelRoute()),
+                    onPressed: () => context.router.push(PlayerLevelRoute()),
                     child: Text(
                       context.t.onboarding.skip,
                       style: MichiTypography.body.copyWith(
@@ -138,16 +137,47 @@ final class _OnboardingArt extends StatelessWidget {
               MichiLayout.classify(MediaQuery.sizeOf(context).width) !=
                   MichiWindowClass.compact
         ? const _CompletedDiscArt()
-        : Image.asset(
-            switch (page) {
-              0 => 'assets/images/onboarding_see.png',
-              1 => 'assets/images/onboarding_hint.png',
-              _ => 'assets/images/onboarding_path.png',
-            },
-            width: double.infinity,
-            fit: BoxFit.contain,
-            excludeFromSemantics: true,
+        : _softEdges(
+            context,
+            enabled: page == 3,
+            child: Image.asset(
+              switch (page) {
+                0 => 'assets/images/onboarding_see.png',
+                1 => 'assets/images/onboarding_hint.png',
+                _ => 'assets/images/onboarding_path.png',
+              },
+              width: double.infinity,
+              fit: BoxFit.contain,
+              excludeFromSemantics: true,
+            ),
           ),
+  );
+}
+
+/// The path illustration runs off its raster edges. Phones let it bleed off
+/// the screen; inside a tablet column its ends fade instead of being cut.
+Widget _softEdges(
+  BuildContext context, {
+  required bool enabled,
+  required Widget child,
+}) {
+  if (!enabled ||
+      MichiLayout.classify(MediaQuery.sizeOf(context).width) ==
+          MichiWindowClass.compact) {
+    return child;
+  }
+  return ShaderMask(
+    blendMode: BlendMode.dstIn,
+    shaderCallback: (bounds) => const LinearGradient(
+      colors: [
+        Color(0x00000000),
+        Color(0xFF000000),
+        Color(0xFF000000),
+        Color(0x00000000),
+      ],
+      stops: [0, 0.14, 0.86, 1],
+    ).createShader(bounds),
+    child: child,
   );
 }
 

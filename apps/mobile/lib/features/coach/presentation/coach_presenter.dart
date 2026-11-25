@@ -57,7 +57,9 @@ abstract final class CoachPresenter {
       instruction: instruction,
       primaryActionLabel: isResult
           ? placement == null
-                ? translations.coach.close
+                ? hint.revealedEliminations.isNotEmpty
+                      ? translations.coach.removeThem
+                      : translations.coach.close
                 : translations.coach.place(digit: placement.digit)
           : hintIndex == 0
           ? translations.coach.show
@@ -73,6 +75,8 @@ abstract final class CoachPresenter {
             )
           : null,
       placementDigit: placement?.digit,
+      removesCandidates:
+          isResult && placement == null && hint.revealedEliminations.isNotEmpty,
     );
   }
 

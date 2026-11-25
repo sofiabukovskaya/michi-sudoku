@@ -228,33 +228,6 @@ Platform rule followed: native launch screens stay static and fast.
 
 ---
 
-## Design: remaining differences from the approved PDF
-
-- Home greeting removed on purpose, as requested (the PDF shows "Good
-  morning, Sofia").
-- The streak badge ("7 days") and the mini-board thumbnail in the Continue row
-  (PDF p37) are still not built. Continue uses a play-icon tile.
-- The Practice success state does not draw the placed digit or highlight the
-  proof cells as PDF p69 does ("Pair found" with marked cells). Feedback is
-  text plus mascot.
-- The lesson "Try it" step says "pick the cell and enter the digit" but shows
-  no keypad. This looks like a pre-existing gap in the lesson flow, not
-  something introduced here.
-- Guest users without an active game land on Welcome on every launch, because
-  there is no "onboarding finished" flag. Returning guests probably expect
-  Home. This is a product decision to make.
-- The PDF has no tablet frames (see Tablet → remaining deviations).
-
-## Anything that still looks unfinished
-
-- The Practice digit chips are plain 44 dp squares. They work, but they look
-  less crafted than the game keypad.
-- The splash animation is rarely seen on fast startups. That is correct
-  behavior, but the brand moment is mostly the hand-off.
-- Scanner → Review on tablet was not walked through on the device this pass.
-
----
-
 ## Verification
 
 | Check | Result |
@@ -277,19 +250,101 @@ Test changes made in this pass, each for a stated reason:
 
 ---
 
+## Pass 2: product completion
+
+This pass closed the gaps from Pass 1 and then walked the product again as a
+new user on the tablet (Galaxy Tab A9, profile builds). Evidence: the
+`pass2_*.jpg` files in `final_product_ui_evidence/`.
+
+### Bugs found by using the product
+
+Using the app turned up four issues that no automated check had caught:
+
+- **The Coach looped forever on Advanced puzzles.** Every hint was computed
+  from the board alone, and elimination results (pairs, pointing,
+  box/line) offered only "Close". After any elimination the next hint
+  repeated the same step, so "I'm stuck, help me" could not get past it.
+  Fix:
+  - the elimination result now has a real action, "Remove them";
+  - `GameCubit` remembers proven eliminations for the session (cleared on
+    Undo, since an earlier position may not justify them) and removes them
+    from pencil notes;
+  - hints build on board minus those eliminations.
+
+  A new regression test lets the Coach alone solve all 15 Advanced/Expert
+  catalog puzzles. It fails on 13 of them without the fix.
+- **A teaching error in Practice.** `practice_hiddenSingle_04` showed a box
+  excerpt where the answer digit still had three places, because the proof
+  lives in the row. The excerpt is now used only when the box alone proves
+  the move; otherwise the full board is shown.
+- **Scanner Review moved buttons under the finger.** Fixing a conflict
+  removed a banner, the buttons jumped up, and the next tap landed on
+  "Scan again", which discards every correction. Review's actions are now
+  pinned below the scrolling board, stay in place while checking (disabled
+  with progress), and "Scan again" is a quiet text action.
+- **"I'm stuck" did nothing visible** while conflicts remained. It now
+  re-reveals the conflict banner with a haptic.
+
+### Release items
+
+| Item | Status | Notes |
+|---|---|---|
+| Practice success proves the technique | **PASS** | The board shows the Coach result hint: the placed digit lands with a gentle pop, proof cells are framed and proof candidates ringed (or eliminations struck). The text gives the concrete reason from this deduction ("Only one place remains for this digit in row 1. 5 can go only in the highlighted cell."). Happy mascot, light haptic. (`pass2_practice_success_proof`) |
+| Practice digit input | **PASS** | A shared `MichiDigitPad` in the Game keypad's style. The pending digit shows in the selected cell before checking. Check enables only once an answer exists. Used by Practice, Try it and Scanner corrections. |
+| Lesson "Try it" | **PASS** | Runs the real Practice exercise on a different board: select the cell, enter the digit (or mark eliminations), Check, Coach, explained "almost" feedback. Success continues straight to Practice. It is a guided attempt: it uses a non-persisting progress store, so mastery isn't affected. Example now shows the complete proof. (`pass2_lesson_try_it*`) |
+| Practice order after a lesson | **PASS** | Practice starts with boards the lesson didn't use; the Example and Try-it boards come last as reinforcement. |
+| Continue row | **PASS** (code), not seen on device | A `MiniBoard` thumbnail of the real saved board (givens dark, player digits indigo) inside the shared `MichiListRow` tile. During the walkthrough the only active game was the Daily, which shows on the hero card instead, so the row was never visible on hardware. |
+| Streak badge | **PASS** | `DailyStreak` counts consecutive days with a solved Daily from real completed games (today, or a streak ending yesterday). The paw badge shows only when the streak is ≥ 1; at 0 nothing is shown. Unit tested. |
+| Returning guest | **PASS** | `OnboardingStore` keeps "onboarding finished" plus the chosen level. On device: fresh install → Welcome; after onboarding and a relaunch → Home. Players with existing history are migrated. Sign-out never resets it. |
+| Player level choice | **PASS** | Previously not stored or used. It now sets the filled default in "Another puzzle" (Beginner/Basics → Easy, Regular → Medium, Challenge → Advanced). Verified on device. |
+| Coach → Lesson | **PASS** | The Coach result in Game and in Scanner shows "Technique: X · Lesson ›" (PDF p59). In Game it pauses the timer first. |
+| Coach sheet on tablet | **PASS** | Capped at a content height and anchored at the bottom instead of a tall empty panel. In exercises it is a rounded floating card. |
+| Scanner on hardware | **PASS** with notes | Real photo of a printed puzzle with handwritten "pen" digits: every digit recognized, including handwriting. Duplicate 6s flagged with the instruction; correction with a visible selection frame; "no valid solution" explained; then Coach, back to Review (corrections kept), Continue, a confirmation before replacing the active Daily, and Game. The camera-permission dialog appeared; I did not grant it on your device, and the denial message offers the photo path. Live camera capture was not exercised. The Coach screenshot predates its tablet column fix. |
+| Scan Coach tablet composition | **PASS** (code) | Readable column, 52 dp cell cap, 300 dp sheet. Fixed after the hardware screenshot; not re-photographed. |
+| Completion | **PASS** | Verified on device. The primary action names the step ("Start practice" / "Start lesson") instead of "Continue". |
+| Loading / error states | **PASS** | `MichiLoadingState` (appears only after 250 ms, calm paw mark plus what MICHI is preparing) and `MichiProblemState` (mascot, what happened, Retry or Back) on Learn, Lesson, Practice, Progress, Week and Profile. Game keeps its board skeleton. |
+| Empty states | **PASS** | Progress (first puzzle), Week (now has "Start today's Sudoku"), guest Profile (create account), Coach "no step", Scanner failures — each says what it is, why it's empty, and what to do. |
+| Copy and voice | **PASS** | MICHI speaks informally, as in the approved design: 50 Czech, 27 Ukrainian and 5 French strings converted from formal address. Czech "hlavolam" unified to "sudoku". English "Low-confidence cells" → "Cells to double-check". New strings added in all six locales. |
+| Onboarding path art on tablet | **PASS** | The ends fade softly inside the column instead of being cut. |
+| Landscape | **INTENTIONAL DEVIATION** (decision) + not smoke-tested | Phones are portrait-only: iPhone plist plus a runtime lock when the shortest side is under 600 dp, because a 9×9 board and keypad don't fit a landscape phone. Tablets keep all orientations, as iPad multitasking and Android large-screen rules require. The landscape smoke test on the tablet was **not done**: the device was disconnected before that step. |
+| Tablet compositions vs PDF | **INTENTIONAL DEVIATION** | The PDF has phone frames only. Tablet layouts are the same language in a 560 dp column with phone-derived size caps; no tablet pixel parity is claimed. |
+| Home greeting | **INTENTIONAL DEVIATION** | Removed at your request; the PDF shows "Good morning, Sofia". |
+| Splash words rarely visible | **INTENTIONAL DEVIATION** | Navigation never waits for branding; on fast starts users see the disc settle and the fade-through. |
+| Imported puzzle digits | **INTENTIONAL DEVIATION** | Handwritten entries on a scanned puzzle become clues; the scanner cannot tell printed digits from the player's own. |
+
+### Interaction audit (summary)
+
+- Every primary button and row has a press scale.
+- Haptics fire on tabs, board cells, digit pads, answers (light, medium,
+  heavy), Coach application and blocked scanner actions.
+- Motion explains cause and effect:
+  - the placed digit pops;
+  - feedback sheets slide over a stable board;
+  - Coach steps reveal;
+  - banners re-reveal when they answer a tap.
+- No important interaction I tried was dead. "I'm stuck" during a conflict
+  was the only one, and it is fixed.
+
 ## Verdict
 
-**NOT YET VISUALLY READY FOR BETA**
+**NOT YET READY FOR SUPERVISED BETA**
 
-The release blocker is fixed. Daily opens in ~0.3 s instead of freezing for
-3–4 s, with immediate feedback and the solver unchanged in its results. The
-tablet now reads as the same MICHI composed for a larger canvas, and the
-problem screens (Splash, Home, Progress, Practice) are clearly better than in
-the attached evidence. Before a beta, these still need to be closed:
+The product gaps from Pass 1 are closed and the product loop is connected
+(Play → stuck → Coach → Lesson → Try it → Practice → Progress → play again).
+The walkthrough also found and fixed a serious Coach loop on Advanced
+puzzles. What remains are verification gaps, not open design work. They are
+release blockers only because the exit criterion requires them:
 
-- a design decision on the tablet compositions, since they are extrapolated
-  from phone-only designs;
-- the Practice success state with marked proof cells (p69);
-- the Continue-row thumbnail and streak badge;
-- the lesson "Try it" input gap;
-- a hardware walkthrough of Scanner → Review and landscape tablet.
+1. **The full regression suite after the last changes.** Before the last
+   fixes, per-folder runs passed for app, core, auth, coach, home,
+   onboarding and scanner; recommendation had 4 failures, and the game,
+   learn, practice and puzzle folders weren't re-run. The likely cause, the
+   loading spinner keeping `pumpAndSettle` from ever settling, is removed,
+   but the suite was not re-run at your request.
+2. **A final device pass on the latest build.** It needs the tablet:
+   - landscape smoke test;
+   - Continue row with thumbnail on hardware;
+   - scan Coach in its new column;
+   - the latest copy and loading changes (the last installed APK predates
+     them).
+3. **iOS build check after the iPhone portrait-only plist change.**

@@ -68,6 +68,9 @@ class _Translations$common$en extends Translations$common$uk {
 
 	// Translations
 	@override String get continueLabel => 'Continue';
+	@override String get justAMoment => 'Just a moment…';
+	@override String get retry => 'Try again';
+	@override String get loadProblem => 'MICHI couldn’t open this right now. Your progress is safe on this device.';
 	@override String get start => 'Start';
 }
 
@@ -225,6 +228,11 @@ class _Translations$home$en extends Translations$home$uk {
 	@override String get newPuzzle => 'Another puzzle';
 	@override String get weekTitle => 'This week';
 	@override String get weekDetails => 'Details';
+	@override String streak({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
+		one: '${n} day',
+		other: '${n} days',
+	);
+	@override String get streakMeaning => 'Daily Sudoku solved days in a row';
 	@override String get weekdaysShort => 'Mon|Tue|Wed|Thu|Fri|Sat|Sun';
 	@override String get newPuzzleTitle => 'New Sudoku';
 	@override String get catalogSource => 'Choose a puzzle';
@@ -313,6 +321,8 @@ class _Translations$learn$en extends Translations$learn$uk {
 	@override String get tryAgain => 'Try again';
 	@override String get askMichi => 'Ask MICHI';
 	@override String get nextScenario => 'Next exercise';
+	@override String get pickCellFirst => 'Tap a cell to see its candidates.';
+	@override String get finishPractice => 'See your results';
 	@override String get sessionSummary => 'Practice complete';
 	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} correct · ${attempts} attempts';
 	@override String hintsUsed({required Object count}) => '${count} with MICHI';
@@ -409,6 +419,7 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get empty => 'empty';
 	@override String get clear => 'Clear';
 	@override String get confirm => 'Continue in MICHI';
+	@override String get checking => 'Checking your Sudoku…';
 	@override String get rescan => 'Scan again';
 	@override String get permissionIntro => 'Allow camera access to take a photo.';
 	@override String get permissionDenied => 'Camera access was denied. You can still choose a photo.';
@@ -427,7 +438,7 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get validationFailure => 'Could not check this puzzle. Try confirming again.';
 	@override String get unsupportedCoach => 'MICHI may not yet explain every step in this Sudoku.';
 	@override String get importedTitle => 'Imported Sudoku';
-	@override String lowConfidenceCount({required Object count}) => 'Low-confidence cells: ${count}';
+	@override String lowConfidenceCount({required Object count}) => 'Cells to double-check: ${count}';
 	@override String get stuck => 'I\'m stuck — help me';
 	@override String get noStep => 'MICHI can’t find a next step with its current techniques.';
 	@override String get completed => 'All cells are filled. This Sudoku is complete.';
@@ -464,6 +475,8 @@ class _Translations$coach$en extends Translations$coach$uk {
 	@override String get resultEliminations => 'Remove the crossed-out candidates from the highlighted cells.';
 	@override String get resultActions => 'Use the highlighted logical action.';
 	@override String technique({required Object name}) => 'Technique: ${name}';
+	@override String get lessonLink => 'Lesson';
+	@override String get removeThem => 'Remove them';
 	@override String get nakedSingle => 'Naked single';
 	@override String get hiddenSingle => 'Hidden single';
 	@override String get nakedPair => 'Naked pair';
@@ -745,6 +758,9 @@ extension on TranslationsEn {
 		return switch (path) {
 			'appName' => 'MICHI',
 			'common.continueLabel' => 'Continue',
+			'common.justAMoment' => 'Just a moment…',
+			'common.retry' => 'Try again',
+			'common.loadProblem' => 'MICHI couldn’t open this right now. Your progress is safe on this device.',
 			'common.start' => 'Start',
 			'splash.subtitle' => 'Learn to see the next move.',
 			'welcome.title' => 'Find your way through logic.',
@@ -848,6 +864,8 @@ extension on TranslationsEn {
 			'home.newPuzzle' => 'Another puzzle',
 			'home.weekTitle' => 'This week',
 			'home.weekDetails' => 'Details',
+			'home.streak' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '${n} day', other: '${n} days', ), 
+			'home.streakMeaning' => 'Daily Sudoku solved days in a row',
 			'home.weekdaysShort' => 'Mon|Tue|Wed|Thu|Fri|Sat|Sun',
 			'home.newPuzzleTitle' => 'New Sudoku',
 			'home.catalogSource' => 'Choose a puzzle',
@@ -918,6 +936,8 @@ extension on TranslationsEn {
 			'learn.tryAgain' => 'Try again',
 			'learn.askMichi' => 'Ask MICHI',
 			'learn.nextScenario' => 'Next exercise',
+			'learn.pickCellFirst' => 'Tap a cell to see its candidates.',
+			'learn.finishPractice' => 'See your results',
 			'learn.sessionSummary' => 'Practice complete',
 			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} correct · ${attempts} attempts',
 			'learn.hintsUsed' => ({required Object count}) => '${count} with MICHI',
@@ -1031,6 +1051,7 @@ extension on TranslationsEn {
 			'scanner.empty' => 'empty',
 			'scanner.clear' => 'Clear',
 			'scanner.confirm' => 'Continue in MICHI',
+			'scanner.checking' => 'Checking your Sudoku…',
 			'scanner.rescan' => 'Scan again',
 			'scanner.permissionIntro' => 'Allow camera access to take a photo.',
 			'scanner.permissionDenied' => 'Camera access was denied. You can still choose a photo.',
@@ -1049,7 +1070,7 @@ extension on TranslationsEn {
 			'scanner.validationFailure' => 'Could not check this puzzle. Try confirming again.',
 			'scanner.unsupportedCoach' => 'MICHI may not yet explain every step in this Sudoku.',
 			'scanner.importedTitle' => 'Imported Sudoku',
-			'scanner.lowConfidenceCount' => ({required Object count}) => 'Low-confidence cells: ${count}',
+			'scanner.lowConfidenceCount' => ({required Object count}) => 'Cells to double-check: ${count}',
 			'scanner.stuck' => 'I\'m stuck — help me',
 			'scanner.noStep' => 'MICHI can’t find a next step with its current techniques.',
 			'scanner.completed' => 'All cells are filled. This Sudoku is complete.',
@@ -1077,6 +1098,8 @@ extension on TranslationsEn {
 			'coach.resultEliminations' => 'Remove the crossed-out candidates from the highlighted cells.',
 			'coach.resultActions' => 'Use the highlighted logical action.',
 			'coach.technique' => ({required Object name}) => 'Technique: ${name}',
+			'coach.lessonLink' => 'Lesson',
+			'coach.removeThem' => 'Remove them',
 			'coach.nakedSingle' => 'Naked single',
 			'coach.hiddenSingle' => 'Hidden single',
 			'coach.nakedPair' => 'Naked pair',

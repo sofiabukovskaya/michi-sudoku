@@ -21,6 +21,7 @@ import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/home/presentation/home_page.dart';
 import 'package:michi_mobile/features/learn/data/drift_technique_progress_repository.dart';
+import 'package:michi_mobile/features/onboarding/data/onboarding_store.dart';
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_catalog_loader.dart';
 import 'package:michi_mobile/features/puzzle/data/local_puzzle_repository.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
@@ -28,6 +29,9 @@ import 'package:michi_mobile/features/recommendation/application/learning_profil
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
+
 import '../helpers/inline_game_preparation.dart';
 
 final class _MockCloudSyncRepository extends Mock
@@ -160,6 +164,30 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('cell-0')), findsOneWidget);
     expect(find.byKey(const ValueKey('hint-control')), findsOneWidget);
+    LocaleSettings.setLocaleSync(AppLocale.uk);
+  });
+
+  testWidgets('returning guest who finished onboarding opens Home', (
+    tester,
+  ) async {
+    final original = SharedPreferencesAsyncPlatform.instance;
+    addTearDown(() => SharedPreferencesAsyncPlatform.instance = original);
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
+    await OnboardingStore().complete(level: PlayerLevel.regular);
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final router = AppRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(MichiApp(router: router));
+    for (var attempt = 0; attempt < 20; attempt++) {
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 10)),
+      );
+      await tester.pumpAndSettle();
+      if (find.byType(HomePage).evaluate().isNotEmpty) break;
+    }
+    expect(find.byType(HomePage), findsOneWidget);
+    expect(find.text('Find your path through logic.'), findsNothing);
     LocaleSettings.setLocaleSync(AppLocale.uk);
   });
 

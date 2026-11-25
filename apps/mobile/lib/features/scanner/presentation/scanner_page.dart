@@ -8,12 +8,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_digit_pad.dart';
 import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
+import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_state.dart';
@@ -126,6 +128,13 @@ final class _ScannerPageState extends State<ScannerPage>
                       ),
                     ),
                   ),
+                  if (state.phase == ScannerPhase.review ||
+                      state.phase == ScannerPhase.validating)
+                    _ReviewActions(
+                      beforeImport: widget.beforeImport,
+                      state: state,
+                      cubit: widget.cubit,
+                    ),
                 ],
               ),
             ),
@@ -346,9 +355,14 @@ final class _Review extends StatelessWidget {
         if (review.lowConfidenceCount > 0)
           const SizedBox(height: MichiSpacing.md),
         if (review.conflicts.isNotEmpty)
-          MichiBanner(
-            message: t.scanner.duplicateClues,
-            variant: MichiBannerVariant.error,
+          // Re-reveals when "I'm stuck" or Continue is blocked by conflicts,
+          // so the tap visibly answers with what to fix first.
+          MichiReveal(
+            key: ValueKey(('conflicts', review.issue)),
+            child: MichiBanner(
+              message: t.scanner.duplicateClues,
+              variant: MichiBannerVariant.error,
+            ),
           ),
         if (review.conflicts.isNotEmpty)
           const SizedBox(height: MichiSpacing.md),
@@ -376,54 +390,97 @@ final class _Review extends StatelessWidget {
           child: _ReviewBoard(review: review, onSelect: cubit.selectCell),
         ),
         const SizedBox(height: MichiSpacing.lg),
-        if (review.selectedIndex != null) ...[
-          _DigitInput(
-            onDigit: (digit) {
-              unawaited(HapticFeedback.selectionClick());
-              cubit.editSelected(digit);
-            },
-          ),
-          const SizedBox(height: MichiSpacing.lg),
-        ],
-        if (state.phase == ScannerPhase.validating)
-          const Center(
-            child: CircularProgressIndicator(color: MichiColors.indigo),
-          )
-        else
+        // Always present, so actions below never jump under the finger;
+        // dimmed until a cell is chosen.
+        _DigitInput(
+          current: review.selectedIndex == null
+              ? 0
+              : review.board.values[review.selectedIndex!],
+          onDigit: review.selectedIndex == null ? null : cubit.editSelected,
+        ),
+        const SizedBox(height: MichiSpacing.lg),
+      ],
+    );
+  }
+}
+
+/// Review's actions stay pinned below the scrolling board, so fixing a
+/// digit (which can remove a banner) never moves a button under the finger.
+final class _ReviewActions extends StatelessWidget {
+  const _ReviewActions({
+    required this.beforeImport,
+    required this.state,
+    required this.cubit,
+  });
+
+  final Future<bool> Function()? beforeImport;
+  final ScannerState state;
+  final ScannerCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    final review = state.review!;
+    final t = context.t;
+    final checking = state.phase == ScannerPhase.validating;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        MichiLayout.cardGutter,
+        MichiSpacing.sm,
+        MichiLayout.cardGutter,
+        MichiSpacing.lg,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Same buttons in the same places while MICHI checks the board;
+          // they disable instead of disappearing.
           MichiButton(
             key: const ValueKey('scanner-confirm'),
-            label: t.scanner.confirm,
-            onPressed: () async {
-              if (await beforeImport?.call() == false || !context.mounted) {
-                return;
-              }
-              await cubit.confirm();
-            },
+            label: checking ? t.scanner.checking : t.scanner.confirm,
+            isLoading: checking,
+            onPressed: checking
+                ? null
+                : () async {
+                    if (await beforeImport?.call() == false ||
+                        !context.mounted) {
+                      return;
+                    }
+                    await cubit.confirm();
+                  },
           ),
-        const SizedBox(height: MichiSpacing.sm),
-        if (state.phase == ScannerPhase.review) ...[
+          const SizedBox(height: MichiSpacing.sm),
           MichiButton(
             key: const ValueKey('scanner-stuck'),
             label: t.scanner.stuck,
             variant: MichiButtonVariant.secondary,
-            onPressed: () async {
-              final plan = await cubit.nextHint();
-              if (plan == null || !context.mounted) return;
-              await Navigator.of(context).push<void>(
-                MaterialPageRoute(
-                  builder: (_) => _ScanCoach(board: review.board, plan: plan),
-                ),
-              );
-            },
+            onPressed: checking
+                ? null
+                : () async {
+                    final plan = await cubit.nextHint();
+                    if (plan == null) {
+                      unawaited(HapticFeedback.mediumImpact());
+                      return;
+                    }
+                    if (!context.mounted) return;
+                    await Navigator.of(context).push<void>(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            _ScanCoach(board: review.board, plan: plan),
+                      ),
+                    );
+                  },
           ),
-          const SizedBox(height: MichiSpacing.sm),
+          const SizedBox(height: MichiSpacing.xs),
+          // Discards corrections, so it is the quietest action.
+          MichiButton(
+            key: const ValueKey('scanner-rescan'),
+            label: t.scanner.rescan,
+            variant: MichiButtonVariant.text,
+            onPressed: checking ? null : cubit.rescan,
+          ),
         ],
-        MichiButton(
-          label: t.scanner.rescan,
-          variant: MichiButtonVariant.secondary,
-          onPressed: cubit.rescan,
-        ),
-      ],
+      ),
     );
   }
 }
@@ -444,42 +501,63 @@ final class _ScanCoachState extends State<_ScanCoach> {
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: MichiColors.paper,
     body: SafeArea(
-      child: LayoutBuilder(
-        builder: (context, bounds) {
-          final size = math.min(bounds.maxWidth - 32, bounds.maxHeight * .53);
-          void close() => Navigator.of(context).pop();
-          return Column(
-            children: [
-              _Header(onBack: close),
-              Expanded(
-                child: Center(
-                  child: SudokuBoardWidget(
-                    view: BoardViewState.educational(
-                      state: position,
-                      coachHint: widget.plan.hints[step],
+      child: MichiContentFrame(
+        expandedMaxHeight: 960,
+        expandedAlignment: Alignment.topCenter,
+        child: LayoutBuilder(
+          builder: (context, bounds) {
+            final compact =
+                MichiLayout.classify(MediaQuery.sizeOf(context).width) ==
+                MichiWindowClass.compact;
+            final cell = math
+                .min((bounds.maxWidth - 32) / 9, bounds.maxHeight * .53 / 9)
+                .clamp(24.0, compact ? 44.0 : 52.0);
+            final panel = compact
+                ? bounds.maxHeight * .35
+                : math.min<double>(bounds.maxHeight * .35, 300);
+            void close() => Navigator.of(context).pop();
+            final technique = widget.plan.technique;
+            return Column(
+              children: [
+                _Header(onBack: close),
+                Expanded(
+                  child: Center(
+                    child: SudokuBoardWidget(
+                      view: BoardViewState.educational(
+                        state: position,
+                        coachHint: widget.plan.hints[step],
+                      ),
+                      cellSize: cell,
+                      onCellTap: null,
                     ),
-                    cellSize: (size - 14) / 9,
-                    onCellTap: null,
                   ),
                 ),
-              ),
-              SizedBox(
-                height: bounds.maxHeight * .35,
-                child: CoachPanel(
-                  model: CoachPresenter.presentPlan(
-                    context.t,
-                    widget.plan,
-                    step,
+                SizedBox(
+                  height: panel,
+                  child: CoachPanel(
+                    model: CoachPresenter.presentPlan(
+                      context.t,
+                      widget.plan,
+                      step,
+                    ),
+                    readOnlyResult: step == widget.plan.hints.length - 1,
+                    // Scanner → stuck → Coach → the lesson behind the step.
+                    onOpenLesson: TechniqueLessons.supported.contains(technique)
+                        ? () => unawaited(
+                            context.router.push(
+                              TechniqueLessonRoute(technique: technique),
+                            ),
+                          )
+                        : null,
+                    onDismiss: close,
+                    onApply: close,
+                    onNext: () => setState(() => step++),
                   ),
-                  readOnlyResult: step == widget.plan.hints.length - 1,
-                  onDismiss: close,
-                  onApply: close,
-                  onNext: () => setState(() => step++),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     ),
   );
@@ -495,31 +573,37 @@ final class _ReviewBoard extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       final side = math.min<double>(constraints.maxWidth, 430);
-      return SizedBox.square(
-        dimension: side,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
+      // The frame is painted over the cells so all four edges stay visible.
+      return Container(
+        width: side,
+        height: side,
+        foregroundDecoration: BoxDecoration(
+          border: Border.all(color: MichiColors.boardBoxLine, width: 2),
+          borderRadius: BorderRadius.circular(MichiRadius.control),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(MichiRadius.control),
+          child: ColoredBox(
             color: MichiColors.ivory,
-            border: Border.all(color: MichiColors.boardBoxLine, width: 2),
-          ),
-          child: Column(
-            children: [
-              for (var row = 0; row < 9; row++)
-                Expanded(
-                  child: Row(
-                    children: [
-                      for (var column = 0; column < 9; column++)
-                        Expanded(
-                          child: _ReviewCell(
-                            review: review,
-                            cell: CellRef(row: row, column: column),
-                            onTap: () => onSelect(row * 9 + column),
+            child: Column(
+              children: [
+                for (var row = 0; row < 9; row++)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        for (var column = 0; column < 9; column++)
+                          Expanded(
+                            child: _ReviewCell(
+                              review: review,
+                              cell: CellRef(row: row, column: column),
+                              onTap: () => onSelect(row * 9 + column),
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -566,6 +650,12 @@ final class _ReviewCell extends StatelessWidget {
           duration: MediaQuery.disableAnimationsOf(context)
               ? Duration.zero
               : MichiMotion.quick,
+          // Selection reads on top of conflict and review tints.
+          foregroundDecoration: selected
+              ? BoxDecoration(
+                  border: Border.all(color: MichiColors.indigo, width: 2.5),
+                )
+              : null,
           decoration: BoxDecoration(
             color: conflict
                 ? MichiColors.errorTint
@@ -624,36 +714,38 @@ final class _ReviewCell extends StatelessWidget {
 }
 
 final class _DigitInput extends StatelessWidget {
-  const _DigitInput({required this.onDigit});
+  const _DigitInput({required this.current, required this.onDigit});
 
-  final ValueChanged<int> onDigit;
+  final int current;
+  final ValueChanged<int>? onDigit;
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          for (var digit = 1; digit <= 9; digit++)
-            SizedBox(
-              width: 48,
-              height: 48,
-              child: OutlinedButton(
-                key: ValueKey('scan-digit-$digit'),
-                onPressed: () => onDigit(digit),
-                child: Text('$digit'),
-              ),
+  Widget build(BuildContext context) {
+    final edit = onDigit;
+    return AnimatedOpacity(
+      opacity: edit == null ? 0.4 : 1,
+      duration: MediaQuery.disableAnimationsOf(context)
+          ? Duration.zero
+          : MichiMotion.quick,
+      child: IgnorePointer(
+        ignoring: edit == null,
+        child: Column(
+          children: [
+            MichiDigitPad(
+              digits: const [1, 2, 3, 4, 5, 6, 7, 8, 9],
+              selected: {if (current != 0) current},
+              keyFor: (digit) => 'scan-digit-$digit',
+              onDigit: (digit) => edit?.call(digit),
             ),
-        ],
+            TextButton.icon(
+              key: const ValueKey('scan-clear'),
+              onPressed: edit == null ? null : () => edit(0),
+              icon: const Icon(Icons.backspace_outlined),
+              label: Text(context.t.scanner.clear),
+            ),
+          ],
+        ),
       ),
-      TextButton.icon(
-        key: const ValueKey('scan-clear'),
-        onPressed: () => onDigit(0),
-        icon: const Icon(Icons.backspace_outlined),
-        label: Text(context.t.scanner.clear),
-      ),
-    ],
-  );
+    );
+  }
 }

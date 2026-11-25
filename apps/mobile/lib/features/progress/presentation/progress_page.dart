@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/app/widgets/michi_page_state.dart';
 import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
@@ -105,11 +106,13 @@ final class _ProgressPageState extends State<ProgressPage>
           future: _data,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
-                child: snapshot.hasError
-                    ? Text(context.t.learn.unavailable)
-                    : const CircularProgressIndicator(),
-              );
+              return snapshot.hasError
+                  ? MichiProblemState(
+                      message: context.t.common.loadProblem,
+                      actionLabel: context.t.common.retry,
+                      onAction: () => setState(() => _data = _load()),
+                    )
+                  : MichiLoadingState(label: context.t.common.justAMoment);
             }
             final data = snapshot.data!;
             if (data.games.isEmpty && data.techniques.isEmpty) {

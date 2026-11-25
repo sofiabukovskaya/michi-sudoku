@@ -7,4 +7,7 @@ Future<void> iAdvanceThroughTheLesson(WidgetTester tester) async {
     await tester.pumpAndSettle();
     expect(find.byKey(ValueKey('lesson-step-$step')), findsOneWidget);
   }
+  // "Try it" asks for an answer instead of offering a skip button.
+  expect(find.byKey(const ValueKey('lesson-primary')), findsNothing);
+  expect(find.byKey(const ValueKey('practice-check')), findsOneWidget);
 }

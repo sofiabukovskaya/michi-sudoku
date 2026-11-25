@@ -2,6 +2,9 @@
   "appName": "MICHI",
   "common": {
     "continueLabel": "Continue",
+    "justAMoment": "Just a moment…",
+    "retry": "Try again",
+    "loadProblem": "MICHI couldn’t open this right now. Your progress is safe on this device.",
     "start": "Start"
   },
   "splash": {
@@ -117,6 +120,8 @@
     "newPuzzle": "Another puzzle",
     "weekTitle": "This week",
     "weekDetails": "Details",
+    "streak": {"one": "$n day", "other": "$n days"},
+    "streakMeaning": "Daily Sudoku solved days in a row",
     "weekdaysShort": "Mon|Tue|Wed|Thu|Fri|Sat|Sun",
     "newPuzzleTitle": "New Sudoku",
     "catalogSource": "Choose a puzzle",
@@ -191,6 +196,8 @@
     "tryAgain": "Try again",
     "askMichi": "Ask MICHI",
     "nextScenario": "Next exercise",
+    "pickCellFirst": "Tap a cell to see its candidates.",
+    "finishPractice": "See your results",
     "sessionSummary": "Practice complete",
     "summaryStats": "$correct correct · $attempts attempts",
     "hintsUsed": "$count with MICHI",
@@ -331,6 +338,7 @@
     "empty": "empty",
     "clear": "Clear",
     "confirm": "Continue in MICHI",
+    "checking": "Checking your Sudoku…",
     "rescan": "Scan again",
     "permissionIntro": "Allow camera access to take a photo.",
     "permissionDenied": "Camera access was denied. You can still choose a photo.",
@@ -349,7 +357,7 @@
     "validationFailure": "Could not check this puzzle. Try confirming again.",
     "unsupportedCoach": "MICHI may not yet explain every step in this Sudoku.",
     "importedTitle": "Imported Sudoku",
-    "lowConfidenceCount": "Low-confidence cells: $count",
+    "lowConfidenceCount": "Cells to double-check: $count",
     "stuck": "I'm stuck — help me",
     "noStep": "MICHI can’t find a next step with its current techniques.",
     "completed": "All cells are filled. This Sudoku is complete."
@@ -379,6 +387,8 @@
     "resultEliminations": "Remove the crossed-out candidates from the highlighted cells.",
     "resultActions": "Use the highlighted logical action.",
     "technique": "Technique: $name",
+    "lessonLink": "Lesson",
+    "removeThem": "Remove them",
     "nakedSingle": "Naked single",
     "hiddenSingle": "Hidden single",
     "nakedPair": "Naked pair",

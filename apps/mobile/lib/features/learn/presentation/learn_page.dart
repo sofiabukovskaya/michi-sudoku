@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_page_state.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
@@ -145,10 +146,16 @@ final class _LearnPageState extends State<LearnPage>
           future: _progress,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Center(child: Text(context.t.learn.unavailable));
+              return MichiProblemState(
+                message: context.t.learn.unavailable,
+                actionLabel: context.t.common.retry,
+                onAction: () => setState(
+                  () => _progress = _repository.loadAll(),
+                ),
+              );
             }
             if (!snapshot.hasData) {
-              return Center(child: Text(context.t.learn.loading));
+              return MichiLoadingState(label: context.t.common.justAMoment);
             }
             final values = snapshot.data!;
             final mastered = TechniqueLessons.supported

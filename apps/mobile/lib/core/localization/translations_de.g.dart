@@ -68,6 +68,9 @@ class _Translations$common$de extends Translations$common$uk {
 
 	// Translations
 	@override String get continueLabel => 'Weiter';
+	@override String get justAMoment => 'Einen Moment…';
+	@override String get retry => 'Erneut versuchen';
+	@override String get loadProblem => 'MICHI konnte das gerade nicht öffnen. Dein Fortschritt ist auf diesem Gerät sicher.';
 	@override String get start => 'Starten';
 }
 
@@ -225,6 +228,11 @@ class _Translations$home$de extends Translations$home$uk {
 	@override String get newPuzzle => 'Ein weiteres Sudoku';
 	@override String get weekTitle => 'Diese Woche';
 	@override String get weekDetails => 'Details';
+	@override String streak({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n,
+		one: '${n} Tag',
+		other: '${n} Tage',
+	);
+	@override String get streakMeaning => 'Tage in Folge mit gelöstem Sudoku des Tages';
 	@override String get weekdaysShort => 'Mo|Di|Mi|Do|Fr|Sa|So';
 	@override String get newPuzzleTitle => 'Neues Sudoku';
 	@override String get catalogSource => 'Sudoku auswählen';
@@ -313,6 +321,8 @@ class _Translations$learn$de extends Translations$learn$uk {
 	@override String get tryAgain => 'Erneut versuchen';
 	@override String get askMichi => 'MICHI fragen';
 	@override String get nextScenario => 'Nächste Aufgabe';
+	@override String get pickCellFirst => 'Tippe auf ein Feld, um seine Kandidaten zu sehen.';
+	@override String get finishPractice => 'Ergebnis ansehen';
 	@override String get sessionSummary => 'Übung abgeschlossen';
 	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} richtig · ${attempts} Versuche';
 	@override String hintsUsed({required Object count}) => '${count} mit MICHI';
@@ -409,6 +419,7 @@ class _Translations$scanner$de extends Translations$scanner$uk {
 	@override String get empty => 'leer';
 	@override String get clear => 'Löschen';
 	@override String get confirm => 'In MICHI weiterspielen';
+	@override String get checking => 'Sudoku wird geprüft…';
 	@override String get rescan => 'Erneut scannen';
 	@override String get permissionIntro => 'Erlaube den Kamerazugriff, um ein Foto aufzunehmen.';
 	@override String get permissionDenied => 'Der Kamerazugriff wurde verweigert. Du kannst ein Foto wählen.';
@@ -464,6 +475,8 @@ class _Translations$coach$de extends Translations$coach$uk {
 	@override String get resultEliminations => 'Entferne die durchgestrichenen Kandidaten aus den markierten Feldern.';
 	@override String get resultActions => 'Wende den markierten logischen Schritt an.';
 	@override String technique({required Object name}) => 'Technik: ${name}';
+	@override String get lessonLink => 'Lektion';
+	@override String get removeThem => 'Streichen';
 	@override String get nakedSingle => 'Nackter Einer';
 	@override String get hiddenSingle => 'Versteckter Einer';
 	@override String get nakedPair => 'Nacktes Paar';
@@ -745,6 +758,9 @@ extension on TranslationsDe {
 		return switch (path) {
 			'appName' => 'MICHI',
 			'common.continueLabel' => 'Weiter',
+			'common.justAMoment' => 'Einen Moment…',
+			'common.retry' => 'Erneut versuchen',
+			'common.loadProblem' => 'MICHI konnte das gerade nicht öffnen. Dein Fortschritt ist auf diesem Gerät sicher.',
 			'common.start' => 'Starten',
 			'splash.subtitle' => 'Lerne, den nächsten Zug zu erkennen.',
 			'welcome.title' => 'Finde deinen Weg durch Logik.',
@@ -848,6 +864,8 @@ extension on TranslationsDe {
 			'home.newPuzzle' => 'Ein weiteres Sudoku',
 			'home.weekTitle' => 'Diese Woche',
 			'home.weekDetails' => 'Details',
+			'home.streak' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(n, one: '${n} Tag', other: '${n} Tage', ), 
+			'home.streakMeaning' => 'Tage in Folge mit gelöstem Sudoku des Tages',
 			'home.weekdaysShort' => 'Mo|Di|Mi|Do|Fr|Sa|So',
 			'home.newPuzzleTitle' => 'Neues Sudoku',
 			'home.catalogSource' => 'Sudoku auswählen',
@@ -918,6 +936,8 @@ extension on TranslationsDe {
 			'learn.tryAgain' => 'Erneut versuchen',
 			'learn.askMichi' => 'MICHI fragen',
 			'learn.nextScenario' => 'Nächste Aufgabe',
+			'learn.pickCellFirst' => 'Tippe auf ein Feld, um seine Kandidaten zu sehen.',
+			'learn.finishPractice' => 'Ergebnis ansehen',
 			'learn.sessionSummary' => 'Übung abgeschlossen',
 			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} richtig · ${attempts} Versuche',
 			'learn.hintsUsed' => ({required Object count}) => '${count} mit MICHI',
@@ -1031,6 +1051,7 @@ extension on TranslationsDe {
 			'scanner.empty' => 'leer',
 			'scanner.clear' => 'Löschen',
 			'scanner.confirm' => 'In MICHI weiterspielen',
+			'scanner.checking' => 'Sudoku wird geprüft…',
 			'scanner.rescan' => 'Erneut scannen',
 			'scanner.permissionIntro' => 'Erlaube den Kamerazugriff, um ein Foto aufzunehmen.',
 			'scanner.permissionDenied' => 'Der Kamerazugriff wurde verweigert. Du kannst ein Foto wählen.',
@@ -1077,6 +1098,8 @@ extension on TranslationsDe {
 			'coach.resultEliminations' => 'Entferne die durchgestrichenen Kandidaten aus den markierten Feldern.',
 			'coach.resultActions' => 'Wende den markierten logischen Schritt an.',
 			'coach.technique' => ({required Object name}) => 'Technik: ${name}',
+			'coach.lessonLink' => 'Lektion',
+			'coach.removeThem' => 'Streichen',
 			'coach.nakedSingle' => 'Nackter Einer',
 			'coach.hiddenSingle' => 'Versteckter Einer',
 			'coach.nakedPair' => 'Nacktes Paar',

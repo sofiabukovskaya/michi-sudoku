@@ -13,8 +13,12 @@ final class CoachPanel extends StatelessWidget {
     required this.onDismiss,
     required this.onApply,
     this.readOnlyResult = false,
+    this.onOpenLesson,
     super.key,
   });
+
+  /// Result step only: revisit the lesson for the technique just used.
+  final VoidCallback? onOpenLesson;
 
   final CoachHintUiModel model;
   final VoidCallback onNext;
@@ -91,9 +95,30 @@ final class CoachPanel extends StatelessWidget {
                                 color: MichiColors.hairline,
                               ),
                               SizedBox(height: gap),
-                              Text(
-                                model.techniqueLabel!,
-                                style: MichiTypography.secondary,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      model.techniqueLabel!,
+                                      style: MichiTypography.secondary,
+                                    ),
+                                  ),
+                                  if (onOpenLesson case final open?)
+                                    TextButton(
+                                      key: const ValueKey('coach-lesson'),
+                                      onPressed: open,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(context.t.coach.lessonLink),
+                                          const Icon(
+                                            Icons.chevron_right_rounded,
+                                            size: 18,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
                               ),
                             ],
                           ],
@@ -121,7 +146,8 @@ final class CoachPanel extends StatelessWidget {
                                 : model.primaryActionLabel,
                             onPressed: readOnlyResult
                                 ? onDismiss
-                                : model.placementDigit != null
+                                : model.placementDigit != null ||
+                                      model.removesCandidates
                                 ? onApply
                                 : model.secondaryActionLabel == null
                                 ? onDismiss

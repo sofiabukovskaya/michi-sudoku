@@ -68,6 +68,9 @@ class _Translations$common$cs extends Translations$common$uk {
 
 	// Translations
 	@override String get continueLabel => 'Pokračovat';
+	@override String get justAMoment => 'Okamžik…';
+	@override String get retry => 'Zkusit znovu';
+	@override String get loadProblem => 'MICHI to teď nedokázala otevřít. Tvůj pokrok je v tomto zařízení v bezpečí.';
 	@override String get start => 'Začít';
 }
 
@@ -148,41 +151,41 @@ class _Translations$auth$cs extends Translations$auth$uk {
 	@override String get emailEntry => 'Přihlásit se e-mailem';
 	@override String get createTitle => 'Vytvořit účet';
 	@override String get createSubtitle => 'Synchronizuj dokončená sudoku a pokrok v učení mezi svými zařízeními.';
-	@override String get signInTitle => 'Vítejte zpět';
+	@override String get signInTitle => 'Vítej zpět';
 	@override String get name => 'Jméno';
 	@override String get email => 'E-mail';
 	@override String get password => 'Heslo';
 	@override String get passwordHint => 'Alespoň 8 znaků';
 	@override String get createAccount => 'Vytvořit účet';
 	@override String get signIn => 'Přihlásit se';
-	@override String get alreadyAccount => 'Máte už účet?';
-	@override String get noAccount => 'Ještě nemáte účet?';
-	@override String get forgotPassword => 'Zapomněli jste heslo?';
+	@override String get alreadyAccount => 'Už máš účet?';
+	@override String get noAccount => 'Ještě nemáš účet?';
+	@override String get forgotPassword => 'Nepamatuješ si heslo?';
 	@override String get resetTitle => 'Obnovení hesla';
-	@override String get resetSubtitle => 'Zadejte e-mail účtu a pošleme vám odkaz pro obnovení.';
+	@override String get resetSubtitle => 'Zadej e-mail účtu a pošleme ti odkaz pro obnovení.';
 	@override String get sendLink => 'Poslat odkaz';
-	@override String get resetSent => 'Pokud účet existuje, zkontrolujte e-mail s odkazem pro obnovení.';
-	@override String get verifyTitle => 'Zkontrolujte e-mail';
+	@override String get resetSent => 'Pokud účet existuje, najdeš v e-mailu odkaz pro obnovení.';
+	@override String get verifyTitle => 'Zkontroluj e-mail';
 	@override String verifySubtitle({required Object email}) => 'Poslali jsme ověřovací odkaz na ${email}.';
-	@override String get checkVerification => 'Ověřil(a) jsem e-mail';
+	@override String get checkVerification => 'E-mail mám ověřený';
 	@override String get resendVerification => 'Poslat odkaz znovu';
 	@override String get verified => 'E-mail je ověřený.';
 	@override String get notVerified => 'E-mail zatím není ověřený.';
 	@override String get signOut => 'Odhlásit se';
 	@override String get localNotSynced => 'Herní pokrok je stále uložený na tomto zařízení.';
 	@override String get verifyEmail => 'Ověřit e-mail';
-	@override String get errorInvalidEmail => 'Zadejte platnou e-mailovou adresu.';
-	@override String get errorPasswordLength => 'Použijte alespoň 8 znaků.';
-	@override String get errorNameRequired => 'Zadejte jméno.';
+	@override String get errorInvalidEmail => 'Zadej platnou e-mailovou adresu.';
+	@override String get errorPasswordLength => 'Použij alespoň 8 znaků.';
+	@override String get errorNameRequired => 'Zadej jméno.';
 	@override String get errorWeakPassword => 'Toto heslo je příliš slabé.';
 	@override String get errorEmailInUse => 'Účet s tímto e-mailem už existuje.';
-	@override String get errorWrongCredentials => 'Zkontrolujte e-mail a heslo.';
+	@override String get errorWrongCredentials => 'Zkontroluj e-mail a heslo.';
 	@override String get errorDisabled => 'Tento účet je zablokovaný.';
-	@override String get errorTooMany => 'Příliš mnoho pokusů. Zkuste to později.';
-	@override String get errorNetwork => 'Zkontrolujte připojení a zkuste to znovu.';
-	@override String get errorUnavailable => 'Služba účtů není dostupná. Můžete dál hrát jako host.';
+	@override String get errorTooMany => 'Příliš mnoho pokusů. Zkus to později.';
+	@override String get errorNetwork => 'Zkontroluj připojení a zkus to znovu.';
+	@override String get errorUnavailable => 'Služba účtů není dostupná. Můžeš dál hrát jako host.';
 	@override String get errorSignInAgain => 'Přihlas se znovu a akci zopakuj.';
-	@override String get errorUnexpected => 'Něco se pokazilo. Zkuste to znovu.';
+	@override String get errorUnexpected => 'Něco se pokazilo. Zkus to znovu.';
 	@override String get showPassword => 'Zobrazit heslo';
 	@override String get hidePassword => 'Skrýt heslo';
 	@override String get signOutTitle => 'Odhlásit se z účtu?';
@@ -211,20 +214,26 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get progress => 'Pokrok';
 	@override String get profile => 'Profil';
 	@override String get scanner => 'Skener';
-	@override String get chooseDifficulty => 'Vyberte obtížnost';
+	@override String get chooseDifficulty => 'Vyber obtížnost';
 	@override String get easy => 'Lehká';
 	@override String get medium => 'Střední';
 	@override String get dailyTitle => 'Sudoku dne';
 	@override String get dailyStart => 'Začít dnešní sudoku';
 	@override String get dailyContinue => 'Pokračovat v dnešním sudoku';
 	@override String get dailyCompleted => 'Dnes dokončeno';
-	@override String get contentUnavailable => 'Úlohy nejsou dostupné. Zkuste to znovu.';
+	@override String get contentUnavailable => 'Úlohy teď nejsou dostupné. Zkus to znovu.';
 	@override String get advanced => 'Pokročilé';
 	@override String get expert => 'Expertní';
 	@override String get greeting => 'Dobré ráno';
 	@override String get newPuzzle => 'Další sudoku';
 	@override String get weekTitle => 'Tento týden';
 	@override String get weekDetails => 'Podrobnosti';
+	@override String streak({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
+		one: '${n} den',
+		few: '${n} dny',
+		other: '${n} dní',
+	);
+	@override String get streakMeaning => 'Dny v řadě s vyřešeným Sudoku dne';
 	@override String get weekdaysShort => 'Po|Út|St|Čt|Pá|So|Ne';
 	@override String get newPuzzleTitle => 'Nové sudoku';
 	@override String get catalogSource => 'Vyber hlavolam';
@@ -259,7 +268,7 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String get error => 'chybné';
 	@override String get candidates => 'kandidáti';
 	@override String get completeTitle => 'Vyřešeno.';
-	@override String get completeBody => 'Dokončili jste toto sudoku.';
+	@override String get completeBody => 'Sudoku je vyřešené. Pěkná práce.';
 	@override String get backHome => 'Zpět domů';
 	@override String get pause => 'Pozastavit';
 	@override String get pausedTitle => 'Pozastaveno';
@@ -313,6 +322,8 @@ class _Translations$learn$cs extends Translations$learn$uk {
 	@override String get tryAgain => 'Zkusit znovu';
 	@override String get askMichi => 'Zeptat se MICHI';
 	@override String get nextScenario => 'Další úloha';
+	@override String get pickCellFirst => 'Klepni na políčko a uvidíš jeho kandidáty.';
+	@override String get finishPractice => 'Zobrazit výsledek';
 	@override String get sessionSummary => 'Cvičení dokončeno';
 	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} správně · ${attempts} pokusů';
 	@override String hintsUsed({required Object count}) => '${count} s MICHI';
@@ -395,14 +406,14 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 
 	// Translations
 	@override String get title => 'Skenovat sudoku';
-	@override String get intro => 'Zaberte celou mřížku, vyfoťte ji nebo vyberte snímek.';
+	@override String get intro => 'Zaber celou mřížku, vyfoť ji nebo vyber snímek.';
 	@override String get openCamera => 'Použít fotoaparát';
 	@override String get choosePhoto => 'Vybrat fotku';
 	@override String get shutter => 'Vyfotit';
-	@override String get frameGuide => 'Nechte všechny čtyři rohy v záběru.';
-	@override String get processing => 'Čteme vaše sudoku…';
-	@override String get reviewTitle => 'Zkontrolujte číslice';
-	@override String get reviewBody => 'Klepnutím na políčko jej před hrou opravíte.';
+	@override String get frameGuide => 'Nech všechny čtyři rohy v záběru.';
+	@override String get processing => 'Čtu tvoje sudoku…';
+	@override String get reviewTitle => 'Zkontroluj číslice';
+	@override String get reviewBody => 'Klepni na políčko a oprav ho ještě před hrou.';
 	@override String get needsReview => 'Vyžaduje kontrolu';
 	@override String get conflict => 'Číslice v konfliktu';
 	@override String get selected => 'vybráno';
@@ -410,22 +421,23 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get empty => 'prázdné';
 	@override String get clear => 'Vymazat';
 	@override String get confirm => 'Pokračovat v MICHI';
+	@override String get checking => 'Kontroluji sudoku…';
 	@override String get rescan => 'Skenovat znovu';
-	@override String get permissionIntro => 'Pro pořízení snímku povolte fotoaparát.';
-	@override String get permissionDenied => 'Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.';
-	@override String get permissionSettings => 'Povolte fotoaparát v Nastavení nebo vyberte fotku.';
-	@override String get noCamera => 'Fotoaparát není dostupný. Vyberte fotku.';
+	@override String get permissionIntro => 'Pro focení povol fotoaparát.';
+	@override String get permissionDenied => 'Přístup k fotoaparátu je zamítnutý. Můžeš vybrat fotku.';
+	@override String get permissionSettings => 'Povol fotoaparát v Nastavení, nebo vyber fotku.';
+	@override String get noCamera => 'Fotoaparát není dostupný. Vyber fotku.';
 	@override String get openSettings => 'Otevřít Nastavení';
-	@override String get imageDecodeFailure => 'Obrázek se nepodařilo přečíst. Zkuste jinou fotku.';
-	@override String get noGridFound => 'Mřížka sudoku nebyla nalezena. Zaberte ji celou.';
-	@override String get invalidGeometry => 'Mřížku se nepodařilo narovnat. Zkuste ostřejší fotku.';
-	@override String get segmentationFailure => 'Mřížku se nepodařilo rozdělit na políčka. Zkuste to znovu.';
-	@override String get recognitionFailure => 'Některé číslice se nepodařilo přečíst. Zkuste to znovu.';
-	@override String get duplicateClues => 'Opravte zvýrazněné konfliktní číslice.';
-	@override String get noSolution => 'Tyto číslice nemají řešení. Zkontrolujte je.';
+	@override String get imageDecodeFailure => 'Obrázek se nepodařilo přečíst. Zkus jinou fotku.';
+	@override String get noGridFound => 'Mřížku sudoku se nepodařilo najít. Zaber ji celou.';
+	@override String get invalidGeometry => 'Mřížku se nepodařilo narovnat. Zkus ostřejší fotku.';
+	@override String get segmentationFailure => 'Mřížku se nepodařilo rozdělit na políčka. Zkus to znovu.';
+	@override String get recognitionFailure => 'Některé číslice se nepodařilo přečíst. Zkus to znovu.';
+	@override String get duplicateClues => 'Oprav zvýrazněné číslice, které si odporují.';
+	@override String get noSolution => 'S těmito číslicemi nemá sudoku řešení. Zkontroluj je.';
 	@override String get multipleSolutions => 'Některé číslice mohou chybět; sudoku má více řešení.';
-	@override String get storageFailure => 'Importované sudoku se nepodařilo uložit. Zkuste to znovu.';
-	@override String get validationFailure => 'Tuto úlohu se nepodařilo ověřit. Zkuste ji potvrdit znovu.';
+	@override String get storageFailure => 'Sudoku se nepodařilo uložit. Zkus to znovu.';
+	@override String get validationFailure => 'Sudoku se nepodařilo ověřit. Zkus to znovu.';
 	@override String get unsupportedCoach => 'MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.';
 	@override String get importedTitle => 'Importované sudoku';
 	@override String lowConfidenceCount({required Object count}) => 'Políčka ke kontrole: ${count}';
@@ -452,25 +464,27 @@ class _Translations$coach$cs extends Translations$coach$uk {
 	@override String unitRow({required Object index}) => 'řádek ${index}';
 	@override String unitColumn({required Object index}) => 'sloupec ${index}';
 	@override String unitBox({required Object index}) => 'blok ${index}';
-	@override String get inspectCell => 'Podívejte se na zvýrazněné pole.';
-	@override String inspectUnit({required Object unit}) => 'Podívejte se na zvýrazněný ${unit}.';
+	@override String get inspectCell => 'Podívej se na zvýrazněné pole.';
+	@override String inspectUnit({required Object unit}) => 'Podívej se na zvýrazněný ${unit}.';
 	@override String get inspectCandidates => 'Které číslice sem mohou patřit?';
 	@override String inspectPositions({required Object unit}) => 'Kam může tato číslice patřit ve zvýrazněném ${unit}?';
-	@override String get inspectPair => 'Najděte dvě pole se stejnými dvěma kandidáty.';
+	@override String get inspectPair => 'Najdi dvě pole se stejnými dvěma kandidáty.';
 	@override String get singleRemains => 'V tomto poli zbývá jediný kandidát.';
 	@override String onlyPosition({required Object unit}) => 'Pro tuto číslici zbývá v ${unit} jediné místo.';
 	@override String pairRestriction({required Object unit}) => 'Tyto dvě číslice patří do zvýrazněné dvojice. Jinde v ${unit} je lze vyloučit.';
 	@override String get alignment => 'Kandidáti leží v jedné linii, takže číslici lze vyloučit mimo blok.';
 	@override String resultPlacement({required Object digit}) => '${digit} patří jen do zvýrazněného pole.';
-	@override String get resultEliminations => 'Odstraňte přeškrtnuté kandidáty ze zvýrazněných polí.';
-	@override String get resultActions => 'Použijte zvýrazněný logický krok.';
+	@override String get resultEliminations => 'Tyto přeškrtnuté kandidáty můžeš ze zvýrazněných polí odstranit.';
+	@override String get resultActions => 'Použij zvýrazněný logický krok.';
 	@override String technique({required Object name}) => 'Technika: ${name}';
+	@override String get lessonLink => 'Lekce';
+	@override String get removeThem => 'Vyškrtnout';
 	@override String get nakedSingle => 'nahý singl';
 	@override String get hiddenSingle => 'skrytý singl';
 	@override String get nakedPair => 'nahá dvojice';
 	@override String get pointingPair => 'ukazující dvojice';
 	@override String get unavailable => 'Nápověda není dostupná';
-	@override String get wrongTitle => 'Nejdřív opravte chybu.';
+	@override String get wrongTitle => 'Nejdřív oprav chybu.';
 	@override String get wrongBody => 'Dokud je na desce chybná číslice, nelze určit logický další krok.';
 	@override String get stuckTitle => 'Zatím žádný podporovaný krok.';
 	@override String get stuckBody => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.';
@@ -521,13 +535,13 @@ class _Translations$recommendation$cs extends Translations$recommendation$uk {
 	@override String practiceAction({required Object technique}) => 'Procvičit: ${technique}';
 	@override String reviewAction({required Object technique}) => 'Zopakovat: ${technique}';
 	@override String duration({required Object minutes}) => '${minutes} min';
-	@override String get startWithBasics => 'Začněte prvním logickým krokem.';
-	@override String get repeatedCoachHelp => 'Nedávno jste potřebovali pomoc MICHI.';
+	@override String get startWithBasics => 'Začni prvním logickým krokem.';
+	@override String get repeatedCoachHelp => 'Nedávno tu pomohla nápověda MICHI.';
 	@override String get weakIndependentPractice => 'Samostatné řešení chce ještě procvičit.';
-	@override String get continuePractice => 'Pokračujte v procvičování této techniky.';
+	@override String get continuePractice => 'Pokračuj v procvičování této techniky.';
 	@override String get nextTechnique => 'Další krok na vaší cestě.';
 	@override String get masteredNeedsReview => 'Známou techniku je dobré zopakovat.';
-	@override String get allMasteredReview => 'Zopakujte si zvládnutou techniku.';
+	@override String get allMasteredReview => 'Zopakuj si zvládnutou techniku.';
 }
 
 // Path: week
@@ -570,8 +584,8 @@ class _Translations$settings$cs extends Translations$settings$uk {
 	@override String get languageDetail => 'Vyber jazyk aplikace MICHI.';
 	@override String get reminders => 'Připomínky';
 	@override String get dailyReminder => 'Denně v 08:00';
-	@override String get reminderSignIn => 'Přihlaste se, chcete-li zapnout připomínky.';
-	@override String get reminderPermission => 'Povolte oznámení v nastavení zařízení.';
+	@override String get reminderSignIn => 'Pro připomínky se přihlas.';
+	@override String get reminderPermission => 'Povol oznámení v nastavení zařízení.';
 	@override String get reminderUnavailable => 'Oznámení nejsou na tomto zařízení dostupná.';
 }
 
@@ -589,7 +603,7 @@ class _Translations$sync$cs extends Translations$sync$uk {
 	@override String get synced => 'Nedávno synchronizováno';
 	@override String lastSynced({required Object time}) => 'Poslední synchronizace — ${time}';
 	@override String get pending => 'Uloženo v zařízení · čeká na synchronizaci';
-	@override String get offline => 'Jste offline. Postup se uloží a synchronizuje později.';
+	@override String get offline => 'Jsi offline. Pokrok se uloží a synchronizuje později.';
 	@override String get error => 'Chyba synchronizace';
 	@override String get retry => 'Zkusit znovu';
 	@override String get guest => 'Postup je uložen pouze na tomto zařízení.';
@@ -597,7 +611,7 @@ class _Translations$sync$cs extends Translations$sync$uk {
 	@override String get deleteTitle => 'Smazat účet?';
 	@override String get deleteBody => 'Účet a synchronizovaný postup budou trvale smazány.';
 	@override String get deleteConfirm => 'Smazat účet';
-	@override String get deleteFailed => 'Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.';
+	@override String get deleteFailed => 'Účet se nepodařilo smazat. Přihlas se znovu a zkus to.';
 	@override String get signOut => 'Odhlásit se';
 }
 
@@ -748,6 +762,9 @@ extension on TranslationsCs {
 		return switch (path) {
 			'appName' => 'MICHI',
 			'common.continueLabel' => 'Pokračovat',
+			'common.justAMoment' => 'Okamžik…',
+			'common.retry' => 'Zkusit znovu',
+			'common.loadProblem' => 'MICHI to teď nedokázala otevřít. Tvůj pokrok je v tomto zařízení v bezpečí.',
 			'common.start' => 'Začít',
 			'splash.subtitle' => 'Nauč se vidět další tah.',
 			'welcome.title' => 'Najdi svou cestu logikou.',
@@ -783,41 +800,41 @@ extension on TranslationsCs {
 			'auth.emailEntry' => 'Přihlásit se e-mailem',
 			'auth.createTitle' => 'Vytvořit účet',
 			'auth.createSubtitle' => 'Synchronizuj dokončená sudoku a pokrok v učení mezi svými zařízeními.',
-			'auth.signInTitle' => 'Vítejte zpět',
+			'auth.signInTitle' => 'Vítej zpět',
 			'auth.name' => 'Jméno',
 			'auth.email' => 'E-mail',
 			'auth.password' => 'Heslo',
 			'auth.passwordHint' => 'Alespoň 8 znaků',
 			'auth.createAccount' => 'Vytvořit účet',
 			'auth.signIn' => 'Přihlásit se',
-			'auth.alreadyAccount' => 'Máte už účet?',
-			'auth.noAccount' => 'Ještě nemáte účet?',
-			'auth.forgotPassword' => 'Zapomněli jste heslo?',
+			'auth.alreadyAccount' => 'Už máš účet?',
+			'auth.noAccount' => 'Ještě nemáš účet?',
+			'auth.forgotPassword' => 'Nepamatuješ si heslo?',
 			'auth.resetTitle' => 'Obnovení hesla',
-			'auth.resetSubtitle' => 'Zadejte e-mail účtu a pošleme vám odkaz pro obnovení.',
+			'auth.resetSubtitle' => 'Zadej e-mail účtu a pošleme ti odkaz pro obnovení.',
 			'auth.sendLink' => 'Poslat odkaz',
-			'auth.resetSent' => 'Pokud účet existuje, zkontrolujte e-mail s odkazem pro obnovení.',
-			'auth.verifyTitle' => 'Zkontrolujte e-mail',
+			'auth.resetSent' => 'Pokud účet existuje, najdeš v e-mailu odkaz pro obnovení.',
+			'auth.verifyTitle' => 'Zkontroluj e-mail',
 			'auth.verifySubtitle' => ({required Object email}) => 'Poslali jsme ověřovací odkaz na ${email}.',
-			'auth.checkVerification' => 'Ověřil(a) jsem e-mail',
+			'auth.checkVerification' => 'E-mail mám ověřený',
 			'auth.resendVerification' => 'Poslat odkaz znovu',
 			'auth.verified' => 'E-mail je ověřený.',
 			'auth.notVerified' => 'E-mail zatím není ověřený.',
 			'auth.signOut' => 'Odhlásit se',
 			'auth.localNotSynced' => 'Herní pokrok je stále uložený na tomto zařízení.',
 			'auth.verifyEmail' => 'Ověřit e-mail',
-			'auth.errorInvalidEmail' => 'Zadejte platnou e-mailovou adresu.',
-			'auth.errorPasswordLength' => 'Použijte alespoň 8 znaků.',
-			'auth.errorNameRequired' => 'Zadejte jméno.',
+			'auth.errorInvalidEmail' => 'Zadej platnou e-mailovou adresu.',
+			'auth.errorPasswordLength' => 'Použij alespoň 8 znaků.',
+			'auth.errorNameRequired' => 'Zadej jméno.',
 			'auth.errorWeakPassword' => 'Toto heslo je příliš slabé.',
 			'auth.errorEmailInUse' => 'Účet s tímto e-mailem už existuje.',
-			'auth.errorWrongCredentials' => 'Zkontrolujte e-mail a heslo.',
+			'auth.errorWrongCredentials' => 'Zkontroluj e-mail a heslo.',
 			'auth.errorDisabled' => 'Tento účet je zablokovaný.',
-			'auth.errorTooMany' => 'Příliš mnoho pokusů. Zkuste to později.',
-			'auth.errorNetwork' => 'Zkontrolujte připojení a zkuste to znovu.',
-			'auth.errorUnavailable' => 'Služba účtů není dostupná. Můžete dál hrát jako host.',
+			'auth.errorTooMany' => 'Příliš mnoho pokusů. Zkus to později.',
+			'auth.errorNetwork' => 'Zkontroluj připojení a zkus to znovu.',
+			'auth.errorUnavailable' => 'Služba účtů není dostupná. Můžeš dál hrát jako host.',
 			'auth.errorSignInAgain' => 'Přihlas se znovu a akci zopakuj.',
-			'auth.errorUnexpected' => 'Něco se pokazilo. Zkuste to znovu.',
+			'auth.errorUnexpected' => 'Něco se pokazilo. Zkus to znovu.',
 			'auth.showPassword' => 'Zobrazit heslo',
 			'auth.hidePassword' => 'Skrýt heslo',
 			'auth.signOutTitle' => 'Odhlásit se z účtu?',
@@ -837,20 +854,22 @@ extension on TranslationsCs {
 			'home.progress' => 'Pokrok',
 			'home.profile' => 'Profil',
 			'home.scanner' => 'Skener',
-			'home.chooseDifficulty' => 'Vyberte obtížnost',
+			'home.chooseDifficulty' => 'Vyber obtížnost',
 			'home.easy' => 'Lehká',
 			'home.medium' => 'Střední',
 			'home.dailyTitle' => 'Sudoku dne',
 			'home.dailyStart' => 'Začít dnešní sudoku',
 			'home.dailyContinue' => 'Pokračovat v dnešním sudoku',
 			'home.dailyCompleted' => 'Dnes dokončeno',
-			'home.contentUnavailable' => 'Úlohy nejsou dostupné. Zkuste to znovu.',
+			'home.contentUnavailable' => 'Úlohy teď nejsou dostupné. Zkus to znovu.',
 			'home.advanced' => 'Pokročilé',
 			'home.expert' => 'Expertní',
 			'home.greeting' => 'Dobré ráno',
 			'home.newPuzzle' => 'Další sudoku',
 			'home.weekTitle' => 'Tento týden',
 			'home.weekDetails' => 'Podrobnosti',
+			'home.streak' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} den', few: '${n} dny', other: '${n} dní', ), 
+			'home.streakMeaning' => 'Dny v řadě s vyřešeným Sudoku dne',
 			'home.weekdaysShort' => 'Po|Út|St|Čt|Pá|So|Ne',
 			'home.newPuzzleTitle' => 'Nové sudoku',
 			'home.catalogSource' => 'Vyber hlavolam',
@@ -876,7 +895,7 @@ extension on TranslationsCs {
 			'game.error' => 'chybné',
 			'game.candidates' => 'kandidáti',
 			'game.completeTitle' => 'Vyřešeno.',
-			'game.completeBody' => 'Dokončili jste toto sudoku.',
+			'game.completeBody' => 'Sudoku je vyřešené. Pěkná práce.',
 			'game.backHome' => 'Zpět domů',
 			'game.pause' => 'Pozastavit',
 			'game.pausedTitle' => 'Pozastaveno',
@@ -921,6 +940,8 @@ extension on TranslationsCs {
 			'learn.tryAgain' => 'Zkusit znovu',
 			'learn.askMichi' => 'Zeptat se MICHI',
 			'learn.nextScenario' => 'Další úloha',
+			'learn.pickCellFirst' => 'Klepni na políčko a uvidíš jeho kandidáty.',
+			'learn.finishPractice' => 'Zobrazit výsledek',
 			'learn.sessionSummary' => 'Cvičení dokončeno',
 			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} správně · ${attempts} pokusů',
 			'learn.hintsUsed' => ({required Object count}) => '${count} s MICHI',
@@ -1019,14 +1040,14 @@ extension on TranslationsCs {
 			'profile.settingsDetail' => 'Jazyk',
 			'profile.activity' => 'Tvoje aktivita',
 			'scanner.title' => 'Skenovat sudoku',
-			'scanner.intro' => 'Zaberte celou mřížku, vyfoťte ji nebo vyberte snímek.',
+			'scanner.intro' => 'Zaber celou mřížku, vyfoť ji nebo vyber snímek.',
 			'scanner.openCamera' => 'Použít fotoaparát',
 			'scanner.choosePhoto' => 'Vybrat fotku',
 			'scanner.shutter' => 'Vyfotit',
-			'scanner.frameGuide' => 'Nechte všechny čtyři rohy v záběru.',
-			'scanner.processing' => 'Čteme vaše sudoku…',
-			'scanner.reviewTitle' => 'Zkontrolujte číslice',
-			'scanner.reviewBody' => 'Klepnutím na políčko jej před hrou opravíte.',
+			'scanner.frameGuide' => 'Nech všechny čtyři rohy v záběru.',
+			'scanner.processing' => 'Čtu tvoje sudoku…',
+			'scanner.reviewTitle' => 'Zkontroluj číslice',
+			'scanner.reviewBody' => 'Klepni na políčko a oprav ho ještě před hrou.',
 			'scanner.needsReview' => 'Vyžaduje kontrolu',
 			'scanner.conflict' => 'Číslice v konfliktu',
 			'scanner.selected' => 'vybráno',
@@ -1034,22 +1055,23 @@ extension on TranslationsCs {
 			'scanner.empty' => 'prázdné',
 			'scanner.clear' => 'Vymazat',
 			'scanner.confirm' => 'Pokračovat v MICHI',
+			'scanner.checking' => 'Kontroluji sudoku…',
 			'scanner.rescan' => 'Skenovat znovu',
-			'scanner.permissionIntro' => 'Pro pořízení snímku povolte fotoaparát.',
-			'scanner.permissionDenied' => 'Přístup k fotoaparátu byl zamítnut. Můžete vybrat fotku.',
-			'scanner.permissionSettings' => 'Povolte fotoaparát v Nastavení nebo vyberte fotku.',
-			'scanner.noCamera' => 'Fotoaparát není dostupný. Vyberte fotku.',
+			'scanner.permissionIntro' => 'Pro focení povol fotoaparát.',
+			'scanner.permissionDenied' => 'Přístup k fotoaparátu je zamítnutý. Můžeš vybrat fotku.',
+			'scanner.permissionSettings' => 'Povol fotoaparát v Nastavení, nebo vyber fotku.',
+			'scanner.noCamera' => 'Fotoaparát není dostupný. Vyber fotku.',
 			'scanner.openSettings' => 'Otevřít Nastavení',
-			'scanner.imageDecodeFailure' => 'Obrázek se nepodařilo přečíst. Zkuste jinou fotku.',
-			'scanner.noGridFound' => 'Mřížka sudoku nebyla nalezena. Zaberte ji celou.',
-			'scanner.invalidGeometry' => 'Mřížku se nepodařilo narovnat. Zkuste ostřejší fotku.',
-			'scanner.segmentationFailure' => 'Mřížku se nepodařilo rozdělit na políčka. Zkuste to znovu.',
-			'scanner.recognitionFailure' => 'Některé číslice se nepodařilo přečíst. Zkuste to znovu.',
-			'scanner.duplicateClues' => 'Opravte zvýrazněné konfliktní číslice.',
-			'scanner.noSolution' => 'Tyto číslice nemají řešení. Zkontrolujte je.',
+			'scanner.imageDecodeFailure' => 'Obrázek se nepodařilo přečíst. Zkus jinou fotku.',
+			'scanner.noGridFound' => 'Mřížku sudoku se nepodařilo najít. Zaber ji celou.',
+			'scanner.invalidGeometry' => 'Mřížku se nepodařilo narovnat. Zkus ostřejší fotku.',
+			'scanner.segmentationFailure' => 'Mřížku se nepodařilo rozdělit na políčka. Zkus to znovu.',
+			'scanner.recognitionFailure' => 'Některé číslice se nepodařilo přečíst. Zkus to znovu.',
+			'scanner.duplicateClues' => 'Oprav zvýrazněné číslice, které si odporují.',
+			'scanner.noSolution' => 'S těmito číslicemi nemá sudoku řešení. Zkontroluj je.',
 			'scanner.multipleSolutions' => 'Některé číslice mohou chybět; sudoku má více řešení.',
-			'scanner.storageFailure' => 'Importované sudoku se nepodařilo uložit. Zkuste to znovu.',
-			'scanner.validationFailure' => 'Tuto úlohu se nepodařilo ověřit. Zkuste ji potvrdit znovu.',
+			'scanner.storageFailure' => 'Sudoku se nepodařilo uložit. Zkus to znovu.',
+			'scanner.validationFailure' => 'Sudoku se nepodařilo ověřit. Zkus to znovu.',
 			'scanner.unsupportedCoach' => 'MICHI zatím nemusí umět vysvětlit každý krok tohoto sudoku.',
 			'scanner.importedTitle' => 'Importované sudoku',
 			'scanner.lowConfidenceCount' => ({required Object count}) => 'Políčka ke kontrole: ${count}',
@@ -1067,25 +1089,27 @@ extension on TranslationsCs {
 			'coach.unitRow' => ({required Object index}) => 'řádek ${index}',
 			'coach.unitColumn' => ({required Object index}) => 'sloupec ${index}',
 			'coach.unitBox' => ({required Object index}) => 'blok ${index}',
-			'coach.inspectCell' => 'Podívejte se na zvýrazněné pole.',
-			'coach.inspectUnit' => ({required Object unit}) => 'Podívejte se na zvýrazněný ${unit}.',
+			'coach.inspectCell' => 'Podívej se na zvýrazněné pole.',
+			'coach.inspectUnit' => ({required Object unit}) => 'Podívej se na zvýrazněný ${unit}.',
 			'coach.inspectCandidates' => 'Které číslice sem mohou patřit?',
 			'coach.inspectPositions' => ({required Object unit}) => 'Kam může tato číslice patřit ve zvýrazněném ${unit}?',
-			'coach.inspectPair' => 'Najděte dvě pole se stejnými dvěma kandidáty.',
+			'coach.inspectPair' => 'Najdi dvě pole se stejnými dvěma kandidáty.',
 			'coach.singleRemains' => 'V tomto poli zbývá jediný kandidát.',
 			'coach.onlyPosition' => ({required Object unit}) => 'Pro tuto číslici zbývá v ${unit} jediné místo.',
 			'coach.pairRestriction' => ({required Object unit}) => 'Tyto dvě číslice patří do zvýrazněné dvojice. Jinde v ${unit} je lze vyloučit.',
 			'coach.alignment' => 'Kandidáti leží v jedné linii, takže číslici lze vyloučit mimo blok.',
 			'coach.resultPlacement' => ({required Object digit}) => '${digit} patří jen do zvýrazněného pole.',
-			'coach.resultEliminations' => 'Odstraňte přeškrtnuté kandidáty ze zvýrazněných polí.',
-			'coach.resultActions' => 'Použijte zvýrazněný logický krok.',
+			'coach.resultEliminations' => 'Tyto přeškrtnuté kandidáty můžeš ze zvýrazněných polí odstranit.',
+			'coach.resultActions' => 'Použij zvýrazněný logický krok.',
 			'coach.technique' => ({required Object name}) => 'Technika: ${name}',
+			'coach.lessonLink' => 'Lekce',
+			'coach.removeThem' => 'Vyškrtnout',
 			'coach.nakedSingle' => 'nahý singl',
 			'coach.hiddenSingle' => 'skrytý singl',
 			'coach.nakedPair' => 'nahá dvojice',
 			'coach.pointingPair' => 'ukazující dvojice',
 			'coach.unavailable' => 'Nápověda není dostupná',
-			'coach.wrongTitle' => 'Nejdřív opravte chybu.',
+			'coach.wrongTitle' => 'Nejdřív oprav chybu.',
 			'coach.wrongBody' => 'Dokud je na desce chybná číslice, nelze určit logický další krok.',
 			'coach.stuckTitle' => 'Zatím žádný podporovaný krok.',
 			'coach.stuckBody' => 'MICHI zatím neumí vysvětlit další krok dostupnými technikami.',
@@ -1118,13 +1142,13 @@ extension on TranslationsCs {
 			'recommendation.practiceAction' => ({required Object technique}) => 'Procvičit: ${technique}',
 			'recommendation.reviewAction' => ({required Object technique}) => 'Zopakovat: ${technique}',
 			'recommendation.duration' => ({required Object minutes}) => '${minutes} min',
-			'recommendation.startWithBasics' => 'Začněte prvním logickým krokem.',
-			'recommendation.repeatedCoachHelp' => 'Nedávno jste potřebovali pomoc MICHI.',
+			'recommendation.startWithBasics' => 'Začni prvním logickým krokem.',
+			'recommendation.repeatedCoachHelp' => 'Nedávno tu pomohla nápověda MICHI.',
 			'recommendation.weakIndependentPractice' => 'Samostatné řešení chce ještě procvičit.',
-			'recommendation.continuePractice' => 'Pokračujte v procvičování této techniky.',
+			'recommendation.continuePractice' => 'Pokračuj v procvičování této techniky.',
 			'recommendation.nextTechnique' => 'Další krok na vaší cestě.',
 			'recommendation.masteredNeedsReview' => 'Známou techniku je dobré zopakovat.',
-			'recommendation.allMasteredReview' => 'Zopakujte si zvládnutou techniku.',
+			'recommendation.allMasteredReview' => 'Zopakuj si zvládnutou techniku.',
 			'week.title' => 'Tento týden',
 			'week.empty' => 'Tento týden zatím nemáš dokončené sudoku. Aktivita se objeví při hraní.',
 			'week.puzzles' => 'Hlavolamy',
@@ -1141,8 +1165,8 @@ extension on TranslationsCs {
 			'settings.languageDetail' => 'Vyber jazyk aplikace MICHI.',
 			'settings.reminders' => 'Připomínky',
 			'settings.dailyReminder' => 'Denně v 08:00',
-			'settings.reminderSignIn' => 'Přihlaste se, chcete-li zapnout připomínky.',
-			'settings.reminderPermission' => 'Povolte oznámení v nastavení zařízení.',
+			'settings.reminderSignIn' => 'Pro připomínky se přihlas.',
+			'settings.reminderPermission' => 'Povol oznámení v nastavení zařízení.',
 			'settings.reminderUnavailable' => 'Oznámení nejsou na tomto zařízení dostupná.',
 			'sync.account' => 'Účet',
 			'sync.email' => 'E-mail',
@@ -1151,7 +1175,7 @@ extension on TranslationsCs {
 			'sync.synced' => 'Nedávno synchronizováno',
 			'sync.lastSynced' => ({required Object time}) => 'Poslední synchronizace — ${time}',
 			'sync.pending' => 'Uloženo v zařízení · čeká na synchronizaci',
-			'sync.offline' => 'Jste offline. Postup se uloží a synchronizuje později.',
+			'sync.offline' => 'Jsi offline. Pokrok se uloží a synchronizuje později.',
 			'sync.error' => 'Chyba synchronizace',
 			'sync.retry' => 'Zkusit znovu',
 			'sync.guest' => 'Postup je uložen pouze na tomto zařízení.',
@@ -1159,7 +1183,7 @@ extension on TranslationsCs {
 			'sync.deleteTitle' => 'Smazat účet?',
 			'sync.deleteBody' => 'Účet a synchronizovaný postup budou trvale smazány.',
 			'sync.deleteConfirm' => 'Smazat účet',
-			'sync.deleteFailed' => 'Účet se nepodařilo smazat. Přihlaste se znovu a zkuste to.',
+			'sync.deleteFailed' => 'Účet se nepodařilo smazat. Přihlas se znovu a zkus to.',
 			'sync.signOut' => 'Odhlásit se',
 			_ => null,
 		};

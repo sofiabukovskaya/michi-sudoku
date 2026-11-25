@@ -2,6 +2,9 @@
   "appName": "MICHI",
   "common": {
     "continueLabel": "Continuer",
+    "justAMoment": "Un instant…",
+    "retry": "Réessayer",
+    "loadProblem": "MICHI n’a pas pu ouvrir cela pour l’instant. Ta progression est en sécurité sur cet appareil.",
     "start": "Commencer"
   },
   "splash": {
@@ -117,6 +120,8 @@
     "newPuzzle": "Un autre sudoku",
     "weekTitle": "Cette semaine",
     "weekDetails": "Détails",
+    "streak": {"one": "$n jour", "other": "$n jours"},
+    "streakMeaning": "Jours d’affilée avec le Sudoku du jour résolu",
     "weekdaysShort": "Lu|Ma|Me|Je|Ve|Sa|Di",
     "newPuzzleTitle": "Nouveau sudoku",
     "catalogSource": "Choisir un sudoku",
@@ -191,6 +196,8 @@
     "tryAgain": "Réessayer",
     "askMichi": "Demander à MICHI",
     "nextScenario": "Exercice suivant",
+    "pickCellFirst": "Touche une case pour voir ses candidats.",
+    "finishPractice": "Voir le résultat",
     "sessionSummary": "Pratique terminée",
     "summaryStats": "$correct corrects · $attempts essais",
     "hintsUsed": "$count avec MICHI",
@@ -331,6 +338,7 @@
     "empty": "vide",
     "clear": "Effacer",
     "confirm": "Continuer dans MICHI",
+    "checking": "Vérification du sudoku…",
     "rescan": "Scanner à nouveau",
     "permissionIntro": "Autorisez l’appareil photo pour prendre une photo.",
     "permissionDenied": "L’accès à l’appareil photo est refusé. Vous pouvez choisir une photo.",
@@ -379,6 +387,8 @@
     "resultEliminations": "Retirez les candidats barrés des cases surlignées.",
     "resultActions": "Appliquez l’étape logique surlignée.",
     "technique": "Technique : $name",
+    "lessonLink": "Leçon",
+    "removeThem": "Les retirer",
     "nakedSingle": "candidat unique",
     "hiddenSingle": "unique caché",
     "nakedPair": "paire nue",
@@ -425,7 +435,7 @@
     "repeatedCoachHelp": "Vous avez récemment eu besoin de MICHI.",
     "weakIndependentPractice": "La pratique autonome mérite d’être renforcée.",
     "continuePractice": "Continuez à pratiquer cette technique.",
-    "nextTechnique": "La prochaine étape de votre parcours.",
+    "nextTechnique": "La prochaine étape de ton parcours.",
     "masteredNeedsReview": "Une technique connue mérite une révision.",
     "allMasteredReview": "Révisez une technique déjà maîtrisée."
   },
@@ -454,7 +464,7 @@
     "languageDetail": "Choisis la langue de MICHI.",
     "reminders": "Rappels",
     "dailyReminder": "Tous les jours à 08:00",
-    "reminderSignIn": "Connectez-vous pour activer les rappels.",
+    "reminderSignIn": "Connecte-toi pour activer les rappels.",
     "reminderPermission": "Autorisez les notifications dans les réglages du système.",
     "reminderUnavailable": "Les notifications ne sont pas disponibles sur cet appareil."
   },
@@ -471,10 +481,10 @@
     "retry": "Réessayer",
     "guest": "La progression est enregistrée uniquement sur cet appareil.",
     "deleteAccount": "Supprimer le compte",
-    "deleteTitle": "Supprimer votre compte ?",
-    "deleteBody": "Votre compte et votre progression synchronisée seront supprimés définitivement.",
+    "deleteTitle": "Supprimer ton compte ?",
+    "deleteBody": "Ton compte et ta progression synchronisée seront supprimés définitivement.",
     "deleteConfirm": "Supprimer le compte",
-    "deleteFailed": "Impossible de supprimer votre compte. Reconnectez-vous et réessayez.",
+    "deleteFailed": "Impossible de supprimer ton compte. Reconnecte-toi et réessaie.",
     "signOut": "Se déconnecter"
   }
 }

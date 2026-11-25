@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/features/onboarding/data/onboarding_store.dart';
 
 @RoutePage()
 final class PlayerLevelPage extends StatefulWidget {
-  const PlayerLevelPage({super.key});
+  const PlayerLevelPage({this.onboarding, super.key});
+
+  /// Tests may supply isolated first-run storage.
+  final OnboardingStore? onboarding;
 
   @override
   State<PlayerLevelPage> createState() => _PlayerLevelPageState();
@@ -130,7 +134,14 @@ final class _PlayerLevelPageState extends State<PlayerLevelPage> {
                 ),
                 MichiButton(
                   label: context.t.common.continueLabel,
-                  onPressed: () => context.router.replaceAll([AppShellRoute()]),
+                  onPressed: () async {
+                    await (widget.onboarding ?? OnboardingStore()).complete(
+                      level: PlayerLevel.values[_selected],
+                    );
+                    if (context.mounted) {
+                      await context.router.replaceAll([AppShellRoute()]);
+                    }
+                  },
                 ),
               ],
             ),

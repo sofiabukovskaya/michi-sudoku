@@ -26,6 +26,7 @@ import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/boa
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_keypad.dart';
+import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
@@ -490,28 +491,53 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                                     ),
                                   )
                                 : state.coach != null
-                                ? CoachPanel(
-                                    model: CoachPresenter.present(
-                                      context.t,
-                                      state.coach!,
+                                ? _SheetHeight(
+                                    child: CoachPanel(
+                                      // Coach → understanding → Lesson.
+                                      onOpenLesson:
+                                          TechniqueLessons.supported.contains(
+                                            state.coach!.plan.technique,
+                                          )
+                                          ? () {
+                                              // Time spent learning is not
+                                              // solving time.
+                                              cubit.pause();
+                                              unawaited(
+                                                context.router.push(
+                                                  TechniqueLessonRoute(
+                                                    technique: state
+                                                        .coach!
+                                                        .plan
+                                                        .technique,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          : null,
+                                      model: CoachPresenter.present(
+                                        context.t,
+                                        state.coach!,
+                                      ),
+                                      onNext: cubit.requestNextHint,
+                                      onDismiss: cubit.dismissHint,
+                                      onApply: () {
+                                        cubit.applyCoachResult();
+                                        unawaited(
+                                          cubit.state.status ==
+                                                  GameStatus.completed
+                                              ? HapticFeedback.heavyImpact()
+                                              : HapticFeedback.lightImpact(),
+                                        );
+                                      },
                                     ),
-                                    onNext: cubit.requestNextHint,
-                                    onDismiss: cubit.dismissHint,
-                                    onApply: () {
-                                      cubit.applyCoachResult();
-                                      unawaited(
-                                        cubit.state.status ==
-                                                GameStatus.completed
-                                            ? HapticFeedback.heavyImpact()
-                                            : HapticFeedback.lightImpact(),
-                                      );
-                                    },
                                   )
                                 : state.hintUnavailable != null
-                                ? HintUnavailablePanel(
-                                    reason: state.hintUnavailable!,
-                                    onDismiss: cubit.dismissHint,
-                                    onShowMistake: cubit.selectWrongCell,
+                                ? _SheetHeight(
+                                    child: HintUnavailablePanel(
+                                      reason: state.hintUnavailable!,
+                                      onDismiss: cubit.dismissHint,
+                                      onShowMistake: cubit.selectWrongCell,
+                                    ),
                                   )
                                 : input,
                           ),
@@ -894,10 +920,18 @@ final class _CompletedSurface extends StatelessWidget {
                   ),
                 ],
                 const SizedBox(height: MichiSpacing.xl),
+                // Names the next step of the loop instead of "Continue".
                 MichiButton(
-                  label: onContinue == null
-                      ? context.t.game.backHome
-                      : context.t.common.continueLabel,
+                  key: const ValueKey('completion-next'),
+                  label: switch (recommendation?.action) {
+                    _ when onContinue == null => context.t.game.backHome,
+                    RecommendationAction.learnTechnique =>
+                      context.t.learn.lessonStart,
+                    RecommendationAction.practiceTechnique ||
+                    RecommendationAction.reviewTechnique =>
+                      context.t.learn.practiceStart,
+                    null => context.t.common.continueLabel,
+                  },
                   onPressed: onContinue ?? onHome,
                 ),
                 if (onContinue != null)
@@ -1039,4 +1073,28 @@ final class _EmptyBoardPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _EmptyBoardPainter oldDelegate) => false;
+}
+
+/// Coach sheets keep their phone proportions on larger windows: anchored at
+/// the bottom and sized to their content instead of stretching into a tall,
+/// mostly empty panel.
+final class _SheetHeight extends StatelessWidget {
+  const _SheetHeight({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (MichiLayout.classify(MediaQuery.sizeOf(context).width) ==
+        MichiWindowClass.compact) {
+      return child;
+    }
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 300),
+        child: child,
+      ),
+    );
+  }
 }

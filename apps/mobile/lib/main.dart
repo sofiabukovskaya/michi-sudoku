@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:michi_mobile/app/app.dart';
 import 'package:michi_mobile/app/bootstrap.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
@@ -16,6 +17,7 @@ import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _lockPhonesToPortrait();
   try {
     final savedLocale = await LocalePreferenceStore().load();
     if (savedLocale == null) {
@@ -39,4 +41,14 @@ Future<void> main() async {
   );
   unawaited(getIt<NotificationCoordinator>().start());
   getIt<ReminderRegistration>().start(getIt<AuthCubit>());
+}
+
+/// Product decision: phones are portrait-only (a 9×9 board and keypad do not
+/// fit a landscape phone). Tablets keep every orientation for multitasking.
+Future<void> _lockPhonesToPortrait() async {
+  final view = WidgetsBinding.instance.platformDispatcher.views.firstOrNull;
+  if (view == null) return;
+  final size = view.physicalSize / view.devicePixelRatio;
+  if (size.shortestSide >= 600) return;
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }

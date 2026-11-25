@@ -20,6 +20,8 @@ Future<void> hintAssistedPracticeIsNotIndependent(WidgetTester tester) async {
     );
     await tester.pumpAndSettle();
   }
+  // Check enables once an answer exists.
+  await tester.pump();
   await tester.tap(find.byKey(const ValueKey('practice-check')));
   await tester.pumpAndSettle();
   expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);

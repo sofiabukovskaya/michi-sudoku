@@ -88,9 +88,13 @@ void main() {
       expect(check.hitTestable(), findsOneWidget);
       await tester.tap(find.byKey(const ValueKey('cell-1')));
       await tester.tap(find.byKey(const ValueKey('practice-digit-5')));
+      // Check enables once an answer exists.
+      await tester.pump();
       await tester.tap(check);
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);
+      // Success proves the move: the digit lands in its cell.
+      expect(find.byKey(const ValueKey('proof-digit-1')), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
@@ -106,6 +110,8 @@ void main() {
     await pumpPractice(tester, SudokuTechnique.nakedSingle);
     await tester.tap(find.byKey(ValueKey('cell-${placement.cell.index}')));
     await tester.tap(find.byKey(ValueKey('practice-digit-${placement.digit}')));
+    // Check enables once an answer exists.
+    await tester.pump();
     await tester.tap(find.byKey(const ValueKey('practice-check')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);
@@ -147,6 +153,8 @@ void main() {
       find.byType(FocusedUnitWidget),
     );
     expect(board.view.selectedEliminations, contains(elimination));
+    // Check enables once an answer exists.
+    await tester.pump();
     await tester.tap(find.byKey(const ValueKey('practice-check')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('practice-wrong')), findsOneWidget);
@@ -187,6 +195,8 @@ void main() {
       await tester.tap(
         find.byKey(ValueKey('practice-digit-${placement.digit}')),
       );
+      // Check enables once an answer exists.
+      await tester.pump();
       await tester.tap(find.byKey(const ValueKey('practice-check')));
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);

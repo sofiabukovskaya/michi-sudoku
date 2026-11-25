@@ -13,14 +13,16 @@ import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/onboarding/data/onboarding_store.dart';
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 
 @RoutePage()
 final class SplashPage extends StatefulWidget {
-  const SplashPage({this.repository, super.key});
+  const SplashPage({this.repository, this.onboarding, super.key});
 
   /// Optional storage input makes startup restoration deterministic in tests.
   final GameRepository? repository;
+  final OnboardingStore? onboarding;
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -93,8 +95,9 @@ final class _SplashPageState extends State<SplashPage>
     final repository = widget.repository ?? getIt<GameRepository>();
     try {
       final active = await repository.loadActiveSummary();
+      final returning = active != null || await _isReturningPlayer(repository);
       if (!mounted) return;
-      if (active != null) {
+      if (returning) {
         await context.router.replace(
           AppShellRoute(
             children: [
@@ -119,6 +122,17 @@ final class _SplashPageState extends State<SplashPage>
       );
       if (mounted) _scheduleWelcome();
     }
+  }
+
+  /// Finished onboarding, or (for players from before the flag existed) any
+  /// completed game. First install still begins at Welcome.
+  Future<bool> _isReturningPlayer(GameRepository repository) async {
+    final onboarding = widget.onboarding ?? OnboardingStore();
+    if (await onboarding.isCompleted()) return true;
+    final history = await repository.loadRecentCompletedGames(limit: 1);
+    if (history.isEmpty) return false;
+    await onboarding.complete();
+    return true;
   }
 
   void _scheduleWelcome() {
