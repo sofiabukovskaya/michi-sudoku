@@ -39,7 +39,7 @@ void main() {
       ),
     );
     expect(find.text('Почати'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(MichiPawLoader), findsOneWidget);
     await tester.tap(find.text('Почати'));
     expect(taps, 1);
   });

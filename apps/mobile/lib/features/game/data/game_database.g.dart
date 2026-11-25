@@ -118,6 +118,18 @@ class $ActiveGamesTable extends ActiveGames
     requiredDuringInsert: false,
     defaultValue: const Constant('{}'),
   );
+  static const VerificationMeta _provenEliminationsJsonMeta =
+      const VerificationMeta('provenEliminationsJson');
+  @override
+  late final GeneratedColumn<String> provenEliminationsJson =
+      GeneratedColumn<String>(
+        'proven_eliminations_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant('[]'),
+      );
   static const VerificationMeta _mistakesMeta = const VerificationMeta(
     'mistakes',
   );
@@ -254,6 +266,7 @@ class $ActiveGamesTable extends ActiveGames
     notesJson,
     undoJson,
     reasoningJson,
+    provenEliminationsJson,
     mistakes,
     elapsedMs,
     runningSinceMs,
@@ -361,6 +374,15 @@ class $ActiveGamesTable extends ActiveGames
         reasoningJson.isAcceptableOrUnknown(
           data['reasoning_json']!,
           _reasoningJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('proven_eliminations_json')) {
+      context.handle(
+        _provenEliminationsJsonMeta,
+        provenEliminationsJson.isAcceptableOrUnknown(
+          data['proven_eliminations_json']!,
+          _provenEliminationsJsonMeta,
         ),
       );
     }
@@ -521,6 +543,10 @@ class $ActiveGamesTable extends ActiveGames
         DriftSqlType.string,
         data['${effectivePrefix}reasoning_json'],
       )!,
+      provenEliminationsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proven_eliminations_json'],
+      )!,
       mistakes: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}mistakes'],
@@ -585,6 +611,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
   final String notesJson;
   final String undoJson;
   final String reasoningJson;
+  final String provenEliminationsJson;
   final int mistakes;
   final int elapsedMs;
   final int? runningSinceMs;
@@ -607,6 +634,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     required this.notesJson,
     required this.undoJson,
     required this.reasoningJson,
+    required this.provenEliminationsJson,
     required this.mistakes,
     required this.elapsedMs,
     this.runningSinceMs,
@@ -634,6 +662,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     map['notes_json'] = Variable<String>(notesJson);
     map['undo_json'] = Variable<String>(undoJson);
     map['reasoning_json'] = Variable<String>(reasoningJson);
+    map['proven_eliminations_json'] = Variable<String>(provenEliminationsJson);
     map['mistakes'] = Variable<int>(mistakes);
     map['elapsed_ms'] = Variable<int>(elapsedMs);
     if (!nullToAbsent || runningSinceMs != null) {
@@ -664,6 +693,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       notesJson: Value(notesJson),
       undoJson: Value(undoJson),
       reasoningJson: Value(reasoningJson),
+      provenEliminationsJson: Value(provenEliminationsJson),
       mistakes: Value(mistakes),
       elapsedMs: Value(elapsedMs),
       runningSinceMs: runningSinceMs == null && nullToAbsent
@@ -698,6 +728,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       notesJson: serializer.fromJson<String>(json['notesJson']),
       undoJson: serializer.fromJson<String>(json['undoJson']),
       reasoningJson: serializer.fromJson<String>(json['reasoningJson']),
+      provenEliminationsJson: serializer.fromJson<String>(
+        json['provenEliminationsJson'],
+      ),
       mistakes: serializer.fromJson<int>(json['mistakes']),
       elapsedMs: serializer.fromJson<int>(json['elapsedMs']),
       runningSinceMs: serializer.fromJson<int?>(json['runningSinceMs']),
@@ -729,6 +762,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       'notesJson': serializer.toJson<String>(notesJson),
       'undoJson': serializer.toJson<String>(undoJson),
       'reasoningJson': serializer.toJson<String>(reasoningJson),
+      'provenEliminationsJson': serializer.toJson<String>(
+        provenEliminationsJson,
+      ),
       'mistakes': serializer.toJson<int>(mistakes),
       'elapsedMs': serializer.toJson<int>(elapsedMs),
       'runningSinceMs': serializer.toJson<int?>(runningSinceMs),
@@ -754,6 +790,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     String? notesJson,
     String? undoJson,
     String? reasoningJson,
+    String? provenEliminationsJson,
     int? mistakes,
     int? elapsedMs,
     Value<int?> runningSinceMs = const Value.absent(),
@@ -778,6 +815,8 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     notesJson: notesJson ?? this.notesJson,
     undoJson: undoJson ?? this.undoJson,
     reasoningJson: reasoningJson ?? this.reasoningJson,
+    provenEliminationsJson:
+        provenEliminationsJson ?? this.provenEliminationsJson,
     mistakes: mistakes ?? this.mistakes,
     elapsedMs: elapsedMs ?? this.elapsedMs,
     runningSinceMs: runningSinceMs.present
@@ -812,6 +851,9 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
       reasoningJson: data.reasoningJson.present
           ? data.reasoningJson.value
           : this.reasoningJson,
+      provenEliminationsJson: data.provenEliminationsJson.present
+          ? data.provenEliminationsJson.value
+          : this.provenEliminationsJson,
       mistakes: data.mistakes.present ? data.mistakes.value : this.mistakes,
       elapsedMs: data.elapsedMs.present ? data.elapsedMs.value : this.elapsedMs,
       runningSinceMs: data.runningSinceMs.present
@@ -855,6 +897,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
           ..write('notesJson: $notesJson, ')
           ..write('undoJson: $undoJson, ')
           ..write('reasoningJson: $reasoningJson, ')
+          ..write('provenEliminationsJson: $provenEliminationsJson, ')
           ..write('mistakes: $mistakes, ')
           ..write('elapsedMs: $elapsedMs, ')
           ..write('runningSinceMs: $runningSinceMs, ')
@@ -882,6 +925,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
     notesJson,
     undoJson,
     reasoningJson,
+    provenEliminationsJson,
     mistakes,
     elapsedMs,
     runningSinceMs,
@@ -908,6 +952,7 @@ class ActiveGame extends DataClass implements Insertable<ActiveGame> {
           other.notesJson == this.notesJson &&
           other.undoJson == this.undoJson &&
           other.reasoningJson == this.reasoningJson &&
+          other.provenEliminationsJson == this.provenEliminationsJson &&
           other.mistakes == this.mistakes &&
           other.elapsedMs == this.elapsedMs &&
           other.runningSinceMs == this.runningSinceMs &&
@@ -932,6 +977,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
   final Value<String> notesJson;
   final Value<String> undoJson;
   final Value<String> reasoningJson;
+  final Value<String> provenEliminationsJson;
   final Value<int> mistakes;
   final Value<int> elapsedMs;
   final Value<int?> runningSinceMs;
@@ -955,6 +1001,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     this.notesJson = const Value.absent(),
     this.undoJson = const Value.absent(),
     this.reasoningJson = const Value.absent(),
+    this.provenEliminationsJson = const Value.absent(),
     this.mistakes = const Value.absent(),
     this.elapsedMs = const Value.absent(),
     this.runningSinceMs = const Value.absent(),
@@ -979,6 +1026,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     required String notesJson,
     required String undoJson,
     this.reasoningJson = const Value.absent(),
+    this.provenEliminationsJson = const Value.absent(),
     required int mistakes,
     required int elapsedMs,
     this.runningSinceMs = const Value.absent(),
@@ -1018,6 +1066,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     Expression<String>? notesJson,
     Expression<String>? undoJson,
     Expression<String>? reasoningJson,
+    Expression<String>? provenEliminationsJson,
     Expression<int>? mistakes,
     Expression<int>? elapsedMs,
     Expression<int>? runningSinceMs,
@@ -1042,6 +1091,8 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
       if (notesJson != null) 'notes_json': notesJson,
       if (undoJson != null) 'undo_json': undoJson,
       if (reasoningJson != null) 'reasoning_json': reasoningJson,
+      if (provenEliminationsJson != null)
+        'proven_eliminations_json': provenEliminationsJson,
       if (mistakes != null) 'mistakes': mistakes,
       if (elapsedMs != null) 'elapsed_ms': elapsedMs,
       if (runningSinceMs != null) 'running_since_ms': runningSinceMs,
@@ -1070,6 +1121,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     Value<String>? notesJson,
     Value<String>? undoJson,
     Value<String>? reasoningJson,
+    Value<String>? provenEliminationsJson,
     Value<int>? mistakes,
     Value<int>? elapsedMs,
     Value<int?>? runningSinceMs,
@@ -1094,6 +1146,8 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
       notesJson: notesJson ?? this.notesJson,
       undoJson: undoJson ?? this.undoJson,
       reasoningJson: reasoningJson ?? this.reasoningJson,
+      provenEliminationsJson:
+          provenEliminationsJson ?? this.provenEliminationsJson,
       mistakes: mistakes ?? this.mistakes,
       elapsedMs: elapsedMs ?? this.elapsedMs,
       runningSinceMs: runningSinceMs ?? this.runningSinceMs,
@@ -1141,6 +1195,11 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
     }
     if (reasoningJson.present) {
       map['reasoning_json'] = Variable<String>(reasoningJson.value);
+    }
+    if (provenEliminationsJson.present) {
+      map['proven_eliminations_json'] = Variable<String>(
+        provenEliminationsJson.value,
+      );
     }
     if (mistakes.present) {
       map['mistakes'] = Variable<int>(mistakes.value);
@@ -1196,6 +1255,7 @@ class ActiveGamesCompanion extends UpdateCompanion<ActiveGame> {
           ..write('notesJson: $notesJson, ')
           ..write('undoJson: $undoJson, ')
           ..write('reasoningJson: $reasoningJson, ')
+          ..write('provenEliminationsJson: $provenEliminationsJson, ')
           ..write('mistakes: $mistakes, ')
           ..write('elapsedMs: $elapsedMs, ')
           ..write('runningSinceMs: $runningSinceMs, ')
@@ -7073,6 +7133,7 @@ typedef $$ActiveGamesTableCreateCompanionBuilder =
       required String notesJson,
       required String undoJson,
       Value<String> reasoningJson,
+      Value<String> provenEliminationsJson,
       required int mistakes,
       required int elapsedMs,
       Value<int?> runningSinceMs,
@@ -7098,6 +7159,7 @@ typedef $$ActiveGamesTableUpdateCompanionBuilder =
       Value<String> notesJson,
       Value<String> undoJson,
       Value<String> reasoningJson,
+      Value<String> provenEliminationsJson,
       Value<int> mistakes,
       Value<int> elapsedMs,
       Value<int?> runningSinceMs,
@@ -7168,6 +7230,11 @@ class $$ActiveGamesTableFilterComposer
 
   ColumnFilters<String> get reasoningJson => $composableBuilder(
     column: $table.reasoningJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get provenEliminationsJson => $composableBuilder(
+    column: $table.provenEliminationsJson,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7286,6 +7353,11 @@ class $$ActiveGamesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get provenEliminationsJson => $composableBuilder(
+    column: $table.provenEliminationsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get mistakes => $composableBuilder(
     column: $table.mistakes,
     builder: (column) => ColumnOrderings(column),
@@ -7389,6 +7461,11 @@ class $$ActiveGamesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get provenEliminationsJson => $composableBuilder(
+    column: $table.provenEliminationsJson,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<int> get mistakes =>
       $composableBuilder(column: $table.mistakes, builder: (column) => column);
 
@@ -7480,6 +7557,7 @@ class $$ActiveGamesTableTableManager
                 Value<String> notesJson = const Value.absent(),
                 Value<String> undoJson = const Value.absent(),
                 Value<String> reasoningJson = const Value.absent(),
+                Value<String> provenEliminationsJson = const Value.absent(),
                 Value<int> mistakes = const Value.absent(),
                 Value<int> elapsedMs = const Value.absent(),
                 Value<int?> runningSinceMs = const Value.absent(),
@@ -7503,6 +7581,7 @@ class $$ActiveGamesTableTableManager
                 notesJson: notesJson,
                 undoJson: undoJson,
                 reasoningJson: reasoningJson,
+                provenEliminationsJson: provenEliminationsJson,
                 mistakes: mistakes,
                 elapsedMs: elapsedMs,
                 runningSinceMs: runningSinceMs,
@@ -7528,6 +7607,7 @@ class $$ActiveGamesTableTableManager
                 required String notesJson,
                 required String undoJson,
                 Value<String> reasoningJson = const Value.absent(),
+                Value<String> provenEliminationsJson = const Value.absent(),
                 required int mistakes,
                 required int elapsedMs,
                 Value<int?> runningSinceMs = const Value.absent(),
@@ -7551,6 +7631,7 @@ class $$ActiveGamesTableTableManager
                 notesJson: notesJson,
                 undoJson: undoJson,
                 reasoningJson: reasoningJson,
+                provenEliminationsJson: provenEliminationsJson,
                 mistakes: mistakes,
                 elapsedMs: elapsedMs,
                 runningSinceMs: runningSinceMs,

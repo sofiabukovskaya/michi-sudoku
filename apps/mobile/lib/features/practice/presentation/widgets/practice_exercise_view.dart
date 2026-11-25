@@ -509,8 +509,8 @@ final class _SuccessSheet extends StatelessWidget {
           ),
         ),
         const Positioned(
-          right: MichiSpacing.md,
-          top: -MichiSpacing.xxl,
+          right: MichiSpacing.sm,
+          top: -MichiSpacing.huge,
           child: _FeedbackMascot(correct: true),
         ),
       ],
@@ -607,19 +607,23 @@ final class _FeedbackMascot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mascot = MichiMascot(
-      state: correct ? MichiMascotState.happy : MichiMascotState.pointing,
-      size: correct ? 80 : 64,
-    );
+    if (correct) {
+      // Happy plays once when this confirmed answer appears; the sheet is a
+      // new subtree per answer, so unrelated rebuilds never replay it.
+      return const MichiMotionMascot(
+        asset: MichiMotionAsset.happy,
+        size: 88,
+        fallback: MichiMascot(state: MichiMascotState.happy, size: 80),
+      );
+    }
+    const mascot = MichiMascot(state: MichiMascotState.pointing, size: 64);
     if (MediaQuery.disableAnimationsOf(context)) return mascot;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: MichiMotion.emphasis,
-      curve: correct ? Curves.easeOutBack : MichiMotion.curve,
-      builder: (context, value, child) => Transform.scale(
-        scale: 0.7 + 0.3 * value,
-        child: Opacity(opacity: value.clamp(0.0, 1.0), child: child),
-      ),
+      curve: MichiMotion.curve,
+      builder: (context, value, child) =>
+          Opacity(opacity: value.clamp(0.0, 1.0), child: child),
       child: mascot,
     );
   }

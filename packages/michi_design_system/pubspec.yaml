@@ -8,6 +8,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+  lottie: ^3.8.2
   theme_tailor_annotation: ^3.1.1
 dev_dependencies:
   build_runner: ^2.10.5
@@ -16,6 +17,9 @@ dev_dependencies:
   theme_tailor: 3.1.1
   very_good_analysis: ^10.2.0
 flutter:
+  # Motion Library V2.1: only the Lottie JSON is shipped (no previews/tools).
+  assets:
+    - assets/mascot/
   fonts:
     - family: Manrope
       fonts:

@@ -245,8 +245,12 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _ticker?.cancel();
+    // Leaving the solving session by any route (including the system back
+    // gesture) stops the clock and saves before the session closes.
+    _cubit?.pause();
     if (widget.cubit == null && _cubit != null) {
-      unawaited(_cubit!.close());
+      final cubit = _cubit!;
+      unawaited(cubit.flushPersistence().then((_) => cubit.close()));
     }
     super.dispose();
   }
@@ -784,11 +788,13 @@ final class _CompletedSurface extends StatelessWidget {
                     ),
                     Expanded(
                       child: Center(
-                        child: Image.asset(
-                          MichiMascot.assetFor(MichiMascotState.celebrating),
-                          width: math.min(constraints.maxWidth - 48, 400),
-                          fit: BoxFit.contain,
-                          excludeFromSemantics: true,
+                        child: _CompletionCelebration(
+                          size: math.min(
+                            constraints.maxHeight * 0.3,
+                            math.min(constraints.maxWidth - 48, 260),
+                          ),
+                          // The stamp only marks a Daily that was saved.
+                          dailyStamp: isDaily && state.storageFailure == null,
                         ),
                       ),
                     ),
@@ -1007,23 +1013,7 @@ final class _GameSkeleton extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: MichiSpacing.xl),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox.square(
-                    dimension: 14,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: MichiColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(width: MichiSpacing.sm),
-                  Text(
-                    context.t.game.loading,
-                    style: MichiTypography.secondary,
-                  ),
-                ],
-              ),
+              MichiPawLoader(label: context.t.game.loading),
               const Spacer(),
               ExcludeSemantics(
                 child: Row(
@@ -1097,4 +1087,46 @@ final class _SheetHeight extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Puzzle completion: Celebrating once, then (for a recorded Daily) the
+/// stamp lands beside MICHI. Both are one-shots driven by the completion
+/// that already happened; neither delays navigation or saves anything.
+final class _CompletionCelebration extends StatelessWidget {
+  const _CompletionCelebration({required this.size, required this.dailyStamp});
+
+  final double size;
+  final bool dailyStamp;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: size * 1.25,
+    height: size,
+    child: Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        MichiMotionMascot(
+          asset: MichiMotionAsset.celebrating,
+          size: size,
+          fallback: Image.asset(
+            MichiMascot.assetFor(MichiMascotState.celebrating),
+            width: size,
+            excludeFromSemantics: true,
+          ),
+        ),
+        if (dailyStamp)
+          Positioned(
+            right: 0,
+            top: size * 0.04,
+            child: MichiMotionMascot(
+              key: const ValueKey('daily-stamp'),
+              asset: MichiMotionAsset.dailyStamp,
+              size: size * 0.42,
+              startDelay: const Duration(milliseconds: 1200),
+            ),
+          ),
+      ],
+    ),
+  );
 }

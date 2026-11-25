@@ -120,7 +120,11 @@
     "newPuzzle": "Další sudoku",
     "weekTitle": "Tento týden",
     "weekDetails": "Podrobnosti",
-    "streak": {"one": "$n den", "few": "$n dny", "other": "$n dní"},
+    "streak": {
+      "one": "$n den",
+      "few": "$n dny",
+      "other": "$n dní"
+    },
     "streakMeaning": "Dny v řadě s vyřešeným Sudoku dne",
     "weekdaysShort": "Po|Út|St|Čt|Pá|So|Ne",
     "newPuzzleTitle": "Nové sudoku",
@@ -328,7 +332,7 @@
     "openCamera": "Použít fotoaparát",
     "choosePhoto": "Vybrat fotku",
     "shutter": "Vyfotit",
-    "frameGuide": "Nech všechny čtyři rohy v záběru.",
+    "frameGuide": "Vlož do rámečku jedno sudoku.",
     "processing": "Čtu tvoje sudoku…",
     "reviewTitle": "Zkontroluj číslice",
     "reviewBody": "Klepni na políčko a oprav ho ještě před hrou.",
@@ -352,7 +356,7 @@
     "segmentationFailure": "Mřížku se nepodařilo rozdělit na políčka. Zkus to znovu.",
     "recognitionFailure": "Některé číslice se nepodařilo přečíst. Zkus to znovu.",
     "duplicateClues": "Oprav zvýrazněné číslice, které si odporují.",
-    "noSolution": "S těmito číslicemi nemá sudoku řešení. Zkontroluj je.",
+    "noSolution": "Tato zadání nemají řešení. Porovnej políčka s ? s fotkou.",
     "multipleSolutions": "Některé číslice mohou chybět; sudoku má více řešení.",
     "storageFailure": "Sudoku se nepodařilo uložit. Zkus to znovu.",
     "validationFailure": "Sudoku se nepodařilo ověřit. Zkus to znovu.",
@@ -361,7 +365,15 @@
     "lowConfidenceCount": "Políčka ke kontrole: $count",
     "stuck": "Nevím si rady",
     "noStep": "MICHI zatím nedokáže najít další logický krok.",
-    "completed": "Všechna políčka jsou vyplněná. Sudoku je hotové."
+    "completed": "Všechna políčka jsou vyplněná. Sudoku je hotové.",
+    "chooseTitle": "Které sudoku?",
+    "chooseBody": "Na fotce je víc sudoku. Klepni na to, které chceš hrát.",
+    "chooseOption": "Sudoku $number",
+    "multipleGrids": "Na fotce je víc sudoku. Vlož jedno do rámečku.",
+    "legendUnsure": "Nejisté: porovnej s fotkou",
+    "legendConflict": "Konflikt: stejná číslice dvakrát",
+    "fromPhoto": "Z tvé fotky",
+    "maybe": "Možná $digit?"
   },
   "coach": {
     "step": "Nápověda $step ze 4",

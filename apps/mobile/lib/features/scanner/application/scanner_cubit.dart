@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer' as developer;
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +28,33 @@ final class ScannerCubit extends Cubit<ScannerState> {
   final ImportedPuzzleRepository importedPuzzles;
   int _generation = 0;
 
+  /// Diagnostics only (`--dart-define=MICHI_SCAN_DEBUG=true`): records what
+  /// was recognized next to the kept capture. Compiled out otherwise.
+  static const _keepResults = bool.fromEnvironment('MICHI_SCAN_DEBUG');
+
+  Future<void> _keepResult(SudokuScanResult result, ScanFocus? focus) async {
+    try {
+      final folder = Directory('${Directory.systemTemp.path}/scan_debug');
+      await folder.create(recursive: true);
+      await File(
+        '${folder.path}/result_${DateTime.now().millisecondsSinceEpoch}.json',
+      ).writeAsString(
+        jsonEncode({
+          'focus': focus == null
+              ? null
+              : [focus.left, focus.top, focus.right, focus.bottom],
+          'corners': [
+            for (final c in result.geometry.corners) [c.x, c.y],
+          ],
+          'digits': [for (final c in result.cells) c.prediction.digit ?? 0],
+          'confidence': [for (final c in result.cells) c.prediction.confidence],
+        }),
+      );
+    } on FileSystemException {
+      // Diagnostics must never affect scanning.
+    }
+  }
+
   Future<void> initializeCamera() async {
     final access = await imageSource.openCamera();
     if (!isClosed && state.phase == ScannerPhase.capture) {
@@ -46,12 +75,14 @@ final class ScannerCubit extends Cubit<ScannerState> {
 
   Future<void> suspendCamera() => imageSource.closeCamera();
 
-  Future<void> capture() async {
+  /// [focus] is the on-screen frame in photo fractions: the puzzle inside
+  /// it is read even when the page shows others.
+  Future<void> capture({ScanFocus? focus}) async {
     if (isClosed || state.phase != ScannerPhase.capture) return;
     try {
       final image = await imageSource.capture();
       if (image != null && !isClosed) {
-        await scanImage(image);
+        await scanImage(image, focus: focus);
       }
     } on ScanFailure catch (failure) {
       if (!isClosed) {
@@ -92,21 +123,45 @@ final class ScannerCubit extends Cubit<ScannerState> {
     }
   }
 
-  Future<void> scanImage(ScanImage image) async {
+  /// Scans the puzzle the player picked after a multiple-grid photo.
+  Future<void> chooseGrid(int index) async {
+    final choice = state.gridChoice;
+    if (state.phase != ScannerPhase.chooseGrid || choice == null) return;
+    RangeError.checkValidIndex(index, choice.grids, 'index');
+    await scanImage(choice.image, grid: choice.grids[index]);
+  }
+
+  Future<void> scanImage(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async {
     if (isClosed) return;
     final generation = ++_generation;
     final access = state.cameraAccess;
     emit(ScannerState.processing(access));
     try {
       await imageSource.closeCamera();
-      final result = await scanner.scan(image);
+      final result = await scanner.scan(image, focus: focus, grid: grid);
+      if (_keepResults) unawaited(_keepResult(result, focus));
       if (isClosed || generation != _generation) return;
       final board = SudokuBoard.fromValues([
         for (final cell in result.cells) cell.prediction.digit ?? 0,
       ]);
       emit(ScannerState.review(access, _review(result, board, const {}, null)));
     } on ScanFailure catch (failure) {
-      if (!isClosed && generation == _generation) {
+      if (isClosed || generation != _generation) return;
+      final photo = failure.image;
+      if (failure.kind == ScanFailureKind.multipleGrids &&
+          photo != null &&
+          failure.candidates.length > 1) {
+        emit(
+          ScannerState.chooseGrid(
+            access,
+            ScannerGridChoice(image: photo, grids: failure.candidates),
+          ),
+        );
+      } else {
         emit(ScannerState.failure(access, failure.kind));
       }
     } on Object catch (error, stack) {

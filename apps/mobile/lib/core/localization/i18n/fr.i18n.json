@@ -120,7 +120,10 @@
     "newPuzzle": "Un autre sudoku",
     "weekTitle": "Cette semaine",
     "weekDetails": "Détails",
-    "streak": {"one": "$n jour", "other": "$n jours"},
+    "streak": {
+      "one": "$n jour",
+      "other": "$n jours"
+    },
     "streakMeaning": "Jours d’affilée avec le Sudoku du jour résolu",
     "weekdaysShort": "Lu|Ma|Me|Je|Ve|Sa|Di",
     "newPuzzleTitle": "Nouveau sudoku",
@@ -327,7 +330,7 @@
     "openCamera": "Utiliser l’appareil photo",
     "choosePhoto": "Choisir une photo",
     "shutter": "Prendre une photo",
-    "frameGuide": "Gardez les quatre coins dans le cadre.",
+    "frameGuide": "Place un seul sudoku dans le cadre.",
     "processing": "Lecture du sudoku…",
     "reviewTitle": "Vérifiez les chiffres",
     "reviewBody": "Touchez une case pour la corriger avant de jouer.",
@@ -351,7 +354,7 @@
     "segmentationFailure": "Impossible de découper la grille en cases. Réessayez.",
     "recognitionFailure": "Certains chiffres sont illisibles. Réessayez.",
     "duplicateClues": "Corrigez les chiffres en conflit signalés.",
-    "noSolution": "Ces chiffres ne donnent aucune solution. Vérifiez-les.",
+    "noSolution": "Ces indices n’ont pas de solution. Compare les cases marquées ? avec ta photo.",
     "multipleSolutions": "Il manque peut-être des chiffres : ce sudoku a plusieurs solutions.",
     "storageFailure": "Impossible d’enregistrer le sudoku importé. Réessayez.",
     "validationFailure": "Impossible de vérifier cette grille. Réessayez de confirmer.",
@@ -360,7 +363,15 @@
     "lowConfidenceCount": "Cases à vérifier : $count",
     "stuck": "Je bloque, aide-moi",
     "noStep": "MICHI ne trouve pas de prochaine étape avec les techniques disponibles.",
-    "completed": "Toutes les cases sont remplies. Ce sudoku est terminé."
+    "completed": "Toutes les cases sont remplies. Ce sudoku est terminé.",
+    "chooseTitle": "Quel sudoku ?",
+    "chooseBody": "Cette photo contient plusieurs sudokus. Touche celui que tu veux jouer.",
+    "chooseOption": "Sudoku $number",
+    "multipleGrids": "Cette photo contient plusieurs sudokus. Places-en un dans le cadre.",
+    "legendUnsure": "Incertain : compare avec ta photo",
+    "legendConflict": "Conflit : même chiffre en double",
+    "fromPhoto": "Sur ta photo",
+    "maybe": "Peut-être $digit ?"
   },
   "coach": {
     "step": "Indice $step sur 4",

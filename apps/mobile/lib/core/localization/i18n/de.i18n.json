@@ -120,7 +120,10 @@
     "newPuzzle": "Ein weiteres Sudoku",
     "weekTitle": "Diese Woche",
     "weekDetails": "Details",
-    "streak": {"one": "$n Tag", "other": "$n Tage"},
+    "streak": {
+      "one": "$n Tag",
+      "other": "$n Tage"
+    },
     "streakMeaning": "Tage in Folge mit gelöstem Sudoku des Tages",
     "weekdaysShort": "Mo|Di|Mi|Do|Fr|Sa|So",
     "newPuzzleTitle": "Neues Sudoku",
@@ -327,7 +330,7 @@
     "openCamera": "Kamera verwenden",
     "choosePhoto": "Foto auswählen",
     "shutter": "Foto aufnehmen",
-    "frameGuide": "Alle vier Ecken sollten im Bild sein.",
+    "frameGuide": "Bring ein Sudoku in den Rahmen.",
     "processing": "Sudoku wird gelesen…",
     "reviewTitle": "Zahlen prüfen",
     "reviewBody": "Tippe auf ein Feld, um es vor dem Spielen zu korrigieren.",
@@ -351,7 +354,7 @@
     "segmentationFailure": "Das Gitter konnte nicht in Felder geteilt werden. Versuche es erneut.",
     "recognitionFailure": "Einige Zahlen konnten nicht gelesen werden. Versuche es erneut.",
     "duplicateClues": "Korrigiere die markierten widersprüchlichen Zahlen.",
-    "noSolution": "Diese Zahlen haben keine Lösung. Prüfe sie.",
+    "noSolution": "Diese Vorgaben haben keine Lösung. Vergleiche die Felder mit ? mit dem Foto.",
     "multipleSolutions": "Möglicherweise fehlen Zahlen; dieses Sudoku hat mehrere Lösungen.",
     "storageFailure": "Das importierte Sudoku konnte nicht gespeichert werden. Versuche es erneut.",
     "validationFailure": "Dieses Sudoku konnte nicht geprüft werden. Versuche es erneut zu bestätigen.",
@@ -360,7 +363,15 @@
     "lowConfidenceCount": "Zu prüfende Felder: $count",
     "stuck": "Ich komme nicht weiter",
     "noStep": "MICHI findet mit den verfügbaren Techniken keinen nächsten Schritt.",
-    "completed": "Alle Felder sind ausgefüllt. Dieses Sudoku ist gelöst."
+    "completed": "Alle Felder sind ausgefüllt. Dieses Sudoku ist gelöst.",
+    "chooseTitle": "Welches Sudoku?",
+    "chooseBody": "Auf dem Foto sind mehrere Sudokus. Tippe auf das, das du spielen willst.",
+    "chooseOption": "Sudoku $number",
+    "multipleGrids": "Auf dem Foto sind mehrere Sudokus. Bring eines in den Rahmen.",
+    "legendUnsure": "Unsicher: mit dem Foto vergleichen",
+    "legendConflict": "Konflikt: gleiche Zahl doppelt",
+    "fromPhoto": "Aus deinem Foto",
+    "maybe": "Vielleicht $digit?"
   },
   "coach": {
     "step": "Hinweis $step von 4",

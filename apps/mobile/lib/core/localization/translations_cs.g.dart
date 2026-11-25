@@ -221,7 +221,7 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get dailyStart => 'Začít dnešní sudoku';
 	@override String get dailyContinue => 'Pokračovat v dnešním sudoku';
 	@override String get dailyCompleted => 'Dnes dokončeno';
-	@override String get contentUnavailable => 'Úlohy teď nejsou dostupné. Zkus to znovu.';
+	@override String get contentUnavailable => 'Sudoku se teď nepodařilo načíst. Zkus to znovu.';
 	@override String get advanced => 'Pokročilé';
 	@override String get expert => 'Expertní';
 	@override String get greeting => 'Dobré ráno';
@@ -236,7 +236,7 @@ class _Translations$home$cs extends Translations$home$uk {
 	@override String get streakMeaning => 'Dny v řadě s vyřešeným Sudoku dne';
 	@override String get weekdaysShort => 'Po|Út|St|Čt|Pá|So|Ne';
 	@override String get newPuzzleTitle => 'Nové sudoku';
-	@override String get catalogSource => 'Vyber hlavolam';
+	@override String get catalogSource => 'Vyber sudoku';
 	@override String get scanSource => 'Naskenovat sudoku';
 	@override String get scanSourceDetail => 'Fotka nebo fotoaparát';
 	@override String get weekStatusDone => 'Dokončeno';
@@ -369,9 +369,9 @@ class _Translations$progress$cs extends Translations$progress$uk {
 	@override String get startLearning => 'Začít se učit';
 	@override String get thisWeek => 'Tento týden';
 	@override String completed({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
-		one: '${n} dokončený hlavolam',
-		few: '${n} dokončené hlavolamy',
-		other: '${n} dokončených hlavolamů',
+		one: '${n} dokončené sudoku',
+		few: '${n} dokončená sudoku',
+		other: '${n} dokončených sudoku',
 	);
 	@override String mastery({required Object percent}) => 'Zvládnuto ${percent} %';
 	@override String get openTechnique => 'Otevřít techniku';
@@ -410,7 +410,7 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get openCamera => 'Použít fotoaparát';
 	@override String get choosePhoto => 'Vybrat fotku';
 	@override String get shutter => 'Vyfotit';
-	@override String get frameGuide => 'Nech všechny čtyři rohy v záběru.';
+	@override String get frameGuide => 'Vlož do rámečku jedno sudoku.';
 	@override String get processing => 'Čtu tvoje sudoku…';
 	@override String get reviewTitle => 'Zkontroluj číslice';
 	@override String get reviewBody => 'Klepni na políčko a oprav ho ještě před hrou.';
@@ -434,7 +434,7 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get segmentationFailure => 'Mřížku se nepodařilo rozdělit na políčka. Zkus to znovu.';
 	@override String get recognitionFailure => 'Některé číslice se nepodařilo přečíst. Zkus to znovu.';
 	@override String get duplicateClues => 'Oprav zvýrazněné číslice, které si odporují.';
-	@override String get noSolution => 'S těmito číslicemi nemá sudoku řešení. Zkontroluj je.';
+	@override String get noSolution => 'Tato zadání nemají řešení. Porovnej políčka s ? s fotkou.';
 	@override String get multipleSolutions => 'Některé číslice mohou chybět; sudoku má více řešení.';
 	@override String get storageFailure => 'Sudoku se nepodařilo uložit. Zkus to znovu.';
 	@override String get validationFailure => 'Sudoku se nepodařilo ověřit. Zkus to znovu.';
@@ -444,6 +444,14 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get stuck => 'Nevím si rady';
 	@override String get noStep => 'MICHI zatím nedokáže najít další logický krok.';
 	@override String get completed => 'Všechna políčka jsou vyplněná. Sudoku je hotové.';
+	@override String get chooseTitle => 'Které sudoku?';
+	@override String get chooseBody => 'Na fotce je víc sudoku. Klepni na to, které chceš hrát.';
+	@override String chooseOption({required Object number}) => 'Sudoku ${number}';
+	@override String get multipleGrids => 'Na fotce je víc sudoku. Vlož jedno do rámečku.';
+	@override String get legendUnsure => 'Nejisté: porovnej s fotkou';
+	@override String get legendConflict => 'Konflikt: stejná číslice dvakrát';
+	@override String get fromPhoto => 'Z tvé fotky';
+	@override String maybe({required Object digit}) => 'Možná ${digit}?';
 }
 
 // Path: coach
@@ -562,9 +570,9 @@ class _Translations$week$cs extends Translations$week$uk {
 		other: '${n} aktivních dní',
 	);
 	@override String completedDay({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n,
-		one: '${n} dokončený hlavolam',
-		few: '${n} dokončené hlavolamy',
-		other: '${n} dokončených hlavolamů',
+		one: '${n} dokončené sudoku',
+		few: '${n} dokončená sudoku',
+		other: '${n} dokončených sudoku',
 	);
 	@override String get today => 'Dnes';
 	@override String get noActivity => 'Bez aktivity';
@@ -861,7 +869,7 @@ extension on TranslationsCs {
 			'home.dailyStart' => 'Začít dnešní sudoku',
 			'home.dailyContinue' => 'Pokračovat v dnešním sudoku',
 			'home.dailyCompleted' => 'Dnes dokončeno',
-			'home.contentUnavailable' => 'Úlohy teď nejsou dostupné. Zkus to znovu.',
+			'home.contentUnavailable' => 'Sudoku se teď nepodařilo načíst. Zkus to znovu.',
 			'home.advanced' => 'Pokročilé',
 			'home.expert' => 'Expertní',
 			'home.greeting' => 'Dobré ráno',
@@ -872,7 +880,7 @@ extension on TranslationsCs {
 			'home.streakMeaning' => 'Dny v řadě s vyřešeným Sudoku dne',
 			'home.weekdaysShort' => 'Po|Út|St|Čt|Pá|So|Ne',
 			'home.newPuzzleTitle' => 'Nové sudoku',
-			'home.catalogSource' => 'Vyber hlavolam',
+			'home.catalogSource' => 'Vyber sudoku',
 			'home.scanSource' => 'Naskenovat sudoku',
 			'home.scanSourceDetail' => 'Fotka nebo fotoaparát',
 			'home.weekStatusDone' => 'Dokončeno',
@@ -1024,7 +1032,7 @@ extension on TranslationsCs {
 			'progress.noStrong' => 'Nejsilnější techniky se ukážou po procvičování.',
 			'progress.startLearning' => 'Začít se učit',
 			'progress.thisWeek' => 'Tento týden',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ), 
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončené sudoku', few: '${n} dokončená sudoku', other: '${n} dokončených sudoku', ), 
 			'progress.mastery' => ({required Object percent}) => 'Zvládnuto ${percent} %',
 			'progress.openTechnique' => 'Otevřít techniku',
 			'progress.firstPuzzle' => 'Začni prvním sudoku',
@@ -1044,7 +1052,7 @@ extension on TranslationsCs {
 			'scanner.openCamera' => 'Použít fotoaparát',
 			'scanner.choosePhoto' => 'Vybrat fotku',
 			'scanner.shutter' => 'Vyfotit',
-			'scanner.frameGuide' => 'Nech všechny čtyři rohy v záběru.',
+			'scanner.frameGuide' => 'Vlož do rámečku jedno sudoku.',
 			'scanner.processing' => 'Čtu tvoje sudoku…',
 			'scanner.reviewTitle' => 'Zkontroluj číslice',
 			'scanner.reviewBody' => 'Klepni na políčko a oprav ho ještě před hrou.',
@@ -1068,7 +1076,7 @@ extension on TranslationsCs {
 			'scanner.segmentationFailure' => 'Mřížku se nepodařilo rozdělit na políčka. Zkus to znovu.',
 			'scanner.recognitionFailure' => 'Některé číslice se nepodařilo přečíst. Zkus to znovu.',
 			'scanner.duplicateClues' => 'Oprav zvýrazněné číslice, které si odporují.',
-			'scanner.noSolution' => 'S těmito číslicemi nemá sudoku řešení. Zkontroluj je.',
+			'scanner.noSolution' => 'Tato zadání nemají řešení. Porovnej políčka s ? s fotkou.',
 			'scanner.multipleSolutions' => 'Některé číslice mohou chybět; sudoku má více řešení.',
 			'scanner.storageFailure' => 'Sudoku se nepodařilo uložit. Zkus to znovu.',
 			'scanner.validationFailure' => 'Sudoku se nepodařilo ověřit. Zkus to znovu.',
@@ -1078,6 +1086,14 @@ extension on TranslationsCs {
 			'scanner.stuck' => 'Nevím si rady',
 			'scanner.noStep' => 'MICHI zatím nedokáže najít další logický krok.',
 			'scanner.completed' => 'Všechna políčka jsou vyplněná. Sudoku je hotové.',
+			'scanner.chooseTitle' => 'Které sudoku?',
+			'scanner.chooseBody' => 'Na fotce je víc sudoku. Klepni na to, které chceš hrát.',
+			'scanner.chooseOption' => ({required Object number}) => 'Sudoku ${number}',
+			'scanner.multipleGrids' => 'Na fotce je víc sudoku. Vlož jedno do rámečku.',
+			'scanner.legendUnsure' => 'Nejisté: porovnej s fotkou',
+			'scanner.legendConflict' => 'Konflikt: stejná číslice dvakrát',
+			'scanner.fromPhoto' => 'Z tvé fotky',
+			'scanner.maybe' => ({required Object digit}) => 'Možná ${digit}?',
 			'coach.step' => ({required Object step}) => 'Nápověda ${step} ze 4',
 			'coach.kTry' => 'Zkusím to',
 			'coach.show' => 'Ukázat',
@@ -1155,7 +1171,7 @@ extension on TranslationsCs {
 			'week.minutes' => 'Minuty',
 			'week.daily' => 'Denní',
 			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} aktivní den', few: '${n} aktivní dny', other: '${n} aktivních dní', ), 
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončený hlavolam', few: '${n} dokončené hlavolamy', other: '${n} dokončených hlavolamů', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('cs'))(n, one: '${n} dokončené sudoku', few: '${n} dokončená sudoku', other: '${n} dokončených sudoku', ), 
 			'week.today' => 'Dnes',
 			'week.noActivity' => 'Bez aktivity',
 			'week.summary' => 'Tvoje místní aktivita v sudoku',

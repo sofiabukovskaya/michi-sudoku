@@ -408,7 +408,7 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get openCamera => 'Usar cámara';
 	@override String get choosePhoto => 'Elegir foto';
 	@override String get shutter => 'Hacer foto';
-	@override String get frameGuide => 'Mantén las cuatro esquinas dentro del encuadre.';
+	@override String get frameGuide => 'Encuadra un solo sudoku dentro del marco.';
 	@override String get processing => 'Leyendo tu sudoku…';
 	@override String get reviewTitle => 'Revisa los números';
 	@override String get reviewBody => 'Toca una casilla para corregirla antes de jugar.';
@@ -432,7 +432,7 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get segmentationFailure => 'No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.';
 	@override String get recognitionFailure => 'No pudimos leer algunos números. Inténtalo de nuevo.';
 	@override String get duplicateClues => 'Corrige los números en conflicto resaltados.';
-	@override String get noSolution => 'Estos números no tienen solución. Revísalos.';
+	@override String get noSolution => 'Estas pistas no tienen solución. Compara las casillas con ? con tu foto.';
 	@override String get multipleSolutions => 'Pueden faltar números; este sudoku tiene varias soluciones.';
 	@override String get storageFailure => 'No pudimos guardar el sudoku importado. Inténtalo de nuevo.';
 	@override String get validationFailure => 'No se pudo comprobar este sudoku. Vuelve a confirmar.';
@@ -442,6 +442,14 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get stuck => 'Necesito una pista';
 	@override String get noStep => 'MICHI no encuentra el siguiente paso con las técnicas disponibles.';
 	@override String get completed => 'Todas las casillas están llenas. El sudoku está resuelto.';
+	@override String get chooseTitle => '¿Qué sudoku?';
+	@override String get chooseBody => 'La foto tiene más de un sudoku. Toca el que quieras jugar.';
+	@override String chooseOption({required Object number}) => 'Sudoku ${number}';
+	@override String get multipleGrids => 'La foto tiene más de un sudoku. Encuadra uno dentro del marco.';
+	@override String get legendUnsure => 'Dudosa: compárala con tu foto';
+	@override String get legendConflict => 'Conflicto: el mismo número dos veces';
+	@override String get fromPhoto => 'De tu foto';
+	@override String maybe({required Object digit}) => '¿Quizá ${digit}?';
 }
 
 // Path: coach
@@ -1040,7 +1048,7 @@ extension on TranslationsEs {
 			'scanner.openCamera' => 'Usar cámara',
 			'scanner.choosePhoto' => 'Elegir foto',
 			'scanner.shutter' => 'Hacer foto',
-			'scanner.frameGuide' => 'Mantén las cuatro esquinas dentro del encuadre.',
+			'scanner.frameGuide' => 'Encuadra un solo sudoku dentro del marco.',
 			'scanner.processing' => 'Leyendo tu sudoku…',
 			'scanner.reviewTitle' => 'Revisa los números',
 			'scanner.reviewBody' => 'Toca una casilla para corregirla antes de jugar.',
@@ -1064,7 +1072,7 @@ extension on TranslationsEs {
 			'scanner.segmentationFailure' => 'No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.',
 			'scanner.recognitionFailure' => 'No pudimos leer algunos números. Inténtalo de nuevo.',
 			'scanner.duplicateClues' => 'Corrige los números en conflicto resaltados.',
-			'scanner.noSolution' => 'Estos números no tienen solución. Revísalos.',
+			'scanner.noSolution' => 'Estas pistas no tienen solución. Compara las casillas con ? con tu foto.',
 			'scanner.multipleSolutions' => 'Pueden faltar números; este sudoku tiene varias soluciones.',
 			'scanner.storageFailure' => 'No pudimos guardar el sudoku importado. Inténtalo de nuevo.',
 			'scanner.validationFailure' => 'No se pudo comprobar este sudoku. Vuelve a confirmar.',
@@ -1074,6 +1082,14 @@ extension on TranslationsEs {
 			'scanner.stuck' => 'Necesito una pista',
 			'scanner.noStep' => 'MICHI no encuentra el siguiente paso con las técnicas disponibles.',
 			'scanner.completed' => 'Todas las casillas están llenas. El sudoku está resuelto.',
+			'scanner.chooseTitle' => '¿Qué sudoku?',
+			'scanner.chooseBody' => 'La foto tiene más de un sudoku. Toca el que quieras jugar.',
+			'scanner.chooseOption' => ({required Object number}) => 'Sudoku ${number}',
+			'scanner.multipleGrids' => 'La foto tiene más de un sudoku. Encuadra uno dentro del marco.',
+			'scanner.legendUnsure' => 'Dudosa: compárala con tu foto',
+			'scanner.legendConflict' => 'Conflicto: el mismo número dos veces',
+			'scanner.fromPhoto' => 'De tu foto',
+			'scanner.maybe' => ({required Object digit}) => '¿Quizá ${digit}?',
 			'coach.step' => ({required Object step}) => 'Pista ${step} de 4',
 			'coach.kTry' => 'Lo intentaré',
 			'coach.show' => 'Mostrar',

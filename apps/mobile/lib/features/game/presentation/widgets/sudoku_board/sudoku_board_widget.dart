@@ -100,23 +100,33 @@ class _BoardPaintState extends State<_BoardPaint> {
   }
 
   @override
-  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
-    key: ValueKey(widget.view),
-    tween: Tween(begin: previous == null ? 1 : 0, end: 1),
-    duration: MediaQuery.disableAnimationsOf(context)
-        ? Duration.zero
-        : MichiMotion.quick,
-    builder: (_, progress, _) => CustomPaint(
-      painter: SudokuBoardPainter(
-        view: widget.view,
-        geometry: widget.geometry,
-        previous: previous,
-        progress: progress,
+  Widget build(BuildContext context) {
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    // A new Coach step gets a staged reveal; any other board change (a
+    // digit, a note, a selection) keeps the overlay settled and responsive.
+    final newHint =
+        previous != null && previous!.coachHint != widget.view.coachHint;
+    return TweenAnimationBuilder<double>(
+      key: ValueKey(widget.view),
+      tween: Tween(begin: previous == null ? 1 : 0, end: 1),
+      duration: reduceMotion
+          ? Duration.zero
+          : newHint
+          ? MichiMotion.reveal
+          : MichiMotion.quick,
+      builder: (_, progress, _) => CustomPaint(
+        painter: SudokuBoardPainter(
+          view: widget.view,
+          geometry: widget.geometry,
+          previous: previous,
+          progress: newHint ? 1 : progress,
+        ),
+        foregroundPainter: CoachOverlayPainter(
+          hint: widget.view.coachHint,
+          geometry: widget.geometry,
+          reveal: newHint ? progress : 1,
+        ),
       ),
-      foregroundPainter: CoachOverlayPainter(
-        hint: widget.view.coachHint,
-        geometry: widget.geometry,
-      ),
-    ),
-  );
+    );
+  }
 }

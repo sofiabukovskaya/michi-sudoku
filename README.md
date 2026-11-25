@@ -177,6 +177,14 @@ Theme Tailor code, plus BDD widget tests. Generated files stay in the source tre
 immediately after checkout. For a direct Android build, run
 `cd apps/mobile && flutter build apk --debug` with Java 21.
 
+For temporary iPhone testing with the existing Personal Team, iOS Debug and
+Profile use `Runner/Runner.local.entitlements`, which omits APNs. Push delivery
+cannot be tested in these configurations. Release still uses the original
+`Runner/Runner.entitlements`; no bundle identifier or production entitlement
+has changed. To restore development push testing with a capable signing team,
+point Debug and Profile `CODE_SIGN_ENTITLEMENTS` back to
+`Runner/Runner.entitlements` in the Runner Xcode target.
+
 ## Accounts and local-first sync
 
 Firebase Core and Authentication SDKs are integrated with the existing Android

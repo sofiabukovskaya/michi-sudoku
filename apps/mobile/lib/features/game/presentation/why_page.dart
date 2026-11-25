@@ -331,7 +331,7 @@ final class _WhyStepRow extends StatelessWidget {
   );
 }
 
-final class _WhyMarkers extends StatelessWidget {
+final class _WhyMarkers extends StatefulWidget {
   const _WhyMarkers({
     required this.plan,
     required this.geometry,
@@ -341,6 +341,54 @@ final class _WhyMarkers extends StatelessWidget {
   final WhyPlan plan;
   final BoardGeometry geometry;
   final SudokuBoard board;
+
+  @override
+  State<_WhyMarkers> createState() => _WhyMarkersState();
+}
+
+/// Reveals the explanation in its logical order: the unit searched, each
+/// numbered step as it is reached, the ruled-out positions, then the answer.
+/// Every element is already final; motion only orders attention.
+final class _WhyMarkersState extends State<_WhyMarkers>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _reveal = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
+
+  WhyPlan get plan => widget.plan;
+  BoardGeometry get geometry => widget.geometry;
+  SudokuBoard get board => widget.board;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _reveal.value = 1;
+    } else if (_reveal.value == 0 && !_reveal.isAnimating) {
+      _reveal.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _reveal.dispose();
+    super.dispose();
+  }
+
+  Widget _at(double begin, double end, Widget child) {
+    final curved = CurvedAnimation(
+      parent: _reveal,
+      curve: Interval(begin, end, curve: MichiMotion.curve),
+    );
+    return FadeTransition(
+      opacity: curved,
+      child: ScaleTransition(
+        scale: Tween<double>(begin: 0.85, end: 1).animate(curved),
+        child: child,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -361,10 +409,14 @@ final class _WhyMarkers extends StatelessWidget {
             rect: unit.cells
                 .map(geometry.rectFor)
                 .reduce((left, right) => left.expandToInclude(right)),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: MichiColors.coral, width: 2),
-                borderRadius: BorderRadius.circular(4),
+            child: _at(
+              0,
+              0.35,
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(color: MichiColors.coral, width: 2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ),
             ),
           ),
@@ -373,23 +425,31 @@ final class _WhyMarkers extends StatelessWidget {
             if (board.isEmpty(cell))
               Positioned.fromRect(
                 rect: geometry.rectFor(cell).deflate(8),
-                child: Center(
-                  child: Text(
-                    '${plan.target.digit}',
-                    style: MichiTypography.body.copyWith(
-                      color: MichiColors.coralText,
-                      decoration: TextDecoration.lineThrough,
-                      decorationThickness: 2,
+                child: _at(
+                  0.3,
+                  0.7,
+                  Center(
+                    child: Text(
+                      '${plan.target.digit}',
+                      style: MichiTypography.body.copyWith(
+                        color: MichiColors.coralText,
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 2,
+                      ),
                     ),
                   ),
                 ),
               ),
         Positioned.fromRect(
           rect: geometry.rectFor(plan.target.cell),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(color: MichiColors.success, width: 2),
-              borderRadius: BorderRadius.circular(4),
+          child: _at(
+            0.65,
+            1,
+            DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: MichiColors.success, width: 2),
+                borderRadius: BorderRadius.circular(4),
+              ),
             ),
           ),
         ),
@@ -408,16 +468,22 @@ final class _WhyMarkers extends StatelessWidget {
                   ifAbsent: () => 0,
                 );
                 final rect = geometry.rectFor(cell);
+                final count = plan.steps.length;
+                final start = (step.number - 1) / count * 0.7;
                 return Positioned(
                   left: rect.right - 13 - offset * 12,
                   top: rect.top - 4,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: MichiColors.textPrimary,
-                    child: Text(
-                      '${step.number}',
-                      style: MichiTypography.meta.copyWith(
-                        color: MichiColors.ivory,
+                  child: _at(
+                    start,
+                    (start + 0.3).clamp(0.0, 1.0),
+                    CircleAvatar(
+                      radius: 10,
+                      backgroundColor: MichiColors.textPrimary,
+                      child: Text(
+                        '${step.number}',
+                        style: MichiTypography.meta.copyWith(
+                          color: MichiColors.ivory,
+                        ),
                       ),
                     ),
                   ),

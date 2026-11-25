@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,6 +45,8 @@ void main() {
       expect(find.byKey(const ValueKey('scan-cell-0')), findsOneWidget);
       expect(find.byKey(const ValueKey('scan-cell-80')), findsOneWidget);
       expect(tester.takeException(), isNull);
+      await tester.ensureVisible(find.byKey(const ValueKey('scan-cell-0')));
+      await tester.pump();
       await tester.tap(find.byKey(const ValueKey('scan-cell-0')));
       await tester.pump();
       await tester.ensureVisible(find.byKey(const ValueKey('scan-clear')));
@@ -52,6 +56,48 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('Review tells unsure from conflict and shows the photo cell', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final cubit = _cubit(conflict: true);
+    await cubit.scanImage(ScanImage(bytes: [1], format: ScanImageFormat.png));
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          theme: AppTheme.light,
+          home: ScannerPage(cubit: cubit),
+        ),
+      ),
+    );
+    expect(find.text('Unsure: compare with your photo'), findsOneWidget);
+    expect(find.text('Conflict: same digit twice'), findsOneWidget);
+    expect(find.text('From your photo'), findsNothing);
+    final confirm = tester.getTopLeft(
+      find.byKey(const ValueKey('scanner-confirm')),
+    );
+    await tester.ensureVisible(find.byKey(const ValueKey('scan-cell-0')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('scan-cell-0')));
+    await tester.pump();
+    expect(find.text('From your photo'), findsOneWidget);
+    expect(find.byKey(const ValueKey('scan-photo-0')), findsOneWidget);
+    // The second reading is offered, and applied only by a tap.
+    expect(cubit.state.review!.board.values[0], 5);
+    await tester.ensureVisible(find.text('Maybe 3?'));
+    await tester.pump();
+    await tester.tap(find.text('Maybe 3?'));
+    await tester.pump();
+    expect(cubit.state.review!.board.values[0], 3);
+    expect(find.text('Maybe 3?'), findsNothing);
+    // Choosing a cell never moves the pinned actions.
+    expect(
+      tester.getTopLeft(find.byKey(const ValueKey('scanner-confirm'))),
+      confirm,
+    );
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('Review exposes conflict and confidence through cell semantics', (
     tester,
@@ -76,6 +122,12 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 }
+
+/// A 1×1 PNG standing in for a cell crop.
+final List<int> _pixel = base64Decode(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQ'
+  'GAhKmMIQAAAABJRU5ErkJggg==',
+);
 
 ScannerCubit _cubit({bool conflict = false}) {
   final board = SudokuBoard.parse('''
@@ -106,7 +158,9 @@ ScannerCubit _cubit({bool conflict = false}) {
                     ? null
                     : recognized.values[index],
                 confidence: index == 0 ? 0.5 : 0.95,
+                alternative: index == 0 ? 3 : null,
               ),
+              image: ScanImage(bytes: _pixel, format: ScanImageFormat.png),
             ),
         ],
         geometry: GridGeometry([
@@ -147,7 +201,11 @@ final class _Scanner implements SudokuScannerService {
   const _Scanner(this.result);
   final SudokuScanResult result;
   @override
-  Future<SudokuScanResult> scan(ScanImage image) async => result;
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async => result;
 }
 
 final class _Imports implements ImportedPuzzleRepository {

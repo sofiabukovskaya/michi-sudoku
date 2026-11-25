@@ -62,5 +62,9 @@ final class _StubScanner implements SudokuScannerService {
   final SudokuScanResult result;
 
   @override
-  Future<SudokuScanResult> scan(ScanImage image) async => result;
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async => result;
 }

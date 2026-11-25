@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/navigation/active_tab_tickers.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_page_state.dart';
@@ -138,89 +139,94 @@ final class _LearnPageState extends State<LearnPage>
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: MichiColors.paper,
-    body: SafeArea(
-      child: MichiContentFrame(
-        child: FutureBuilder<Map<SudokuTechnique, TechniqueProgress>>(
-          future: _progress,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return MichiProblemState(
-                message: context.t.learn.unavailable,
-                actionLabel: context.t.common.retry,
-                onAction: () => setState(
-                  () => _progress = _repository.loadAll(),
-                ),
-              );
-            }
-            if (!snapshot.hasData) {
-              return MichiLoadingState(label: context.t.common.justAMoment);
-            }
-            final values = snapshot.data!;
-            final mastered = TechniqueLessons.supported
-                .where(
-                  (item) => values[item]?.mastery == TechniqueMastery.mastered,
-                )
-                .length;
-            final current =
-                _focus?.technique ??
-                TechniqueLessons.supported.firstWhere(
-                  (item) => values[item]?.mastery != TechniqueMastery.mastered,
-                  orElse: () => TechniqueLessons.supported.last,
-                );
-            final names = [
-              context.t.learn.basicsGroup,
-              context.t.learn.intermediateGroup,
-              context.t.learn.advancedGroup,
-            ];
-            return ListView(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
-              children: [
-                Text(context.t.learn.title, style: MichiTypography.display),
-                const SizedBox(height: MichiSpacing.sm),
-                Text(
-                  '$mastered / ${TechniqueLessons.supported.length} '
-                  '${context.t.learn.masteredLabel.toLowerCase()}',
-                  style: MichiTypography.secondary,
-                ),
-                const SizedBox(height: MichiSpacing.xxl),
-                for (var group = 0; group < _groups.length; group++) ...[
-                  if (group > 0) const SizedBox(height: MichiSpacing.xl),
-                  _GroupHeading(
-                    title: names[group],
-                    completed: _groups[group]
-                        .where(
-                          (item) =>
-                              values[item]?.mastery ==
-                              TechniqueMastery.mastered,
-                        )
-                        .length,
-                    // The two unsupported advanced techniques remain visible.
-                    total: _groups[group].length + (group == 2 ? 2 : 0),
+  Widget build(BuildContext context) => ActiveTabTickers(
+    index: 1,
+    child: Scaffold(
+      backgroundColor: MichiColors.paper,
+      body: SafeArea(
+        child: MichiContentFrame(
+          child: FutureBuilder<Map<SudokuTechnique, TechniqueProgress>>(
+            future: _progress,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return MichiProblemState(
+                  message: context.t.learn.unavailable,
+                  actionLabel: context.t.common.retry,
+                  onAction: () => setState(
+                    () => _progress = _repository.loadAll(),
                   ),
+                );
+              }
+              if (!snapshot.hasData) {
+                return MichiLoadingState(label: context.t.common.justAMoment);
+              }
+              final values = snapshot.data!;
+              final mastered = TechniqueLessons.supported
+                  .where(
+                    (item) =>
+                        values[item]?.mastery == TechniqueMastery.mastered,
+                  )
+                  .length;
+              final current =
+                  _focus?.technique ??
+                  TechniqueLessons.supported.firstWhere(
+                    (item) =>
+                        values[item]?.mastery != TechniqueMastery.mastered,
+                    orElse: () => TechniqueLessons.supported.last,
+                  );
+              final names = [
+                context.t.learn.basicsGroup,
+                context.t.learn.intermediateGroup,
+                context.t.learn.advancedGroup,
+              ];
+              return ListView(
+                padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+                children: [
+                  Text(context.t.learn.title, style: MichiTypography.display),
                   const SizedBox(height: MichiSpacing.sm),
-                  for (final technique in _groups[group])
-                    _PathItem(
-                      technique: technique,
-                      progress:
-                          values[technique] ??
-                          TechniqueProgress(technique: technique),
-                      current: technique == current,
-                      onTap: () => unawaited(
-                        _openTechnique(
-                          technique,
-                          isCurrent: technique == current,
+                  Text(
+                    '$mastered / ${TechniqueLessons.supported.length} '
+                    '${context.t.learn.masteredLabel.toLowerCase()}',
+                    style: MichiTypography.secondary,
+                  ),
+                  const SizedBox(height: MichiSpacing.xxl),
+                  for (var group = 0; group < _groups.length; group++) ...[
+                    if (group > 0) const SizedBox(height: MichiSpacing.xl),
+                    _GroupHeading(
+                      title: names[group],
+                      completed: _groups[group]
+                          .where(
+                            (item) =>
+                                values[item]?.mastery ==
+                                TechniqueMastery.mastered,
+                          )
+                          .length,
+                      // The two unsupported advanced techniques remain visible.
+                      total: _groups[group].length + (group == 2 ? 2 : 0),
+                    ),
+                    const SizedBox(height: MichiSpacing.sm),
+                    for (final technique in _groups[group])
+                      _PathItem(
+                        technique: technique,
+                        progress:
+                            values[technique] ??
+                            TechniqueProgress(technique: technique),
+                        current: technique == current,
+                        onTap: () => unawaited(
+                          _openTechnique(
+                            technique,
+                            isCurrent: technique == current,
+                          ),
                         ),
                       ),
-                    ),
-                  if (group == 2)
-                    for (final name in ['XY-Wing', 'Swordfish'])
-                      _FutureItem(name: name),
+                    if (group == 2)
+                      for (final name in ['XY-Wing', 'Swordfish'])
+                        _FutureItem(name: name),
+                  ],
                 ],
-              ],
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     ),

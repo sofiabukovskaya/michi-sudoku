@@ -11,6 +11,7 @@ import 'package:michi_mobile/features/game/application/game_timer.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
+import 'package:michi_mobile/features/game/domain/proven_elimination.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// Owns an offline game session and serializes its persistence operations.
@@ -81,6 +82,7 @@ final class GameCubit extends Cubit<GameState> {
         board: stored.currentBoard,
         notes: stored.notes,
         reasoning: stored.reasoning,
+        provenEliminations: stored.provenEliminations,
         history: [
           for (final item in stored.undoHistory)
             GameSnapshot(
@@ -99,6 +101,7 @@ final class GameCubit extends Cubit<GameState> {
         clock: gameClock,
         elapsedBeforeRun: stored.elapsedBeforeRun,
         runningSince: stored.runningSince,
+        lastActiveAt: stored.updatedAt,
       ),
       clock: gameClock,
       repository: repository,
@@ -128,24 +131,27 @@ final class GameCubit extends Cubit<GameState> {
   final HumanSolver _humanSolver;
   final CoachEngine _coachEngine;
 
-  /// Candidate removals the player accepted from Coach in this session. They
-  /// are proven facts about the position, so later hints build on them
-  /// instead of repeating the same elimination forever.
-  final Set<CandidateElimination> _coachEliminations = {};
+  /// The solver's view: board candidates minus Coach removals the player
+  /// accepted that are still justified. Player notes are never consulted.
+  HumanSolverState _solverState() => _solverStateFor(state.board);
 
-  HumanSolverState _solverState() {
-    final base = HumanSolverState.initial(state.board);
-    if (_coachEliminations.isEmpty) return base;
+  /// [board] plus only the removals already proven on it. Why? uses this for
+  /// the pre-move position, so it never relies on facts proven later.
+  HumanSolverState _solverStateFor(SudokuBoard board) {
+    final base = HumanSolverState.initial(board);
+    if (state.provenEliminations.isEmpty) return base;
     final candidates = <CellRef, CandidateMask>{
       for (final entry in base.candidates.entries) entry.key: entry.value,
     };
-    for (final removal in _coachEliminations) {
+    for (final proof in state.provenEliminations) {
+      if (!proof.holdsOn(board)) continue;
+      final removal = proof.removal;
       final mask = candidates[removal.cell];
       if (mask == null || !mask.contains(removal.digit)) continue;
       candidates[removal.cell] = mask.remove(removal.digit);
     }
     return HumanSolverState.fromCandidates(
-      board: state.board,
+      board: board,
       candidates: candidates,
     );
   }
@@ -233,7 +239,7 @@ final class GameCubit extends Cubit<GameState> {
       }
     }
     final deduction = _humanSolver.findDeductionForPlacement(
-      HumanSolverState.initial(record.preMoveBoard),
+      _solverStateFor(record.preMoveBoard),
       record.placement,
     );
     if (deduction == null || deduction.technique != record.technique) {
@@ -291,7 +297,7 @@ final class GameCubit extends Cubit<GameState> {
       final deduction = coachDeduction?.placements.contains(target) == true
           ? coachDeduction
           : _humanSolver.findDeductionForPlacement(
-              HumanSolverState.initial(preMoveBoard),
+              _solverStateFor(preMoveBoard),
               target,
             );
       if (deduction != null) {
@@ -374,8 +380,6 @@ final class GameCubit extends Cubit<GameState> {
     }
     final previous = state.history.last;
     final boardChanged = previous.board != state.board;
-    // An earlier position may not justify removals proven later.
-    if (boardChanged) _coachEliminations.clear();
     emit(
       state.copyWith(
         board: previous.board,
@@ -484,15 +488,18 @@ final class GameCubit extends Cubit<GameState> {
     }
     final removals = coach.hint.revealedEliminations;
     if (removals.isNotEmpty) {
-      _coachEliminations.addAll(removals);
-      final notes = Map<CellRef, CandidateMask>.of(state.notes);
-      for (final removal in removals) {
-        final mask = notes[removal.cell];
-        if (mask != null && mask.contains(removal.digit)) {
-          notes[removal.cell] = mask.remove(removal.digit);
-        }
-      }
-      emit(state.copyWith(notes: notes, keepCoach: false));
+      final known = state.provenEliminations.map((item) => item.removal);
+      emit(
+        state.copyWith(
+          provenEliminations: [
+            ...state.provenEliminations,
+            for (final removal in removals)
+              if (!known.contains(removal))
+                ProvenElimination(removal: removal, basis: state.board),
+          ],
+          keepCoach: false,
+        ),
+      );
       _scheduleSave();
       return;
     }
@@ -563,6 +570,7 @@ final class GameCubit extends Cubit<GameState> {
       currentBoard: snapshot.board,
       notes: snapshot.notes,
       reasoning: snapshot.reasoning,
+      provenEliminations: snapshot.provenEliminations,
       undoHistory: [
         for (final item in snapshot.history)
           StoredGameSnapshot(

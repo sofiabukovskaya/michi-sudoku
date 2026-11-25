@@ -1,23 +1,30 @@
+import json
 from pathlib import Path
 
 import numpy as np
 
 from sudoku_scanner_ml.evaluate import predict
-from sudoku_scanner_ml.preprocess import normalize_cell
 
 ROOT = Path(__file__).resolve().parents[3]
-MODEL = ROOT / "packages/sudoku_scanner/assets/models/michi_digit_v1.tflite"
+MODEL = ROOT / "packages/sudoku_scanner/assets/models/michi_digit_v3.tflite"
 FIXTURES = ROOT / "packages/sudoku_scanner/test/fixtures/model_input"
 
 
-def test_committed_model_smoke_on_empty_and_printed_digit():
-    images = np.stack(
+def test_shipped_model_matches_dart_fixtures():
+    """Tensors come from the Dart CellNormalizer; labels are ground truth."""
+    cases = json.loads((FIXTURES / "cases.json").read_text(encoding="utf-8"))
+    tensors = np.stack(
         [
-            normalize_cell(FIXTURES / "cell_02.png"),
-            normalize_cell(FIXTURES / "cell_00.png"),
+            np.fromfile(FIXTURES / case["tensor"], np.float32).reshape(32, 32, 1)
+            for case in cases
         ]
     )
-    probabilities = predict(MODEL, images)
-    assert probabilities.shape == (2, 10)
-    assert np.array_equal(probabilities.argmax(axis=1), [0, 5])
+    probabilities = predict(MODEL, tensors)
+    assert probabilities.shape == (len(cases), 10)
     assert np.allclose(probabilities.sum(axis=1), 1, atol=1e-4)
+    for case, row in zip(cases, probabilities):
+        blank = not np.any(
+            np.fromfile(FIXTURES / case["tensor"], np.float32)
+        )
+        predicted = 0 if blank else int(row.argmax())
+        assert predicted == case["label"], case["image"]

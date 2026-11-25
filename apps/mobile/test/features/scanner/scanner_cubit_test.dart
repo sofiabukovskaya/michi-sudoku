@@ -53,6 +53,45 @@ void main() {
   );
 
   test(
+    'several puzzles in one photo: the player picks one, nothing is guessed',
+    () async {
+      GridGeometry grid(double x) => GridGeometry([
+        ImagePoint(x, 0),
+        ImagePoint(x + 100, 0),
+        ImagePoint(x + 100, 100),
+        ImagePoint(x, 100),
+      ]);
+      final scanner = _ChoosingScanner(
+        _result(unique, 0.98),
+        [grid(0), grid(200)],
+      );
+      final cubit = ScannerCubit(
+        imageSource: _ImageSource(),
+        scanner: scanner,
+        analyzer: const PuzzleAnalyzer(
+          BacktrackingExactSolver(),
+          DeterministicHumanSolver(),
+        ),
+        importedPuzzles: _MemoryImports(),
+      );
+      addTearDown(cubit.close);
+      await cubit.scanImage(
+        ScanImage(bytes: [1], format: ScanImageFormat.png),
+        focus: const ScanFocus(left: 0.1, top: 0.1, right: 0.9, bottom: 0.9),
+      );
+      expect(scanner.focuses.single?.left, 0.1);
+      expect(cubit.state.phase, ScannerPhase.chooseGrid);
+      expect(cubit.state.gridChoice!.grids, hasLength(2));
+
+      await cubit.chooseGrid(1);
+      expect(scanner.chosen.single?.topLeft.x, 200);
+      expect(scanner.images.last.bytes, [9]);
+      expect(cubit.state.phase, ScannerPhase.review);
+      expect(cubit.state.review!.board, unique);
+    },
+  );
+
+  test(
     'one hint uses the corrected position and never creates a game',
     () async {
       final saved = _MemoryImports();
@@ -274,14 +313,50 @@ final class _Scanner implements SudokuScannerService {
   const _Scanner(this.result);
   final SudokuScanResult result;
   @override
-  Future<SudokuScanResult> scan(ScanImage image) async => result;
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async => result;
+}
+
+/// First scan reports two puzzles; scanning a chosen one succeeds.
+final class _ChoosingScanner implements SudokuScannerService {
+  _ChoosingScanner(this.result, this.grids);
+  final SudokuScanResult result;
+  final List<GridGeometry> grids;
+  final focuses = <ScanFocus?>[];
+  final chosen = <GridGeometry?>[];
+  final images = <ScanImage>[];
+  @override
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async {
+    images.add(image);
+    if (grid == null) {
+      focuses.add(focus);
+      throw ScanFailure(
+        ScanFailureKind.multipleGrids,
+        image: ScanImage(bytes: [9], format: ScanImageFormat.png),
+        candidates: grids,
+      );
+    }
+    chosen.add(grid);
+    return result;
+  }
 }
 
 final class _DeferredScanner implements SudokuScannerService {
   final _pending = Completer<SudokuScanResult>();
   void finish(SudokuScanResult result) => _pending.complete(result);
   @override
-  Future<SudokuScanResult> scan(ScanImage image) => _pending.future;
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) => _pending.future;
 }
 
 final class _MemoryImports implements ImportedPuzzleRepository {

@@ -325,26 +325,156 @@ Using the app turned up four issues that no automated check had caught:
 - No important interaction I tried was dead. "I'm stuck" during a conflict
   was the only one, and it is fixed.
 
+## Pass 3: functional correctness, motion and iPhone validation
+
+Test environment:
+
+- **iPhone:** iPhone 15 Pro Max (iPhone16,2), iOS 18.7.8, ProMotion 120 Hz
+  (measured), Profile build signed with the existing development team, so
+  the install keeps your local data.
+- **Android:** the Galaxy Tab A9 was unavailable.
+
+Status key:
+
+- **[iPhone]** verified on the physical iPhone
+- **[Tests]** verified by automated tests
+- **[Code]** implemented but unverified at runtime
+- **[Deferred]** device unavailable
+- **[Pending owner]** needs your interaction on the device
+
+See also: [`motion_design_system.md`](motion_design_system.md).
+
+### Functional issues found and fixed
+
+1. **Timer counted time the app was closed** (the 729-minute report).
+   - Cause: `GameTimer.restore` added the wall-clock time since the run
+     started, capped at 12 hours, whenever the process ended while the timer
+     ran (force-stop, reinstall, OS kill). 9 minutes of play plus 12 hours
+     closed restored as 12 h 9 min.
+   - Fix: a restored run counts only up to its last save (`updatedAt`).
+     Leaving Game by any route, including the iOS back swipe, now pauses and
+     saves before closing. Backgrounding and locking already paused through
+     the lifecycle observer. Opening a lesson from Coach pauses.
+   - **[Tests]** `game_timer_test.dart` covers the 729-minute scenario and
+     clock changes; `coach_elimination_lifecycle_test.dart` covers terminate
+     → restore with 12 h closed → 5 min restored, and paused time never
+     counting.
+   - The existing test "interrupted session catches up with bounded wall
+     time" encoded the old behaviour and was replaced, because the
+     requirement changed.
+2. **Coach elimination state (Pass 2 fix reworked).**
+   - Pass 2 removed accepted eliminations from the player's pencil notes and
+     kept them only in memory. That broke the requirement to keep notes
+     separate, failed an existing test, and lost proofs on restore.
+   - Now each accepted removal is a `ProvenElimination` storing the position
+     it was proven on. It holds while every digit of that position is still
+     on the board: entering digits keeps it; erasing or undoing one of those
+     digits drops it permanently.
+   - Removals are kept in `GameState` and persisted in a new
+     `active_games.proven_eliminations_json` column (schema v9, default
+     `'[]'`; a damaged value reads as empty and never blocks a saved game).
+   - The solver uses the board minus valid proofs; pencil notes are never
+     read or written.
+   - Why? and manual-move reasoning use the pre-move board plus only the
+     proofs that already held there.
+   - **[Tests]**
+     - `coach_elimination_lifecycle_test.dart`: no repeat after accepting;
+       notes untouched; enter keeps; undo to the proof position keeps; erase
+       of a basis digit drops; notes don't feed proofs; pause → terminate →
+       restore keeps proofs, and the next hint moves on.
+     - `game_migration_test.dart`: a schema-8 saved game loads after the
+       upgrade. An idempotent migration fixes a duplicate-column failure
+       found while testing.
+     - `coach_completes_puzzles_test.dart`: Coach alone completes all 15
+       Advanced/Expert catalog puzzles.
+3. **Practice order made 13 tests fail.** Practice rotates past the boards
+   the lesson used. The order is now a named rule (`practiceSessionOrder`)
+   shared by the page and the tests, so tests answer the exercise actually
+   shown. **[Tests]**
+4. **The 4 earlier recommendation failures** were caused by the loading
+   spinner keeping `pumpAndSettle` from settling. The spinner was replaced
+   with a calm static mark in Pass 2. **[Tests]**
+5. **Hidden tabs kept animating.** auto_route's tab `IndexedStack` does not
+   mute tickers on inactive tabs. `ActiveTabTickers` now wraps each tab page
+   in `TickerMode`. **[Code]**, with the muted-ticker behaviour covered by
+   the mascot tests.
+
+### Animation integration
+
+| Item | Status |
+|---|---|
+| All five V2.1 compositions parse in Flutter `lottie` 3.8.2, no warnings, exact timings | **[Tests]** |
+| Rendered by Flutter's renderer across the full timeline; no clipping or missing limbs; Thinking has both paws and the curled tail; transparent on paper | **[Tests]** (renders in `pass3_lottie_runtime_*.png`) |
+| `MichiMotionMascot`: once, occasional, trigger-only replay, start delay, Reduce Motion rest poses, muted-ticker behaviour | **[Tests]** (7 widget tests) |
+| Placements: Home idle, Coach thinking, Practice / Try-it happy, completion celebrating, recorded-Daily stamp, mastery celebrating | **[Code]**, **[Pending owner]** on iPhone |
+| Supplied JSON unmodified; only JSON shipped | **[Code]** |
+| Look of the vector MICHI next to the approved raster artwork | **[Pending owner]** visual acceptance |
+
+### Motion and interaction
+
+- **Coach:** each new step reveals in logical order (evidence, candidates,
+  strikes drawn across, placement last), 420 ms. Only a new hint
+  re-animates. **[Code]** (game tests pass)
+- **Why?:** markers appear in step order, then the ruled-out positions, then
+  the target. **[Code]**
+- **Motion tokens:** consolidated and documented in `MichiMotion`, adding
+  `reveal` and `exit`. **[Code]**
+
+### Performance (physical iPhone)
+
+| Item | Status |
+|---|---|
+| Opt-in frame statistics (`MICHI_FRAME_STATS`), compiled out by default | **[Code]** |
+| Display refresh 120 Hz; pre-animation Home at launch: UI p99 4.1 ms, raster p99 8.0 ms, 0 frames over budget, 146 MB | **[iPhone]** |
+| Pre-animation Home at rest draws no frames | **[iPhone]** |
+| Scenario baseline (Daily, rapid entry, Coach, tabs, Practice, Scanner, lock) | Skipped by owner |
+| Animation build: frame timings, memory after repeated navigation, idle activity | **[Pending owner]**, the owner is launching the build |
+
+### iOS-specific
+
+| Item | Status |
+|---|---|
+| Install over the existing app without data loss (same bundle and team) | **[iPhone]** |
+| Portrait-only iPhone (plist plus runtime lock under 600 dp) | **[Code]** |
+| Camera capture of a printed puzzle; Photo Library; limited access; denied permissions | **[Pending owner]**, needs your explicit permission and hands |
+| Lifecycle: background, lock, terminate, restore on device | **[Tests]** for logic, **[Pending owner]** on device |
+| Reduce Motion and VoiceOver on device | **[Tests]** for behaviour and semantics exclusion, **[Pending owner]** on device |
+
+### Android and tablet
+
+| Item | Status |
+|---|---|
+| Physical Galaxy Tab A9 (portrait, landscape, performance) | **[Deferred]** DEFERRED — DEVICE UNAVAILABLE |
+| Responsive layout tests (360×640 … 1024×768) | **[Tests]** |
+| Android profile/release build with these changes | Not run this pass |
+
+### Automated results
+
+- Mobile app: **256 passed, 0 failed** (full run, before the animation
+  wiring).
+- After the animation and motion changes:
+  - game folder 113 ✓;
+  - practice and learn 41 ✓;
+  - design system 14 ✓ (motion assets 5, mascot behaviour 7, existing 2).
+- `flutter analyze`: clean for the app and design system.
+- **Not yet re-run after the final changes:** the complete workspace suite
+  (`melos run test`), the Android build and the iOS Release build.
+
 ## Verdict
 
-**NOT YET READY FOR SUPERVISED BETA**
+**NOT READY — REMAINING BLOCKERS**
 
-The product gaps from Pass 1 are closed and the product loop is connected
-(Play → stuck → Coach → Lesson → Try it → Practice → Progress → play again).
-The walkthrough also found and fixed a serious Coach loop on Advanced
-puzzles. What remains are verification gaps, not open design work. They are
-release blockers only because the exit criterion requires them:
+The functional defects are fixed and covered by tests. The animations are
+validated in the Flutter runtime and integrated. What blocks owner acceptance
+is verification that hasn't happened yet:
 
-1. **The full regression suite after the last changes.** Before the last
-   fixes, per-folder runs passed for app, core, auth, coach, home,
-   onboarding and scanner; recommendation had 4 failures, and the game,
-   learn, practice and puzzle folders weren't re-run. The likely cause, the
-   loading spinner keeping `pumpAndSettle` from ever settling, is removed,
-   but the suite was not re-run at your request.
-2. **A final device pass on the latest build.** It needs the tablet:
-   - landscape smoke test;
-   - Continue row with thumbnail on hardware;
-   - scan Coach in its new column;
-   - the latest copy and loading changes (the last installed APK predates
-     them).
-3. **iOS build check after the iPhone portrait-only plist change.**
+1. **iPhone walkthrough of the animation build:** all five animations in
+   context, Reduce Motion, VoiceOver, lock / background / terminate /
+   restore, and the real camera capture (needs your permission).
+2. **iPhone frame-timing and memory measurements** of the animation build.
+   No baseline exists for comparison, because it was skipped.
+3. **Full regression run and builds after the final changes:**
+   `melos run test`, Android profile APK, iOS Release build.
+
+Physical Android tablet verification remains **DEFERRED — DEVICE
+UNAVAILABLE** and is not counted as a blocker for iPhone owner acceptance.

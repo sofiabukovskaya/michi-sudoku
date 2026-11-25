@@ -40,10 +40,16 @@ final class CoachPanel extends StatelessWidget {
             Positioned(
               top: compact ? -16 : -6,
               right: compact ? 0 : -12,
+              // Thinking plays once when Coach opens (this panel mounts per
+              // session), then rests on its paw-to-chin pose across steps.
               child: IgnorePointer(
-                child: MichiMascot(
-                  state: MichiMascotState.pointing,
-                  size: compact ? 40 : 72,
+                child: MichiMotionMascot(
+                  asset: MichiMotionAsset.thinking,
+                  size: compact ? 48 : 80,
+                  fallback: MichiMascot(
+                    state: MichiMascotState.pointing,
+                    size: compact ? 40 : 72,
+                  ),
                 ),
               ),
             ),

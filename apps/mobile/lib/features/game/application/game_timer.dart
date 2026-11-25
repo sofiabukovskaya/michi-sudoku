@@ -16,18 +16,27 @@ final class GameTimer {
     monotonicSince: clock.monotonic(),
   );
 
-  /// An interrupted running process is restored in the paused state. A normal
-  /// background transition already saved a paused timer. The fallback delta
-  /// is clamped against clock changes and implausibly long interruptions.
+  /// A game always restores paused. If the process ended while the timer was
+  /// running (terminated, killed, or reinstalled before a background pause
+  /// was saved), only the run up to the last save counts: [lastActiveAt] is
+  /// the last moment the player was known to be solving. Time while the app
+  /// was not running is never solving time. Bounded against clock changes.
   factory GameTimer.restore({
     required GameClock clock,
     required Duration elapsedBeforeRun,
     required DateTime? runningSince,
+    DateTime? lastActiveAt,
   }) {
     var elapsed = elapsedBeforeRun;
     if (runningSince != null) {
-      final wallDelta = clock.now().difference(runningSince);
-      elapsed += _bounded(wallDelta, const Duration(hours: 12));
+      final now = clock.now();
+      final end = lastActiveAt == null || lastActiveAt.isAfter(now)
+          ? now
+          : lastActiveAt;
+      elapsed += _bounded(
+        end.difference(runningSince),
+        const Duration(hours: 12),
+      );
     }
     return GameTimer._(
       clock: clock,

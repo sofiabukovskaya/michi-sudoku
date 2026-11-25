@@ -408,7 +408,7 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get openCamera => 'Use camera';
 	@override String get choosePhoto => 'Choose photo';
 	@override String get shutter => 'Take photo';
-	@override String get frameGuide => 'Keep all four corners inside the frame.';
+	@override String get frameGuide => 'Fit one puzzle inside the frame.';
 	@override String get processing => 'Reading your Sudoku…';
 	@override String get reviewTitle => 'Check the digits';
 	@override String get reviewBody => 'Tap any cell to fix it before playing.';
@@ -432,7 +432,7 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get segmentationFailure => 'The grid could not be divided into cells. Try again.';
 	@override String get recognitionFailure => 'Some digits could not be read. Please try again.';
 	@override String get duplicateClues => 'Fix the highlighted conflicting clues.';
-	@override String get noSolution => 'These clues have no valid solution. Check the digits.';
+	@override String get noSolution => 'These clues have no solution. Check cells marked ? against your photo.';
 	@override String get multipleSolutions => 'Some clues may be missing; this board has multiple solutions.';
 	@override String get storageFailure => 'The imported puzzle could not be saved. Try again.';
 	@override String get validationFailure => 'Could not check this puzzle. Try confirming again.';
@@ -442,6 +442,14 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get stuck => 'I\'m stuck — help me';
 	@override String get noStep => 'MICHI can’t find a next step with its current techniques.';
 	@override String get completed => 'All cells are filled. This Sudoku is complete.';
+	@override String get chooseTitle => 'Which puzzle?';
+	@override String get chooseBody => 'This photo has more than one puzzle. Tap the one you want to play.';
+	@override String chooseOption({required Object number}) => 'Puzzle ${number}';
+	@override String get multipleGrids => 'This photo has more than one puzzle. Fit one inside the frame.';
+	@override String get legendUnsure => 'Unsure: compare with your photo';
+	@override String get legendConflict => 'Conflict: same digit twice';
+	@override String get fromPhoto => 'From your photo';
+	@override String maybe({required Object digit}) => 'Maybe ${digit}?';
 }
 
 // Path: coach
@@ -1040,7 +1048,7 @@ extension on TranslationsEn {
 			'scanner.openCamera' => 'Use camera',
 			'scanner.choosePhoto' => 'Choose photo',
 			'scanner.shutter' => 'Take photo',
-			'scanner.frameGuide' => 'Keep all four corners inside the frame.',
+			'scanner.frameGuide' => 'Fit one puzzle inside the frame.',
 			'scanner.processing' => 'Reading your Sudoku…',
 			'scanner.reviewTitle' => 'Check the digits',
 			'scanner.reviewBody' => 'Tap any cell to fix it before playing.',
@@ -1064,7 +1072,7 @@ extension on TranslationsEn {
 			'scanner.segmentationFailure' => 'The grid could not be divided into cells. Try again.',
 			'scanner.recognitionFailure' => 'Some digits could not be read. Please try again.',
 			'scanner.duplicateClues' => 'Fix the highlighted conflicting clues.',
-			'scanner.noSolution' => 'These clues have no valid solution. Check the digits.',
+			'scanner.noSolution' => 'These clues have no solution. Check cells marked ? against your photo.',
 			'scanner.multipleSolutions' => 'Some clues may be missing; this board has multiple solutions.',
 			'scanner.storageFailure' => 'The imported puzzle could not be saved. Try again.',
 			'scanner.validationFailure' => 'Could not check this puzzle. Try confirming again.',
@@ -1074,6 +1082,14 @@ extension on TranslationsEn {
 			'scanner.stuck' => 'I\'m stuck — help me',
 			'scanner.noStep' => 'MICHI can’t find a next step with its current techniques.',
 			'scanner.completed' => 'All cells are filled. This Sudoku is complete.',
+			'scanner.chooseTitle' => 'Which puzzle?',
+			'scanner.chooseBody' => 'This photo has more than one puzzle. Tap the one you want to play.',
+			'scanner.chooseOption' => ({required Object number}) => 'Puzzle ${number}',
+			'scanner.multipleGrids' => 'This photo has more than one puzzle. Fit one inside the frame.',
+			'scanner.legendUnsure' => 'Unsure: compare with your photo',
+			'scanner.legendConflict' => 'Conflict: same digit twice',
+			'scanner.fromPhoto' => 'From your photo',
+			'scanner.maybe' => ({required Object digit}) => 'Maybe ${digit}?',
 			'coach.step' => ({required Object step}) => 'Hint ${step} of 4',
 			'coach.kTry' => 'I\'ll try',
 			'coach.show' => 'Show me',

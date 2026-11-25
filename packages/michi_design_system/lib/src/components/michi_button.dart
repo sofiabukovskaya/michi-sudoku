@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/michi_palette.dart';
 import '../tokens/michi_radius.dart';
 import '../tokens/michi_typography.dart';
+import 'michi_paw_loader.dart';
 
 import 'michi_press_feedback.dart';
 
@@ -30,15 +31,16 @@ final class MichiButton extends StatelessWidget {
         ? Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: variant == MichiButtonVariant.primary
-                      ? palette.ivory
-                      : palette.indigo,
-                ),
+              // The label already says what is happening; the paws only
+              // show that it is in progress.
+              MichiPawLoader(
+                label: label,
+                size: MichiPawLoaderSize.inline,
+                showLabel: false,
+                delay: Duration.zero,
+                color: variant == MichiButtonVariant.primary
+                    ? palette.ivory
+                    : palette.indigo,
               ),
               const SizedBox(width: 8),
               Text(label),

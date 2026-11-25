@@ -120,7 +120,10 @@
     "newPuzzle": "Otro sudoku",
     "weekTitle": "Esta semana",
     "weekDetails": "Detalles",
-    "streak": {"one": "$n día", "other": "$n días"},
+    "streak": {
+      "one": "$n día",
+      "other": "$n días"
+    },
     "streakMeaning": "Días seguidos con el Sudoku del día resuelto",
     "weekdaysShort": "Lu|Ma|Mi|Ju|Vi|Sá|Do",
     "newPuzzleTitle": "Nuevo sudoku",
@@ -327,7 +330,7 @@
     "openCamera": "Usar cámara",
     "choosePhoto": "Elegir foto",
     "shutter": "Hacer foto",
-    "frameGuide": "Mantén las cuatro esquinas dentro del encuadre.",
+    "frameGuide": "Encuadra un solo sudoku dentro del marco.",
     "processing": "Leyendo tu sudoku…",
     "reviewTitle": "Revisa los números",
     "reviewBody": "Toca una casilla para corregirla antes de jugar.",
@@ -351,7 +354,7 @@
     "segmentationFailure": "No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.",
     "recognitionFailure": "No pudimos leer algunos números. Inténtalo de nuevo.",
     "duplicateClues": "Corrige los números en conflicto resaltados.",
-    "noSolution": "Estos números no tienen solución. Revísalos.",
+    "noSolution": "Estas pistas no tienen solución. Compara las casillas con ? con tu foto.",
     "multipleSolutions": "Pueden faltar números; este sudoku tiene varias soluciones.",
     "storageFailure": "No pudimos guardar el sudoku importado. Inténtalo de nuevo.",
     "validationFailure": "No se pudo comprobar este sudoku. Vuelve a confirmar.",
@@ -360,7 +363,15 @@
     "lowConfidenceCount": "Casillas para revisar: $count",
     "stuck": "Necesito una pista",
     "noStep": "MICHI no encuentra el siguiente paso con las técnicas disponibles.",
-    "completed": "Todas las casillas están llenas. El sudoku está resuelto."
+    "completed": "Todas las casillas están llenas. El sudoku está resuelto.",
+    "chooseTitle": "¿Qué sudoku?",
+    "chooseBody": "La foto tiene más de un sudoku. Toca el que quieras jugar.",
+    "chooseOption": "Sudoku $number",
+    "multipleGrids": "La foto tiene más de un sudoku. Encuadra uno dentro del marco.",
+    "legendUnsure": "Dudosa: compárala con tu foto",
+    "legendConflict": "Conflicto: el mismo número dos veces",
+    "fromPhoto": "De tu foto",
+    "maybe": "¿Quizá $digit?"
   },
   "coach": {
     "step": "Pista $step de 4",

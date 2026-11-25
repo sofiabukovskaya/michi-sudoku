@@ -235,7 +235,11 @@ final class _Scanner implements SudokuScannerService {
   const _Scanner(this.result);
   final SudokuScanResult result;
   @override
-  Future<SudokuScanResult> scan(ScanImage image) async => result;
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async => result;
 }
 
 final class _MemoryImports implements ImportedPuzzleRepository {

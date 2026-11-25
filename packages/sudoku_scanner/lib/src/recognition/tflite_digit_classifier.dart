@@ -13,7 +13,7 @@ import 'model_cell_preprocessor.dart';
 final class TFLiteDigitClassifier implements DigitClassifier {
   TFLiteDigitClassifier({
     this.assetPath =
-        'packages/sudoku_scanner/assets/models/michi_digit_v1.tflite',
+        'packages/sudoku_scanner/assets/models/michi_digit_v3.tflite',
   });
 
   final String assetPath;
@@ -64,6 +64,9 @@ final class TFLiteDigitClassifier implements DigitClassifier {
   Future<DigitPrediction> classify(ScanImage cellImage) async {
     if (_closed) throw StateError('Classifier is closed.');
     final normalized = _preprocessor.normalize(cellImage);
+    if (ModelCellPreprocessor.isBlank(normalized)) {
+      return DigitPrediction(digit: null, confidence: 1);
+    }
     await _load();
     final input = [
       [
@@ -85,9 +88,16 @@ final class TFLiteDigitClassifier implements DigitClassifier {
       if (!confidence.isFinite || confidence < 0 || confidence > 1) {
         throw const ScanFailure(ScanFailureKind.recognitionFailure);
       }
+      var second = best == 0 ? 1 : 0;
+      for (var index = 0; index < 10; index++) {
+        if (index != best && output[0][index] > output[0][second]) {
+          second = index;
+        }
+      }
       return DigitPrediction(
         digit: best == 0 ? null : best,
         confidence: confidence,
+        alternative: second == 0 ? null : second,
       );
     } on ScanFailure {
       rethrow;

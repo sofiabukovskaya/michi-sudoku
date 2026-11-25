@@ -72,8 +72,8 @@ void main() {
       final first = img.decodeImage(
         Uint8List.fromList(cells.first.image.bytes),
       )!;
-      expect(first.width, inInclusiveRange(60, 90));
-      expect(first.height, inInclusiveRange(60, 90));
+      expect(first.width, inInclusiveRange(70, 100));
+      expect(first.height, inInclusiveRange(70, 100));
     },
   );
 

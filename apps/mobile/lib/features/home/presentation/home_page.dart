@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/navigation/active_tab_tickers.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_reveal.dart';
@@ -150,11 +151,12 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  /// Loads Home without staged flicker: the Daily card keeps its exact
+  /// size while loading, rows never appear and then vanish, and a
+  /// background refresh (resume, sync, return from a game) updates content
+  /// in place without clearing what is shown.
   Future<void> _reload() async {
     final sequence = ++_reloadSequence;
-    if (mounted) {
-      setState(() => _dailyFailed = false);
-    }
     try {
       final active = await _repository.loadActiveSummary();
       if (!mounted || sequence != _reloadSequence) return;
@@ -190,6 +192,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       setState(() {
         _daily = daily;
         _dailyCompleted = completed;
+        _dailyFailed = false;
       });
       if (widget.puzzleRepository == null &&
           getIt.isRegistered<GamePreparation>()) {
@@ -212,9 +215,8 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         stackTrace: stackTrace,
       );
       if (!mounted || sequence != _reloadSequence) return;
-      setState(() {
-        _dailyFailed = true;
-      });
+      // A failed refresh keeps a Daily that is already shown.
+      if (_daily == null) setState(() => _dailyFailed = true);
     }
   }
 
@@ -471,10 +473,13 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   List<Widget> _rows(BuildContext context) {
     final t = context.t;
     final rows = <Widget>[
+      // A Daily in progress continues from the Daily card. Until the Daily
+      // is known, its row waits, so it never appears and then vanishes.
       if (!_loading &&
           _active != null &&
           (_active!.dailyChallengeKey == null ||
-              _active!.dailyChallengeKey != _daily?.challengeKey))
+              (_daily != null &&
+                  _active!.dailyChallengeKey != _daily!.challengeKey)))
         _ContinueRow(
           summary: _active!,
           game: _activeGame?.gameId == _active!.gameId ? _activeGame : null,
@@ -505,85 +510,86 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: MichiColors.paper,
-    body: SafeArea(
-      child: MichiContentFrame(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(
-            MichiLayout.cardGutter,
-            MichiSpacing.md,
-            MichiLayout.cardGutter,
-            MichiLayout.sectionGap,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: MichiLayout.textInset,
-                  vertical: MichiSpacing.sm,
-                ),
-                child: Row(
-                  children: [
-                    const MichiWordmark(),
-                    const Spacer(),
-                    // Shown only for a real, current Daily streak.
-                    if (_streak > 0) _StreakBadge(days: _streak),
-                  ],
-                ),
-              ),
-              const SizedBox(height: MichiSpacing.lg),
-              if (_loadFailed)
-                _HomeNotice(text: context.t.home.storageUnavailable)
-              else if (_daily != null && !_loading)
-                MichiReveal(
-                  key: ValueKey((
-                    _daily!.challengeKey,
-                    _dailyCompleted,
-                    _active?.dailyChallengeKey,
-                  )),
-                  child: _DailyCard(
-                    daily: _daily!,
-                    completed: _dailyCompleted,
-                    inProgress:
-                        _active?.dailyChallengeKey == _daily!.challengeKey,
-                    onTap: _startDaily,
+  Widget build(BuildContext context) => ActiveTabTickers(
+    index: 0,
+    child: Scaffold(
+      backgroundColor: MichiColors.paper,
+      body: SafeArea(
+        child: MichiContentFrame(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              MichiLayout.cardGutter,
+              MichiSpacing.md,
+              MichiLayout.cardGutter,
+              MichiLayout.sectionGap,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: MichiLayout.textInset,
+                    vertical: MichiSpacing.sm,
                   ),
-                )
-              else if (_dailyFailed)
-                _HomeNotice(text: context.t.home.contentUnavailable)
-              else
-                const _DailySkeleton(),
-              const SizedBox(height: MichiSpacing.sm),
-              ..._rows(context),
-              const SizedBox(height: MichiLayout.sectionGap),
-              Padding(
-                padding: const EdgeInsets.only(left: MichiLayout.textInset),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        context.t.home.weekTitle,
-                        style: MichiTypography.heading,
-                      ),
-                    ),
-                    TextButton(
-                      key: const ValueKey('week-details'),
-                      onPressed: () => context.router.root.push(
-                        WeekRoute(games: _repository, clock: _clock),
-                      ),
-                      child: Text(context.t.home.weekDetails),
-                    ),
-                  ],
+                  child: Row(
+                    children: [
+                      const MichiWordmark(),
+                      const Spacer(),
+                      // Shown only for a real, current Daily streak.
+                      if (_streak > 0) _StreakBadge(days: _streak),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: MichiSpacing.md),
-              _WeekStrip(
-                todayIndex: _clock.now().toLocal().weekday - 1,
-                activity: _week,
-              ),
-            ],
+                const SizedBox(height: MichiSpacing.lg),
+                if (_loadFailed)
+                  _HomeNotice(text: context.t.home.storageUnavailable)
+                else if (_daily != null && !_loading)
+                  // Keyed by day only: finishing or starting today's Daily
+                  // updates the card in place instead of re-entering it.
+                  MichiReveal(
+                    key: ValueKey(_daily!.challengeKey),
+                    child: _DailyCard(
+                      daily: _daily!,
+                      completed: _dailyCompleted,
+                      inProgress:
+                          _active?.dailyChallengeKey == _daily!.challengeKey,
+                      onTap: _startDaily,
+                    ),
+                  )
+                else if (_dailyFailed)
+                  _HomeNotice(text: context.t.home.contentUnavailable)
+                else
+                  const _DailySkeleton(),
+                const SizedBox(height: MichiSpacing.sm),
+                ..._rows(context),
+                const SizedBox(height: MichiLayout.sectionGap),
+                Padding(
+                  padding: const EdgeInsets.only(left: MichiLayout.textInset),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          context.t.home.weekTitle,
+                          style: MichiTypography.heading,
+                        ),
+                      ),
+                      TextButton(
+                        key: const ValueKey('week-details'),
+                        onPressed: () => context.router.root.push(
+                          WeekRoute(games: _repository, clock: _clock),
+                        ),
+                        child: Text(context.t.home.weekDetails),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: MichiSpacing.md),
+                _WeekStrip(
+                  todayIndex: _clock.now().toLocal().weekday - 1,
+                  activity: _week,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -609,19 +615,44 @@ final class _HomeNotice extends StatelessWidget {
   );
 }
 
-/// Approved Daily loading state: a quiet indigo block with the hero's shape.
+/// Daily loading state: the card's own shape and size (so nothing moves
+/// when it fills in) with MICHI's paw loader inside.
 final class _DailySkeleton extends StatelessWidget {
   const _DailySkeleton();
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label: context.t.home.loading,
-    child: DecoratedBox(
-      decoration: BoxDecoration(
-        color: MichiColors.indigo.withValues(alpha: 0.88),
-        borderRadius: BorderRadius.circular(MichiRadius.hero),
+  Widget build(BuildContext context) => DecoratedBox(
+    key: const ValueKey('daily-loading'),
+    decoration: BoxDecoration(
+      color: MichiColors.indigo,
+      borderRadius: BorderRadius.circular(MichiRadius.hero),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(MichiSpacing.lg),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 138,
+            width: double.infinity,
+            child: Center(
+              child: MichiPawLoader(
+                label: context.t.home.loading,
+                showLabel: false,
+                color: MichiColors.ivory,
+              ),
+            ),
+          ),
+          const SizedBox(height: MichiSpacing.sm),
+          // Where the action button will be, at its exact height.
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: MichiColors.ivory.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(MichiRadius.control),
+            ),
+            child: const SizedBox(height: 52, width: double.infinity),
+          ),
+        ],
       ),
-      child: const SizedBox(height: 232, width: double.infinity),
     ),
   );
 }
@@ -844,12 +875,22 @@ final class _DailyCard extends StatelessWidget {
                     Positioned(
                       right: 0,
                       bottom: 0,
-                      child: MichiMascot(
-                        state: completed
-                            ? MichiMascotState.happy
-                            : MichiMascotState.calm,
-                        size: 138,
-                      ),
+                      // Quiet life while today's Daily waits; a finished Daily
+                      // keeps its static happy pose (no replayed reward).
+                      child: completed
+                          ? const MichiMascot(
+                              state: MichiMascotState.happy,
+                              size: 138,
+                            )
+                          : const MichiMotionMascot(
+                              asset: MichiMotionAsset.idle,
+                              size: 138,
+                              playback: MichiMotionPlayback.occasional,
+                              fallback: MichiMascot(
+                                state: MichiMascotState.calm,
+                                size: 138,
+                              ),
+                            ),
                     ),
                   ],
                 ),

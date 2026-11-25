@@ -889,8 +889,8 @@ class Translations$scanner$uk {
 	/// uk: 'Зробити фото'
 	String get shutter => 'Зробити фото';
 
-	/// uk: 'Усі чотири кути мають бути в кадрі.'
-	String get frameGuide => 'Усі чотири кути мають бути в кадрі.';
+	/// uk: 'Вмісти в рамку одне судоку.'
+	String get frameGuide => 'Вмісти в рамку одне судоку.';
 
 	/// uk: 'Розпізнаємо судоку…'
 	String get processing => 'Розпізнаємо судоку…';
@@ -961,8 +961,8 @@ class Translations$scanner$uk {
 	/// uk: 'Виправте виділені конфліктні цифри.'
 	String get duplicateClues => 'Виправте виділені конфліктні цифри.';
 
-	/// uk: 'Для цих цифр немає розв’язку. Перевірте їх.'
-	String get noSolution => 'Для цих цифр немає розв’язку. Перевірте їх.';
+	/// uk: 'Ці підказки не мають розв’язку. Порівняй клітинки з ? із фото.'
+	String get noSolution => 'Ці підказки не мають розв’язку. Порівняй клітинки з ? із фото.';
 
 	/// uk: 'Можливо, бракує цифр: судоку має кілька розв’язків.'
 	String get multipleSolutions => 'Можливо, бракує цифр: судоку має кілька розв’язків.';
@@ -990,6 +990,30 @@ class Translations$scanner$uk {
 
 	/// uk: 'Усі клітинки заповнені. Судоку завершено.'
 	String get completed => 'Усі клітинки заповнені. Судоку завершено.';
+
+	/// uk: 'Яке судоку?'
+	String get chooseTitle => 'Яке судоку?';
+
+	/// uk: 'На фото більше одного судоку. Торкнися того, яке хочеш зіграти.'
+	String get chooseBody => 'На фото більше одного судоку. Торкнися того, яке хочеш зіграти.';
+
+	/// uk: 'Судоку $number'
+	String chooseOption({required Object number}) => 'Судоку ${number}';
+
+	/// uk: 'На фото більше одного судоку. Вмісти одне в рамку.'
+	String get multipleGrids => 'На фото більше одного судоку. Вмісти одне в рамку.';
+
+	/// uk: 'Сумнівно: порівняй із фото'
+	String get legendUnsure => 'Сумнівно: порівняй із фото';
+
+	/// uk: 'Конфлікт: та сама цифра двічі'
+	String get legendConflict => 'Конфлікт: та сама цифра двічі';
+
+	/// uk: 'З твого фото'
+	String get fromPhoto => 'З твого фото';
+
+	/// uk: 'Може, $digit?'
+	String maybe({required Object digit}) => 'Може, ${digit}?';
 }
 
 // Path: coach
@@ -1902,7 +1926,7 @@ extension on Translations {
 			'scanner.openCamera' => 'Відкрити камеру',
 			'scanner.choosePhoto' => 'Вибрати фото',
 			'scanner.shutter' => 'Зробити фото',
-			'scanner.frameGuide' => 'Усі чотири кути мають бути в кадрі.',
+			'scanner.frameGuide' => 'Вмісти в рамку одне судоку.',
 			'scanner.processing' => 'Розпізнаємо судоку…',
 			'scanner.reviewTitle' => 'Перевірте цифри',
 			'scanner.reviewBody' => 'Торкніться клітинки, щоб виправити її перед грою.',
@@ -1926,7 +1950,7 @@ extension on Translations {
 			'scanner.segmentationFailure' => 'Не вдалося розділити сітку на клітинки. Спробуй ще раз.',
 			'scanner.recognitionFailure' => 'Деякі цифри не вдалося розпізнати. Спробуй ще раз.',
 			'scanner.duplicateClues' => 'Виправте виділені конфліктні цифри.',
-			'scanner.noSolution' => 'Для цих цифр немає розв’язку. Перевірте їх.',
+			'scanner.noSolution' => 'Ці підказки не мають розв’язку. Порівняй клітинки з ? із фото.',
 			'scanner.multipleSolutions' => 'Можливо, бракує цифр: судоку має кілька розв’язків.',
 			'scanner.storageFailure' => 'Не вдалося зберегти судоку. Спробуй ще раз.',
 			'scanner.validationFailure' => 'Не вдалося перевірити судоку. Спробуй ще раз.',
@@ -1936,6 +1960,14 @@ extension on Translations {
 			'scanner.stuck' => 'Я застряг — допоможи',
 			'scanner.noStep' => 'MICHI поки не знаходить наступного логічного кроку.',
 			'scanner.completed' => 'Усі клітинки заповнені. Судоку завершено.',
+			'scanner.chooseTitle' => 'Яке судоку?',
+			'scanner.chooseBody' => 'На фото більше одного судоку. Торкнися того, яке хочеш зіграти.',
+			'scanner.chooseOption' => ({required Object number}) => 'Судоку ${number}',
+			'scanner.multipleGrids' => 'На фото більше одного судоку. Вмісти одне в рамку.',
+			'scanner.legendUnsure' => 'Сумнівно: порівняй із фото',
+			'scanner.legendConflict' => 'Конфлікт: та сама цифра двічі',
+			'scanner.fromPhoto' => 'З твого фото',
+			'scanner.maybe' => ({required Object digit}) => 'Може, ${digit}?',
 			'coach.step' => ({required Object step}) => 'Підказка ${step} з 4',
 			'coach.kTry' => 'Спробую',
 			'coach.show' => 'Показати',

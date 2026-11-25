@@ -10,11 +10,13 @@ import 'package:michi_mobile/app/widgets/michi_page_state.dart';
 import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/practice/application/practice_cubit.dart';
 import 'package:michi_mobile/features/practice/application/practice_state.dart';
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
+import 'package:michi_mobile/features/practice/domain/practice_session_order.dart';
 import 'package:michi_mobile/features/practice/presentation/widgets/practice_exercise_view.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
@@ -57,11 +59,7 @@ final class _PracticePageState extends State<PracticePage> {
       final progressRepository =
           widget.progressRepository ?? getIt<TechniqueProgressRepository>();
       final progress = await progressRepository.load(widget.technique);
-      // The lesson uses the first two boards (Example, Try it); Practice
-      // starts with fresh ones and revisits those last as reinforcement.
-      final ordered = scenarios.length > 2
-          ? [...scenarios.skip(2), ...scenarios.take(2)]
-          : scenarios;
+      final ordered = practiceSessionOrder(scenarios);
       final cubit = PracticeCubit(
         scenarios: ordered.take(5).toList(),
         humanSolver: widget.humanSolver ?? getIt<HumanSolver>(),
@@ -179,10 +177,18 @@ final class _PracticeSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Spacer(),
-        const Center(
-          child: MichiMascot(
-            state: MichiMascotState.happy,
-            size: 160,
+        // Mastery is a genuine milestone (celebrate); a finished session
+        // without it is still a good moment (happy). Plays once on arrival.
+        Center(
+          child: MichiMotionMascot(
+            asset: state.progress.mastery == TechniqueMastery.mastered
+                ? MichiMotionAsset.celebrating
+                : MichiMotionAsset.happy,
+            size: 176,
+            fallback: const MichiMascot(
+              state: MichiMascotState.happy,
+              size: 160,
+            ),
           ),
         ),
         const SizedBox(height: MichiSpacing.xl),

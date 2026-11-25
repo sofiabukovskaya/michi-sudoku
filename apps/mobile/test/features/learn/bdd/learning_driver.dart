@@ -13,6 +13,7 @@ import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/learn/data/drift_technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
+import 'package:michi_mobile/features/practice/domain/practice_session_order.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 import '../../../helpers/inline_game_preparation.dart';
 
@@ -86,7 +87,9 @@ final class LearningDriver {
   }
 
   Future<DigitPlacement> placement(SudokuTechnique technique) async {
-    final scenario = (await catalog.forTechnique(technique)).first;
+    final scenario = practiceSessionOrder(
+      await catalog.forTechnique(technique),
+    ).first;
     return const DeterministicHumanSolver()
         .findNextDeduction(scenario.initialState)!
         .placements
@@ -96,7 +99,9 @@ final class LearningDriver {
   Future<Set<CandidateElimination>> eliminations(
     SudokuTechnique technique,
   ) async {
-    final scenario = (await catalog.forTechnique(technique)).first;
+    final scenario = practiceSessionOrder(
+      await catalog.forTechnique(technique),
+    ).first;
     return const DeterministicHumanSolver()
         .findNextDeduction(scenario.initialState)!
         .eliminations

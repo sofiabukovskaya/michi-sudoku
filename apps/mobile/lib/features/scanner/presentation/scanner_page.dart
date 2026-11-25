@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:camera/camera.dart';
@@ -113,6 +114,10 @@ final class _ScannerPageState extends State<ScannerPage>
                             cubit: widget.cubit,
                           ),
                           ScannerPhase.processing => const _Processing(),
+                          ScannerPhase.chooseGrid => _ChooseGrid(
+                            choice: state.gridChoice!,
+                            cubit: widget.cubit,
+                          ),
                           ScannerPhase.review ||
                           ScannerPhase.validating => _Review(
                             beforeImport: widget.beforeImport,
@@ -193,52 +198,7 @@ final class _Capture extends StatelessWidget {
       children: [
         Text(context.t.scanner.intro, style: MichiTypography.secondary),
         const SizedBox(height: MichiSpacing.lg),
-        AspectRatio(
-          aspectRatio: 1,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(MichiRadius.control),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                if (ready)
-                  CameraPreview(controller)
-                else
-                  const ColoredBox(
-                    color: MichiColors.cream,
-                    child: Center(
-                      child: Icon(
-                        Icons.grid_on_outlined,
-                        size: 80,
-                        color: MichiColors.indigo,
-                      ),
-                    ),
-                  ),
-                // This guide only helps framing; it is not a detected grid.
-                IgnorePointer(
-                  child: Center(
-                    child: FractionallySizedBox(
-                      widthFactor: 0.82,
-                      heightFactor: 0.82,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: ready
-                                ? MichiColors.ivory
-                                : MichiColors.indigo,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            MichiRadius.small,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        _Viewfinder(controller: ready ? controller : null),
         const SizedBox(height: MichiSpacing.md),
         Text(
           message,
@@ -250,7 +210,13 @@ final class _Capture extends StatelessWidget {
           MichiButton(
             key: const ValueKey('scanner-shutter'),
             label: context.t.scanner.shutter,
-            onPressed: () => unawaited(cubit.capture()),
+            onPressed: () => unawaited(
+              cubit.capture(
+                focus: _Viewfinder.focusFor(
+                  _Viewfinder.aspectOf(context, controller),
+                ),
+              ),
+            ),
           )
         else if (access == CameraAccess.settingsRequired)
           MichiButton(
@@ -274,6 +240,347 @@ final class _Capture extends StatelessWidget {
   }
 }
 
+/// The live camera at its true aspect ratio (never stretched), as large as
+/// the screen allows, with a square scanning frame. The frame is the same
+/// region the detector searches first, so what is framed is what is read.
+final class _Viewfinder extends StatelessWidget {
+  const _Viewfinder({required this.controller});
+
+  final CameraController? controller;
+
+  /// Frame side as a fraction of the preview's shorter side.
+  static const frameFraction = 0.86;
+
+  /// The frame in photo fractions for a preview of the given aspect
+  /// (width / height). The preview shows the whole photo, so the mapping is
+  /// direct; detection adds its own margin around it.
+  static ScanFocus focusFor(double aspect) {
+    final width = aspect >= 1 ? frameFraction / aspect : frameFraction;
+    final height = aspect >= 1 ? frameFraction : frameFraction * aspect;
+    return ScanFocus(
+      left: (1 - width) / 2,
+      top: (1 - height) / 2,
+      right: (1 + width) / 2,
+      bottom: (1 + height) / 2,
+    );
+  }
+
+  /// Preview aspect (width / height) as shown; the plugin reports the
+  /// sensor's landscape ratio.
+  static double aspectOf(BuildContext context, CameraController? camera) {
+    if (camera == null) return 3 / 4;
+    final portrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    return portrait ? 1 / camera.value.aspectRatio : camera.value.aspectRatio;
+  }
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final camera = controller;
+      final portrait =
+          MediaQuery.orientationOf(context) == Orientation.portrait;
+      final aspect = aspectOf(context, camera);
+      final maxHeight = math.max(
+        240,
+        MediaQuery.sizeOf(context).height * (portrait ? 0.62 : 0.72),
+      );
+      var width = constraints.maxWidth;
+      var height = width / aspect;
+      if (height > maxHeight) {
+        height = maxHeight.toDouble();
+        width = height * aspect;
+      }
+      return Center(
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(MichiRadius.control),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                if (camera != null)
+                  // Same aspect as the box, so nothing is stretched or cut.
+                  FittedBox(
+                    fit: BoxFit.cover,
+                    child: SizedBox(
+                      width: width,
+                      height: height,
+                      child: CameraPreview(camera),
+                    ),
+                  )
+                else
+                  const ColoredBox(
+                    color: MichiColors.cream,
+                    child: Center(
+                      child: Icon(
+                        Icons.grid_on_outlined,
+                        size: 80,
+                        color: MichiColors.indigo,
+                      ),
+                    ),
+                  ),
+                IgnorePointer(
+                  child: CustomPaint(
+                    painter: _FramePainter(
+                      live: camera != null,
+                      fraction: frameFraction,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+/// Dims everything outside the frame and marks its corners, so the target
+/// area reads at a glance on any page. Painted once; no animation.
+final class _FramePainter extends CustomPainter {
+  const _FramePainter({required this.live, required this.fraction});
+
+  final bool live;
+  final double fraction;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final side = math.min(size.width, size.height) * fraction;
+    final frame = Rect.fromCenter(
+      center: size.center(Offset.zero),
+      width: side,
+      height: side,
+    );
+    const radius = Radius.circular(MichiRadius.small);
+    if (live) {
+      canvas.drawPath(
+        Path()
+          ..fillType = PathFillType.evenOdd
+          ..addRect(Offset.zero & size)
+          ..addRRect(RRect.fromRectAndRadius(frame, radius)),
+        Paint()..color = const Color(0x66000000),
+      );
+    }
+    final color = live ? MichiColors.ivory : MichiColors.indigo;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(frame, radius),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..color = color.withValues(alpha: 0.6),
+    );
+    final arm = side * 0.12;
+    final corner = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round
+      ..color = color;
+    for (final (point, dx, dy) in [
+      (frame.topLeft, 1.0, 1.0),
+      (frame.topRight, -1.0, 1.0),
+      (frame.bottomRight, -1.0, -1.0),
+      (frame.bottomLeft, 1.0, -1.0),
+    ]) {
+      canvas.drawPath(
+        Path()
+          ..moveTo(point.dx, point.dy + dy * arm)
+          ..lineTo(point.dx, point.dy)
+          ..lineTo(point.dx + dx * arm, point.dy),
+        corner,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_FramePainter oldDelegate) =>
+      oldDelegate.live != live || oldDelegate.fraction != fraction;
+}
+
+/// More than one puzzle in the photo: show them, the player taps one.
+final class _ChooseGrid extends StatelessWidget {
+  const _ChooseGrid({required this.choice, required this.cubit});
+
+  final ScannerGridChoice choice;
+  final ScannerCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(t.scanner.chooseTitle, style: MichiTypography.editorialTitle),
+        const SizedBox(height: MichiSpacing.sm),
+        Text(t.scanner.chooseBody, style: MichiTypography.secondary),
+        const SizedBox(height: MichiSpacing.lg),
+        _ChoicePhoto(choice: choice, onChoose: cubit.chooseGrid),
+        const SizedBox(height: MichiSpacing.lg),
+        for (var index = 0; index < choice.grids.length; index++) ...[
+          MichiButton(
+            key: ValueKey('scanner-choose-$index'),
+            label: t.scanner.chooseOption(number: index + 1),
+            variant: MichiButtonVariant.secondary,
+            onPressed: () => unawaited(cubit.chooseGrid(index)),
+          ),
+          const SizedBox(height: MichiSpacing.sm),
+        ],
+        MichiButton(
+          label: t.scanner.rescan,
+          variant: MichiButtonVariant.text,
+          onPressed: cubit.rescan,
+        ),
+      ],
+    );
+  }
+}
+
+final class _ChoicePhoto extends StatefulWidget {
+  const _ChoicePhoto({required this.choice, required this.onChoose});
+
+  final ScannerGridChoice choice;
+  final Future<void> Function(int index) onChoose;
+
+  @override
+  State<_ChoicePhoto> createState() => _ChoicePhotoState();
+}
+
+final class _ChoicePhotoState extends State<_ChoicePhoto> {
+  late final Uint8List _bytes = Uint8List.fromList(widget.choice.image.bytes);
+  Size? _pixels;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_measure());
+  }
+
+  Future<void> _measure() async {
+    final buffer = await ui.ImmutableBuffer.fromUint8List(_bytes);
+    final descriptor = await ui.ImageDescriptor.encoded(buffer);
+    if (mounted) {
+      setState(
+        () => _pixels = Size(
+          descriptor.width.toDouble(),
+          descriptor.height.toDouble(),
+        ),
+      );
+    }
+    descriptor.dispose();
+    buffer.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pixels = _pixels;
+    if (pixels == null) return const SizedBox(height: 240);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxHeight = MediaQuery.sizeOf(context).height * 0.5;
+        var width = constraints.maxWidth;
+        var height = width * pixels.height / pixels.width;
+        if (height > maxHeight) {
+          height = maxHeight;
+          width = height * pixels.width / pixels.height;
+        }
+        final scale = width / pixels.width;
+        return Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(MichiRadius.control),
+            child: SizedBox(
+              width: width,
+              height: height,
+              child: GestureDetector(
+                onTapUp: (details) {
+                  final point = details.localPosition / scale;
+                  for (var i = 0; i < widget.choice.grids.length; i++) {
+                    if (_outline(widget.choice.grids[i], 1).contains(point)) {
+                      unawaited(widget.onChoose(i));
+                      return;
+                    }
+                  }
+                },
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ExcludeSemantics(
+                      child: Image.memory(
+                        _bytes,
+                        fit: BoxFit.fill,
+                        gaplessPlayback: true,
+                      ),
+                    ),
+                    ExcludeSemantics(
+                      child: CustomPaint(
+                        painter: _ChoicePainter(
+                          grids: widget.choice.grids,
+                          scale: scale,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+Path _outline(GridGeometry grid, double scale) {
+  final path = Path()
+    ..moveTo(grid.corners.first.x * scale, grid.corners.first.y * scale);
+  for (final corner in grid.corners.skip(1)) {
+    path.lineTo(corner.x * scale, corner.y * scale);
+  }
+  return path..close();
+}
+
+final class _ChoicePainter extends CustomPainter {
+  const _ChoicePainter({required this.grids, required this.scale});
+
+  final List<GridGeometry> grids;
+  final double scale;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (var index = 0; index < grids.length; index++) {
+      final outline = _outline(grids[index], scale);
+      canvas
+        ..drawPath(
+          outline,
+          Paint()..color = MichiColors.coral.withValues(alpha: 0.14),
+        )
+        ..drawPath(
+          outline,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 3
+            ..color = MichiColors.coral,
+        );
+      final bounds = outline.getBounds();
+      final badge = Offset(bounds.center.dx, bounds.center.dy);
+      canvas.drawCircle(badge, 18, Paint()..color = MichiColors.coral);
+      final label = TextPainter(
+        text: TextSpan(
+          text: '${index + 1}',
+          style: MichiTypography.heading.copyWith(color: MichiColors.ivory),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      label.paint(canvas, badge - Offset(label.width / 2, label.height / 2));
+      label.dispose();
+    }
+  }
+
+  @override
+  bool shouldRepaint(_ChoicePainter oldDelegate) =>
+      oldDelegate.grids != grids || oldDelegate.scale != scale;
+}
+
 final class _Processing extends StatelessWidget {
   const _Processing();
 
@@ -282,9 +589,11 @@ final class _Processing extends StatelessWidget {
     padding: const EdgeInsets.symmetric(vertical: 96),
     child: Column(
       children: [
-        const CircularProgressIndicator(color: MichiColors.indigo),
-        const SizedBox(height: MichiSpacing.xl),
-        Text(context.t.scanner.processing, style: MichiTypography.heading),
+        MichiPawLoader(
+          label: context.t.scanner.processing,
+          size: MichiPawLoaderSize.screen,
+          delay: Duration.zero,
+        ),
       ],
     ),
   );
@@ -325,6 +634,7 @@ String _failureCopy(Translations t, ScanFailureKind? kind) => switch (kind) {
   ScanFailureKind.invalidGeometry => t.scanner.invalidGeometry,
   ScanFailureKind.segmentationFailure => t.scanner.segmentationFailure,
   ScanFailureKind.recognitionFailure => t.scanner.recognitionFailure,
+  ScanFailureKind.multipleGrids => t.scanner.multipleGrids,
   ScanFailureKind.imageDecodeFailure || null => t.scanner.imageDecodeFailure,
 };
 
@@ -389,17 +699,144 @@ final class _Review extends StatelessWidget {
         Center(
           child: _ReviewBoard(review: review, onSelect: cubit.selectCell),
         ),
-        const SizedBox(height: MichiSpacing.lg),
-        // Always present, so actions below never jump under the finger;
-        // dimmed until a cell is chosen.
-        _DigitInput(
-          current: review.selectedIndex == null
-              ? 0
-              : review.board.values[review.selectedIndex!],
-          onDigit: review.selectedIndex == null ? null : cubit.editSelected,
-        ),
+        const SizedBox(height: MichiSpacing.sm),
+        _ReviewLegend(review: review),
+        const SizedBox(height: MichiSpacing.md),
+        // Fixed height whether or not a cell is chosen: nothing below moves.
+        _CellPhoto(review: review, onDigit: cubit.editSelected),
         const SizedBox(height: MichiSpacing.lg),
       ],
+    );
+  }
+}
+
+/// What the two marks mean, shown only when a mark is on the board.
+final class _ReviewLegend extends StatelessWidget {
+  const _ReviewLegend({required this.review});
+
+  final ScannerReviewData review;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final unsure = review.lowConfidenceCount > 0;
+    final conflict = review.conflicts.isNotEmpty;
+    Widget item(String mark, Color color, Color tint, String text) => Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: tint,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(mark, style: MichiTypography.meta.copyWith(color: color)),
+        ),
+        const SizedBox(width: MichiSpacing.xs),
+        Flexible(child: Text(text, style: MichiTypography.meta)),
+      ],
+    );
+    return SizedBox(
+      height: 44,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: MichiSpacing.lg,
+        runSpacing: MichiSpacing.xs,
+        children: [
+          if (unsure)
+            item(
+              '?',
+              MichiColors.coralText,
+              MichiColors.coralTint,
+              t.scanner.legendUnsure,
+            ),
+          if (conflict)
+            item(
+              '!',
+              MichiColors.error,
+              MichiColors.errorTint,
+              t.scanner.legendConflict,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The chosen cell as it looked in the photo, beside what was read, so an
+/// unsure cell can be checked without going back to the page.
+final class _CellPhoto extends StatelessWidget {
+  const _CellPhoto({required this.review, required this.onDigit});
+
+  final ScannerReviewData review;
+  final ValueChanged<int> onDigit;
+
+  static const _side = 56.0;
+
+  /// One byte buffer per cell image, so a rebuild reuses the decoded image.
+  static final _bytes = Expando<Uint8List>();
+
+  @override
+  Widget build(BuildContext context) {
+    final index = review.selectedIndex;
+    final image = index == null ? null : review.result.cells[index].image;
+    // An unsure cell offers MICHI's second reading; only a tap applies it.
+    final alternative = index == null
+        ? null
+        : review.result.cells[index].prediction.alternative;
+    final suggest =
+        index != null &&
+        alternative != null &&
+        review.needsReview(CellRef.fromIndex(index)) &&
+        review.board.values[index] != alternative;
+    return SizedBox(
+      height: _side,
+      child: image == null
+          ? null
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    context.t.scanner.fromPhoto,
+                    style: MichiTypography.secondary,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+                const SizedBox(width: MichiSpacing.md),
+                ExcludeSemantics(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(MichiRadius.small),
+                    child: Image.memory(
+                      _bytes[image] ??= Uint8List.fromList(image.bytes),
+                      key: ValueKey('scan-photo-$index'),
+                      width: _side,
+                      height: _side,
+                      fit: BoxFit.cover,
+                      gaplessPlayback: true,
+                    ),
+                  ),
+                ),
+                if (suggest) ...[
+                  const SizedBox(width: MichiSpacing.md),
+                  Flexible(
+                    child: TextButton(
+                      key: ValueKey('scan-suggest-$alternative'),
+                      onPressed: () => onDigit(alternative),
+                      child: Text(
+                        context.t.scanner.maybe(digit: alternative),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
     );
   }
 }
@@ -433,6 +870,17 @@ final class _ReviewActions extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Pinned with the actions, so the keypad is always fully visible
+          // and never moves; dimmed until a cell is chosen.
+          _DigitInput(
+            current: review.selectedIndex == null
+                ? 0
+                : review.board.values[review.selectedIndex!],
+            onDigit: review.selectedIndex == null || checking
+                ? null
+                : cubit.editSelected,
+          ),
+          const SizedBox(height: MichiSpacing.xs),
           // Same buttons in the same places while MICHI checks the board;
           // they disable instead of disappearing.
           MichiButton(
@@ -729,19 +1177,23 @@ final class _DigitInput extends StatelessWidget {
           : MichiMotion.quick,
       child: IgnorePointer(
         ignoring: edit == null,
-        child: Column(
+        // One compact row (digits, then clear), so the pinned area stays
+        // short on small phones.
+        child: Row(
           children: [
-            MichiDigitPad(
-              digits: const [1, 2, 3, 4, 5, 6, 7, 8, 9],
-              selected: {if (current != 0) current},
-              keyFor: (digit) => 'scan-digit-$digit',
-              onDigit: (digit) => edit?.call(digit),
+            Expanded(
+              child: MichiDigitPad(
+                digits: const [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                selected: {if (current != 0) current},
+                keyFor: (digit) => 'scan-digit-$digit',
+                onDigit: (digit) => edit?.call(digit),
+              ),
             ),
-            TextButton.icon(
+            IconButton(
               key: const ValueKey('scan-clear'),
+              tooltip: context.t.scanner.clear,
               onPressed: edit == null ? null : () => edit(0),
               icon: const Icon(Icons.backspace_outlined),
-              label: Text(context.t.scanner.clear),
             ),
           ],
         ),

@@ -7,6 +7,8 @@ export 'src/components/michi_button.dart';
 export 'src/components/michi_content_frame.dart';
 export 'src/components/michi_icon_button.dart';
 export 'src/components/michi_list_row.dart';
+export 'src/components/michi_motion_mascot.dart';
+export 'src/components/michi_paw_loader.dart';
 export 'src/components/michi_press_feedback.dart';
 export 'src/components/michi_progress_bar.dart';
 export 'src/components/michi_text_field.dart';

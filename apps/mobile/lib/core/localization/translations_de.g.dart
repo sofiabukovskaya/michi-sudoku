@@ -408,7 +408,7 @@ class _Translations$scanner$de extends Translations$scanner$uk {
 	@override String get openCamera => 'Kamera verwenden';
 	@override String get choosePhoto => 'Foto auswählen';
 	@override String get shutter => 'Foto aufnehmen';
-	@override String get frameGuide => 'Alle vier Ecken sollten im Bild sein.';
+	@override String get frameGuide => 'Bring ein Sudoku in den Rahmen.';
 	@override String get processing => 'Sudoku wird gelesen…';
 	@override String get reviewTitle => 'Zahlen prüfen';
 	@override String get reviewBody => 'Tippe auf ein Feld, um es vor dem Spielen zu korrigieren.';
@@ -432,7 +432,7 @@ class _Translations$scanner$de extends Translations$scanner$uk {
 	@override String get segmentationFailure => 'Das Gitter konnte nicht in Felder geteilt werden. Versuche es erneut.';
 	@override String get recognitionFailure => 'Einige Zahlen konnten nicht gelesen werden. Versuche es erneut.';
 	@override String get duplicateClues => 'Korrigiere die markierten widersprüchlichen Zahlen.';
-	@override String get noSolution => 'Diese Zahlen haben keine Lösung. Prüfe sie.';
+	@override String get noSolution => 'Diese Vorgaben haben keine Lösung. Vergleiche die Felder mit ? mit dem Foto.';
 	@override String get multipleSolutions => 'Möglicherweise fehlen Zahlen; dieses Sudoku hat mehrere Lösungen.';
 	@override String get storageFailure => 'Das importierte Sudoku konnte nicht gespeichert werden. Versuche es erneut.';
 	@override String get validationFailure => 'Dieses Sudoku konnte nicht geprüft werden. Versuche es erneut zu bestätigen.';
@@ -442,6 +442,14 @@ class _Translations$scanner$de extends Translations$scanner$uk {
 	@override String get stuck => 'Ich komme nicht weiter';
 	@override String get noStep => 'MICHI findet mit den verfügbaren Techniken keinen nächsten Schritt.';
 	@override String get completed => 'Alle Felder sind ausgefüllt. Dieses Sudoku ist gelöst.';
+	@override String get chooseTitle => 'Welches Sudoku?';
+	@override String get chooseBody => 'Auf dem Foto sind mehrere Sudokus. Tippe auf das, das du spielen willst.';
+	@override String chooseOption({required Object number}) => 'Sudoku ${number}';
+	@override String get multipleGrids => 'Auf dem Foto sind mehrere Sudokus. Bring eines in den Rahmen.';
+	@override String get legendUnsure => 'Unsicher: mit dem Foto vergleichen';
+	@override String get legendConflict => 'Konflikt: gleiche Zahl doppelt';
+	@override String get fromPhoto => 'Aus deinem Foto';
+	@override String maybe({required Object digit}) => 'Vielleicht ${digit}?';
 }
 
 // Path: coach
@@ -1040,7 +1048,7 @@ extension on TranslationsDe {
 			'scanner.openCamera' => 'Kamera verwenden',
 			'scanner.choosePhoto' => 'Foto auswählen',
 			'scanner.shutter' => 'Foto aufnehmen',
-			'scanner.frameGuide' => 'Alle vier Ecken sollten im Bild sein.',
+			'scanner.frameGuide' => 'Bring ein Sudoku in den Rahmen.',
 			'scanner.processing' => 'Sudoku wird gelesen…',
 			'scanner.reviewTitle' => 'Zahlen prüfen',
 			'scanner.reviewBody' => 'Tippe auf ein Feld, um es vor dem Spielen zu korrigieren.',
@@ -1064,7 +1072,7 @@ extension on TranslationsDe {
 			'scanner.segmentationFailure' => 'Das Gitter konnte nicht in Felder geteilt werden. Versuche es erneut.',
 			'scanner.recognitionFailure' => 'Einige Zahlen konnten nicht gelesen werden. Versuche es erneut.',
 			'scanner.duplicateClues' => 'Korrigiere die markierten widersprüchlichen Zahlen.',
-			'scanner.noSolution' => 'Diese Zahlen haben keine Lösung. Prüfe sie.',
+			'scanner.noSolution' => 'Diese Vorgaben haben keine Lösung. Vergleiche die Felder mit ? mit dem Foto.',
 			'scanner.multipleSolutions' => 'Möglicherweise fehlen Zahlen; dieses Sudoku hat mehrere Lösungen.',
 			'scanner.storageFailure' => 'Das importierte Sudoku konnte nicht gespeichert werden. Versuche es erneut.',
 			'scanner.validationFailure' => 'Dieses Sudoku konnte nicht geprüft werden. Versuche es erneut zu bestätigen.',
@@ -1074,6 +1082,14 @@ extension on TranslationsDe {
 			'scanner.stuck' => 'Ich komme nicht weiter',
 			'scanner.noStep' => 'MICHI findet mit den verfügbaren Techniken keinen nächsten Schritt.',
 			'scanner.completed' => 'Alle Felder sind ausgefüllt. Dieses Sudoku ist gelöst.',
+			'scanner.chooseTitle' => 'Welches Sudoku?',
+			'scanner.chooseBody' => 'Auf dem Foto sind mehrere Sudokus. Tippe auf das, das du spielen willst.',
+			'scanner.chooseOption' => ({required Object number}) => 'Sudoku ${number}',
+			'scanner.multipleGrids' => 'Auf dem Foto sind mehrere Sudokus. Bring eines in den Rahmen.',
+			'scanner.legendUnsure' => 'Unsicher: mit dem Foto vergleichen',
+			'scanner.legendConflict' => 'Konflikt: gleiche Zahl doppelt',
+			'scanner.fromPhoto' => 'Aus deinem Foto',
+			'scanner.maybe' => ({required Object digit}) => 'Vielleicht ${digit}?',
 			'coach.step' => ({required Object step}) => 'Hinweis ${step} von 4',
 			'coach.kTry' => 'Ich versuche es',
 			'coach.show' => 'Anzeigen',

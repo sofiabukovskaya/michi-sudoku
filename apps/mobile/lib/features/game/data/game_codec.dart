@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
+import 'package:michi_mobile/features/game/domain/proven_elimination.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// Compact, deterministic storage format. Board strings contain 81 digits;
@@ -54,6 +55,42 @@ abstract final class GameCodec {
         'why': reasoning(snapshot.reasoning),
       },
   ]);
+
+  static String provenEliminations(List<ProvenElimination> value) =>
+      jsonEncode([
+        for (final item in value)
+          {
+            'cell': item.removal.cell.index,
+            'digit': item.removal.digit,
+            'basis': board(item.basis),
+          },
+      ]);
+
+  /// Proven removals are an optimisation of Coach's progress. A damaged or
+  /// missing record only means Coach may show an already accepted step once
+  /// more, so it must never make a saved game unusable.
+  static List<ProvenElimination> parseProvenEliminationsOrEmpty(String raw) {
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! List) return const [];
+      return [
+        for (final entry in decoded)
+          if (entry is Map &&
+              entry['cell'] is int &&
+              entry['digit'] is int &&
+              entry['basis'] is String)
+            ProvenElimination(
+              removal: CandidateElimination(
+                CellRef.fromIndex(entry['cell'] as int),
+                entry['digit'] as int,
+              ),
+              basis: parseBoard(entry['basis'] as String),
+            ),
+      ];
+    } on Object {
+      return const [];
+    }
+  }
 
   static String reasoning(Map<CellRef, MoveReasoningContext> value) {
     final cells = value.keys.toList()

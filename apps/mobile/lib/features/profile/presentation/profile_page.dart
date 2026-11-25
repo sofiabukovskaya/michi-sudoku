@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
+import 'package:michi_mobile/app/navigation/active_tab_tickers.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_page_state.dart';
@@ -110,149 +111,199 @@ final class _ProfilePageState extends State<ProfilePage> {
   );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: MichiColors.paper,
-    body: SafeArea(
-      child: MichiContentFrame(
-        child: FutureBuilder<_ProfileData>(
-          future: _data,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return snapshot.hasError
-                  ? MichiProblemState(
-                      message: context.t.common.loadProblem,
-                      actionLabel: context.t.common.retry,
-                      onAction: () => setState(() => _data = _load()),
-                    )
-                  : MichiLoadingState(label: context.t.common.justAMoment);
-            }
-            final data = snapshot.data!;
-            final auth = context.watch<AuthCubit>().state;
-            final sync = context.read<SyncCoordinator?>();
-            final mastered = data.progress.values
-                .where((item) => item.mastery == TechniqueMastery.mastered)
-                .length;
-            final activeDays = data.games
-                .map((game) {
-                  final day = game.completedAt.toLocal();
-                  return DateTime(day.year, day.month, day.day);
-                })
-                .toSet()
-                .length;
-            return RefreshIndicator(
-              onRefresh: () async {
-                setState(() {
-                  _data = _load();
-                });
-                await _data;
-              },
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
-                children: [
-                  Row(
-                    children: [
-                      const MichiMascot(state: MichiMascotState.calm, size: 88),
-                      const SizedBox(width: MichiSpacing.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              auth.account?.displayName ??
-                                  auth.account?.email ??
-                                  context.t.profile.guest,
-                              style: MichiTypography.display,
-                            ),
-                            if (auth.isSignedIn && sync != null)
-                              AnimatedBuilder(
-                                animation: sync,
-                                builder: (context, _) => Text(
-                                  switch (sync.status) {
-                                    SyncStatus.synced => context.t.sync.synced,
-                                    SyncStatus.offline =>
-                                      context.t.sync.offline,
-                                    SyncStatus.error => context.t.sync.error,
-                                    SyncStatus.pending =>
-                                      context.t.sync.pending,
-                                    _ => context.t.sync.syncing,
-                                  },
+  Widget build(BuildContext context) => ActiveTabTickers(
+    index: 3,
+    child: Scaffold(
+      backgroundColor: MichiColors.paper,
+      body: SafeArea(
+        child: MichiContentFrame(
+          child: FutureBuilder<_ProfileData>(
+            future: _data,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return snapshot.hasError
+                    ? MichiProblemState(
+                        message: context.t.common.loadProblem,
+                        actionLabel: context.t.common.retry,
+                        onAction: () => setState(() => _data = _load()),
+                      )
+                    : MichiLoadingState(label: context.t.common.justAMoment);
+              }
+              final data = snapshot.data!;
+              final auth = context.watch<AuthCubit>().state;
+              final sync = context.read<SyncCoordinator?>();
+              final mastered = data.progress.values
+                  .where((item) => item.mastery == TechniqueMastery.mastered)
+                  .length;
+              final activeDays = data.games
+                  .map((game) {
+                    final day = game.completedAt.toLocal();
+                    return DateTime(day.year, day.month, day.day);
+                  })
+                  .toSet()
+                  .length;
+              return RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    _data = _load();
+                  });
+                  await _data;
+                },
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
+                  children: [
+                    Row(
+                      children: [
+                        const MichiMascot(
+                          state: MichiMascotState.calm,
+                          size: 88,
+                        ),
+                        const SizedBox(width: MichiSpacing.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                auth.account?.displayName ??
+                                    auth.account?.email ??
+                                    context.t.profile.guest,
+                                style: MichiTypography.display,
+                              ),
+                              if (auth.isSignedIn && sync != null)
+                                AnimatedBuilder(
+                                  animation: sync,
+                                  builder: (context, _) => Text(
+                                    switch (sync.status) {
+                                      SyncStatus.synced =>
+                                        context.t.sync.synced,
+                                      SyncStatus.offline =>
+                                        context.t.sync.offline,
+                                      SyncStatus.error => context.t.sync.error,
+                                      SyncStatus.pending =>
+                                        context.t.sync.pending,
+                                      _ => context.t.sync.syncing,
+                                    },
+                                    style: MichiTypography.secondary,
+                                  ),
+                                )
+                              else
+                                Text(
+                                  auth.isSignedIn
+                                      ? context.t.auth.localNotSynced
+                                      : context.t.profile.localOnly,
                                   style: MichiTypography.secondary,
                                 ),
-                              )
-                            else
-                              Text(
-                                auth.isSignedIn
-                                    ? context.t.auth.localNotSynced
-                                    : context.t.profile.localOnly,
-                                style: MichiTypography.secondary,
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: MichiSpacing.xxl),
-                  const Divider(color: MichiColors.hairline),
-                  Row(
-                    children: [
-                      _Stat(
-                        value: '${data.games.length}',
-                        label: context.t.profile.puzzles,
-                      ),
-                      _Stat(
-                        value: '$mastered',
-                        label: context.t.profile.mastered,
-                      ),
-                      _Stat(
-                        value: '$activeDays',
-                        label: context.t.profile.activeDays,
-                      ),
-                    ],
-                  ),
-                  const Divider(color: MichiColors.hairline),
-                  const SizedBox(height: MichiSpacing.xxl),
-                  if (auth.problem case final problem?) ...[
-                    AuthErrorBanner(
-                      message: authProblemText(context, problem),
-                    ),
-                    const SizedBox(height: MichiSpacing.lg),
-                  ],
-                  if (auth.available &&
-                      auth.hasEnabledProvider &&
-                      !auth.isSignedIn) ...[
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: MichiColors.coralTint,
-                        borderRadius: BorderRadius.circular(MichiRadius.card),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(MichiSpacing.lg),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              context.t.auth.createTitle,
-                              style: MichiTypography.heading,
-                            ),
-                            const SizedBox(height: MichiSpacing.sm),
-                            Text(
-                              context.t.auth.createSubtitle,
-                              style: MichiTypography.secondary,
-                            ),
-                            const SizedBox(height: MichiSpacing.lg),
-                            MichiButton(
-                              label: context.t.auth.createAccount,
-                              onPressed: () async =>
-                                  context.router.root.push(RegisterRoute()),
-                            ),
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
                     const SizedBox(height: MichiSpacing.xxl),
-                  ],
-                  if (auth.isSignedIn) ...[
-                    Text(context.t.auth.title, style: MichiTypography.heading),
+                    const Divider(color: MichiColors.hairline),
+                    Row(
+                      children: [
+                        _Stat(
+                          value: '${data.games.length}',
+                          label: context.t.profile.puzzles,
+                        ),
+                        _Stat(
+                          value: '$mastered',
+                          label: context.t.profile.mastered,
+                        ),
+                        _Stat(
+                          value: '$activeDays',
+                          label: context.t.profile.activeDays,
+                        ),
+                      ],
+                    ),
+                    const Divider(color: MichiColors.hairline),
+                    const SizedBox(height: MichiSpacing.xxl),
+                    if (auth.problem case final problem?) ...[
+                      AuthErrorBanner(
+                        message: authProblemText(context, problem),
+                      ),
+                      const SizedBox(height: MichiSpacing.lg),
+                    ],
+                    if (auth.available &&
+                        auth.hasEnabledProvider &&
+                        !auth.isSignedIn) ...[
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: MichiColors.coralTint,
+                          borderRadius: BorderRadius.circular(MichiRadius.card),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(MichiSpacing.lg),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                context.t.auth.createTitle,
+                                style: MichiTypography.heading,
+                              ),
+                              const SizedBox(height: MichiSpacing.sm),
+                              Text(
+                                context.t.auth.createSubtitle,
+                                style: MichiTypography.secondary,
+                              ),
+                              const SizedBox(height: MichiSpacing.lg),
+                              MichiButton(
+                                label: context.t.auth.createAccount,
+                                onPressed: () async =>
+                                    context.router.root.push(RegisterRoute()),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: MichiSpacing.xxl),
+                    ],
+                    if (auth.isSignedIn) ...[
+                      Text(
+                        context.t.auth.title,
+                        style: MichiTypography.heading,
+                      ),
+                      const SizedBox(height: MichiSpacing.md),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: MichiColors.ivory,
+                          border: Border.all(color: MichiColors.hairline),
+                          borderRadius: BorderRadius.circular(MichiRadius.card),
+                        ),
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: Column(
+                            children: [
+                              if (auth.account?.emailVerified == false) ...[
+                                _ProfileRow(
+                                  icon: Icons.mark_email_unread_outlined,
+                                  title: context.t.auth.verifyEmail,
+                                  subtitle: auth.account?.email ?? '',
+                                  onTap: () async => context.router.root.push(
+                                    EmailVerificationRoute(),
+                                  ),
+                                ),
+                                const Divider(
+                                  height: 1,
+                                  color: MichiColors.hairline,
+                                ),
+                              ],
+                              _ProfileRow(
+                                icon: Icons.logout,
+                                title: context.t.auth.signOut,
+                                subtitle: auth.account?.email ?? '',
+                                onTap: _confirmSignOut,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: MichiSpacing.xxl),
+                    ],
+                    Text(
+                      context.t.profile.activity,
+                      style: MichiTypography.heading,
+                    ),
                     const SizedBox(height: MichiSpacing.md),
                     DecoratedBox(
                       decoration: BoxDecoration(
@@ -264,69 +315,33 @@ final class _ProfilePageState extends State<ProfilePage> {
                         type: MaterialType.transparency,
                         child: Column(
                           children: [
-                            if (auth.account?.emailVerified == false) ...[
-                              _ProfileRow(
-                                icon: Icons.mark_email_unread_outlined,
-                                title: context.t.auth.verifyEmail,
-                                subtitle: auth.account?.email ?? '',
-                                onTap: () async => context.router.root.push(
-                                  EmailVerificationRoute(),
-                                ),
-                              ),
-                              const Divider(
-                                height: 1,
-                                color: MichiColors.hairline,
-                              ),
-                            ],
                             _ProfileRow(
-                              icon: Icons.logout,
-                              title: context.t.auth.signOut,
-                              subtitle: auth.account?.email ?? '',
-                              onTap: _confirmSignOut,
+                              icon: Icons.menu_book_outlined,
+                              title: context.t.profile.learnRow,
+                              subtitle: context.t.profile.learnDetail,
+                              onTap: () => context.tabsRouter.setActiveIndex(1),
+                            ),
+                            const Divider(
+                              height: 1,
+                              color: MichiColors.hairline,
+                            ),
+                            _ProfileRow(
+                              icon: Icons.settings_outlined,
+                              title: context.t.profile.settingsRow,
+                              subtitle: context.t.profile.settingsDetail,
+                              onTap: () => context.router.root.push(
+                                const SettingsRoute(),
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: MichiSpacing.xxl),
                   ],
-                  Text(
-                    context.t.profile.activity,
-                    style: MichiTypography.heading,
-                  ),
-                  const SizedBox(height: MichiSpacing.md),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: MichiColors.ivory,
-                      border: Border.all(color: MichiColors.hairline),
-                      borderRadius: BorderRadius.circular(MichiRadius.card),
-                    ),
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: Column(
-                        children: [
-                          _ProfileRow(
-                            icon: Icons.menu_book_outlined,
-                            title: context.t.profile.learnRow,
-                            subtitle: context.t.profile.learnDetail,
-                            onTap: () => context.tabsRouter.setActiveIndex(1),
-                          ),
-                          const Divider(height: 1, color: MichiColors.hairline),
-                          _ProfileRow(
-                            icon: Icons.settings_outlined,
-                            title: context.t.profile.settingsRow,
-                            subtitle: context.t.profile.settingsDetail,
-                            onTap: () =>
-                                context.router.root.push(const SettingsRoute()),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+                ),
+              );
+            },
+          ),
         ),
       ),
     ),

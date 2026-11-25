@@ -73,7 +73,6 @@ flutter:
     - assets/images/onboarding_see.png
     - assets/images/onboarding_hint.png
     - assets/images/onboarding_path.png
-    - assets/images/progress_first_puzzle.png
     - assets/images/completion_hero.png
     - assets/images/hint_icon.png
     - assets/images/michi_calm.png

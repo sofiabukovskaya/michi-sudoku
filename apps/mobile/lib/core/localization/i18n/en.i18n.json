@@ -120,7 +120,10 @@
     "newPuzzle": "Another puzzle",
     "weekTitle": "This week",
     "weekDetails": "Details",
-    "streak": {"one": "$n day", "other": "$n days"},
+    "streak": {
+      "one": "$n day",
+      "other": "$n days"
+    },
     "streakMeaning": "Daily Sudoku solved days in a row",
     "weekdaysShort": "Mon|Tue|Wed|Thu|Fri|Sat|Sun",
     "newPuzzleTitle": "New Sudoku",
@@ -327,7 +330,7 @@
     "openCamera": "Use camera",
     "choosePhoto": "Choose photo",
     "shutter": "Take photo",
-    "frameGuide": "Keep all four corners inside the frame.",
+    "frameGuide": "Fit one puzzle inside the frame.",
     "processing": "Reading your Sudoku…",
     "reviewTitle": "Check the digits",
     "reviewBody": "Tap any cell to fix it before playing.",
@@ -351,7 +354,7 @@
     "segmentationFailure": "The grid could not be divided into cells. Try again.",
     "recognitionFailure": "Some digits could not be read. Please try again.",
     "duplicateClues": "Fix the highlighted conflicting clues.",
-    "noSolution": "These clues have no valid solution. Check the digits.",
+    "noSolution": "These clues have no solution. Check cells marked ? against your photo.",
     "multipleSolutions": "Some clues may be missing; this board has multiple solutions.",
     "storageFailure": "The imported puzzle could not be saved. Try again.",
     "validationFailure": "Could not check this puzzle. Try confirming again.",
@@ -360,7 +363,15 @@
     "lowConfidenceCount": "Cells to double-check: $count",
     "stuck": "I'm stuck — help me",
     "noStep": "MICHI can’t find a next step with its current techniques.",
-    "completed": "All cells are filled. This Sudoku is complete."
+    "completed": "All cells are filled. This Sudoku is complete.",
+    "chooseTitle": "Which puzzle?",
+    "chooseBody": "This photo has more than one puzzle. Tap the one you want to play.",
+    "chooseOption": "Puzzle $number",
+    "multipleGrids": "This photo has more than one puzzle. Fit one inside the frame.",
+    "legendUnsure": "Unsure: compare with your photo",
+    "legendConflict": "Conflict: same digit twice",
+    "fromPhoto": "From your photo",
+    "maybe": "Maybe $digit?"
   },
   "coach": {
     "step": "Hint $step of 4",

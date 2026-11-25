@@ -7,11 +7,24 @@ import 'package:sudoku_engine/sudoku_engine.dart';
 import 'board_geometry.dart';
 
 /// Visualizes only facts supplied by CoachHint, without deriving a move.
+///
+/// [reveal] (0 → 1) stages a new hint in logical order: the unit and focus
+/// cells first, then highlighted candidates, then eliminations struck through
+/// and, last, a placement. It only animates what this hint already contains;
+/// it never shows a later level early.
 final class CoachOverlayPainter extends CustomPainter {
-  const CoachOverlayPainter({required this.hint, required this.geometry});
+  const CoachOverlayPainter({
+    required this.hint,
+    required this.geometry,
+    this.reveal = 1,
+  });
 
   final CoachHint? hint;
   final BoardGeometry geometry;
+  final double reveal;
+
+  static double _stage(double value, double begin, double end) =>
+      ((value - begin) / (end - begin)).clamp(0.0, 1.0);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -25,21 +38,52 @@ final class CoachOverlayPainter extends CustomPainter {
           const Radius.circular(12),
         ),
       );
-    for (final unit in current.focusUnits) {
-      _paintUnit(canvas, unit);
+    final evidence = _stage(reveal, 0, 0.45);
+    final candidates = _stage(reveal, 0.25, 0.7);
+    final strike = _stage(reveal, 0.45, 1);
+    final placement = _stage(reveal, 0.55, 1);
+    _withOpacity(canvas, evidence, () {
+      for (final unit in current.focusUnits) {
+        _paintUnit(canvas, unit);
+      }
+      for (final cell in current.focusCells) {
+        _paintFocusCell(canvas, cell);
+      }
+    });
+    _withOpacity(canvas, candidates, () {
+      for (final candidate in current.candidateHighlights) {
+        _paintCandidate(canvas, candidate, MichiColors.indigo);
+      }
+    });
+    if (strike > 0) {
+      for (final elimination in current.revealedEliminations) {
+        _paintElimination(canvas, elimination, strike);
+      }
     }
-    for (final cell in current.focusCells) {
-      _paintFocusCell(canvas, cell);
+    _withOpacity(canvas, placement, () {
+      for (final item in current.revealedPlacements) {
+        _paintPlacement(canvas, item);
+      }
+    });
+    canvas.restore();
+  }
+
+  /// Only a staged layer pays for a save layer; settled layers draw directly.
+  static void _withOpacity(
+    Canvas canvas,
+    double opacity,
+    void Function() draw,
+  ) {
+    if (opacity <= 0) return;
+    if (opacity >= 1) {
+      draw();
+      return;
     }
-    for (final candidate in current.candidateHighlights) {
-      _paintCandidate(canvas, candidate, MichiColors.indigo);
-    }
-    for (final elimination in current.revealedEliminations) {
-      _paintElimination(canvas, elimination);
-    }
-    for (final placement in current.revealedPlacements) {
-      _paintPlacement(canvas, placement);
-    }
+    canvas.saveLayer(
+      null,
+      Paint()..color = Color.fromRGBO(0, 0, 0, opacity),
+    );
+    draw();
     canvas.restore();
   }
 
@@ -109,7 +153,12 @@ final class CoachOverlayPainter extends CustomPainter {
     _paintSmallDigit(canvas, candidate.digit, rect, color);
   }
 
-  void _paintElimination(Canvas canvas, CandidateElimination elimination) {
+  /// The strike is drawn across the candidate as it is ruled out.
+  void _paintElimination(
+    Canvas canvas,
+    CandidateElimination elimination,
+    double strike,
+  ) {
     final rect = _candidateRect(elimination.cell, elimination.digit);
     _paintSmallDigit(
       canvas,
@@ -117,12 +166,15 @@ final class CoachOverlayPainter extends CustomPainter {
       rect,
       MichiColors.boardEliminated,
     );
+    final from = rect.topLeft + const Offset(2, 2);
+    final to = rect.bottomRight - const Offset(2, 2);
     canvas.drawLine(
-      rect.topLeft + const Offset(2, 2),
-      rect.bottomRight - const Offset(2, 2),
+      from,
+      Offset.lerp(from, to, strike)!,
       Paint()
         ..color = MichiColors.coralText
-        ..strokeWidth = 1.5,
+        ..strokeWidth = 1.5
+        ..strokeCap = StrokeCap.round,
     );
   }
 
@@ -191,5 +243,6 @@ final class CoachOverlayPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CoachOverlayPainter oldDelegate) =>
       oldDelegate.hint != hint ||
+      oldDelegate.reveal != reveal ||
       oldDelegate.geometry.cellSize != geometry.cellSize;
 }
