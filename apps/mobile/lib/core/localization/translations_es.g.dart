@@ -450,6 +450,14 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get legendConflict => 'Conflicto: el mismo número dos veces';
 	@override String get fromPhoto => 'De tu foto';
 	@override String maybe({required Object digit}) => '¿Quizá ${digit}?';
+	@override String get checkSolution => 'Comprobar';
+	@override String get stuckShort => 'Me atasqué';
+	@override String get checkSolved => '¡Resuelto! Todos los números encajan.';
+	@override String get checkOnTrack => 'Sin errores por ahora. ¡Sigue así!';
+	@override String get checkConflicts => 'Un número se repite en una fila, columna o caja. Corrige los marcados.';
+	@override String get checkOffTrack => 'Uno de los números rodeados no encaja. Míralos primero.';
+	@override String get checkOffTrackWide => 'Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.';
+	@override String get legendSuspect => 'Posible error';
 }
 
 // Path: coach
@@ -1090,6 +1098,14 @@ extension on TranslationsEs {
 			'scanner.legendConflict' => 'Conflicto: el mismo número dos veces',
 			'scanner.fromPhoto' => 'De tu foto',
 			'scanner.maybe' => ({required Object digit}) => '¿Quizá ${digit}?',
+			'scanner.checkSolution' => 'Comprobar',
+			'scanner.stuckShort' => 'Me atasqué',
+			'scanner.checkSolved' => '¡Resuelto! Todos los números encajan.',
+			'scanner.checkOnTrack' => 'Sin errores por ahora. ¡Sigue así!',
+			'scanner.checkConflicts' => 'Un número se repite en una fila, columna o caja. Corrige los marcados.',
+			'scanner.checkOffTrack' => 'Uno de los números rodeados no encaja. Míralos primero.',
+			'scanner.checkOffTrackWide' => 'Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.',
+			'scanner.legendSuspect' => 'Posible error',
 			'coach.step' => ({required Object step}) => 'Pista ${step} de 4',
 			'coach.kTry' => 'Lo intentaré',
 			'coach.show' => 'Mostrar',

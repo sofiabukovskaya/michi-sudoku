@@ -450,6 +450,14 @@ class _Translations$scanner$fr extends Translations$scanner$uk {
 	@override String get legendConflict => 'Conflit : même chiffre en double';
 	@override String get fromPhoto => 'Sur ta photo';
 	@override String maybe({required Object digit}) => 'Peut-être ${digit} ?';
+	@override String get checkSolution => 'Vérifier';
+	@override String get stuckShort => 'Je bloque';
+	@override String get checkSolved => 'Résolu ! Chaque chiffre est juste.';
+	@override String get checkOnTrack => 'Aucune erreur pour l’instant. Continue !';
+	@override String get checkConflicts => 'Un chiffre se répète dans une ligne, une colonne ou un carré. Corrige ceux qui sont marqués.';
+	@override String get checkOffTrack => 'Un des chiffres entourés ne va pas. Regarde-les d’abord.';
+	@override String get checkOffTrackWide => 'Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.';
+	@override String get legendSuspect => 'Erreur possible';
 }
 
 // Path: coach
@@ -1090,6 +1098,14 @@ extension on TranslationsFr {
 			'scanner.legendConflict' => 'Conflit : même chiffre en double',
 			'scanner.fromPhoto' => 'Sur ta photo',
 			'scanner.maybe' => ({required Object digit}) => 'Peut-être ${digit} ?',
+			'scanner.checkSolution' => 'Vérifier',
+			'scanner.stuckShort' => 'Je bloque',
+			'scanner.checkSolved' => 'Résolu ! Chaque chiffre est juste.',
+			'scanner.checkOnTrack' => 'Aucune erreur pour l’instant. Continue !',
+			'scanner.checkConflicts' => 'Un chiffre se répète dans une ligne, une colonne ou un carré. Corrige ceux qui sont marqués.',
+			'scanner.checkOffTrack' => 'Un des chiffres entourés ne va pas. Regarde-les d’abord.',
+			'scanner.checkOffTrackWide' => 'Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.',
+			'scanner.legendSuspect' => 'Erreur possible',
 			'coach.step' => ({required Object step}) => 'Indice ${step} sur 4',
 			'coach.kTry' => 'Je vais essayer',
 			'coach.show' => 'Afficher',

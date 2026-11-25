@@ -371,7 +371,15 @@
     "legendUnsure": "Incertain : compare avec ta photo",
     "legendConflict": "Conflit : même chiffre en double",
     "fromPhoto": "Sur ta photo",
-    "maybe": "Peut-être $digit ?"
+    "maybe": "Peut-être $digit ?",
+    "checkSolution": "Vérifier",
+    "stuckShort": "Je bloque",
+    "checkSolved": "Résolu ! Chaque chiffre est juste.",
+    "checkOnTrack": "Aucune erreur pour l’instant. Continue !",
+    "checkConflicts": "Un chiffre se répète dans une ligne, une colonne ou un carré. Corrige ceux qui sont marqués.",
+    "checkOffTrack": "Un des chiffres entourés ne va pas. Regarde-les d’abord.",
+    "checkOffTrackWide": "Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.",
+    "legendSuspect": "Erreur possible"
   },
   "coach": {
     "step": "Indice $step sur 4",

@@ -452,6 +452,14 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get legendConflict => 'Konflikt: stejná číslice dvakrát';
 	@override String get fromPhoto => 'Z tvé fotky';
 	@override String maybe({required Object digit}) => 'Možná ${digit}?';
+	@override String get checkSolution => 'Zkontrolovat';
+	@override String get stuckShort => 'Nevím dál';
+	@override String get checkSolved => 'Vyřešeno! Všechny číslice sedí.';
+	@override String get checkOnTrack => 'Zatím žádná chyba. Pokračuj!';
+	@override String get checkConflicts => 'Číslice se opakuje v řádku, sloupci nebo čtverci. Oprav označené.';
+	@override String get checkOffTrack => 'Jedna z kroužkem označených číslic nesedí. Podívej se nejdřív na ně.';
+	@override String get checkOffTrackWide => 'Některé číslice k sobě nesedí. Do označených políček už nejde žádná číslice.';
+	@override String get legendSuspect => 'Možná chyba';
 }
 
 // Path: coach
@@ -1094,6 +1102,14 @@ extension on TranslationsCs {
 			'scanner.legendConflict' => 'Konflikt: stejná číslice dvakrát',
 			'scanner.fromPhoto' => 'Z tvé fotky',
 			'scanner.maybe' => ({required Object digit}) => 'Možná ${digit}?',
+			'scanner.checkSolution' => 'Zkontrolovat',
+			'scanner.stuckShort' => 'Nevím dál',
+			'scanner.checkSolved' => 'Vyřešeno! Všechny číslice sedí.',
+			'scanner.checkOnTrack' => 'Zatím žádná chyba. Pokračuj!',
+			'scanner.checkConflicts' => 'Číslice se opakuje v řádku, sloupci nebo čtverci. Oprav označené.',
+			'scanner.checkOffTrack' => 'Jedna z kroužkem označených číslic nesedí. Podívej se nejdřív na ně.',
+			'scanner.checkOffTrackWide' => 'Některé číslice k sobě nesedí. Do označených políček už nejde žádná číslice.',
+			'scanner.legendSuspect' => 'Možná chyba',
 			'coach.step' => ({required Object step}) => 'Nápověda ${step} ze 4',
 			'coach.kTry' => 'Zkusím to',
 			'coach.show' => 'Ukázat',

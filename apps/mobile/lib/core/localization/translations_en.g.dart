@@ -450,6 +450,14 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get legendConflict => 'Conflict: same digit twice';
 	@override String get fromPhoto => 'From your photo';
 	@override String maybe({required Object digit}) => 'Maybe ${digit}?';
+	@override String get checkSolution => 'Check it';
+	@override String get stuckShort => 'I\'m stuck';
+	@override String get checkSolved => 'Solved! Every digit checks out.';
+	@override String get checkOnTrack => 'No mistakes so far. Keep going!';
+	@override String get checkConflicts => 'A digit repeats in a row, column or box. Fix the marked ones.';
+	@override String get checkOffTrack => 'One of the ringed digits doesn\'t fit. Look at those first.';
+	@override String get checkOffTrackWide => 'Some digits don\'t fit together. The ringed cells can\'t take any digit now.';
+	@override String get legendSuspect => 'Could be the mistake';
 }
 
 // Path: coach
@@ -1090,6 +1098,14 @@ extension on TranslationsEn {
 			'scanner.legendConflict' => 'Conflict: same digit twice',
 			'scanner.fromPhoto' => 'From your photo',
 			'scanner.maybe' => ({required Object digit}) => 'Maybe ${digit}?',
+			'scanner.checkSolution' => 'Check it',
+			'scanner.stuckShort' => 'I\'m stuck',
+			'scanner.checkSolved' => 'Solved! Every digit checks out.',
+			'scanner.checkOnTrack' => 'No mistakes so far. Keep going!',
+			'scanner.checkConflicts' => 'A digit repeats in a row, column or box. Fix the marked ones.',
+			'scanner.checkOffTrack' => 'One of the ringed digits doesn\'t fit. Look at those first.',
+			'scanner.checkOffTrackWide' => 'Some digits don\'t fit together. The ringed cells can\'t take any digit now.',
+			'scanner.legendSuspect' => 'Could be the mistake',
 			'coach.step' => ({required Object step}) => 'Hint ${step} of 4',
 			'coach.kTry' => 'I\'ll try',
 			'coach.show' => 'Show me',

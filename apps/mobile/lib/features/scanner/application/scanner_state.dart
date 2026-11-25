@@ -1,5 +1,6 @@
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
+import 'package:michi_mobile/features/scanner/domain/solution_check.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 import 'package:sudoku_scanner/sudoku_scanner.dart';
 
@@ -41,6 +42,7 @@ final class ScannerReviewData {
     required Set<CellRef> conflicts,
     this.selectedIndex,
     this.issue,
+    this.check,
   }) : edited = Set.unmodifiable(edited),
        conflicts = Set.unmodifiable(conflicts);
 
@@ -50,6 +52,9 @@ final class ScannerReviewData {
   final Set<CellRef> conflicts;
   final int? selectedIndex;
   final ScannerReviewIssue? issue;
+
+  /// The last "Check my solution" result; any edit clears it.
+  final SolutionCheck? check;
 
   static const double highConfidence = 0.90;
   static const double lowConfidence = 0.80;

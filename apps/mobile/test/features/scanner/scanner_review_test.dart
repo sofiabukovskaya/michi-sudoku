@@ -57,6 +57,35 @@ void main() {
     });
   }
 
+  testWidgets('Check it confirms correct entries without changing them', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final cubit = _cubit();
+    await cubit.scanImage(ScanImage(bytes: [1], format: ScanImageFormat.png));
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          theme: AppTheme.light,
+          home: ScannerPage(cubit: cubit),
+        ),
+      ),
+    );
+    final before = cubit.state.review!.board;
+    await tester.runAsync(cubit.checkSolution);
+    await tester.pumpAndSettle();
+    expect(find.text('No mistakes so far. Keep going!'), findsOneWidget);
+    expect(cubit.state.review!.board, before);
+    // Any edit makes the old result stale, so it disappears.
+    await tester.ensureVisible(find.byKey(const ValueKey('scan-cell-2')));
+    await tester.tap(find.byKey(const ValueKey('scan-cell-2')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('scan-digit-1')));
+    await tester.pumpAndSettle();
+    expect(find.text('No mistakes so far. Keep going!'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Review tells unsure from conflict and shows the photo cell', (
     tester,
   ) async {

@@ -371,7 +371,15 @@
     "legendUnsure": "Unsicher: mit dem Foto vergleichen",
     "legendConflict": "Konflikt: gleiche Zahl doppelt",
     "fromPhoto": "Aus deinem Foto",
-    "maybe": "Vielleicht $digit?"
+    "maybe": "Vielleicht $digit?",
+    "checkSolution": "Prüfen",
+    "stuckShort": "Ich hänge",
+    "checkSolved": "Gelöst! Jede Zahl stimmt.",
+    "checkOnTrack": "Bisher kein Fehler. Weiter so!",
+    "checkConflicts": "Eine Zahl kommt in Zeile, Spalte oder Block doppelt vor. Korrigiere die markierten.",
+    "checkOffTrack": "Eine der eingekreisten Zahlen passt nicht. Schau dir diese zuerst an.",
+    "checkOffTrackWide": "Einige Zahlen passen nicht zusammen. In die eingekreisten Felder passt keine Zahl mehr.",
+    "legendSuspect": "Möglicher Fehler"
   },
   "coach": {
     "step": "Hinweis $step von 4",

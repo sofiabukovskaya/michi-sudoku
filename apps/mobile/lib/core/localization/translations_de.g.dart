@@ -450,6 +450,14 @@ class _Translations$scanner$de extends Translations$scanner$uk {
 	@override String get legendConflict => 'Konflikt: gleiche Zahl doppelt';
 	@override String get fromPhoto => 'Aus deinem Foto';
 	@override String maybe({required Object digit}) => 'Vielleicht ${digit}?';
+	@override String get checkSolution => 'Prüfen';
+	@override String get stuckShort => 'Ich hänge';
+	@override String get checkSolved => 'Gelöst! Jede Zahl stimmt.';
+	@override String get checkOnTrack => 'Bisher kein Fehler. Weiter so!';
+	@override String get checkConflicts => 'Eine Zahl kommt in Zeile, Spalte oder Block doppelt vor. Korrigiere die markierten.';
+	@override String get checkOffTrack => 'Eine der eingekreisten Zahlen passt nicht. Schau dir diese zuerst an.';
+	@override String get checkOffTrackWide => 'Einige Zahlen passen nicht zusammen. In die eingekreisten Felder passt keine Zahl mehr.';
+	@override String get legendSuspect => 'Möglicher Fehler';
 }
 
 // Path: coach
@@ -1090,6 +1098,14 @@ extension on TranslationsDe {
 			'scanner.legendConflict' => 'Konflikt: gleiche Zahl doppelt',
 			'scanner.fromPhoto' => 'Aus deinem Foto',
 			'scanner.maybe' => ({required Object digit}) => 'Vielleicht ${digit}?',
+			'scanner.checkSolution' => 'Prüfen',
+			'scanner.stuckShort' => 'Ich hänge',
+			'scanner.checkSolved' => 'Gelöst! Jede Zahl stimmt.',
+			'scanner.checkOnTrack' => 'Bisher kein Fehler. Weiter so!',
+			'scanner.checkConflicts' => 'Eine Zahl kommt in Zeile, Spalte oder Block doppelt vor. Korrigiere die markierten.',
+			'scanner.checkOffTrack' => 'Eine der eingekreisten Zahlen passt nicht. Schau dir diese zuerst an.',
+			'scanner.checkOffTrackWide' => 'Einige Zahlen passen nicht zusammen. In die eingekreisten Felder passt keine Zahl mehr.',
+			'scanner.legendSuspect' => 'Möglicher Fehler',
 			'coach.step' => ({required Object step}) => 'Hinweis ${step} von 4',
 			'coach.kTry' => 'Ich versuche es',
 			'coach.show' => 'Anzeigen',

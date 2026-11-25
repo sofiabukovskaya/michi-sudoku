@@ -373,7 +373,15 @@
     "legendUnsure": "Nejisté: porovnej s fotkou",
     "legendConflict": "Konflikt: stejná číslice dvakrát",
     "fromPhoto": "Z tvé fotky",
-    "maybe": "Možná $digit?"
+    "maybe": "Možná $digit?",
+    "checkSolution": "Zkontrolovat",
+    "stuckShort": "Nevím dál",
+    "checkSolved": "Vyřešeno! Všechny číslice sedí.",
+    "checkOnTrack": "Zatím žádná chyba. Pokračuj!",
+    "checkConflicts": "Číslice se opakuje v řádku, sloupci nebo čtverci. Oprav označené.",
+    "checkOffTrack": "Jedna z kroužkem označených číslic nesedí. Podívej se nejdřív na ně.",
+    "checkOffTrackWide": "Některé číslice k sobě nesedí. Do označených políček už nejde žádná číslice.",
+    "legendSuspect": "Možná chyba"
   },
   "coach": {
     "step": "Nápověda $step ze 4",

@@ -371,7 +371,15 @@
     "legendUnsure": "Dudosa: compárala con tu foto",
     "legendConflict": "Conflicto: el mismo número dos veces",
     "fromPhoto": "De tu foto",
-    "maybe": "¿Quizá $digit?"
+    "maybe": "¿Quizá $digit?",
+    "checkSolution": "Comprobar",
+    "stuckShort": "Me atasqué",
+    "checkSolved": "¡Resuelto! Todos los números encajan.",
+    "checkOnTrack": "Sin errores por ahora. ¡Sigue así!",
+    "checkConflicts": "Un número se repite en una fila, columna o caja. Corrige los marcados.",
+    "checkOffTrack": "Uno de los números rodeados no encaja. Míralos primero.",
+    "checkOffTrackWide": "Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.",
+    "legendSuspect": "Posible error"
   },
   "coach": {
     "step": "Pista $step de 4",

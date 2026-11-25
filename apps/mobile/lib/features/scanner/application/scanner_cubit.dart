@@ -10,6 +10,7 @@ import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_state.dart';
 import 'package:michi_mobile/features/scanner/domain/imported_puzzle_repository.dart';
+import 'package:michi_mobile/features/scanner/domain/solution_check.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 import 'package:sudoku_scanner/sudoku_scanner.dart';
 
@@ -183,6 +184,7 @@ final class ScannerCubit extends Cubit<ScannerState> {
     Set<CellRef> edited,
     int? selectedIndex, {
     ScannerReviewIssue? issue,
+    SolutionCheck? check,
   }) {
     final conflicts = <CellRef>{
       for (final violation in SudokuConstraints.validate(board).violations)
@@ -195,6 +197,7 @@ final class ScannerCubit extends Cubit<ScannerState> {
       conflicts: conflicts,
       selectedIndex: selectedIndex,
       issue: issue,
+      check: check,
     );
   }
 
@@ -205,7 +208,13 @@ final class ScannerCubit extends Cubit<ScannerState> {
     emit(
       ScannerState.review(
         state.cameraAccess,
-        _review(review.result, review.board, review.edited, index),
+        _review(
+          review.result,
+          review.board,
+          review.edited,
+          index,
+          check: review.check,
+        ),
       ),
     );
   }
@@ -226,6 +235,45 @@ final class ScannerCubit extends Cubit<ScannerState> {
           review.board.withValue(cell, digit),
           {...review.edited, cell},
           index,
+        ),
+      ),
+    );
+  }
+
+  /// Checks the player's paper solution as reviewed. Read-only: nothing is
+  /// changed, saved or revealed; only possible mistakes are marked.
+  Future<void> checkSolution() async {
+    final review = state.review;
+    if (state.phase != ScannerPhase.review || review == null) return;
+    final access = state.cameraAccess;
+    final generation = ++_generation;
+    final board = review.board;
+    final solver = analyzer.exactSolver;
+    emit(ScannerState.validating(access, review));
+    SolutionCheck? check;
+    ScannerReviewIssue? issue;
+    try {
+      check = await Isolate.run(() => checkSolutionOf(board, solver));
+    } on Object catch (error, stack) {
+      developer.log(
+        'Solution check failed',
+        name: 'michi.scanner',
+        error: error,
+        stackTrace: stack,
+      );
+      issue = ScannerReviewIssue.validation;
+    }
+    if (isClosed || generation != _generation) return;
+    emit(
+      ScannerState.review(
+        access,
+        _review(
+          review.result,
+          board,
+          review.edited,
+          review.selectedIndex,
+          issue: issue,
+          check: check,
         ),
       ),
     );

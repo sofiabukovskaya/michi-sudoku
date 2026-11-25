@@ -20,6 +20,7 @@ import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_state.dart';
+import 'package:michi_mobile/features/scanner/domain/solution_check.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 import 'package:sudoku_scanner/sudoku_scanner.dart';
 
@@ -656,6 +657,30 @@ final class _Review extends StatelessWidget {
         const SizedBox(height: MichiSpacing.sm),
         Text(t.scanner.reviewBody, style: MichiTypography.secondary),
         const SizedBox(height: MichiSpacing.md),
+        if (review.check case final check?) ...[
+          // Re-reveals on every check, so a repeated tap visibly answers.
+          MichiReveal(
+            key: ValueKey(('check', check)),
+            child: MichiBanner(
+              key: const ValueKey('scanner-check-result'),
+              message: switch (check.verdict) {
+                SolutionVerdict.solved => t.scanner.checkSolved,
+                SolutionVerdict.onTrack => t.scanner.checkOnTrack,
+                SolutionVerdict.conflicts => t.scanner.checkConflicts,
+                SolutionVerdict.offTrack =>
+                  check.suspects.isEmpty
+                      ? t.scanner.checkOffTrackWide
+                      : t.scanner.checkOffTrack,
+              },
+              variant:
+                  check.verdict == SolutionVerdict.solved ||
+                      check.verdict == SolutionVerdict.onTrack
+                  ? MichiBannerVariant.information
+                  : MichiBannerVariant.error,
+            ),
+          ),
+          const SizedBox(height: MichiSpacing.md),
+        ],
         if (review.lowConfidenceCount > 0)
           MichiBanner(
             message: t.scanner.lowConfidenceCount(
@@ -721,6 +746,11 @@ final class _ReviewLegend extends StatelessWidget {
     final t = context.t;
     final unsure = review.lowConfidenceCount > 0;
     final conflict = review.conflicts.isNotEmpty;
+    final check = review.check;
+    final suspect =
+        check != null &&
+        check.verdict == SolutionVerdict.offTrack &&
+        check.suspects.isNotEmpty;
     Widget item(String mark, Color color, Color tint, String text) => Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -738,8 +768,8 @@ final class _ReviewLegend extends StatelessWidget {
         Flexible(child: Text(text, style: MichiTypography.meta)),
       ],
     );
-    return SizedBox(
-      height: 44,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 44),
       child: Wrap(
         alignment: WrapAlignment.center,
         spacing: MichiSpacing.lg,
@@ -758,6 +788,13 @@ final class _ReviewLegend extends StatelessWidget {
               MichiColors.error,
               MichiColors.errorTint,
               t.scanner.legendConflict,
+            ),
+          if (suspect)
+            item(
+              '○',
+              MichiColors.coralText,
+              MichiColors.coralTint,
+              t.scanner.legendSuspect,
             ),
         ],
       ),
@@ -898,26 +935,27 @@ final class _ReviewActions extends StatelessWidget {
                   },
           ),
           const SizedBox(height: MichiSpacing.sm),
-          MichiButton(
-            key: const ValueKey('scanner-stuck'),
-            label: t.scanner.stuck,
-            variant: MichiButtonVariant.secondary,
-            onPressed: checking
-                ? null
-                : () async {
-                    final plan = await cubit.nextHint();
-                    if (plan == null) {
-                      unawaited(HapticFeedback.mediumImpact());
-                      return;
-                    }
-                    if (!context.mounted) return;
-                    await Navigator.of(context).push<void>(
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            _ScanCoach(board: review.board, plan: plan),
-                      ),
-                    );
-                  },
+          Row(
+            children: [
+              Expanded(
+                child: MichiButton(
+                  key: const ValueKey('scanner-check'),
+                  label: t.scanner.checkSolution,
+                  variant: MichiButtonVariant.secondary,
+                  onPressed: checking
+                      ? null
+                      : () => unawaited(cubit.checkSolution()),
+                ),
+              ),
+              const SizedBox(width: MichiSpacing.sm),
+              Expanded(
+                child: _StuckButton(
+                  review: review,
+                  cubit: cubit,
+                  checking: checking,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: MichiSpacing.xs),
           // Discards corrections, so it is the quietest action.
@@ -929,6 +967,44 @@ final class _ReviewActions extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// "I'm stuck": one Coach hint for the reviewed board.
+final class _StuckButton extends StatelessWidget {
+  const _StuckButton({
+    required this.review,
+    required this.cubit,
+    required this.checking,
+  });
+
+  final ScannerReviewData review;
+  final ScannerCubit cubit;
+  final bool checking;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    return MichiButton(
+      key: const ValueKey('scanner-stuck'),
+      label: t.scanner.stuckShort,
+      variant: MichiButtonVariant.secondary,
+      onPressed: checking
+          ? null
+          : () async {
+              final plan = await cubit.nextHint();
+              if (plan == null) {
+                unawaited(HapticFeedback.mediumImpact());
+                return;
+              }
+              if (!context.mounted) return;
+              await Navigator.of(context).push<void>(
+                MaterialPageRoute(
+                  builder: (_) => _ScanCoach(board: review.board, plan: plan),
+                ),
+              );
+            },
     );
   }
 }
@@ -1074,6 +1150,11 @@ final class _ReviewCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final digit = review.board.valueAt(cell);
     final low = review.needsReview(cell);
+    final check = review.check;
+    final suspect =
+        check != null &&
+        check.verdict == SolutionVerdict.offTrack &&
+        check.suspects.contains(cell);
     final conflict = review.conflicts.contains(cell);
     final selected = review.selectedIndex == cell.index;
     final t = context.t;
@@ -1081,6 +1162,7 @@ final class _ReviewCell extends StatelessWidget {
         ? t.scanner.empty
         : '${t.scanner.recognized} $digit';
     final flags = [
+      if (suspect) t.scanner.legendSuspect,
       if (low) t.scanner.needsReview,
       if (conflict) t.scanner.conflict,
       if (selected) t.scanner.selected,
@@ -1102,6 +1184,12 @@ final class _ReviewCell extends StatelessWidget {
           foregroundDecoration: selected
               ? BoxDecoration(
                   border: Border.all(color: MichiColors.indigo, width: 2.5),
+                )
+              : suspect
+              // A possible mistake: ringed, never changed or explained away.
+              ? BoxDecoration(
+                  border: Border.all(color: MichiColors.coral, width: 2.5),
+                  borderRadius: BorderRadius.circular(MichiRadius.small),
                 )
               : null,
           decoration: BoxDecoration(

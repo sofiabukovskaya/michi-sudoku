@@ -1014,6 +1014,30 @@ class Translations$scanner$uk {
 
 	/// uk: 'Може, $digit?'
 	String maybe({required Object digit}) => 'Може, ${digit}?';
+
+	/// uk: 'Перевірити'
+	String get checkSolution => 'Перевірити';
+
+	/// uk: 'Підкажи'
+	String get stuckShort => 'Підкажи';
+
+	/// uk: 'Розв’язано! Усі цифри правильні.'
+	String get checkSolved => 'Розв’язано! Усі цифри правильні.';
+
+	/// uk: 'Поки що без помилок. Продовжуй!'
+	String get checkOnTrack => 'Поки що без помилок. Продовжуй!';
+
+	/// uk: 'Цифра повторюється в рядку, стовпці чи квадраті. Виправ позначені.'
+	String get checkConflicts => 'Цифра повторюється в рядку, стовпці чи квадраті. Виправ позначені.';
+
+	/// uk: 'Одна з обведених цифр не підходить. Подивись спершу на них.'
+	String get checkOffTrack => 'Одна з обведених цифр не підходить. Подивись спершу на них.';
+
+	/// uk: 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.'
+	String get checkOffTrackWide => 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.';
+
+	/// uk: 'Можлива помилка'
+	String get legendSuspect => 'Можлива помилка';
 }
 
 // Path: coach
@@ -1968,6 +1992,14 @@ extension on Translations {
 			'scanner.legendConflict' => 'Конфлікт: та сама цифра двічі',
 			'scanner.fromPhoto' => 'З твого фото',
 			'scanner.maybe' => ({required Object digit}) => 'Може, ${digit}?',
+			'scanner.checkSolution' => 'Перевірити',
+			'scanner.stuckShort' => 'Підкажи',
+			'scanner.checkSolved' => 'Розв’язано! Усі цифри правильні.',
+			'scanner.checkOnTrack' => 'Поки що без помилок. Продовжуй!',
+			'scanner.checkConflicts' => 'Цифра повторюється в рядку, стовпці чи квадраті. Виправ позначені.',
+			'scanner.checkOffTrack' => 'Одна з обведених цифр не підходить. Подивись спершу на них.',
+			'scanner.checkOffTrackWide' => 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.',
+			'scanner.legendSuspect' => 'Можлива помилка',
 			'coach.step' => ({required Object step}) => 'Підказка ${step} з 4',
 			'coach.kTry' => 'Спробую',
 			'coach.show' => 'Показати',
