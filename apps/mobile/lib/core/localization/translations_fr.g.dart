@@ -61,6 +61,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$reminder$fr reminder = _Translations$reminder$fr._(_root);
 	@override late final _Translations$spotIt$fr spotIt = _Translations$spotIt$fr._(_root);
 	@override late final _Translations$notebook$fr notebook = _Translations$notebook$fr._(_root);
+	@override late final _Translations$legal$fr legal = _Translations$legal$fr._(_root);
 }
 
 // Path: common
@@ -681,6 +682,30 @@ class _Translations$notebook$fr extends Translations$notebook$uk {
 	@override String get stampedLabel => 'Tamponnée';
 }
 
+// Path: legal
+class _Translations$legal$fr extends Translations$legal$uk {
+	_Translations$legal$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get privacy => 'Politique de confidentialité';
+	@override String get terms => 'Conditions d’utilisation';
+	@override String get about => 'À propos de MICHI';
+	@override String get licenses => 'Licences open source';
+	@override String get crashes => 'Partager les rapports de plantage';
+	@override String get crashDetail => 'Aide à corriger les plantages des versions publiées. Activé par défaut.';
+	@override String get contact => 'Contact';
+	@override String get contactPending => 'Adresse de contact à venir';
+	@override String updated({required Object date}) => 'Dernière mise à jour : ${date}';
+	@override String get unavailable => 'Ces informations sont indisponibles pour le moment.';
+	@override String get openFailed => 'Impossible d’ouvrir le lien.';
+	@override String get saveFailed => 'Ton choix n’a pas pu être entièrement appliqué. Réessaie.';
+	@override String registration({required Object terms, required Object privacy}) => 'En créant un compte, tu acceptes les ${terms} et reconnais avoir pris connaissance de la ${privacy}.';
+	@override String get termsInline => 'Conditions d’utilisation';
+	@override String get privacyInline => 'Politique de confidentialité';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$fr extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$fr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -1291,6 +1316,21 @@ extension on TranslationsFr {
 			'notebook.notStarted' => 'Pas encore commencée',
 			'notebook.progressRow' => 'Le carnet de MICHI',
 			'notebook.stampedLabel' => 'Tamponnée',
+			'legal.privacy' => 'Politique de confidentialité',
+			'legal.terms' => 'Conditions d’utilisation',
+			'legal.about' => 'À propos de MICHI',
+			'legal.licenses' => 'Licences open source',
+			'legal.crashes' => 'Partager les rapports de plantage',
+			'legal.crashDetail' => 'Aide à corriger les plantages des versions publiées. Activé par défaut.',
+			'legal.contact' => 'Contact',
+			'legal.contactPending' => 'Adresse de contact à venir',
+			'legal.updated' => ({required Object date}) => 'Dernière mise à jour : ${date}',
+			'legal.unavailable' => 'Ces informations sont indisponibles pour le moment.',
+			'legal.openFailed' => 'Impossible d’ouvrir le lien.',
+			'legal.saveFailed' => 'Ton choix n’a pas pu être entièrement appliqué. Réessaie.',
+			'legal.registration' => ({required Object terms, required Object privacy}) => 'En créant un compte, tu acceptes les ${terms} et reconnais avoir pris connaissance de la ${privacy}.',
+			'legal.termsInline' => 'Conditions d’utilisation',
+			'legal.privacyInline' => 'Politique de confidentialité',
 			_ => null,
 		};
 	}

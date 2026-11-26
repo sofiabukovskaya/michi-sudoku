@@ -37,6 +37,7 @@ dependencies:
   json_annotation: ^4.9.0
   michi_design_system:
     path: ../../packages/michi_design_system
+  package_info_plus: ^10.2.2
   permission_handler: ^12.0.3
   provider: ^6.1.5
   shared_preferences: ^2.5.6
@@ -47,6 +48,7 @@ dependencies:
   sudoku_scanner:
     path: ../../packages/sudoku_scanner
   timezone: ^0.11.2
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   auto_route_generator: 10.2.6
@@ -67,6 +69,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/legal/uk/
+    - assets/legal/fr/
+    - assets/legal/es/
+    - assets/legal/de/
+    - assets/legal/cs/
+    - assets/legal/en/
     - assets/puzzles/classic_v1.json
     - assets/practice/practice_v1.json
     - assets/images/coach_mascot.png

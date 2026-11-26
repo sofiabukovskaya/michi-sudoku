@@ -66,6 +66,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$reminder$uk reminder = Translations$reminder$uk.internal(_root);
 	late final Translations$spotIt$uk spotIt = Translations$spotIt$uk.internal(_root);
 	late final Translations$notebook$uk notebook = Translations$notebook$uk.internal(_root);
+	late final Translations$legal$uk legal = Translations$legal$uk.internal(_root);
 }
 
 // Path: common
@@ -1527,6 +1528,60 @@ class Translations$notebook$uk {
 	String get stampedLabel => 'Проштамповано';
 }
 
+// Path: legal
+class Translations$legal$uk {
+	Translations$legal$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Політика конфіденційності'
+	String get privacy => 'Політика конфіденційності';
+
+	/// uk: 'Умови використання'
+	String get terms => 'Умови використання';
+
+	/// uk: 'Про MICHI'
+	String get about => 'Про MICHI';
+
+	/// uk: 'Ліцензії відкритого коду'
+	String get licenses => 'Ліцензії відкритого коду';
+
+	/// uk: 'Ділитися звітами про збої'
+	String get crashes => 'Ділитися звітами про збої';
+
+	/// uk: 'Допоможи виправляти збої у випусках застосунку. Увімкнено за замовчуванням.'
+	String get crashDetail => 'Допоможи виправляти збої у випусках застосунку. Увімкнено за замовчуванням.';
+
+	/// uk: 'Контакт'
+	String get contact => 'Контакт';
+
+	/// uk: 'Контактну адресу ще не додано'
+	String get contactPending => 'Контактну адресу ще не додано';
+
+	/// uk: 'Останнє оновлення: $date'
+	String updated({required Object date}) => 'Останнє оновлення: ${date}';
+
+	/// uk: 'Ця інформація зараз недоступна.'
+	String get unavailable => 'Ця інформація зараз недоступна.';
+
+	/// uk: 'Не вдалося відкрити посилання.'
+	String get openFailed => 'Не вдалося відкрити посилання.';
+
+	/// uk: 'Не вдалося повністю застосувати вибір. Спробуй ще раз.'
+	String get saveFailed => 'Не вдалося повністю застосувати вибір. Спробуй ще раз.';
+
+	/// uk: 'Створюючи акаунт, ти погоджуєшся з $terms та береш до відома $privacy.'
+	String registration({required Object terms, required Object privacy}) => 'Створюючи акаунт, ти погоджуєшся з ${terms} та береш до відома ${privacy}.';
+
+	/// uk: 'Умовами'
+	String get termsInline => 'Умовами';
+
+	/// uk: 'Політику конфіденційності'
+	String get privacyInline => 'Політику конфіденційності';
+}
+
 // Path: learn.lessons
 class Translations$learn$lessons$uk {
 	Translations$learn$lessons$uk.internal(this._root);
@@ -2233,6 +2288,21 @@ extension on Translations {
 			'notebook.notStarted' => 'Ще не розпочато',
 			'notebook.progressRow' => 'Нотатник MICHI',
 			'notebook.stampedLabel' => 'Проштамповано',
+			'legal.privacy' => 'Політика конфіденційності',
+			'legal.terms' => 'Умови використання',
+			'legal.about' => 'Про MICHI',
+			'legal.licenses' => 'Ліцензії відкритого коду',
+			'legal.crashes' => 'Ділитися звітами про збої',
+			'legal.crashDetail' => 'Допоможи виправляти збої у випусках застосунку. Увімкнено за замовчуванням.',
+			'legal.contact' => 'Контакт',
+			'legal.contactPending' => 'Контактну адресу ще не додано',
+			'legal.updated' => ({required Object date}) => 'Останнє оновлення: ${date}',
+			'legal.unavailable' => 'Ця інформація зараз недоступна.',
+			'legal.openFailed' => 'Не вдалося відкрити посилання.',
+			'legal.saveFailed' => 'Не вдалося повністю застосувати вибір. Спробуй ще раз.',
+			'legal.registration' => ({required Object terms, required Object privacy}) => 'Створюючи акаунт, ти погоджуєшся з ${terms} та береш до відома ${privacy}.',
+			'legal.termsInline' => 'Умовами',
+			'legal.privacyInline' => 'Політику конфіденційності',
 			_ => null,
 		};
 	}

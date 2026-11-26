@@ -535,5 +535,22 @@
     "notStarted": "Pas encore commencée",
     "progressRow": "Le carnet de MICHI",
     "stampedLabel": "Tamponnée"
+  },
+  "legal": {
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d’utilisation",
+    "about": "À propos de MICHI",
+    "licenses": "Licences open source",
+    "crashes": "Partager les rapports de plantage",
+    "crashDetail": "Aide à corriger les plantages des versions publiées. Activé par défaut.",
+    "contact": "Contact",
+    "contactPending": "Adresse de contact à venir",
+    "updated": "Dernière mise à jour : $date",
+    "unavailable": "Ces informations sont indisponibles pour le moment.",
+    "openFailed": "Impossible d’ouvrir le lien.",
+    "saveFailed": "Ton choix n’a pas pu être entièrement appliqué. Réessaie.",
+    "registration": "En créant un compte, tu acceptes les $terms et reconnais avoir pris connaissance de la $privacy.",
+    "termsInline": "Conditions d’utilisation",
+    "privacyInline": "Politique de confidentialité"
   }
 }

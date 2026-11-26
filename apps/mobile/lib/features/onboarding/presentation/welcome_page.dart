@@ -9,6 +9,7 @@ import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_copy.dart';
 import 'package:michi_mobile/features/auth/presentation/widgets/auth_error_banner.dart';
 import 'package:michi_mobile/features/auth/presentation/widgets/auth_provider_buttons.dart';
+import 'package:michi_mobile/features/legal/domain/legal_document.dart';
 
 @RoutePage()
 final class WelcomePage extends StatelessWidget {
@@ -101,6 +102,18 @@ final class WelcomePage extends StatelessWidget {
                             ),
                           ],
                         ],
+                        TextButton(
+                          onPressed: () => context.router.push(
+                            LegalRoute(document: LegalDocument.privacy),
+                          ),
+                          child: Semantics(
+                            link: true,
+                            child: Text(
+                              context.t.legal.privacy,
+                              style: MichiTypography.meta,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     // Balances the wordmark so the group centers optically.

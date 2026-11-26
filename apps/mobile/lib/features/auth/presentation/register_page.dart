@@ -8,6 +8,7 @@ import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_copy.dart';
 import 'package:michi_mobile/features/auth/presentation/widgets/auth_error_banner.dart';
 import 'package:michi_mobile/features/auth/presentation/widgets/auth_provider_buttons.dart';
+import 'package:michi_mobile/features/legal/presentation/registration_legal_notice.dart';
 
 @RoutePage()
 final class RegisterPage extends StatefulWidget {
@@ -98,6 +99,7 @@ final class _RegisterPageState extends State<RegisterPage> {
               ] else ...[
                 if (auth.googleEnabled || auth.appleEnabled) ...[
                   AuthProviderButtons(onAuthenticated: _finishSocial),
+                  if (!auth.emailEnabled) const RegistrationLegalNotice(),
                   const SizedBox(height: MichiSpacing.lg),
                   const Divider(color: MichiColors.hairline),
                   const SizedBox(height: MichiSpacing.lg),
@@ -168,6 +170,8 @@ final class _RegisterPageState extends State<RegisterPage> {
                     isLoading: auth.busy,
                     onPressed: auth.busy ? null : _create,
                   ),
+                  const SizedBox(height: MichiSpacing.sm),
+                  const RegistrationLegalNotice(),
                   const SizedBox(height: MichiSpacing.lg),
                   TextButton(
                     onPressed: auth.busy

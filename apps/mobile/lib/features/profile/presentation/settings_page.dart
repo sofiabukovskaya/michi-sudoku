@@ -12,6 +12,7 @@ import 'package:michi_mobile/core/notifications/reminder_registration.dart';
 import 'package:michi_mobile/core/notifications/streak_reminder.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
+import 'package:michi_mobile/features/legal/presentation/legal_about_section.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 @RoutePage()
@@ -274,6 +275,8 @@ final class SettingsPage extends StatelessWidget {
                         ),
                 ),
               ),
+              const SizedBox(height: MichiSpacing.xxl),
+              const LegalAboutSection(),
             ],
           ),
         ),

@@ -61,6 +61,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$reminder$en reminder = _Translations$reminder$en._(_root);
 	@override late final _Translations$spotIt$en spotIt = _Translations$spotIt$en._(_root);
 	@override late final _Translations$notebook$en notebook = _Translations$notebook$en._(_root);
+	@override late final _Translations$legal$en legal = _Translations$legal$en._(_root);
 }
 
 // Path: common
@@ -681,6 +682,30 @@ class _Translations$notebook$en extends Translations$notebook$uk {
 	@override String get stampedLabel => 'Stamped';
 }
 
+// Path: legal
+class _Translations$legal$en extends Translations$legal$uk {
+	_Translations$legal$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get privacy => 'Privacy Policy';
+	@override String get terms => 'Terms of Use';
+	@override String get about => 'About MICHI';
+	@override String get licenses => 'Open-source licenses';
+	@override String get crashes => 'Share crash reports';
+	@override String get crashDetail => 'Help fix crashes in release builds. On by default.';
+	@override String get contact => 'Contact';
+	@override String get contactPending => 'Contact address pending';
+	@override String updated({required Object date}) => 'Last updated: ${date}';
+	@override String get unavailable => 'This information is currently unavailable.';
+	@override String get openFailed => 'Could not open the link.';
+	@override String get saveFailed => 'Could not fully apply your crash-report choice. Try again.';
+	@override String registration({required Object terms, required Object privacy}) => 'By creating an account, you agree to the ${terms} and acknowledge the ${privacy}.';
+	@override String get termsInline => 'Terms of Use';
+	@override String get privacyInline => 'Privacy Policy';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$en extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$en._(TranslationsEn root) : this._root = root, super.internal(root);
@@ -1291,6 +1316,21 @@ extension on TranslationsEn {
 			'notebook.notStarted' => 'Not started yet',
 			'notebook.progressRow' => 'MICHI\'s notebook',
 			'notebook.stampedLabel' => 'Stamped',
+			'legal.privacy' => 'Privacy Policy',
+			'legal.terms' => 'Terms of Use',
+			'legal.about' => 'About MICHI',
+			'legal.licenses' => 'Open-source licenses',
+			'legal.crashes' => 'Share crash reports',
+			'legal.crashDetail' => 'Help fix crashes in release builds. On by default.',
+			'legal.contact' => 'Contact',
+			'legal.contactPending' => 'Contact address pending',
+			'legal.updated' => ({required Object date}) => 'Last updated: ${date}',
+			'legal.unavailable' => 'This information is currently unavailable.',
+			'legal.openFailed' => 'Could not open the link.',
+			'legal.saveFailed' => 'Could not fully apply your crash-report choice. Try again.',
+			'legal.registration' => ({required Object terms, required Object privacy}) => 'By creating an account, you agree to the ${terms} and acknowledge the ${privacy}.',
+			'legal.termsInline' => 'Terms of Use',
+			'legal.privacyInline' => 'Privacy Policy',
 			_ => null,
 		};
 	}

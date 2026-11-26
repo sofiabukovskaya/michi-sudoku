@@ -463,6 +463,53 @@ class LearnRouteArgs {
 }
 
 /// generated route for
+/// [LegalPage]
+class LegalRoute extends PageRouteInfo<LegalRouteArgs> {
+  LegalRoute({
+    required LegalDocument document,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         LegalRoute.name,
+         args: LegalRouteArgs(document: document, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'LegalRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<LegalRouteArgs>();
+      return LegalPage(document: args.document, key: args.key);
+    },
+  );
+}
+
+class LegalRouteArgs {
+  const LegalRouteArgs({required this.document, this.key});
+
+  final LegalDocument document;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LegalRouteArgs{document: $document, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LegalRouteArgs) return false;
+    return document == other.document && key == other.key;
+  }
+
+  @override
+  int get hashCode => document.hashCode ^ key.hashCode;
+}
+
+/// generated route for
 /// [NotebookPage]
 class NotebookRoute extends PageRouteInfo<void> {
   const NotebookRoute({List<PageRouteInfo>? children})

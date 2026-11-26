@@ -11,11 +11,36 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:michi_mobile/firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Optional Firebase startup. Local gameplay never waits for this future.
 final class FirebaseRuntime {
   static bool get useEmulators =>
       kDebugMode && const bool.fromEnvironment('MICHI_USE_FIREBASE_EMULATORS');
+
+  static const _crashPreference = 'shareCrashReports';
+  late final _preferences = SharedPreferencesAsync();
+  bool _reportCrashes = false;
+
+  Future<bool> shareCrashReports() async =>
+      await _preferences.getBool(_crashPreference) ?? true;
+
+  Future<void> setShareCrashReports({required bool enabled}) async {
+    // Gate Dart reports immediately, even if Firebase is still starting.
+    if (!enabled) _reportCrashes = false;
+    await _preferences.setBool(_crashPreference, enabled);
+    if (!_started || !await ready || useEmulators) return;
+    if (!kReleaseMode) return;
+    await _applyCrashPreference(enabled);
+  }
+
+  Future<void> _applyCrashPreference(bool enabled) async {
+    final crashlytics = FirebaseCrashlytics.instance;
+    if (!enabled) _reportCrashes = false;
+    await crashlytics.setCrashlyticsCollectionEnabled(enabled);
+    if (!enabled) await crashlytics.deleteUnsentReports();
+    _reportCrashes = enabled && await shareCrashReports();
+  }
 
   final Completer<bool> _ready = Completer<bool>();
   bool _started = false;
@@ -42,8 +67,8 @@ final class FirebaseRuntime {
         _app = await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,
         );
-        await _activateAppCheck();
         await _configureObservability();
+        await _activateAppCheck();
       }
       _ready.complete(true);
     } on Object {
@@ -72,23 +97,29 @@ final class FirebaseRuntime {
     try {
       // A consent decision has not been introduced, so analytics remains off.
       await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(false);
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-        !kDebugMode,
-      );
+    } on Object {
+      // Native configuration also keeps Analytics deactivated.
+    }
+    try {
+      await _applyCrashPreference(kReleaseMode && await shareCrashReports());
       FirebaseRemoteConfig.instance;
-      if (kDebugMode) return;
+      if (!kReleaseMode) return;
       final priorFlutterHandler = FlutterError.onError;
       FlutterError.onError = (details) {
         priorFlutterHandler?.call(details);
-        unawaited(
-          FirebaseCrashlytics.instance.recordFlutterFatalError(details),
-        );
+        if (_reportCrashes) {
+          unawaited(
+            FirebaseCrashlytics.instance.recordFlutterFatalError(details),
+          );
+        }
       };
       final priorPlatformHandler = PlatformDispatcher.instance.onError;
       PlatformDispatcher.instance.onError = (error, stack) {
-        unawaited(
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
-        );
+        if (_reportCrashes) {
+          unawaited(
+            FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+          );
+        }
         return priorPlatformHandler?.call(error, stack) ?? true;
       };
     } on Object {

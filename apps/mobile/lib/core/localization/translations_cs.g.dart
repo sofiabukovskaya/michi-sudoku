@@ -61,6 +61,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$reminder$cs reminder = _Translations$reminder$cs._(_root);
 	@override late final _Translations$spotIt$cs spotIt = _Translations$spotIt$cs._(_root);
 	@override late final _Translations$notebook$cs notebook = _Translations$notebook$cs._(_root);
+	@override late final _Translations$legal$cs legal = _Translations$legal$cs._(_root);
 }
 
 // Path: common
@@ -685,6 +686,30 @@ class _Translations$notebook$cs extends Translations$notebook$uk {
 	@override String get stampedLabel => 'Orazítkováno';
 }
 
+// Path: legal
+class _Translations$legal$cs extends Translations$legal$uk {
+	_Translations$legal$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get privacy => 'Zásady ochrany soukromí';
+	@override String get terms => 'Podmínky používání';
+	@override String get about => 'O MICHI';
+	@override String get licenses => 'Licence otevřeného softwaru';
+	@override String get crashes => 'Sdílet hlášení o pádech';
+	@override String get crashDetail => 'Pomoz opravovat pády v produkční verzi. Ve výchozím stavu zapnuto.';
+	@override String get contact => 'Kontakt';
+	@override String get contactPending => 'Kontaktní adresa zatím chybí';
+	@override String updated({required Object date}) => 'Poslední aktualizace: ${date}';
+	@override String get unavailable => 'Tyto informace teď nejsou dostupné.';
+	@override String get openFailed => 'Odkaz se nepodařilo otevřít.';
+	@override String get saveFailed => 'Volbu sdílení se nepodařilo plně použít. Zkus to znovu.';
+	@override String registration({required Object terms, required Object privacy}) => 'Vytvořením účtu souhlasíš s ${terms} a bereš na vědomí ${privacy}.';
+	@override String get termsInline => 'podmínkami používání';
+	@override String get privacyInline => 'zásady ochrany soukromí';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$cs extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$cs._(TranslationsCs root) : this._root = root, super.internal(root);
@@ -1295,6 +1320,21 @@ extension on TranslationsCs {
 			'notebook.notStarted' => 'Zatím nezačato',
 			'notebook.progressRow' => 'MICHIho zápisník',
 			'notebook.stampedLabel' => 'Orazítkováno',
+			'legal.privacy' => 'Zásady ochrany soukromí',
+			'legal.terms' => 'Podmínky používání',
+			'legal.about' => 'O MICHI',
+			'legal.licenses' => 'Licence otevřeného softwaru',
+			'legal.crashes' => 'Sdílet hlášení o pádech',
+			'legal.crashDetail' => 'Pomoz opravovat pády v produkční verzi. Ve výchozím stavu zapnuto.',
+			'legal.contact' => 'Kontakt',
+			'legal.contactPending' => 'Kontaktní adresa zatím chybí',
+			'legal.updated' => ({required Object date}) => 'Poslední aktualizace: ${date}',
+			'legal.unavailable' => 'Tyto informace teď nejsou dostupné.',
+			'legal.openFailed' => 'Odkaz se nepodařilo otevřít.',
+			'legal.saveFailed' => 'Volbu sdílení se nepodařilo plně použít. Zkus to znovu.',
+			'legal.registration' => ({required Object terms, required Object privacy}) => 'Vytvořením účtu souhlasíš s ${terms} a bereš na vědomí ${privacy}.',
+			'legal.termsInline' => 'podmínkami používání',
+			'legal.privacyInline' => 'zásady ochrany soukromí',
 			_ => null,
 		};
 	}

@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:michi_mobile/features/auth/domain/auth_account.dart';
@@ -10,6 +14,8 @@ import 'package:michi_mobile/features/auth/domain/auth_repository.dart';
 import 'package:michi_mobile/features/auth/presentation/auth_page.dart';
 import 'package:michi_mobile/features/auth/presentation/password_reset_page.dart';
 import 'package:michi_mobile/features/auth/presentation/register_page.dart';
+import 'package:michi_mobile/features/legal/domain/legal_document.dart';
+import 'package:michi_mobile/features/legal/presentation/legal_page.dart';
 
 final class _AuthRepository implements AuthRepository {
   final sessions = StreamController<AuthSession>.broadcast(sync: true);
@@ -138,6 +144,47 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(RegisterPage), findsOneWidget);
     expect(find.text('Enter your name.'), findsOneWidget);
+  });
+
+  testWidgets('registration notice opens both legal documents', (tester) async {
+    final router = AppRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+      BlocProvider.value(
+        value: cubit,
+        child: TranslationProvider(
+          child: MaterialApp.router(
+            routerConfig: router.config(
+              deepLinkBuilder: (_) => DeepLink([RegisterRoute()]),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final notice = find.textContaining('By creating an account');
+    await tester.ensureVisible(notice);
+    for (final (label, document) in [
+      ('Terms of Use', LegalDocument.terms),
+      ('Privacy Policy', LegalDocument.privacy),
+    ]) {
+      final paragraph = tester.renderObject<RenderParagraph>(notice);
+      final offset = paragraph.text.toPlainText().indexOf(label);
+      final box = paragraph
+          .getBoxesForSelection(
+            TextSelection(baseOffset: offset, extentOffset: offset + 1),
+          )
+          .single;
+      await tester.tapAt(paragraph.localToGlobal(box.toRect().center));
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<LegalPage>(find.byType(LegalPage)).document,
+        document,
+      );
+      expect(find.textContaining('Last updated'), findsOneWidget);
+      await router.maybePop();
+      await tester.pumpAndSettle();
+    }
   });
 
   testWidgets('password reset sends the entered email', (tester) async {

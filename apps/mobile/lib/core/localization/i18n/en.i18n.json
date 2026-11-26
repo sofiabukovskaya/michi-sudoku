@@ -535,5 +535,22 @@
     "notStarted": "Not started yet",
     "progressRow": "MICHI's notebook",
     "stampedLabel": "Stamped"
+  },
+  "legal": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "about": "About MICHI",
+    "licenses": "Open-source licenses",
+    "crashes": "Share crash reports",
+    "crashDetail": "Help fix crashes in release builds. On by default.",
+    "contact": "Contact",
+    "contactPending": "Contact address pending",
+    "updated": "Last updated: $date",
+    "unavailable": "This information is currently unavailable.",
+    "openFailed": "Could not open the link.",
+    "saveFailed": "Could not fully apply your crash-report choice. Try again.",
+    "registration": "By creating an account, you agree to the $terms and acknowledge the $privacy.",
+    "termsInline": "Terms of Use",
+    "privacyInline": "Privacy Policy"
   }
 }

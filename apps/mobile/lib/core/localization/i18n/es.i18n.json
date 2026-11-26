@@ -535,5 +535,22 @@
     "notStarted": "Aún sin empezar",
     "progressRow": "El cuaderno de MICHI",
     "stampedLabel": "Sellada"
+  },
+  "legal": {
+    "privacy": "Política de privacidad",
+    "terms": "Condiciones de uso",
+    "about": "Acerca de MICHI",
+    "licenses": "Licencias de código abierto",
+    "crashes": "Compartir informes de fallos",
+    "crashDetail": "Ayuda a corregir fallos en las versiones publicadas. Activado por defecto.",
+    "contact": "Contacto",
+    "contactPending": "Dirección de contacto pendiente",
+    "updated": "Última actualización: $date",
+    "unavailable": "Esta información no está disponible ahora.",
+    "openFailed": "No se pudo abrir el enlace.",
+    "saveFailed": "No se pudo aplicar del todo tu elección. Inténtalo otra vez.",
+    "registration": "Al crear una cuenta, aceptas las $terms y reconoces haber leído la $privacy.",
+    "termsInline": "Condiciones de uso",
+    "privacyInline": "Política de privacidad"
   }
 }

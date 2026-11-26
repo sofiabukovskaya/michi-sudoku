@@ -535,5 +535,22 @@
     "notStarted": "Noch nicht begonnen",
     "progressRow": "MICHIs Notizbuch",
     "stampedLabel": "Gestempelt"
+  },
+  "legal": {
+    "privacy": "Datenschutzerklärung",
+    "terms": "Nutzungsbedingungen",
+    "about": "Über MICHI",
+    "licenses": "Open-Source-Lizenzen",
+    "crashes": "Absturzberichte teilen",
+    "crashDetail": "Hilf, Abstürze in der Release-Version zu beheben. Standardmäßig aktiviert.",
+    "contact": "Kontakt",
+    "contactPending": "Kontaktadresse noch offen",
+    "updated": "Zuletzt aktualisiert: $date",
+    "unavailable": "Diese Informationen sind gerade nicht verfügbar.",
+    "openFailed": "Der Link konnte nicht geöffnet werden.",
+    "saveFailed": "Deine Auswahl konnte nicht vollständig angewendet werden. Versuch es erneut.",
+    "registration": "Wenn du ein Konto erstellst, stimmst du den $terms zu und nimmst die $privacy zur Kenntnis.",
+    "termsInline": "Nutzungsbedingungen",
+    "privacyInline": "Datenschutzerklärung"
   }
 }

@@ -61,6 +61,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$reminder$es reminder = _Translations$reminder$es._(_root);
 	@override late final _Translations$spotIt$es spotIt = _Translations$spotIt$es._(_root);
 	@override late final _Translations$notebook$es notebook = _Translations$notebook$es._(_root);
+	@override late final _Translations$legal$es legal = _Translations$legal$es._(_root);
 }
 
 // Path: common
@@ -681,6 +682,30 @@ class _Translations$notebook$es extends Translations$notebook$uk {
 	@override String get stampedLabel => 'Sellada';
 }
 
+// Path: legal
+class _Translations$legal$es extends Translations$legal$uk {
+	_Translations$legal$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get privacy => 'Política de privacidad';
+	@override String get terms => 'Condiciones de uso';
+	@override String get about => 'Acerca de MICHI';
+	@override String get licenses => 'Licencias de código abierto';
+	@override String get crashes => 'Compartir informes de fallos';
+	@override String get crashDetail => 'Ayuda a corregir fallos en las versiones publicadas. Activado por defecto.';
+	@override String get contact => 'Contacto';
+	@override String get contactPending => 'Dirección de contacto pendiente';
+	@override String updated({required Object date}) => 'Última actualización: ${date}';
+	@override String get unavailable => 'Esta información no está disponible ahora.';
+	@override String get openFailed => 'No se pudo abrir el enlace.';
+	@override String get saveFailed => 'No se pudo aplicar del todo tu elección. Inténtalo otra vez.';
+	@override String registration({required Object terms, required Object privacy}) => 'Al crear una cuenta, aceptas las ${terms} y reconoces haber leído la ${privacy}.';
+	@override String get termsInline => 'Condiciones de uso';
+	@override String get privacyInline => 'Política de privacidad';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$es extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$es._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -1291,6 +1316,21 @@ extension on TranslationsEs {
 			'notebook.notStarted' => 'Aún sin empezar',
 			'notebook.progressRow' => 'El cuaderno de MICHI',
 			'notebook.stampedLabel' => 'Sellada',
+			'legal.privacy' => 'Política de privacidad',
+			'legal.terms' => 'Condiciones de uso',
+			'legal.about' => 'Acerca de MICHI',
+			'legal.licenses' => 'Licencias de código abierto',
+			'legal.crashes' => 'Compartir informes de fallos',
+			'legal.crashDetail' => 'Ayuda a corregir fallos en las versiones publicadas. Activado por defecto.',
+			'legal.contact' => 'Contacto',
+			'legal.contactPending' => 'Dirección de contacto pendiente',
+			'legal.updated' => ({required Object date}) => 'Última actualización: ${date}',
+			'legal.unavailable' => 'Esta información no está disponible ahora.',
+			'legal.openFailed' => 'No se pudo abrir el enlace.',
+			'legal.saveFailed' => 'No se pudo aplicar del todo tu elección. Inténtalo otra vez.',
+			'legal.registration' => ({required Object terms, required Object privacy}) => 'Al crear una cuenta, aceptas las ${terms} y reconoces haber leído la ${privacy}.',
+			'legal.termsInline' => 'Condiciones de uso',
+			'legal.privacyInline' => 'Política de privacidad',
 			_ => null,
 		};
 	}

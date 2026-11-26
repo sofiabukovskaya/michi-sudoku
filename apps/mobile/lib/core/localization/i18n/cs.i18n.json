@@ -539,5 +539,22 @@
     "notStarted": "Zatím nezačato",
     "progressRow": "MICHIho zápisník",
     "stampedLabel": "Orazítkováno"
+  },
+  "legal": {
+    "privacy": "Zásady ochrany soukromí",
+    "terms": "Podmínky používání",
+    "about": "O MICHI",
+    "licenses": "Licence otevřeného softwaru",
+    "crashes": "Sdílet hlášení o pádech",
+    "crashDetail": "Pomoz opravovat pády v produkční verzi. Ve výchozím stavu zapnuto.",
+    "contact": "Kontakt",
+    "contactPending": "Kontaktní adresa zatím chybí",
+    "updated": "Poslední aktualizace: $date",
+    "unavailable": "Tyto informace teď nejsou dostupné.",
+    "openFailed": "Odkaz se nepodařilo otevřít.",
+    "saveFailed": "Volbu sdílení se nepodařilo plně použít. Zkus to znovu.",
+    "registration": "Vytvořením účtu souhlasíš s $terms a bereš na vědomí $privacy.",
+    "termsInline": "podmínkami používání",
+    "privacyInline": "zásady ochrany soukromí"
   }
 }
