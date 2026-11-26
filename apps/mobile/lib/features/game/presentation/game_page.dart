@@ -19,7 +19,9 @@ import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/application/game_preparation.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
+import 'package:michi_mobile/features/game/data/insight_records.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
+import 'package:michi_mobile/features/game/domain/post_game_insight.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_controls.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/game_top_bar.dart';
@@ -28,6 +30,7 @@ import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/boa
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_keypad.dart';
 import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
+import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
@@ -887,6 +890,7 @@ final class _CompletedSurface extends StatelessWidget {
                   ],
                 ),
                 const Divider(height: MichiSpacing.xxl),
+                _PostGameInsightLine(state: state),
                 Text(context.t.game.completeBody, style: MichiTypography.body),
                 if (isDaily) ...[
                   const SizedBox(height: MichiSpacing.lg),
@@ -977,6 +981,71 @@ final class _CompletedSurface extends StatelessWidget {
         ],
       ),
     ),
+  );
+}
+
+/// One personal line about the finished game (see [PostGameInsight]).
+final class _PostGameInsightLine extends StatefulWidget {
+  const _PostGameInsightLine({required this.state});
+
+  final GameState state;
+
+  @override
+  State<_PostGameInsightLine> createState() => _PostGameInsightLineState();
+}
+
+final class _PostGameInsightLineState extends State<_PostGameInsightLine> {
+  late final Future<PostGameInsight> _insight = InsightRecords().settle(
+    gameId: widget.state.gameId,
+    placements: widget.state.reasoning.values,
+    hints: widget.state.hintsRequested,
+    mistakes: widget.state.mistakes,
+  );
+
+  String _text(Translations t, PostGameInsight insight) {
+    String found() => t.game.insightFound(
+      technique: TechniqueCopy.name(t, insight.technique!),
+      count: insight.count,
+    );
+    return switch (insight.kind) {
+      PostGameInsightKind.personalBest => '${t.game.insightBest} · ${found()}',
+      PostGameInsightKind.foundAlone => found(),
+      PostGameInsightKind.cleanSolve => t.game.insightClean,
+      PostGameInsightKind.ownLogic => t.game.insightLogic(count: insight.count),
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<PostGameInsight>(
+    future: _insight,
+    builder: (context, snapshot) {
+      final insight = snapshot.data;
+      if (insight == null) return const SizedBox.shrink();
+      return MichiReveal(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: MichiSpacing.md),
+          child: Row(
+            key: const ValueKey('post-game-insight'),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Icon(Icons.pets, size: 18, color: MichiColors.coral),
+              ),
+              const SizedBox(width: MichiSpacing.sm),
+              Expanded(
+                child: Text(
+                  _text(context.t, insight),
+                  style: MichiTypography.body.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
   );
 }
 

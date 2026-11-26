@@ -289,6 +289,10 @@ class _Translations$game$cs extends Translations$game$uk {
 	@override String get numberFirst => 'Nejdřív číslo';
 	@override String get fillNotes => 'Doplnit poznámky';
 	@override String get inputOptions => 'Možnosti zadávání';
+	@override String get insightBest => 'Nový osobní rekord';
+	@override String insightFound({required Object technique, required Object count}) => 'Nalezeno samostatně: ${technique} × ${count}';
+	@override String get insightClean => 'Čisté řešení: bez nápověd a bez chyb.';
+	@override String insightLogic({required Object count}) => 'Tvou vlastní logikou: ${count} číslic';
 }
 
 // Path: learn
@@ -934,6 +938,10 @@ extension on TranslationsCs {
 			'game.numberFirst' => 'Nejdřív číslo',
 			'game.fillNotes' => 'Doplnit poznámky',
 			'game.inputOptions' => 'Možnosti zadávání',
+			'game.insightBest' => 'Nový osobní rekord',
+			'game.insightFound' => ({required Object technique, required Object count}) => 'Nalezeno samostatně: ${technique} × ${count}',
+			'game.insightClean' => 'Čisté řešení: bez nápověd a bez chyb.',
+			'game.insightLogic' => ({required Object count}) => 'Tvou vlastní logikou: ${count} číslic',
 			'learn.title' => 'Učení',
 			'learn.intro' => 'Jedna technika, jeden jasný krok.',
 			'learn.newLabel' => 'Nové',

@@ -288,6 +288,10 @@ class _Translations$game$en extends Translations$game$uk {
 	@override String get numberFirst => 'Number first';
 	@override String get fillNotes => 'Fill pencil notes';
 	@override String get inputOptions => 'Input options';
+	@override String get insightBest => 'New personal best';
+	@override String insightFound({required Object technique, required Object count}) => 'Found on your own: ${technique} × ${count}';
+	@override String get insightClean => 'Clean solve: no hints, no mistakes.';
+	@override String insightLogic({required Object count}) => 'Placed by your own logic: ${count} digits';
 }
 
 // Path: learn
@@ -930,6 +934,10 @@ extension on TranslationsEn {
 			'game.numberFirst' => 'Number first',
 			'game.fillNotes' => 'Fill pencil notes',
 			'game.inputOptions' => 'Input options',
+			'game.insightBest' => 'New personal best',
+			'game.insightFound' => ({required Object technique, required Object count}) => 'Found on your own: ${technique} × ${count}',
+			'game.insightClean' => 'Clean solve: no hints, no mistakes.',
+			'game.insightLogic' => ({required Object count}) => 'Placed by your own logic: ${count} digits',
 			'learn.title' => 'Learn',
 			'learn.intro' => 'A clear next step, one technique at a time.',
 			'learn.newLabel' => 'New',

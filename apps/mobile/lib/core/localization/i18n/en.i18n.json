@@ -172,7 +172,11 @@
     "completionPracticeTechnique": "Practice $technique next",
     "numberFirst": "Number first",
     "fillNotes": "Fill pencil notes",
-    "inputOptions": "Input options"
+    "inputOptions": "Input options",
+    "insightBest": "New personal best",
+    "insightFound": "Found on your own: $technique × $count",
+    "insightClean": "Clean solve: no hints, no mistakes.",
+    "insightLogic": "Placed by your own logic: $count digits"
   },
   "learn": {
     "title": "Learn",

@@ -172,7 +172,11 @@
     "completionPracticeTechnique": "Siguiente paso: $technique",
     "numberFirst": "Número primero",
     "fillNotes": "Rellenar notas",
-    "inputOptions": "Opciones de entrada"
+    "inputOptions": "Opciones de entrada",
+    "insightBest": "Nuevo récord personal",
+    "insightFound": "Encontrado por tu cuenta: $technique × $count",
+    "insightClean": "Resuelto limpio: sin pistas ni errores.",
+    "insightLogic": "Con tu propia lógica: $count números"
   },
   "learn": {
     "title": "Aprender",

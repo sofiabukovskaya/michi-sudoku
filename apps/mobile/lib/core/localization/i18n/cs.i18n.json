@@ -173,7 +173,11 @@
     "completionPracticeTechnique": "Další krok: $technique",
     "numberFirst": "Nejdřív číslo",
     "fillNotes": "Doplnit poznámky",
-    "inputOptions": "Možnosti zadávání"
+    "inputOptions": "Možnosti zadávání",
+    "insightBest": "Nový osobní rekord",
+    "insightFound": "Nalezeno samostatně: $technique × $count",
+    "insightClean": "Čisté řešení: bez nápověd a bez chyb.",
+    "insightLogic": "Tvou vlastní logikou: $count číslic"
   },
   "learn": {
     "title": "Učení",

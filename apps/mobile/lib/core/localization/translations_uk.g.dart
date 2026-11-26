@@ -605,6 +605,18 @@ class Translations$game$uk {
 
 	/// uk: 'Спосіб введення'
 	String get inputOptions => 'Спосіб введення';
+
+	/// uk: 'Новий особистий рекорд'
+	String get insightBest => 'Новий особистий рекорд';
+
+	/// uk: 'Знайдено самостійно: $technique × $count'
+	String insightFound({required Object technique, required Object count}) => 'Знайдено самостійно: ${technique} × ${count}';
+
+	/// uk: 'Чисте розв’язання: без підказок і помилок.'
+	String get insightClean => 'Чисте розв’язання: без підказок і помилок.';
+
+	/// uk: 'Власною логікою: $count цифр'
+	String insightLogic({required Object count}) => 'Власною логікою: ${count} цифр';
 }
 
 // Path: learn
@@ -1828,6 +1840,10 @@ extension on Translations {
 			'game.numberFirst' => 'Спочатку цифра',
 			'game.fillNotes' => 'Заповнити нотатки',
 			'game.inputOptions' => 'Спосіб введення',
+			'game.insightBest' => 'Новий особистий рекорд',
+			'game.insightFound' => ({required Object technique, required Object count}) => 'Знайдено самостійно: ${technique} × ${count}',
+			'game.insightClean' => 'Чисте розв’язання: без підказок і помилок.',
+			'game.insightLogic' => ({required Object count}) => 'Власною логікою: ${count} цифр',
 			'learn.title' => 'Навчання',
 			'learn.intro' => 'Крок за кроком до розуміння технік.',
 			'learn.newLabel' => 'Нове',

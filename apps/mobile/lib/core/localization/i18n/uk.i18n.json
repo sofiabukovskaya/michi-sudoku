@@ -174,7 +174,11 @@
     "completionPracticeTechnique": "Наступний крок: $technique",
     "numberFirst": "Спочатку цифра",
     "fillNotes": "Заповнити нотатки",
-    "inputOptions": "Спосіб введення"
+    "inputOptions": "Спосіб введення",
+    "insightBest": "Новий особистий рекорд",
+    "insightFound": "Знайдено самостійно: $technique × $count",
+    "insightClean": "Чисте розв’язання: без підказок і помилок.",
+    "insightLogic": "Власною логікою: $count цифр"
   },
   "learn": {
     "title": "Навчання",

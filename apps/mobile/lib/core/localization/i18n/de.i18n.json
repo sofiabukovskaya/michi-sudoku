@@ -172,7 +172,11 @@
     "completionPracticeTechnique": "Nächster Schritt: $technique",
     "numberFirst": "Zahl zuerst",
     "fillNotes": "Kandidaten eintragen",
-    "inputOptions": "Eingabeoptionen"
+    "inputOptions": "Eingabeoptionen",
+    "insightBest": "Neue persönliche Bestleistung",
+    "insightFound": "Selbst gefunden: $technique × $count",
+    "insightClean": "Sauber gelöst: ohne Tipps, ohne Fehler.",
+    "insightLogic": "Mit eigener Logik gesetzt: $count Zahlen"
   },
   "learn": {
     "title": "Lernen",

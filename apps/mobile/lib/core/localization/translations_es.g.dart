@@ -288,6 +288,10 @@ class _Translations$game$es extends Translations$game$uk {
 	@override String get numberFirst => 'Número primero';
 	@override String get fillNotes => 'Rellenar notas';
 	@override String get inputOptions => 'Opciones de entrada';
+	@override String get insightBest => 'Nuevo récord personal';
+	@override String insightFound({required Object technique, required Object count}) => 'Encontrado por tu cuenta: ${technique} × ${count}';
+	@override String get insightClean => 'Resuelto limpio: sin pistas ni errores.';
+	@override String insightLogic({required Object count}) => 'Con tu propia lógica: ${count} números';
 }
 
 // Path: learn
@@ -930,6 +934,10 @@ extension on TranslationsEs {
 			'game.numberFirst' => 'Número primero',
 			'game.fillNotes' => 'Rellenar notas',
 			'game.inputOptions' => 'Opciones de entrada',
+			'game.insightBest' => 'Nuevo récord personal',
+			'game.insightFound' => ({required Object technique, required Object count}) => 'Encontrado por tu cuenta: ${technique} × ${count}',
+			'game.insightClean' => 'Resuelto limpio: sin pistas ni errores.',
+			'game.insightLogic' => ({required Object count}) => 'Con tu propia lógica: ${count} números',
 			'learn.title' => 'Aprender',
 			'learn.intro' => 'Una técnica y un paso claro cada vez.',
 			'learn.newLabel' => 'Nuevo',
