@@ -22,13 +22,18 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
 import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
+import '../helpers/warm_puzzle_catalog.dart';
+
 Finder tab(String name) => find.descendant(
   of: find.byType(MichiBottomNav),
   matching: find.text(name),
 );
 
 void main() {
-  setUpAll(bootstrap);
+  setUpAll(() async {
+    bootstrap();
+    await warmPuzzleCatalog();
+  });
 
   testWidgets('four tabs preserve their roots and Week uses local history', (
     tester,

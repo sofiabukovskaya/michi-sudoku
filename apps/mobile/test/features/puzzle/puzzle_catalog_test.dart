@@ -9,20 +9,34 @@ void main() {
 
   test('bundled production pack is valid and fully coachable', () async {
     final catalog = await LocalPuzzleCatalogLoader().load();
-    expect(catalog.version, 2);
-    expect(catalog.puzzles, hasLength(35));
+    expect(catalog.version, 3);
     expect(
       catalog.puzzles.map((puzzle) => puzzle.id).toSet(),
-      hasLength(35),
+      hasLength(catalog.puzzles.length),
     );
-    expect(catalog.puzzlesByDifficulty(PuzzleDifficulty.easy), hasLength(12));
-    expect(catalog.puzzlesByDifficulty(PuzzleDifficulty.medium), hasLength(8));
     expect(
-      catalog.puzzlesByDifficulty(PuzzleDifficulty.advanced),
-      hasLength(12),
+      catalog.puzzles.map((puzzle) => puzzle.initialBoard).toSet(),
+      hasLength(catalog.puzzles.length),
+      reason: 'every puzzle is a different board',
     );
-    expect(catalog.puzzlesByDifficulty(PuzzleDifficulty.expert), hasLength(3));
-    expect(catalog.dailyEligible, hasLength(32));
+    // The original launch pack keeps its IDs, so saved games still match.
+    expect(catalog.puzzleById('classic_easy_0001'), isNotNull);
+    expect(catalog.puzzleById('classic_expert_0003'), isNotNull);
+    for (final difficulty in PuzzleDifficulty.values) {
+      expect(
+        catalog.puzzlesByDifficulty(difficulty).length,
+        greaterThanOrEqualTo(
+          difficulty == PuzzleDifficulty.expert ? 100 : 500,
+        ),
+        reason: difficulty.name,
+      );
+    }
+    expect(
+      catalog.dailyEligible.every(
+        (puzzle) => puzzle.difficulty != PuzzleDifficulty.expert,
+      ),
+      isTrue,
+    );
 
     const analyzer = PuzzleAnalyzer(
       BacktrackingExactSolver(),

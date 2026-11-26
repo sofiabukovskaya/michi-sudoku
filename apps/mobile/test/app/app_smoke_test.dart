@@ -34,6 +34,8 @@ import 'package:shared_preferences_platform_interface/shared_preferences_async_p
 
 import '../helpers/inline_game_preparation.dart';
 
+import '../helpers/warm_puzzle_catalog.dart';
+
 final class _MockCloudSyncRepository extends Mock
     implements CloudSyncRepository {}
 
@@ -84,7 +86,10 @@ final class _StartupRepository implements GameRepository {
 void main() {
   late _StartupRepository startupRepository;
 
-  setUpAll(bootstrap);
+  setUpAll(() async {
+    bootstrap();
+    await warmPuzzleCatalog();
+  });
   setUp(() async {
     startupRepository = _StartupRepository();
     await getIt.unregister<GameRepository>();

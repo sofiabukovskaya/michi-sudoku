@@ -20,6 +20,8 @@ import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
+import '../../../helpers/warm_puzzle_catalog.dart';
+
 final class _MutableClock implements GameClock {
   DateTime wall = DateTime(2026, 10, 26, 12);
 
@@ -57,7 +59,10 @@ final class _DailyTestPuzzles implements PuzzleRepository {
 }
 
 void main() {
-  setUpAll(bootstrap);
+  setUpAll(() async {
+    bootstrap();
+    await warmPuzzleCatalog();
+  });
 
   testWidgets('Home shows Continue only for an unfinished local game', (
     tester,

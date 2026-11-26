@@ -12,13 +12,28 @@ final class LocalPuzzleCatalogLoader {
 
   static const assetPath = 'assets/puzzles/classic_v1.json';
   final AssetBundle _bundle;
+
+  /// The bundled catalog never changes while the app runs, so every loader
+  /// on the app's own bundle shares one parse (thousands of puzzles). The
+  /// parsed value is shared, not a Future, so each caller awaits a Future
+  /// of its own zone.
+  static PuzzleCatalog? _shared;
+
+  bool get _usesAppBundle => identical(_bundle, rootBundle);
+
   late final Future<PuzzleCatalog> _catalog = _load();
 
-  Future<PuzzleCatalog> load() => _catalog;
+  Future<PuzzleCatalog> load() {
+    final shared = _shared;
+    if (shared != null && _usesAppBundle) return Future.value(shared);
+    return _catalog;
+  }
 
   Future<PuzzleCatalog> _load() async {
     try {
-      return parse(await _bundle.loadString(assetPath));
+      final catalog = parse(await _bundle.loadString(assetPath));
+      if (_usesAppBundle) _shared = catalog;
+      return catalog;
     } on FormatException {
       rethrow;
     } on Object catch (error) {
