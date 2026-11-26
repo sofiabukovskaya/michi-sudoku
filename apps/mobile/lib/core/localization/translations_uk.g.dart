@@ -65,6 +65,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$sync$uk sync = Translations$sync$uk.internal(_root);
 	late final Translations$reminder$uk reminder = Translations$reminder$uk.internal(_root);
 	late final Translations$spotIt$uk spotIt = Translations$spotIt$uk.internal(_root);
+	late final Translations$notebook$uk notebook = Translations$notebook$uk.internal(_root);
 }
 
 // Path: common
@@ -1496,6 +1497,33 @@ class Translations$spotIt$uk {
 	String get done => 'Готово';
 }
 
+// Path: notebook
+class Translations$notebook$uk {
+	Translations$notebook$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Нотатник MICHI'
+	String get title => 'Нотатник MICHI';
+
+	/// uk: 'Сторінка для кожної техніки. Опануй її, щоб отримати штамп-лапку.'
+	String get intro => 'Сторінка для кожної техніки. Опануй її, щоб отримати штамп-лапку.';
+
+	/// uk: 'Проштамповано $n з $total'
+	String count({required Object n, required Object total}) => 'Проштамповано ${n} з ${total}';
+
+	/// uk: 'Ще не розпочато'
+	String get notStarted => 'Ще не розпочато';
+
+	/// uk: 'Нотатник MICHI'
+	String get progressRow => 'Нотатник MICHI';
+
+	/// uk: 'Проштамповано'
+	String get stampedLabel => 'Проштамповано';
+}
+
 // Path: learn.lessons
 class Translations$learn$lessons$uk {
 	Translations$learn$lessons$uk.internal(this._root);
@@ -2195,6 +2223,12 @@ extension on Translations {
 			'spotIt.prompt' => 'Зараз напевно можна заповнити лише одну клітинку. Знайди її та постав цифру.',
 			'spotIt.stuck' => 'Не знаєш, де шукати? Підказка покаже.',
 			'spotIt.done' => 'Готово',
+			'notebook.title' => 'Нотатник MICHI',
+			'notebook.intro' => 'Сторінка для кожної техніки. Опануй її, щоб отримати штамп-лапку.',
+			'notebook.count' => ({required Object n, required Object total}) => 'Проштамповано ${n} з ${total}',
+			'notebook.notStarted' => 'Ще не розпочато',
+			'notebook.progressRow' => 'Нотатник MICHI',
+			'notebook.stampedLabel' => 'Проштамповано',
 			_ => null,
 		};
 	}

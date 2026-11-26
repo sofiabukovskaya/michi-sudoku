@@ -60,6 +60,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$sync$fr sync = _Translations$sync$fr._(_root);
 	@override late final _Translations$reminder$fr reminder = _Translations$reminder$fr._(_root);
 	@override late final _Translations$spotIt$fr spotIt = _Translations$spotIt$fr._(_root);
+	@override late final _Translations$notebook$fr notebook = _Translations$notebook$fr._(_root);
 }
 
 // Path: common
@@ -662,6 +663,21 @@ class _Translations$spotIt$fr extends Translations$spotIt$uk {
 	@override String get prompt => 'Une seule case peut être remplie à coup sûr maintenant. Trouve-la et place son chiffre.';
 	@override String get stuck => 'Bloqué ? L’indice montre où regarder.';
 	@override String get done => 'Terminé';
+}
+
+// Path: notebook
+class _Translations$notebook$fr extends Translations$notebook$uk {
+	_Translations$notebook$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Le carnet de MICHI';
+	@override String get intro => 'Une page pour chaque technique. Maîtrise-la pour gagner son tampon de patte.';
+	@override String count({required Object n, required Object total}) => '${n} sur ${total} tamponnées';
+	@override String get notStarted => 'Pas encore commencée';
+	@override String get progressRow => 'Le carnet de MICHI';
+	@override String get stampedLabel => 'Tamponnée';
 }
 
 // Path: learn.lessons
@@ -1267,6 +1283,12 @@ extension on TranslationsFr {
 			'spotIt.prompt' => 'Une seule case peut être remplie à coup sûr maintenant. Trouve-la et place son chiffre.',
 			'spotIt.stuck' => 'Bloqué ? L’indice montre où regarder.',
 			'spotIt.done' => 'Terminé',
+			'notebook.title' => 'Le carnet de MICHI',
+			'notebook.intro' => 'Une page pour chaque technique. Maîtrise-la pour gagner son tampon de patte.',
+			'notebook.count' => ({required Object n, required Object total}) => '${n} sur ${total} tamponnées',
+			'notebook.notStarted' => 'Pas encore commencée',
+			'notebook.progressRow' => 'Le carnet de MICHI',
+			'notebook.stampedLabel' => 'Tamponnée',
 			_ => null,
 		};
 	}

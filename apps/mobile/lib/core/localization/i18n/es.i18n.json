@@ -526,5 +526,13 @@
     "prompt": "Ahora mismo solo una casilla se puede llenar con certeza. Encuéntrala y pon su número.",
     "stuck": "¿Atascado? La pista te muestra dónde mirar.",
     "done": "Listo"
+  },
+  "notebook": {
+    "title": "El cuaderno de MICHI",
+    "intro": "Una página para cada técnica. Domínala y gana su sello de huella.",
+    "count": "$n de $total sellados",
+    "notStarted": "Aún sin empezar",
+    "progressRow": "El cuaderno de MICHI",
+    "stampedLabel": "Sellada"
   }
 }

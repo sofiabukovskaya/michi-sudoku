@@ -60,6 +60,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$sync$es sync = _Translations$sync$es._(_root);
 	@override late final _Translations$reminder$es reminder = _Translations$reminder$es._(_root);
 	@override late final _Translations$spotIt$es spotIt = _Translations$spotIt$es._(_root);
+	@override late final _Translations$notebook$es notebook = _Translations$notebook$es._(_root);
 }
 
 // Path: common
@@ -662,6 +663,21 @@ class _Translations$spotIt$es extends Translations$spotIt$uk {
 	@override String get prompt => 'Ahora mismo solo una casilla se puede llenar con certeza. Encuéntrala y pon su número.';
 	@override String get stuck => '¿Atascado? La pista te muestra dónde mirar.';
 	@override String get done => 'Listo';
+}
+
+// Path: notebook
+class _Translations$notebook$es extends Translations$notebook$uk {
+	_Translations$notebook$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'El cuaderno de MICHI';
+	@override String get intro => 'Una página para cada técnica. Domínala y gana su sello de huella.';
+	@override String count({required Object n, required Object total}) => '${n} de ${total} sellados';
+	@override String get notStarted => 'Aún sin empezar';
+	@override String get progressRow => 'El cuaderno de MICHI';
+	@override String get stampedLabel => 'Sellada';
 }
 
 // Path: learn.lessons
@@ -1267,6 +1283,12 @@ extension on TranslationsEs {
 			'spotIt.prompt' => 'Ahora mismo solo una casilla se puede llenar con certeza. Encuéntrala y pon su número.',
 			'spotIt.stuck' => '¿Atascado? La pista te muestra dónde mirar.',
 			'spotIt.done' => 'Listo',
+			'notebook.title' => 'El cuaderno de MICHI',
+			'notebook.intro' => 'Una página para cada técnica. Domínala y gana su sello de huella.',
+			'notebook.count' => ({required Object n, required Object total}) => '${n} de ${total} sellados',
+			'notebook.notStarted' => 'Aún sin empezar',
+			'notebook.progressRow' => 'El cuaderno de MICHI',
+			'notebook.stampedLabel' => 'Sellada',
 			_ => null,
 		};
 	}

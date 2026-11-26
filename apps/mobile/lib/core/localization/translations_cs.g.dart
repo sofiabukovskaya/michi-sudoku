@@ -60,6 +60,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$sync$cs sync = _Translations$sync$cs._(_root);
 	@override late final _Translations$reminder$cs reminder = _Translations$reminder$cs._(_root);
 	@override late final _Translations$spotIt$cs spotIt = _Translations$spotIt$cs._(_root);
+	@override late final _Translations$notebook$cs notebook = _Translations$notebook$cs._(_root);
 }
 
 // Path: common
@@ -668,6 +669,21 @@ class _Translations$spotIt$cs extends Translations$spotIt$uk {
 	@override String get done => 'Hotovo';
 }
 
+// Path: notebook
+class _Translations$notebook$cs extends Translations$notebook$uk {
+	_Translations$notebook$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'MICHIho zápisník';
+	@override String get intro => 'Jedna stránka pro každou techniku. Zvládni ji a získáš razítko tlapky.';
+	@override String count({required Object n, required Object total}) => 'Orazítkováno ${n} z ${total}';
+	@override String get notStarted => 'Zatím nezačato';
+	@override String get progressRow => 'MICHIho zápisník';
+	@override String get stampedLabel => 'Orazítkováno';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$cs extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$cs._(TranslationsCs root) : this._root = root, super.internal(root);
@@ -1271,6 +1287,12 @@ extension on TranslationsCs {
 			'spotIt.prompt' => 'Právě teď jde s jistotou vyplnit jediné políčko. Najdi ho a doplň číslici.',
 			'spotIt.stuck' => 'Nevíš? Nápověda ukáže, kam se dívat.',
 			'spotIt.done' => 'Hotovo',
+			'notebook.title' => 'MICHIho zápisník',
+			'notebook.intro' => 'Jedna stránka pro každou techniku. Zvládni ji a získáš razítko tlapky.',
+			'notebook.count' => ({required Object n, required Object total}) => 'Orazítkováno ${n} z ${total}',
+			'notebook.notStarted' => 'Zatím nezačato',
+			'notebook.progressRow' => 'MICHIho zápisník',
+			'notebook.stampedLabel' => 'Orazítkováno',
 			_ => null,
 		};
 	}

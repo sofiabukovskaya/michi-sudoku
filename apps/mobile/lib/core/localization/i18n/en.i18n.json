@@ -526,5 +526,13 @@
     "prompt": "Exactly one cell can be filled right now. Find it and place its digit.",
     "stuck": "Stuck? The hint shows where to look.",
     "done": "Done"
+  },
+  "notebook": {
+    "title": "MICHI's notebook",
+    "intro": "One page for every technique. Master one to earn its paw stamp.",
+    "count": "$n of $total stamped",
+    "notStarted": "Not started yet",
+    "progressRow": "MICHI's notebook",
+    "stampedLabel": "Stamped"
   }
 }

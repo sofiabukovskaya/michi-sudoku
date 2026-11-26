@@ -17,6 +17,7 @@ import 'package:michi_mobile/features/home/presentation/home_page.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/learn_page.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_lesson_page.dart';
+import 'package:michi_mobile/features/notebook/presentation/notebook_page.dart';
 import 'package:michi_mobile/features/onboarding/data/onboarding_store.dart';
 import 'package:michi_mobile/features/onboarding/presentation/onboarding_page.dart';
 import 'package:michi_mobile/features/onboarding/presentation/player_level_page.dart';
@@ -72,6 +73,7 @@ final class AppRouter extends RootStackRouter {
     AutoRoute(page: TechniqueLessonRoute.page),
     AutoRoute(page: PracticeRoute.page),
     AutoRoute(page: SpotItRoute.page),
+    AutoRoute(page: NotebookRoute.page),
     AutoRoute(page: ScannerRoute.page),
     AutoRoute(page: WeekRoute.page),
     AutoRoute(page: SettingsRoute.page),

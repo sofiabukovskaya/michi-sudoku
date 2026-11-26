@@ -526,5 +526,13 @@
     "prompt": "Genau ein Feld lässt sich jetzt sicher füllen. Finde es und setze die Zahl.",
     "stuck": "Hängst du? Der Tipp zeigt, wo du schauen kannst.",
     "done": "Fertig"
+  },
+  "notebook": {
+    "title": "MICHIs Notizbuch",
+    "intro": "Eine Seite für jede Technik. Meistere sie und verdiene dir ihren Pfotenstempel.",
+    "count": "$n von $total gestempelt",
+    "notStarted": "Noch nicht begonnen",
+    "progressRow": "MICHIs Notizbuch",
+    "stampedLabel": "Gestempelt"
   }
 }

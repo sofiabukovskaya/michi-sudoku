@@ -60,6 +60,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$sync$de sync = _Translations$sync$de._(_root);
 	@override late final _Translations$reminder$de reminder = _Translations$reminder$de._(_root);
 	@override late final _Translations$spotIt$de spotIt = _Translations$spotIt$de._(_root);
+	@override late final _Translations$notebook$de notebook = _Translations$notebook$de._(_root);
 }
 
 // Path: common
@@ -662,6 +663,21 @@ class _Translations$spotIt$de extends Translations$spotIt$uk {
 	@override String get prompt => 'Genau ein Feld lässt sich jetzt sicher füllen. Finde es und setze die Zahl.';
 	@override String get stuck => 'Hängst du? Der Tipp zeigt, wo du schauen kannst.';
 	@override String get done => 'Fertig';
+}
+
+// Path: notebook
+class _Translations$notebook$de extends Translations$notebook$uk {
+	_Translations$notebook$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'MICHIs Notizbuch';
+	@override String get intro => 'Eine Seite für jede Technik. Meistere sie und verdiene dir ihren Pfotenstempel.';
+	@override String count({required Object n, required Object total}) => '${n} von ${total} gestempelt';
+	@override String get notStarted => 'Noch nicht begonnen';
+	@override String get progressRow => 'MICHIs Notizbuch';
+	@override String get stampedLabel => 'Gestempelt';
 }
 
 // Path: learn.lessons
@@ -1267,6 +1283,12 @@ extension on TranslationsDe {
 			'spotIt.prompt' => 'Genau ein Feld lässt sich jetzt sicher füllen. Finde es und setze die Zahl.',
 			'spotIt.stuck' => 'Hängst du? Der Tipp zeigt, wo du schauen kannst.',
 			'spotIt.done' => 'Fertig',
+			'notebook.title' => 'MICHIs Notizbuch',
+			'notebook.intro' => 'Eine Seite für jede Technik. Meistere sie und verdiene dir ihren Pfotenstempel.',
+			'notebook.count' => ({required Object n, required Object total}) => '${n} von ${total} gestempelt',
+			'notebook.notStarted' => 'Noch nicht begonnen',
+			'notebook.progressRow' => 'MICHIs Notizbuch',
+			'notebook.stampedLabel' => 'Gestempelt',
 			_ => null,
 		};
 	}

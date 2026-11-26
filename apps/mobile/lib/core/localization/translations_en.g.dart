@@ -60,6 +60,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$sync$en sync = _Translations$sync$en._(_root);
 	@override late final _Translations$reminder$en reminder = _Translations$reminder$en._(_root);
 	@override late final _Translations$spotIt$en spotIt = _Translations$spotIt$en._(_root);
+	@override late final _Translations$notebook$en notebook = _Translations$notebook$en._(_root);
 }
 
 // Path: common
@@ -662,6 +663,21 @@ class _Translations$spotIt$en extends Translations$spotIt$uk {
 	@override String get prompt => 'Exactly one cell can be filled right now. Find it and place its digit.';
 	@override String get stuck => 'Stuck? The hint shows where to look.';
 	@override String get done => 'Done';
+}
+
+// Path: notebook
+class _Translations$notebook$en extends Translations$notebook$uk {
+	_Translations$notebook$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'MICHI\'s notebook';
+	@override String get intro => 'One page for every technique. Master one to earn its paw stamp.';
+	@override String count({required Object n, required Object total}) => '${n} of ${total} stamped';
+	@override String get notStarted => 'Not started yet';
+	@override String get progressRow => 'MICHI\'s notebook';
+	@override String get stampedLabel => 'Stamped';
 }
 
 // Path: learn.lessons
@@ -1267,6 +1283,12 @@ extension on TranslationsEn {
 			'spotIt.prompt' => 'Exactly one cell can be filled right now. Find it and place its digit.',
 			'spotIt.stuck' => 'Stuck? The hint shows where to look.',
 			'spotIt.done' => 'Done',
+			'notebook.title' => 'MICHI\'s notebook',
+			'notebook.intro' => 'One page for every technique. Master one to earn its paw stamp.',
+			'notebook.count' => ({required Object n, required Object total}) => '${n} of ${total} stamped',
+			'notebook.notStarted' => 'Not started yet',
+			'notebook.progressRow' => 'MICHI\'s notebook',
+			'notebook.stampedLabel' => 'Stamped',
 			_ => null,
 		};
 	}

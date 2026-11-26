@@ -530,5 +530,13 @@
     "prompt": "Právě teď jde s jistotou vyplnit jediné políčko. Najdi ho a doplň číslici.",
     "stuck": "Nevíš? Nápověda ukáže, kam se dívat.",
     "done": "Hotovo"
+  },
+  "notebook": {
+    "title": "MICHIho zápisník",
+    "intro": "Jedna stránka pro každou techniku. Zvládni ji a získáš razítko tlapky.",
+    "count": "Orazítkováno $n z $total",
+    "notStarted": "Zatím nezačato",
+    "progressRow": "MICHIho zápisník",
+    "stampedLabel": "Orazítkováno"
   }
 }

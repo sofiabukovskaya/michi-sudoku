@@ -526,5 +526,13 @@
     "prompt": "Une seule case peut être remplie à coup sûr maintenant. Trouve-la et place son chiffre.",
     "stuck": "Bloqué ? L’indice montre où regarder.",
     "done": "Terminé"
+  },
+  "notebook": {
+    "title": "Le carnet de MICHI",
+    "intro": "Une page pour chaque technique. Maîtrise-la pour gagner son tampon de patte.",
+    "count": "$n sur $total tamponnées",
+    "notStarted": "Pas encore commencée",
+    "progressRow": "Le carnet de MICHI",
+    "stampedLabel": "Tamponnée"
   }
 }

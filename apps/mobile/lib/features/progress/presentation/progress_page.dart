@@ -159,6 +159,25 @@ final class _ProgressPageState extends State<ProgressPage>
                       context.t.home.progress,
                       style: MichiTypography.display,
                     ),
+                    const SizedBox(height: MichiSpacing.lg),
+                    _NotebookRow(
+                      stamped: data.techniques.values
+                          .where(
+                            (item) => item.mastery == TechniqueMastery.mastered,
+                          )
+                          .length,
+                      onTap: () => unawaited(
+                        context.router.root.push(const NotebookRoute()).then((
+                          _,
+                        ) {
+                          if (mounted) {
+                            setState(() {
+                              _data = _load();
+                            });
+                          }
+                        }),
+                      ),
+                    ),
                     const SizedBox(height: MichiSpacing.xxl),
                     Text(
                       context.t.progress.doingWell,
@@ -267,6 +286,27 @@ final class _ProgressPageState extends State<ProgressPage>
         ),
       ),
     ),
+  );
+}
+
+/// The way into MICHI's notebook, with how many pages are stamped.
+final class _NotebookRow extends StatelessWidget {
+  const _NotebookRow({required this.stamped, required this.onTap});
+
+  final int stamped;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => MichiListRow(
+    key: const ValueKey('progress-notebook'),
+    icon: Icons.menu_book_outlined,
+    tone: MichiRowTone.coral,
+    title: context.t.notebook.progressRow,
+    subtitle: context.t.notebook.count(
+      n: stamped,
+      total: SudokuTechniqueOrder.supported.length,
+    ),
+    onTap: onTap,
   );
 }
 
