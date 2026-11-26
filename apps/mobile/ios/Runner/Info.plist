@@ -54,6 +54,8 @@
 	<string>MICHI does not record audio while scanning Sudoku.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>MICHI lets you select a Sudoku photo to import.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -12,6 +12,7 @@ import 'package:michi_mobile/app/widgets/michi_mascot.dart';
 import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/platform/ios_widgets.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
@@ -231,6 +232,28 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     if (lifecycle == AppLifecycleState.resumed) {
       final cubit = _cubit;
       if (cubit != null) _startTicker(cubit);
+      // Back in the game: the Lock Screen reminder has done its job.
+      unawaited(IosWidgets.endGameWaiting());
+    } else if (lifecycle == AppLifecycleState.paused) {
+      final cubit = _cubit;
+      _ticker?.cancel();
+      _ticker = null;
+      if (cubit != null) {
+        unawaited(cubit.onAppBackground());
+        final state = cubit.state;
+        if (state.status != GameStatus.completed) {
+          unawaited(
+            IosWidgets.showGameWaiting(
+              WidgetGame(
+                givens: state.puzzle.givens,
+                current: state.board,
+                daily: state.dailyChallengeKey != null,
+              ),
+              cubit.elapsed,
+            ),
+          );
+        }
+      }
     } else if (lifecycle == AppLifecycleState.inactive ||
         lifecycle == AppLifecycleState.paused ||
         lifecycle == AppLifecycleState.detached) {
@@ -260,6 +283,9 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
     cubit.enterDigit(digit);
     final after = cubit.state;
     if (identical(before, after)) return;
+    if (after.status == GameStatus.completed) {
+      unawaited(IosWidgets.endGameWaiting());
+    }
     unawaited(
       after.status == GameStatus.completed
           ? HapticFeedback.heavyImpact()

@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/navigation/active_tab_tickers.dart';
@@ -15,6 +13,7 @@ import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/app/widgets/mini_board.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/platform/ios_widgets.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/game/application/game_preparation.dart';
@@ -165,7 +164,12 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _loadFailed = false;
         _loading = false;
       });
-      if (active != null) unawaited(_loadActiveBoard(sequence));
+      if (active != null) {
+        unawaited(_loadActiveBoard(sequence));
+      } else {
+        _activeGame = null;
+        _publishWidgets();
+      }
       if (widget.launchAction != 'daily') unawaited(_handleLaunch());
       unawaited(_loadFocus(sequence));
       unawaited(_loadWeek(sequence));
@@ -203,9 +207,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               .then<void>((_) {}, onError: (Object _, StackTrace _) {}),
         );
       }
-      if (defaultTargetPlatform == TargetPlatform.iOS) {
-        unawaited(_publishDaily(daily));
-      }
+      _publishWidgets();
       unawaited(_handleLaunch());
     } on Object catch (error, stackTrace) {
       developer.log(
@@ -220,17 +222,34 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _publishDaily(DailyPuzzle daily) async {
-    try {
-      await const MethodChannel('michi/daily').invokeMethod<void>('publish', {
-        'day': daily.date.toString(),
-        'difficulty': daily.puzzle.difficulty?.name,
-      });
-    } on MissingPluginException {
-      // Widget extensions are optional in embedded/test runners.
-    } on PlatformException catch (error) {
-      developer.log('Daily widget update unavailable', error: error);
-    }
+  /// Shares what Home knows with the iOS widgets. Called after each load
+  /// stage; the native side ignores an unchanged snapshot.
+  void _publishWidgets() {
+    final daily = _daily;
+    if (daily == null) return;
+    final active = _active;
+    final game = _activeGame;
+    unawaited(
+      IosWidgets.publish(
+        WidgetSnapshot(
+          day: daily.date.toString(),
+          difficulty: daily.puzzle.difficulty?.name,
+          dailyDone: _dailyCompleted,
+          streak: _streak,
+          week: [
+            for (final day in _week?.days ?? const <DayActivity>[])
+              day.puzzles > 0,
+          ],
+          game: active != null && game != null && game.gameId == active.gameId
+              ? WidgetGame(
+                  givens: game.initialBoard,
+                  current: game.currentBoard,
+                  daily: game.dailyChallengeKey != null,
+                )
+              : null,
+        ),
+      ),
+    );
   }
 
   Future<void> _loadFocus(int sequence) async {
@@ -247,6 +266,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       final game = await _repository.loadActiveGame();
       if (!mounted || sequence != _reloadSequence) return;
       setState(() => _activeGame = game);
+      _publishWidgets();
     } on Object {
       // The row stays usable with its plain tile.
     }
@@ -261,6 +281,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _week = WeeklyActivity.current(now, games);
         _streak = DailyStreak.count(now, games);
       });
+      _publishWidgets();
     } on Object catch (error, stackTrace) {
       developer.log(
         'Unable to load weekly activity',
