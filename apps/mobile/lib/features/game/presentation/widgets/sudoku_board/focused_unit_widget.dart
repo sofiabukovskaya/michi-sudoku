@@ -21,10 +21,24 @@ final class FocusedUnitWidget extends StatelessWidget {
   final ValueChanged<CellRef>? onCellTap;
 
   /// Row, column and multi-unit deductions need the full board for orientation.
-  static SudokuUnit? unitFor(Deduction deduction) {
-    if (deduction.technique == SudokuTechnique.nakedSingle ||
-        deduction.technique == SudokuTechnique.hiddenSingle) {
+  ///
+  /// A box excerpt is used only when that box alone proves the move. A Hidden
+  /// Single found in a row or column may still have several places for its
+  /// digit inside the box; showing only the box would hide the reason.
+  static SudokuUnit? unitFor(Deduction deduction, {HumanSolverState? state}) {
+    if (deduction.technique == SudokuTechnique.nakedSingle) {
       return SudokuUnit.box(deduction.focusCells.first.box);
+    }
+    if (deduction.technique == SudokuTechnique.hiddenSingle) {
+      final box = SudokuUnit.box(deduction.focusCells.first.box);
+      final placement = deduction.placements.singleOrNull;
+      if (state == null || placement == null) return box;
+      final places = box.cells.where(
+        (cell) =>
+            state.board.isEmpty(cell) &&
+            state.candidatesFor(cell).contains(placement.digit),
+      );
+      return places.length == 1 ? box : null;
     }
     if (deduction.technique != SudokuTechnique.nakedPair &&
         deduction.technique != SudokuTechnique.hiddenPair &&
@@ -42,12 +56,17 @@ final class FocusedUnitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final side = (math.min(constraints.maxWidth, constraints.maxHeight) / 3)
-            .clamp(48, 102)
+        // Never larger than the space given; never a stretched debug grid.
+        final side = math
+            .min(
+              116,
+              (math.min(constraints.maxWidth, constraints.maxHeight) / 3)
+                  .floor(),
+            )
             .toDouble();
         return Center(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
+          child: Container(
+            foregroundDecoration: BoxDecoration(
               border: Border.all(color: MichiColors.boardBoxLine, width: 2),
               borderRadius: BorderRadius.circular(MichiRadius.control),
             ),
@@ -99,8 +118,13 @@ final class _FocusedCell extends StatelessWidget {
     final digit = view.board.valueAt(cell);
     final candidates = view.notes[cell] ?? CandidateMask.empty;
     final hint = view.coachHint;
-    final focused = hint?.focusCells.contains(cell) ?? false;
-    final selected = view.selectedCell == cell;
+    final placed = hint?.revealedPlacements
+        .where((placement) => placement.cell == cell)
+        .firstOrNull;
+    final focused =
+        placed == null && (hint?.focusCells.contains(cell) ?? false);
+    final selected = placed == null && view.selectedCell == cell;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final action = onCellTap;
     return Semantics(
       label:
@@ -113,30 +137,58 @@ final class _FocusedCell extends StatelessWidget {
         key: ValueKey('cell-${cell.index}'),
         excludeFromSemantics: true,
         onTap: action == null ? null : () => action(cell),
-        child: Container(
+        child: AnimatedContainer(
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : MichiMotion.quick,
+          curve: MichiMotion.curve,
           width: side,
           height: side,
           decoration: BoxDecoration(
-            color: selected
+            color: placed != null
+                ? MichiColors.successTint
+                : selected
                 ? MichiColors.boardSelected
                 : focused
                 ? MichiColors.coralTint
                 : MichiColors.ivory,
             border: Border.all(
-              color: selected
+              color: placed != null
+                  ? MichiColors.success
+                  : selected
                   ? MichiColors.indigo
                   : focused
                   ? MichiColors.coral
                   : MichiColors.boardCellLine,
-              width: selected || focused ? 2 : 1,
+              width: placed != null || selected || focused ? 2 : 1,
             ),
           ),
-          child: digit != 0
+          child: placed != null
+              // The proven digit lands in its cell: cause and effect.
+              ? Center(
+                  child: TweenAnimationBuilder<double>(
+                    key: ValueKey(placed),
+                    tween: Tween(begin: reduceMotion ? 1 : 0.4, end: 1),
+                    duration: MichiMotion.emphasis,
+                    curve: Curves.easeOutBack,
+                    builder: (_, scale, child) =>
+                        Transform.scale(scale: scale, child: child),
+                    child: Text(
+                      '${placed.digit}',
+                      key: ValueKey('proof-digit-${cell.index}'),
+                      style: MichiTypography.heading.copyWith(
+                        fontSize: (side * 0.44).clamp(24, 44),
+                        color: MichiColors.success,
+                      ),
+                    ),
+                  ),
+                )
+              : digit != 0
               ? Center(
                   child: Text(
                     '$digit',
                     style: MichiTypography.heading.copyWith(
-                      fontSize: 44,
+                      fontSize: (side * 0.44).clamp(24, 44),
                       color: view.isGiven(cell)
                           ? MichiColors.textPrimary
                           : MichiColors.indigo,
@@ -192,16 +244,42 @@ final class _CandidateGrid extends StatelessWidget {
                                   CandidateElimination(cell, digit),
                                 ) ??
                                 false);
-                        return Text(
+                        final proof =
+                            !eliminated &&
+                            (view.coachHint?.candidateHighlights.contains(
+                                  CandidateRef(cell, digit),
+                                ) ??
+                                false);
+                        final text = Text(
                           '$digit',
                           style: MichiTypography.meta.copyWith(
                             fontSize: side < 50 ? 7 : 14,
+                            fontWeight: proof ? FontWeight.w800 : null,
                             color: eliminated
                                 ? MichiColors.error
+                                : proof
+                                ? MichiColors.indigo
                                 : MichiColors.boardCandidate,
                             decoration: eliminated
                                 ? TextDecoration.lineThrough
                                 : null,
+                          ),
+                        );
+                        if (!proof) return text;
+                        // Proof candidates get the same quiet ring the
+                        // full-board Coach overlay draws.
+                        return DecoratedBox(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: MichiColors.ivory,
+                            border: Border.all(
+                              color: MichiColors.indigo,
+                              width: 1.2,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: text,
                           ),
                         );
                       },

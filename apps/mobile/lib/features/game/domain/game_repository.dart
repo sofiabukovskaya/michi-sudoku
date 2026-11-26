@@ -1,4 +1,5 @@
 import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
+import 'package:michi_mobile/features/game/domain/proven_elimination.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// One bounded, meaningful undo action. Mistakes are cumulative and are not
@@ -37,9 +38,13 @@ final class StoredGame {
     this.dailyChallengeKey,
     Map<SudokuTechnique, int> techniqueHelp = const {},
     Map<CellRef, MoveReasoningContext> reasoning = const {},
+    List<ProvenElimination> provenEliminations = const [],
   }) : techniqueHelp = Map<SudokuTechnique, int>.unmodifiable(techniqueHelp),
        notes = Map<CellRef, CandidateMask>.unmodifiable(notes),
        reasoning = Map<CellRef, MoveReasoningContext>.unmodifiable(reasoning),
+       provenEliminations = List<ProvenElimination>.unmodifiable(
+         provenEliminations,
+       ),
        undoHistory = List<StoredGameSnapshot>.unmodifiable(undoHistory);
 
   final String gameId;
@@ -49,6 +54,9 @@ final class StoredGame {
   final SudokuBoard currentBoard;
   final Map<CellRef, CandidateMask> notes;
   final Map<CellRef, MoveReasoningContext> reasoning;
+
+  /// Coach removals the player accepted; logical state, not pencil notes.
+  final List<ProvenElimination> provenEliminations;
   final List<StoredGameSnapshot> undoHistory;
   final int mistakes;
   final Duration elapsedBeforeRun;

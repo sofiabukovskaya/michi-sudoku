@@ -2,6 +2,9 @@
   "appName": "MICHI",
   "common": {
     "continueLabel": "Continuer",
+    "justAMoment": "Un instant…",
+    "retry": "Réessayer",
+    "loadProblem": "MICHI n’a pas pu ouvrir cela pour l’instant. Ta progression est en sécurité sur cet appareil.",
     "start": "Commencer"
   },
   "splash": {
@@ -29,7 +32,7 @@
   "playerLevel": {
     "title": "Connais-tu bien le sudoku ?",
     "goToGame": "Commencer à jouer",
-    "subtitle": "Cela détermine ta première leçon et la difficulté. Tu peux changer plus tard.",
+    "subtitle": "Choisis la description qui te correspond le mieux.",
     "beginner": "Je débute",
     "beginnerDetail": "Règles et premiers coups",
     "basics": "Je connais les bases",
@@ -46,7 +49,7 @@
     "google": "Continuer avec Google",
     "emailEntry": "Se connecter par e-mail",
     "createTitle": "Créer un compte",
-    "createSubtitle": "Ta progression reste sur cet appareil jusqu’à ce que la synchronisation soit disponible.",
+    "createSubtitle": "Synchronise tes sudokus terminés et ta progression entre tes appareils.",
     "signInTitle": "Bon retour",
     "name": "Nom",
     "email": "E-mail",
@@ -80,6 +83,7 @@
     "errorTooMany": "Trop de tentatives. Réessaie plus tard.",
     "errorNetwork": "Vérifie ta connexion et réessaie.",
     "errorUnavailable": "Le service de comptes est indisponible. Tu peux continuer sans compte.",
+    "errorSignInAgain": "Reconnecte-toi, puis réessaie.",
     "errorUnexpected": "Une erreur s’est produite. Réessaie.",
     "showPassword": "Afficher le mot de passe",
     "hidePassword": "Masquer le mot de passe",
@@ -116,6 +120,11 @@
     "newPuzzle": "Un autre sudoku",
     "weekTitle": "Cette semaine",
     "weekDetails": "Détails",
+    "streak": {
+      "one": "$n jour",
+      "other": "$n jours"
+    },
+    "streakMeaning": "Jours d’affilée avec le Sudoku du jour résolu",
     "weekdaysShort": "Lu|Ma|Me|Je|Ve|Sa|Di",
     "newPuzzleTitle": "Nouveau sudoku",
     "catalogSource": "Choisir un sudoku",
@@ -123,7 +132,8 @@
     "scanSourceDetail": "Photo ou appareil photo",
     "weekStatusDone": "Terminé",
     "weekStatusToday": "Aujourd’hui",
-    "weekStatusEmpty": "Aucune activité"
+    "weekStatusEmpty": "Aucune activité",
+    "scanInvite": "Un sudoku ailleurs ? Scanne-le."
   },
   "game": {
     "title": "Sudoku du jour · Moyen",
@@ -159,7 +169,10 @@
     "completionMistakes": "erreurs",
     "completionHints": "indices",
     "dailyStampEarned": "Tampon quotidien obtenu",
-    "completionPracticeTechnique": "Prochaine étape : $technique"
+    "completionPracticeTechnique": "Prochaine étape : $technique",
+    "numberFirst": "Chiffre en premier",
+    "fillNotes": "Remplir les notes",
+    "inputOptions": "Options de saisie"
   },
   "learn": {
     "title": "Apprendre",
@@ -186,6 +199,8 @@
     "tryAgain": "Réessayer",
     "askMichi": "Demander à MICHI",
     "nextScenario": "Exercice suivant",
+    "pickCellFirst": "Touche une case pour voir ses candidats.",
+    "finishPractice": "Voir le résultat",
     "sessionSummary": "Pratique terminée",
     "summaryStats": "$correct corrects · $attempts essais",
     "hintsUsed": "$count avec MICHI",
@@ -293,7 +308,9 @@
       "other": "$n sudokus terminés"
     },
     "mastery": "Maîtrise $percent %",
-    "openTechnique": "Ouvrir la technique"
+    "openTechnique": "Ouvrir la technique",
+    "firstPuzzle": "Commence par ton premier sudoku",
+    "firstPuzzleDetail": "Tu verras ensuite tes points forts et ce que tu peux travailler."
   },
   "profile": {
     "guest": "Invité",
@@ -313,7 +330,7 @@
     "openCamera": "Utiliser l’appareil photo",
     "choosePhoto": "Choisir une photo",
     "shutter": "Prendre une photo",
-    "frameGuide": "Gardez les quatre coins dans le cadre.",
+    "frameGuide": "Place un seul sudoku dans le cadre.",
     "processing": "Lecture du sudoku…",
     "reviewTitle": "Vérifiez les chiffres",
     "reviewBody": "Touchez une case pour la corriger avant de jouer.",
@@ -323,7 +340,8 @@
     "recognized": "reconnu",
     "empty": "vide",
     "clear": "Effacer",
-    "confirm": "Importer le sudoku",
+    "confirm": "Continuer dans MICHI",
+    "checking": "Vérification du sudoku…",
     "rescan": "Scanner à nouveau",
     "permissionIntro": "Autorisez l’appareil photo pour prendre une photo.",
     "permissionDenied": "L’accès à l’appareil photo est refusé. Vous pouvez choisir une photo.",
@@ -336,13 +354,32 @@
     "segmentationFailure": "Impossible de découper la grille en cases. Réessayez.",
     "recognitionFailure": "Certains chiffres sont illisibles. Réessayez.",
     "duplicateClues": "Corrigez les chiffres en conflit signalés.",
-    "noSolution": "Ces chiffres ne donnent aucune solution. Vérifiez-les.",
+    "noSolution": "Ces indices n’ont pas de solution. Compare les cases marquées ? avec ta photo.",
     "multipleSolutions": "Il manque peut-être des chiffres : ce sudoku a plusieurs solutions.",
     "storageFailure": "Impossible d’enregistrer le sudoku importé. Réessayez.",
     "validationFailure": "Impossible de vérifier cette grille. Réessayez de confirmer.",
     "unsupportedCoach": "MICHI ne peut pas encore expliquer chaque étape de ce sudoku.",
     "importedTitle": "Sudoku importé",
-    "lowConfidenceCount": "Cases à vérifier : $count"
+    "lowConfidenceCount": "Cases à vérifier : $count",
+    "stuck": "Je bloque, aide-moi",
+    "noStep": "MICHI ne trouve pas de prochaine étape avec les techniques disponibles.",
+    "completed": "Toutes les cases sont remplies. Ce sudoku est terminé.",
+    "chooseTitle": "Quel sudoku ?",
+    "chooseBody": "Cette photo contient plusieurs sudokus. Touche celui que tu veux jouer.",
+    "chooseOption": "Sudoku $number",
+    "multipleGrids": "Cette photo contient plusieurs sudokus. Places-en un dans le cadre.",
+    "legendUnsure": "Incertain : compare avec ta photo",
+    "legendConflict": "Conflit : même chiffre en double",
+    "fromPhoto": "Sur ta photo",
+    "maybe": "Peut-être $digit ?",
+    "checkSolution": "Vérifier",
+    "stuckShort": "Je bloque",
+    "checkSolved": "Résolu ! Chaque chiffre est juste.",
+    "checkOnTrack": "Aucune erreur pour l’instant. Continue !",
+    "checkConflicts": "Un chiffre se répète dans une ligne, une colonne ou un carré. Corrige ceux qui sont marqués.",
+    "checkOffTrack": "Un des chiffres entourés ne va pas. Regarde-les d’abord.",
+    "checkOffTrackWide": "Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.",
+    "legendSuspect": "Erreur possible"
   },
   "coach": {
     "step": "Indice $step sur 4",
@@ -369,6 +406,8 @@
     "resultEliminations": "Retirez les candidats barrés des cases surlignées.",
     "resultActions": "Appliquez l’étape logique surlignée.",
     "technique": "Technique : $name",
+    "lessonLink": "Leçon",
+    "removeThem": "Les retirer",
     "nakedSingle": "candidat unique",
     "hiddenSingle": "unique caché",
     "nakedPair": "paire nue",
@@ -415,7 +454,7 @@
     "repeatedCoachHelp": "Vous avez récemment eu besoin de MICHI.",
     "weakIndependentPractice": "La pratique autonome mérite d’être renforcée.",
     "continuePractice": "Continuez à pratiquer cette technique.",
-    "nextTechnique": "La prochaine étape de votre parcours.",
+    "nextTechnique": "La prochaine étape de ton parcours.",
     "masteredNeedsReview": "Une technique connue mérite une révision.",
     "allMasteredReview": "Révisez une technique déjà maîtrisée."
   },
@@ -444,7 +483,7 @@
     "languageDetail": "Choisis la langue de MICHI.",
     "reminders": "Rappels",
     "dailyReminder": "Tous les jours à 08:00",
-    "reminderSignIn": "Connectez-vous pour activer les rappels.",
+    "reminderSignIn": "Connecte-toi pour activer les rappels.",
     "reminderPermission": "Autorisez les notifications dans les réglages du système.",
     "reminderUnavailable": "Les notifications ne sont pas disponibles sur cet appareil."
   },
@@ -461,10 +500,10 @@
     "retry": "Réessayer",
     "guest": "La progression est enregistrée uniquement sur cet appareil.",
     "deleteAccount": "Supprimer le compte",
-    "deleteTitle": "Supprimer votre compte ?",
-    "deleteBody": "Votre compte et votre progression synchronisée seront supprimés définitivement.",
+    "deleteTitle": "Supprimer ton compte ?",
+    "deleteBody": "Ton compte et ta progression synchronisée seront supprimés définitivement.",
     "deleteConfirm": "Supprimer le compte",
-    "deleteFailed": "Impossible de supprimer votre compte. Reconnectez-vous et réessayez.",
+    "deleteFailed": "Impossible de supprimer ton compte. Reconnecte-toi et réessaie.",
     "signOut": "Se déconnecter"
   }
 }

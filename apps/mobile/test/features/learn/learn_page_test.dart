@@ -11,6 +11,8 @@ import 'package:michi_mobile/features/learn/data/drift_technique_progress_reposi
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
+import '../../helpers/solve_exercise.dart';
+
 void main() {
   setUpAll(bootstrap);
 
@@ -98,6 +100,8 @@ void main() {
         await tester.pumpAndSettle();
       }
     }
+    await solveVisibleExercise(tester);
+    expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);
     expect(find.text('Почати практику'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

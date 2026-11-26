@@ -2,6 +2,9 @@
   "appName": "MICHI",
   "common": {
     "continueLabel": "Continue",
+    "justAMoment": "Just a moment…",
+    "retry": "Try again",
+    "loadProblem": "MICHI couldn’t open this right now. Your progress is safe on this device.",
     "start": "Start"
   },
   "splash": {
@@ -29,7 +32,7 @@
   "playerLevel": {
     "title": "How well do you know Sudoku?",
     "goToGame": "Start playing",
-    "subtitle": "Your first lesson and puzzle difficulty follow this choice. You can change it anytime.",
+    "subtitle": "Choose the description that sounds most like you.",
     "beginner": "Just starting",
     "beginnerDetail": "Rules and first moves",
     "basics": "Know the basics",
@@ -46,7 +49,7 @@
     "google": "Continue with Google",
     "emailEntry": "Sign in with email",
     "createTitle": "Create an account",
-    "createSubtitle": "Your progress stays on this device until sync is available.",
+    "createSubtitle": "Sync completed puzzles and learning progress across your devices.",
     "signInTitle": "Welcome back",
     "name": "Name",
     "email": "Email",
@@ -80,6 +83,7 @@
     "errorTooMany": "Too many attempts. Try again later.",
     "errorNetwork": "Check your connection and try again.",
     "errorUnavailable": "Account services are unavailable. You can keep playing as a guest.",
+    "errorSignInAgain": "Sign in again, then retry this action.",
     "errorUnexpected": "Something went wrong. Please try again.",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
@@ -116,6 +120,11 @@
     "newPuzzle": "Another puzzle",
     "weekTitle": "This week",
     "weekDetails": "Details",
+    "streak": {
+      "one": "$n day",
+      "other": "$n days"
+    },
+    "streakMeaning": "Daily Sudoku solved days in a row",
     "weekdaysShort": "Mon|Tue|Wed|Thu|Fri|Sat|Sun",
     "newPuzzleTitle": "New Sudoku",
     "catalogSource": "Choose a puzzle",
@@ -123,7 +132,8 @@
     "scanSourceDetail": "Photo or camera",
     "weekStatusDone": "Completed",
     "weekStatusToday": "Today",
-    "weekStatusEmpty": "No activity"
+    "weekStatusEmpty": "No activity",
+    "scanInvite": "Have a Sudoku elsewhere? Scan it."
   },
   "game": {
     "title": "Daily Sudoku · Medium",
@@ -159,7 +169,10 @@
     "completionMistakes": "mistakes",
     "completionHints": "hints",
     "dailyStampEarned": "Daily stamp earned",
-    "completionPracticeTechnique": "Practice $technique next"
+    "completionPracticeTechnique": "Practice $technique next",
+    "numberFirst": "Number first",
+    "fillNotes": "Fill pencil notes",
+    "inputOptions": "Input options"
   },
   "learn": {
     "title": "Learn",
@@ -186,6 +199,8 @@
     "tryAgain": "Try again",
     "askMichi": "Ask MICHI",
     "nextScenario": "Next exercise",
+    "pickCellFirst": "Tap a cell to see its candidates.",
+    "finishPractice": "See your results",
     "sessionSummary": "Practice complete",
     "summaryStats": "$correct correct · $attempts attempts",
     "hintsUsed": "$count with MICHI",
@@ -293,7 +308,9 @@
       "other": "$n puzzles completed"
     },
     "mastery": "$percent% mastery",
-    "openTechnique": "Open technique"
+    "openTechnique": "Open technique",
+    "firstPuzzle": "Start with your first Sudoku",
+    "firstPuzzleDetail": "Afterwards you’ll see your strengths and what to practice next."
   },
   "profile": {
     "guest": "Guest",
@@ -313,7 +330,7 @@
     "openCamera": "Use camera",
     "choosePhoto": "Choose photo",
     "shutter": "Take photo",
-    "frameGuide": "Keep all four corners inside the frame.",
+    "frameGuide": "Fit one puzzle inside the frame.",
     "processing": "Reading your Sudoku…",
     "reviewTitle": "Check the digits",
     "reviewBody": "Tap any cell to fix it before playing.",
@@ -323,7 +340,8 @@
     "recognized": "recognized",
     "empty": "empty",
     "clear": "Clear",
-    "confirm": "Import Sudoku",
+    "confirm": "Continue in MICHI",
+    "checking": "Checking your Sudoku…",
     "rescan": "Scan again",
     "permissionIntro": "Allow camera access to take a photo.",
     "permissionDenied": "Camera access was denied. You can still choose a photo.",
@@ -336,13 +354,32 @@
     "segmentationFailure": "The grid could not be divided into cells. Try again.",
     "recognitionFailure": "Some digits could not be read. Please try again.",
     "duplicateClues": "Fix the highlighted conflicting clues.",
-    "noSolution": "These clues have no valid solution. Check the digits.",
+    "noSolution": "These clues have no solution. Check cells marked ? against your photo.",
     "multipleSolutions": "Some clues may be missing; this board has multiple solutions.",
     "storageFailure": "The imported puzzle could not be saved. Try again.",
     "validationFailure": "Could not check this puzzle. Try confirming again.",
     "unsupportedCoach": "MICHI may not yet explain every step in this Sudoku.",
     "importedTitle": "Imported Sudoku",
-    "lowConfidenceCount": "Low-confidence cells: $count"
+    "lowConfidenceCount": "Cells to double-check: $count",
+    "stuck": "I'm stuck — help me",
+    "noStep": "MICHI can’t find a next step with its current techniques.",
+    "completed": "All cells are filled. This Sudoku is complete.",
+    "chooseTitle": "Which puzzle?",
+    "chooseBody": "This photo has more than one puzzle. Tap the one you want to play.",
+    "chooseOption": "Puzzle $number",
+    "multipleGrids": "This photo has more than one puzzle. Fit one inside the frame.",
+    "legendUnsure": "Unsure: compare with your photo",
+    "legendConflict": "Conflict: same digit twice",
+    "fromPhoto": "From your photo",
+    "maybe": "Maybe $digit?",
+    "checkSolution": "Check it",
+    "stuckShort": "I'm stuck",
+    "checkSolved": "Solved! Every digit checks out.",
+    "checkOnTrack": "No mistakes so far. Keep going!",
+    "checkConflicts": "A digit repeats in a row, column or box. Fix the marked ones.",
+    "checkOffTrack": "One of the ringed digits doesn't fit. Look at those first.",
+    "checkOffTrackWide": "Some digits don't fit together. The ringed cells can't take any digit now.",
+    "legendSuspect": "Could be the mistake"
   },
   "coach": {
     "step": "Hint $step of 4",
@@ -369,6 +406,8 @@
     "resultEliminations": "Remove the crossed-out candidates from the highlighted cells.",
     "resultActions": "Use the highlighted logical action.",
     "technique": "Technique: $name",
+    "lessonLink": "Lesson",
+    "removeThem": "Remove them",
     "nakedSingle": "Naked single",
     "hiddenSingle": "Hidden single",
     "nakedPair": "Naked pair",

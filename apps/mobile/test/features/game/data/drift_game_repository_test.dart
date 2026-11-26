@@ -61,8 +61,8 @@ void main() {
   });
   tearDown(() async => database.close());
 
-  test('schema version 8 initializes all tables without data loss', () async {
-    expect(database.schemaVersion, 8);
+  test('schema version 9 initializes all tables without data loss', () async {
+    expect(database.schemaVersion, 9);
     await repository.saveActiveGame(_active());
     final tables = await database
         .customSelect(

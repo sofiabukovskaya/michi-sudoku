@@ -18,6 +18,8 @@ class ActiveGames extends Table {
   TextColumn get notesJson => text()();
   TextColumn get undoJson => text()();
   TextColumn get reasoningJson => text().withDefault(const Constant('{}'))();
+  TextColumn get provenEliminationsJson =>
+      text().withDefault(const Constant('[]'))();
   IntColumn get mistakes => integer()();
   IntColumn get elapsedMs => integer()();
   IntColumn get runningSinceMs => integer().nullable()();
@@ -215,7 +217,7 @@ final class GameDatabase extends _$GameDatabase {
       GameDatabase(driftDatabase(name: 'michi_games'));
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -317,6 +319,22 @@ final class GameDatabase extends _$GameDatabase {
         await migrator.createTable(remotePuzzles);
         await migrator.createTable(remoteContentReleases);
         await migrator.createTable(dailyChallengeCache);
+      }
+      if (from <= 8 && to >= 9) {
+        // Earlier steps may rebuild active_games from the current definition,
+        // which already includes this column.
+        final columns = await customSelect(
+          'PRAGMA table_info(active_games)',
+        ).get();
+        final present = columns.any(
+          (column) => column.read<String>('name') == 'proven_eliminations_json',
+        );
+        if (!present) {
+          await migrator.addColumn(
+            activeGames,
+            activeGames.provenEliminationsJson,
+          );
+        }
       }
     },
   );

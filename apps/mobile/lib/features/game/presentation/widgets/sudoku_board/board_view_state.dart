@@ -13,6 +13,7 @@ final class BoardViewState {
     required this.notes,
     required this.selectedCell,
     required this.coachHint,
+    this.armedDigit,
     this.selectedEliminations = const {},
   });
 
@@ -31,15 +32,18 @@ final class BoardViewState {
     selectedEliminations: selectedEliminations,
   );
 
-  factory BoardViewState.fromGame(GameState game) => BoardViewState(
-    givens: game.puzzle.givens,
-    board: game.board,
-    solution: game.solution,
-    notes: game.notes,
-    selectedCell: game.selectedCell,
-    coachHint: game.coach?.hint,
-  );
+  factory BoardViewState.fromGame(GameState game, {int? armedDigit}) =>
+      BoardViewState(
+        armedDigit: armedDigit,
+        givens: game.puzzle.givens,
+        board: game.board,
+        solution: game.solution,
+        notes: game.notes,
+        selectedCell: game.selectedCell,
+        coachHint: game.coach?.hint,
+      );
 
+  final int? armedDigit;
   final SudokuBoard givens;
   final SudokuBoard board;
   final SudokuBoard solution;
@@ -57,6 +61,7 @@ final class BoardViewState {
   @override
   bool operator ==(Object other) =>
       other is BoardViewState &&
+      armedDigit == other.armedDigit &&
       givens == other.givens &&
       board == other.board &&
       solution == other.solution &&
@@ -67,6 +72,7 @@ final class BoardViewState {
 
   @override
   int get hashCode => Object.hash(
+    armedDigit,
     givens,
     board,
     solution,

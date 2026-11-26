@@ -45,27 +45,37 @@ void main() {
     expect(timer.elapsed, const Duration(minutes: 2));
   });
 
-  test('interrupted running session catches up with bounded wall time', () {
+  test('interrupted run counts only up to the last save, never dead time', () {
     final clock = _FakeClock();
+    final startedRun = clock.now().subtract(
+      const Duration(hours: 12, minutes: 9),
+    );
+    final lastSave = startedRun.add(const Duration(minutes: 9));
+    // The 729-minute report: 9 minutes of play, then 12 hours not running.
     final timer = GameTimer.restore(
       clock: clock,
       elapsedBeforeRun: const Duration(minutes: 2),
-      runningSince: clock.now().subtract(const Duration(minutes: 3)),
+      runningSince: startedRun,
+      lastActiveAt: lastSave,
     );
     expect(timer.isPaused, isTrue);
-    expect(timer.elapsed, const Duration(minutes: 5));
+    expect(timer.elapsed, const Duration(minutes: 11));
+    clock.advance(const Duration(hours: 1));
+    expect(timer.elapsed, const Duration(minutes: 11));
     final changedClock = GameTimer.restore(
       clock: clock,
       elapsedBeforeRun: const Duration(minutes: 2),
       runningSince: clock.now().add(const Duration(hours: 1)),
+      lastActiveAt: clock.now(),
     );
     expect(changedClock.elapsed, const Duration(minutes: 2));
-    final longGap = GameTimer.restore(
+    final futureSave = GameTimer.restore(
       clock: clock,
       elapsedBeforeRun: Duration.zero,
-      runningSince: clock.now().subtract(const Duration(days: 2)),
+      runningSince: clock.now().subtract(const Duration(minutes: 3)),
+      lastActiveAt: clock.now().add(const Duration(days: 1)),
     );
-    expect(longGap.elapsed, const Duration(hours: 12));
+    expect(futureSave.elapsed, const Duration(minutes: 3));
   });
 
   test('backward monotonic clock reading cannot subtract elapsed time', () {

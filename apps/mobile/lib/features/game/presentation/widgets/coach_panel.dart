@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_hint_ui_model.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
@@ -11,13 +12,19 @@ final class CoachPanel extends StatelessWidget {
     required this.onNext,
     required this.onDismiss,
     required this.onApply,
+    this.readOnlyResult = false,
+    this.onOpenLesson,
     super.key,
   });
+
+  /// Result step only: revisit the lesson for the technique just used.
+  final VoidCallback? onOpenLesson;
 
   final CoachHintUiModel model;
   final VoidCallback onNext;
   final VoidCallback onDismiss;
   final VoidCallback onApply;
+  final bool readOnlyResult;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +40,16 @@ final class CoachPanel extends StatelessWidget {
             Positioned(
               top: compact ? -16 : -6,
               right: compact ? 0 : -12,
+              // Thinking plays once when Coach opens (this panel mounts per
+              // session), then rests on its paw-to-chin pose across steps.
               child: IgnorePointer(
-                child: MichiMascot(
-                  state: MichiMascotState.pointing,
-                  size: compact ? 40 : 72,
+                child: MichiMotionMascot(
+                  asset: MichiMotionAsset.thinking,
+                  size: compact ? 48 : 80,
+                  fallback: MichiMascot(
+                    state: MichiMascotState.pointing,
+                    size: compact ? 40 : 72,
+                  ),
                 ),
               ),
             ),
@@ -72,10 +85,13 @@ final class CoachPanel extends StatelessWidget {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: compact ? 0 : 80),
-                              child: Text(
-                                model.instruction,
-                                key: const ValueKey('coach-instruction'),
-                                style: MichiTypography.heading,
+                              child: MichiReveal(
+                                key: ValueKey(model.stepIndex),
+                                child: Text(
+                                  model.instruction,
+                                  key: const ValueKey('coach-instruction'),
+                                  style: MichiTypography.heading,
+                                ),
                               ),
                             ),
                             if (model.techniqueLabel != null) ...[
@@ -85,9 +101,30 @@ final class CoachPanel extends StatelessWidget {
                                 color: MichiColors.hairline,
                               ),
                               SizedBox(height: gap),
-                              Text(
-                                model.techniqueLabel!,
-                                style: MichiTypography.secondary,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      model.techniqueLabel!,
+                                      style: MichiTypography.secondary,
+                                    ),
+                                  ),
+                                  if (onOpenLesson case final open?)
+                                    TextButton(
+                                      key: const ValueKey('coach-lesson'),
+                                      onPressed: open,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(context.t.coach.lessonLink),
+                                          const Icon(
+                                            Icons.chevron_right_rounded,
+                                            size: 18,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
                               ),
                             ],
                           ],
@@ -110,8 +147,13 @@ final class CoachPanel extends StatelessWidget {
                         Expanded(
                           child: MichiButton(
                             key: const ValueKey('coach-primary-action'),
-                            label: model.primaryActionLabel,
-                            onPressed: model.placementDigit != null
+                            label: readOnlyResult
+                                ? context.t.coach.close
+                                : model.primaryActionLabel,
+                            onPressed: readOnlyResult
+                                ? onDismiss
+                                : model.placementDigit != null ||
+                                      model.removesCandidates
                                 ? onApply
                                 : model.secondaryActionLabel == null
                                 ? onDismiss

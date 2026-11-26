@@ -7,6 +7,9 @@ AuthProblem authProblemForFirebaseCode(String code) => switch (code) {
   'invalid-credential' ||
   'wrong-password' ||
   'user-not-found' => AuthProblem.wrongCredentials,
+  'user-token-expired' ||
+  'invalid-user-token' ||
+  'requires-recent-login' => AuthProblem.signInAgain,
   'user-disabled' => AuthProblem.disabled,
   'too-many-requests' => AuthProblem.tooManyRequests,
   'network-request-failed' => AuthProblem.network,

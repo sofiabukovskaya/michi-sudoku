@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:michi_mobile/features/game/data/demo_puzzle.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
+import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 void main() {
@@ -65,7 +66,7 @@ void main() {
 
     final upgraded = GameDatabase(NativeDatabase(file));
     addTearDown(upgraded.close);
-    expect(upgraded.schemaVersion, 8);
+    expect(upgraded.schemaVersion, 9);
     final focus = await upgraded
         .customSelect(
           'SELECT local_date FROM daily_learning_focuses',
@@ -304,6 +305,44 @@ void main() {
       tables.map((row) => row.read<String>('name')),
       contains('technique_progress_entries'),
     );
+  });
+
+  test('schema 8 active game loads after adding proven removals', () async {
+    final directory = await Directory.systemTemp.createTemp('michi-v8-');
+    addTearDown(() => directory.delete(recursive: true));
+    final file = File('${directory.path}/games.sqlite');
+    final old = GameDatabase(NativeDatabase(file));
+    final game = StoredGame(
+      gameId: 'v8-game',
+      puzzleId: 'demo',
+      initialBoard: DemoPuzzle.standard.givens,
+      currentBoard: DemoPuzzle.standard.givens,
+      notes: const {},
+      undoHistory: const [],
+      mistakes: 0,
+      elapsedBeforeRun: const Duration(minutes: 3),
+      runningSince: null,
+      startedAt: DateTime.utc(2026, 11, 20),
+      updatedAt: DateTime.utc(2026, 11, 20),
+      isPaused: true,
+      hintsRequested: 0,
+      highestHintLevelUsed: 0,
+      correctEditableCells: 0,
+      editableCells: DemoPuzzle.standard.givens.emptyCellCount,
+    );
+    await DriftGameRepository(old).saveActiveGame(game);
+    await old.customStatement(
+      'ALTER TABLE active_games DROP COLUMN proven_eliminations_json',
+    );
+    await old.customStatement('PRAGMA user_version = 8');
+    await old.close();
+
+    final upgraded = GameDatabase(NativeDatabase(file));
+    addTearDown(upgraded.close);
+    final restored = await DriftGameRepository(upgraded).loadActiveGame();
+    expect(restored?.gameId, 'v8-game');
+    expect(restored?.provenEliminations, isEmpty);
+    expect(restored?.elapsedBeforeRun, const Duration(minutes: 3));
   });
 }
 

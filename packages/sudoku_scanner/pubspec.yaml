@@ -13,7 +13,7 @@ dependencies:
   tflite_flutter: ^0.12.1
 flutter:
   assets:
-    - assets/models/michi_digit_v1.tflite
+    - assets/models/michi_digit_v3.tflite
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -76,7 +76,9 @@ final class PlatformScannerImageSource implements ScannerImageSource {
     if (controller == null || !controller.value.isInitialized) return null;
     final file = await controller.takePicture();
     try {
-      return await _read(file);
+      final image = await _read(file);
+      if (_keepCaptures) await _keep(image);
+      return image;
     } finally {
       // Camera captures are temporary app-owned files, never library assets.
       try {
@@ -84,6 +86,25 @@ final class PlatformScannerImageSource implements ScannerImageSource {
       } on FileSystemException {
         // The plugin may already have removed its temporary copy.
       }
+    }
+  }
+
+  /// Diagnostics only (`--dart-define=MICHI_SCAN_DEBUG=true`): keeps each
+  /// camera capture in the app's own temporary folder so recognition can be
+  /// reproduced on a computer. Compiled out of normal builds.
+  static const _keepCaptures = bool.fromEnvironment('MICHI_SCAN_DEBUG');
+
+  Future<void> _keep(ScanImage image) async {
+    try {
+      final folder = Directory('${Directory.systemTemp.path}/scan_debug');
+      await folder.create(recursive: true);
+      final stamp = DateTime.now().millisecondsSinceEpoch;
+      final extension = image.format == ScanImageFormat.jpeg ? 'jpg' : 'png';
+      await File(
+        '${folder.path}/capture_$stamp.$extension',
+      ).writeAsBytes(image.bytes);
+    } on FileSystemException {
+      // Diagnostics must never affect scanning.
     }
   }
 

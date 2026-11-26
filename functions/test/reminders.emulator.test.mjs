@@ -28,7 +28,7 @@ test('only due enabled device gets one reminder for local date', async () => {
   const messaging = {async send(message) {sent.push(message); return 'message-id';}};
   assert.equal(await sendDueReminders(db, messaging, now), 1);
   assert.deepEqual(sent.map((item) => item.token), ['due']);
-  assert.deepEqual(sent[0].data, {type: 'dailyReminder', date: '2026-11-11'});
+  assert.deepEqual(sent[0].data, {type: 'dailyReminder', date: '2026-11-11', uid: 'alice'});
   assert.equal(await sendDueReminders(db, messaging, now), 0);
   assert.equal(sent.length, 1);
   const row = await db.doc('users/alice/devices/due').get();

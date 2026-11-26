@@ -159,6 +159,13 @@ void main() {
       authProblemForFirebaseCode('network-request-failed'),
       AuthProblem.network,
     );
+    for (final code in [
+      'user-token-expired',
+      'invalid-user-token',
+      'requires-recent-login',
+    ]) {
+      expect(authProblemForFirebaseCode(code), AuthProblem.signInAgain);
+    }
     expect(authProblemForFirebaseCode('other'), AuthProblem.unexpected);
   });
 }

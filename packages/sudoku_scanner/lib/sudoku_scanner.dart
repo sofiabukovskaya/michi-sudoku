@@ -12,6 +12,7 @@ export 'src/model/grid_geometry.dart';
 export 'src/model/image_point.dart';
 export 'src/model/recognized_cell.dart';
 export 'src/model/scan_failure.dart';
+export 'src/model/scan_focus.dart';
 export 'src/model/scan_image.dart';
 export 'src/model/scan_result.dart';
 export 'src/recognition/digit_classifier.dart';

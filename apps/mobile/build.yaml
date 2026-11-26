@@ -2,6 +2,11 @@ targets:
   $default:
     builders:
       slang_build_runner:
+        enabled: false
+      # Slang's supported disk writer handles committed translation outputs.
+      # The default fan-out builder fails with "Asset already exists".
+      slang_build_runner:legacy:
+        enabled: true
         options:
           base_locale: uk
           fallback_strategy: base_locale

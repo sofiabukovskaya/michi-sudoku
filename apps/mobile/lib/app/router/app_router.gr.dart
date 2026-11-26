@@ -299,6 +299,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
     GameRepository? repository,
     PuzzleRepository? puzzleRepository,
     GameClock? clock,
+    String? launchAction,
     LearningRecommendationService? recommendationService,
     Key? key,
     List<PageRouteInfo>? children,
@@ -308,6 +309,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
            repository: repository,
            puzzleRepository: puzzleRepository,
            clock: clock,
+           launchAction: launchAction,
            recommendationService: recommendationService,
            key: key,
          ),
@@ -326,6 +328,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
         repository: args.repository,
         puzzleRepository: args.puzzleRepository,
         clock: args.clock,
+        launchAction: args.launchAction,
         recommendationService: args.recommendationService,
         key: args.key,
       );
@@ -338,6 +341,7 @@ class HomeRouteArgs {
     this.repository,
     this.puzzleRepository,
     this.clock,
+    this.launchAction,
     this.recommendationService,
     this.key,
   });
@@ -348,13 +352,15 @@ class HomeRouteArgs {
 
   final GameClock? clock;
 
+  final String? launchAction;
+
   final LearningRecommendationService? recommendationService;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, recommendationService: $recommendationService, key: $key}';
+    return 'HomeRouteArgs{repository: $repository, puzzleRepository: $puzzleRepository, clock: $clock, launchAction: $launchAction, recommendationService: $recommendationService, key: $key}';
   }
 
   @override
@@ -364,6 +370,7 @@ class HomeRouteArgs {
     return repository == other.repository &&
         puzzleRepository == other.puzzleRepository &&
         clock == other.clock &&
+        launchAction == other.launchAction &&
         recommendationService == other.recommendationService &&
         key == other.key;
   }
@@ -373,6 +380,7 @@ class HomeRouteArgs {
       repository.hashCode ^
       puzzleRepository.hashCode ^
       clock.hashCode ^
+      launchAction.hashCode ^
       recommendationService.hashCode ^
       key.hashCode;
 }
@@ -521,18 +529,51 @@ class PasswordResetRouteArgs {
 
 /// generated route for
 /// [PlayerLevelPage]
-class PlayerLevelRoute extends PageRouteInfo<void> {
-  const PlayerLevelRoute({List<PageRouteInfo>? children})
-    : super(PlayerLevelRoute.name, initialChildren: children);
+class PlayerLevelRoute extends PageRouteInfo<PlayerLevelRouteArgs> {
+  PlayerLevelRoute({
+    OnboardingStore? onboarding,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PlayerLevelRoute.name,
+         args: PlayerLevelRouteArgs(onboarding: onboarding, key: key),
+         initialChildren: children,
+       );
 
   static const String name = 'PlayerLevelRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const PlayerLevelPage();
+      final args = data.argsAs<PlayerLevelRouteArgs>(
+        orElse: () => const PlayerLevelRouteArgs(),
+      );
+      return PlayerLevelPage(onboarding: args.onboarding, key: args.key);
     },
   );
+}
+
+class PlayerLevelRouteArgs {
+  const PlayerLevelRouteArgs({this.onboarding, this.key});
+
+  final OnboardingStore? onboarding;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'PlayerLevelRouteArgs{onboarding: $onboarding, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PlayerLevelRouteArgs) return false;
+    return onboarding == other.onboarding && key == other.key;
+  }
+
+  @override
+  int get hashCode => onboarding.hashCode ^ key.hashCode;
 }
 
 /// generated route for
@@ -815,11 +856,16 @@ class RegisterRouteArgs {
 class ScannerRoute extends PageRouteInfo<ScannerRouteArgs> {
   ScannerRoute({
     required ScannerCubit cubit,
+    Future<bool> Function()? beforeImport,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          ScannerRoute.name,
-         args: ScannerRouteArgs(cubit: cubit, key: key),
+         args: ScannerRouteArgs(
+           cubit: cubit,
+           beforeImport: beforeImport,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -829,21 +875,27 @@ class ScannerRoute extends PageRouteInfo<ScannerRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ScannerRouteArgs>();
-      return ScannerPage(cubit: args.cubit, key: args.key);
+      return ScannerPage(
+        cubit: args.cubit,
+        beforeImport: args.beforeImport,
+        key: args.key,
+      );
     },
   );
 }
 
 class ScannerRouteArgs {
-  const ScannerRouteArgs({required this.cubit, this.key});
+  const ScannerRouteArgs({required this.cubit, this.beforeImport, this.key});
 
   final ScannerCubit cubit;
+
+  final Future<bool> Function()? beforeImport;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'ScannerRouteArgs{cubit: $cubit, key: $key}';
+    return 'ScannerRouteArgs{cubit: $cubit, beforeImport: $beforeImport, key: $key}';
   }
 
   @override
@@ -878,11 +930,16 @@ class SettingsRoute extends PageRouteInfo<void> {
 class SplashRoute extends PageRouteInfo<SplashRouteArgs> {
   SplashRoute({
     GameRepository? repository,
+    OnboardingStore? onboarding,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
          SplashRoute.name,
-         args: SplashRouteArgs(repository: repository, key: key),
+         args: SplashRouteArgs(
+           repository: repository,
+           onboarding: onboarding,
+           key: key,
+         ),
          initialChildren: children,
        );
 
@@ -894,32 +951,40 @@ class SplashRoute extends PageRouteInfo<SplashRouteArgs> {
       final args = data.argsAs<SplashRouteArgs>(
         orElse: () => const SplashRouteArgs(),
       );
-      return SplashPage(repository: args.repository, key: args.key);
+      return SplashPage(
+        repository: args.repository,
+        onboarding: args.onboarding,
+        key: args.key,
+      );
     },
   );
 }
 
 class SplashRouteArgs {
-  const SplashRouteArgs({this.repository, this.key});
+  const SplashRouteArgs({this.repository, this.onboarding, this.key});
 
   final GameRepository? repository;
+
+  final OnboardingStore? onboarding;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'SplashRouteArgs{repository: $repository, key: $key}';
+    return 'SplashRouteArgs{repository: $repository, onboarding: $onboarding, key: $key}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! SplashRouteArgs) return false;
-    return repository == other.repository && key == other.key;
+    return repository == other.repository &&
+        onboarding == other.onboarding &&
+        key == other.key;
   }
 
   @override
-  int get hashCode => repository.hashCode ^ key.hashCode;
+  int get hashCode => repository.hashCode ^ onboarding.hashCode ^ key.hashCode;
 }
 
 /// generated route for

@@ -6,20 +6,41 @@ import 'package:image/image.dart' as img;
 import '../image/scan_image_codec.dart';
 import '../model/grid_geometry.dart';
 import '../model/image_point.dart';
+import '../model/scan_focus.dart';
 import '../model/scan_image.dart';
 import 'grid_detector.dart';
 
-/// Finds the largest connected dark grid component after local thresholding.
-/// It checks size, shape and repeated interior lines; a plain rectangle fails.
+/// Finds connected dark grid components after local thresholding. Each is
+/// checked for size, shape and repeated interior lines; a plain rectangle
+/// fails. Several puzzles on one page give several candidates.
 final class LocalGridDetector implements GridDetector {
   const LocalGridDetector();
 
   @override
-  Future<GridGeometry?> detect(ScanImage image) =>
-      Isolate.run(() => _detect(image));
+  Future<GridGeometry?> detect(ScanImage image) async {
+    final found = await candidates(image);
+    return found.isEmpty ? null : found.first;
+  }
 
-  static GridGeometry? _detect(ScanImage source) {
+  @override
+  Future<List<GridGeometry>> candidates(ScanImage image, {ScanFocus? region}) =>
+      Isolate.run(() => _candidates(image, region));
+
+  static List<GridGeometry> _candidates(ScanImage source, ScanFocus? region) {
     var bitmap = ScanImageCodec.decode(source);
+    var offsetX = 0;
+    var offsetY = 0;
+    if (region != null) {
+      offsetX = (region.left * bitmap.width).round();
+      offsetY = (region.top * bitmap.height).round();
+      bitmap = img.copyCrop(
+        bitmap,
+        x: offsetX,
+        y: offsetY,
+        width: ((region.right - region.left) * bitmap.width).round(),
+        height: ((region.bottom - region.top) * bitmap.height).round(),
+      );
+    }
     final originalWidth = bitmap.width;
     final scale =
         900 / (bitmap.width > bitmap.height ? bitmap.width : bitmap.height);
@@ -32,7 +53,7 @@ final class LocalGridDetector implements GridDetector {
     }
     final width = bitmap.width;
     final height = bitmap.height;
-    if (width < 180 || height < 180) return null;
+    if (width < 180 || height < 180) return const [];
     final stride = width + 1;
     final sums = Int32List(stride * (height + 1));
     final gray = Uint8List(width * height);
@@ -50,6 +71,7 @@ final class LocalGridDetector implements GridDetector {
       }
     }
     final dark = Uint8List(width * height);
+    final localInk = Uint8List(dark.length);
     const radius = 10;
     for (var y = 0; y < height; y++) {
       final y0 = (y - radius).clamp(0, height - 1);
@@ -64,12 +86,40 @@ final class LocalGridDetector implements GridDetector {
             sums[y0 * stride + x0];
         final mean = total ~/ ((x1 - x0) * (y1 - y0));
         final value = gray[y * width + x];
+        if (value < mean - 12) localInk[y * width + x] = 1;
         if (value < 115 || value < mean - 20) dark[y * width + x] = 1;
       }
     }
 
+    // A shadow on newspaper can merge with the grid when applying an
+    // absolute black threshold. Retry with local contrast only in that case.
+    // Local contrast marks strokes, not dark areas, so a grid printed near a
+    // dark table, shadow or page edge does not merge with it (that merge put
+    // corners at the photo's corners). The absolute mask remains the
+    // fallback for faint, low-contrast grids.
+    var grids = _grids(localInk, width, height, minimumAxisLines: 4);
+    if (grids.isEmpty) grids = _grids(dark, width, height);
+    final multiplier = originalWidth / width;
+    return [
+      for (final geometry in grids)
+        GridGeometry([
+          for (final point in geometry.corners)
+            ImagePoint(
+              point.x * multiplier + offsetX,
+              point.y * multiplier + offsetY,
+            ),
+        ]),
+    ];
+  }
+
+  static List<GridGeometry> _grids(
+    Uint8List dark,
+    int width,
+    int height, {
+    int minimumAxisLines = 0,
+  }) {
     final visited = Uint8List(dark.length);
-    _Component? best;
+    final components = <_Component>[];
     for (var start = 0; start < dark.length; start++) {
       if (dark[start] == 0 || visited[start] != 0) continue;
       final queue = <int>[start];
@@ -105,32 +155,36 @@ final class LocalGridDetector implements GridDetector {
           density > 0.55) {
         continue;
       }
-      if (best == null || component.count > best.count) best = component;
+      components.add(component);
     }
-    if (best == null) return null;
-    final corners = best.corners;
-    try {
-      final geometry = GridGeometry(corners);
-      if (_lineScore(dark, width, height, geometry) < 6) return null;
-      final multiplier = originalWidth / width;
-      return GridGeometry([
-        for (final point in corners)
-          ImagePoint(point.x * multiplier, point.y * multiplier),
-      ]);
-      // Detected image geometry is untrusted external input.
-      // ignore: avoid_catching_errors
-    } on ArgumentError {
-      return null;
+    components.sort((a, b) => b.count.compareTo(a.count));
+    final grids = <GridGeometry>[];
+    for (final component in components) {
+      try {
+        final geometry = GridGeometry(component.corners);
+        final (rows, columns) = _lineScore(dark, width, height, geometry);
+        if (rows + columns < 6 ||
+            rows < minimumAxisLines ||
+            columns < minimumAxisLines) {
+          continue;
+        }
+        grids.add(geometry);
+        // Detected image geometry is untrusted external input.
+        // ignore: avoid_catching_errors
+      } on ArgumentError {
+        continue;
+      }
     }
+    return grids;
   }
 
-  static int _lineScore(
+  static (int, int) _lineScore(
     Uint8List dark,
     int width,
     int height,
     GridGeometry geometry,
   ) {
-    var score = 0;
+    final scores = [0, 0];
     for (var axis = 0; axis < 2; axis++) {
       for (var line = 1; line < 9; line++) {
         var hits = 0;
@@ -166,10 +220,10 @@ final class LocalGridDetector implements GridDetector {
           }
           if (found) hits++;
         }
-        if (hits >= 6) score++;
+        if (hits >= 6) scores[axis]++;
       }
     }
-    return score;
+    return (scores[0], scores[1]);
   }
 }
 

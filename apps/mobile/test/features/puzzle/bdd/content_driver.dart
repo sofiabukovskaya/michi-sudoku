@@ -16,6 +16,7 @@ import 'package:michi_mobile/features/puzzle/domain/daily_puzzle.dart';
 import 'package:michi_mobile/features/puzzle/domain/local_date.dart';
 import 'package:michi_mobile/features/puzzle/domain/puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
+import '../../../helpers/inline_game_preparation.dart';
 
 final class FixedContentClock implements GameClock {
   @override
@@ -52,6 +53,7 @@ final class ContentDriver {
       bootstrap();
       _bootstrapped = true;
     }
+    await useInlineGamePreparation();
     LocaleSettings.setLocaleSync(AppLocale.en);
     tester.view
       ..devicePixelRatio = 1
@@ -91,9 +93,14 @@ final class ContentDriver {
   }
 
   static Future<void> settleUntil(WidgetTester tester, Finder finder) async {
-    for (var attempt = 0; attempt < 30; attempt++) {
-      await tester.pumpAndSettle();
-      if (finder.evaluate().isNotEmpty) return;
+    for (var attempt = 0; attempt < 500; attempt++) {
+      // Loading states animate indefinitely, so wait frame by frame and
+      // settle only once the destination exists.
+      await tester.pump(const Duration(milliseconds: 16));
+      if (finder.evaluate().isNotEmpty) {
+        await tester.pumpAndSettle();
+        return;
+      }
       await tester.runAsync(
         () => Future<void>.delayed(const Duration(milliseconds: 10)),
       );

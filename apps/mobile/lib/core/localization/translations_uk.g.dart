@@ -76,6 +76,15 @@ class Translations$common$uk {
 	/// uk: 'Продовжити'
 	String get continueLabel => 'Продовжити';
 
+	/// uk: 'Хвилинку…'
+	String get justAMoment => 'Хвилинку…';
+
+	/// uk: 'Спробувати ще раз'
+	String get retry => 'Спробувати ще раз';
+
+	/// uk: 'MICHI не вдалося це відкрити. Твій прогрес у безпеці на цьому пристрої.'
+	String get loadProblem => 'MICHI не вдалося це відкрити. Твій прогрес у безпеці на цьому пристрої.';
+
 	/// uk: 'Почати'
 	String get start => 'Почати';
 }
@@ -169,8 +178,8 @@ class Translations$playerLevel$uk {
 	/// uk: 'До гри'
 	String get goToGame => 'До гри';
 
-	/// uk: 'Від цього залежать перший урок і складність. Змінити можна будь-коли.'
-	String get subtitle => 'Від цього залежать перший урок і складність. Змінити можна будь-коли.';
+	/// uk: 'Вибери опис, який найкраще тобі підходить.'
+	String get subtitle => 'Вибери опис, який найкраще тобі підходить.';
 
 	/// uk: 'Тільки починаю'
 	String get beginner => 'Тільки починаю';
@@ -223,8 +232,8 @@ class Translations$auth$uk {
 	/// uk: 'Створити акаунт'
 	String get createTitle => 'Створити акаунт';
 
-	/// uk: 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.'
-	String get createSubtitle => 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.';
+	/// uk: 'Синхронізуй завершені судоку та навчальний прогрес між своїми пристроями.'
+	String get createSubtitle => 'Синхронізуй завершені судоку та навчальний прогрес між своїми пристроями.';
 
 	/// uk: 'З поверненням'
 	String get signInTitle => 'З поверненням';
@@ -259,8 +268,8 @@ class Translations$auth$uk {
 	/// uk: 'Відновлення пароля'
 	String get resetTitle => 'Відновлення пароля';
 
-	/// uk: 'Введіть пошту акаунта — ми надішлемо посилання для відновлення.'
-	String get resetSubtitle => 'Введіть пошту акаунта — ми надішлемо посилання для відновлення.';
+	/// uk: 'Введи пошту акаунта — ми надішлемо посилання для відновлення.'
+	String get resetSubtitle => 'Введи пошту акаунта — ми надішлемо посилання для відновлення.';
 
 	/// uk: 'Надіслати посилання'
 	String get sendLink => 'Надіслати посилання';
@@ -295,14 +304,14 @@ class Translations$auth$uk {
 	/// uk: 'Підтвердити пошту'
 	String get verifyEmail => 'Підтвердити пошту';
 
-	/// uk: 'Введіть правильну адресу пошти.'
-	String get errorInvalidEmail => 'Введіть правильну адресу пошти.';
+	/// uk: 'Введи правильну адресу пошти.'
+	String get errorInvalidEmail => 'Введи правильну адресу пошти.';
 
-	/// uk: 'Використайте щонайменше 8 символів.'
-	String get errorPasswordLength => 'Використайте щонайменше 8 символів.';
+	/// uk: 'Використай щонайменше 8 символів.'
+	String get errorPasswordLength => 'Використай щонайменше 8 символів.';
 
-	/// uk: 'Введіть ім’я.'
-	String get errorNameRequired => 'Введіть ім’я.';
+	/// uk: 'Введи ім’я.'
+	String get errorNameRequired => 'Введи ім’я.';
 
 	/// uk: 'Цей пароль надто слабкий.'
 	String get errorWeakPassword => 'Цей пароль надто слабкий.';
@@ -316,17 +325,20 @@ class Translations$auth$uk {
 	/// uk: 'Цей акаунт вимкнено.'
 	String get errorDisabled => 'Цей акаунт вимкнено.';
 
-	/// uk: 'Забагато спроб. Спробуйте пізніше.'
-	String get errorTooMany => 'Забагато спроб. Спробуйте пізніше.';
+	/// uk: 'Забагато спроб. Спробуй пізніше.'
+	String get errorTooMany => 'Забагато спроб. Спробуй пізніше.';
 
-	/// uk: 'Перевірте з’єднання й спробуйте ще раз.'
-	String get errorNetwork => 'Перевірте з’єднання й спробуйте ще раз.';
+	/// uk: 'Перевір з’єднання й спробуй ще раз.'
+	String get errorNetwork => 'Перевір з’єднання й спробуй ще раз.';
 
 	/// uk: 'Сервіс акаунтів недоступний. Можна грати без акаунта.'
 	String get errorUnavailable => 'Сервіс акаунтів недоступний. Можна грати без акаунта.';
 
-	/// uk: 'Щось пішло не так. Спробуйте ще раз.'
-	String get errorUnexpected => 'Щось пішло не так. Спробуйте ще раз.';
+	/// uk: 'Увійди ще раз і повтори дію.'
+	String get errorSignInAgain => 'Увійди ще раз і повтори дію.';
+
+	/// uk: 'Щось пішло не так. Спробуй ще раз.'
+	String get errorUnexpected => 'Щось пішло не так. Спробуй ще раз.';
 
 	/// uk: 'Показати пароль'
 	String get showPassword => 'Показати пароль';
@@ -394,8 +406,8 @@ class Translations$home$uk {
 	/// uk: 'Сканер'
 	String get scanner => 'Сканер';
 
-	/// uk: 'Оберіть складність'
-	String get chooseDifficulty => 'Оберіть складність';
+	/// uk: 'Обери складність'
+	String get chooseDifficulty => 'Обери складність';
 
 	/// uk: 'Легкий'
 	String get easy => 'Легкий';
@@ -415,8 +427,8 @@ class Translations$home$uk {
 	/// uk: 'Сьогодні виконано'
 	String get dailyCompleted => 'Сьогодні виконано';
 
-	/// uk: 'Набір головоломок недоступний. Спробуйте ще раз.'
-	String get contentUnavailable => 'Набір головоломок недоступний. Спробуйте ще раз.';
+	/// uk: 'Головоломки зараз недоступні. Спробуй ще раз.'
+	String get contentUnavailable => 'Головоломки зараз недоступні. Спробуй ще раз.';
 
 	/// uk: 'Складний'
 	String get advanced => 'Складний';
@@ -435,6 +447,17 @@ class Translations$home$uk {
 
 	/// uk: 'Детальніше'
 	String get weekDetails => 'Детальніше';
+
+	/// uk: '(one) {$n день} (few) {$n дні} (many) {$n днів} (other) {$n днів}'
+	String streak({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n,
+		one: '${n} день',
+		few: '${n} дні',
+		many: '${n} днів',
+		other: '${n} днів',
+	);
+
+	/// uk: 'Днів поспіль із розвʼязаним судоку дня'
+	String get streakMeaning => 'Днів поспіль із розвʼязаним судоку дня';
 
 	/// uk: 'Пн|Вт|Ср|Чт|Пт|Сб|Нд'
 	String get weekdaysShort => 'Пн|Вт|Ср|Чт|Пт|Сб|Нд';
@@ -459,6 +482,9 @@ class Translations$home$uk {
 
 	/// uk: 'Без активності'
 	String get weekStatusEmpty => 'Без активності';
+
+	/// uk: 'Маєш судоку деінде? Відскануй його.'
+	String get scanInvite => 'Маєш судоку деінде? Відскануй його.';
 }
 
 // Path: game
@@ -570,6 +596,15 @@ class Translations$game$uk {
 
 	/// uk: 'Наступний крок: $technique'
 	String completionPracticeTechnique({required Object technique}) => 'Наступний крок: ${technique}';
+
+	/// uk: 'Спочатку цифра'
+	String get numberFirst => 'Спочатку цифра';
+
+	/// uk: 'Заповнити нотатки'
+	String get fillNotes => 'Заповнити нотатки';
+
+	/// uk: 'Спосіб введення'
+	String get inputOptions => 'Спосіб введення';
 }
 
 // Path: learn
@@ -651,6 +686,12 @@ class Translations$learn$uk {
 
 	/// uk: 'Наступне завдання'
 	String get nextScenario => 'Наступне завдання';
+
+	/// uk: 'Торкнись клітинки, щоб побачити її кандидатів.'
+	String get pickCellFirst => 'Торкнись клітинки, щоб побачити її кандидатів.';
+
+	/// uk: 'Переглянути результат'
+	String get finishPractice => 'Переглянути результат';
 
 	/// uk: 'Практику завершено'
 	String get sessionSummary => 'Практику завершено';
@@ -778,6 +819,12 @@ class Translations$progress$uk {
 
 	/// uk: 'Відкрити техніку'
 	String get openTechnique => 'Відкрити техніку';
+
+	/// uk: 'Почнімо з першої головоломки'
+	String get firstPuzzle => 'Почнімо з першої головоломки';
+
+	/// uk: 'Після неї тут з’явиться, що тобі вдається і що варто потренувати.'
+	String get firstPuzzleDetail => 'Після неї тут з’явиться, що тобі вдається і що варто потренувати.';
 }
 
 // Path: profile
@@ -830,8 +877,8 @@ class Translations$scanner$uk {
 	/// uk: 'Сканувати судоку'
 	String get title => 'Сканувати судоку';
 
-	/// uk: 'Помістіть усю сітку в кадр або виберіть фото.'
-	String get intro => 'Помістіть усю сітку в кадр або виберіть фото.';
+	/// uk: 'Помісти всю сітку в кадр або вибери фото.'
+	String get intro => 'Помісти всю сітку в кадр або вибери фото.';
 
 	/// uk: 'Відкрити камеру'
 	String get openCamera => 'Відкрити камеру';
@@ -842,8 +889,8 @@ class Translations$scanner$uk {
 	/// uk: 'Зробити фото'
 	String get shutter => 'Зробити фото';
 
-	/// uk: 'Усі чотири кути мають бути в кадрі.'
-	String get frameGuide => 'Усі чотири кути мають бути в кадрі.';
+	/// uk: 'Вмісти в рамку одне судоку.'
+	String get frameGuide => 'Вмісти в рамку одне судоку.';
 
 	/// uk: 'Розпізнаємо судоку…'
 	String get processing => 'Розпізнаємо судоку…';
@@ -872,8 +919,11 @@ class Translations$scanner$uk {
 	/// uk: 'Очистити'
 	String get clear => 'Очистити';
 
-	/// uk: 'Імпортувати судоку'
-	String get confirm => 'Імпортувати судоку';
+	/// uk: 'Продовжити в MICHI'
+	String get confirm => 'Продовжити в MICHI';
+
+	/// uk: 'Перевіряю судоку…'
+	String get checking => 'Перевіряю судоку…';
 
 	/// uk: 'Сканувати знову'
 	String get rescan => 'Сканувати знову';
@@ -881,47 +931,47 @@ class Translations$scanner$uk {
 	/// uk: 'Дозвольте доступ до камери, щоб зробити фото.'
 	String get permissionIntro => 'Дозвольте доступ до камери, щоб зробити фото.';
 
-	/// uk: 'Доступ до камери відхилено. Ви можете вибрати фото.'
-	String get permissionDenied => 'Доступ до камери відхилено. Ви можете вибрати фото.';
+	/// uk: 'Доступ до камери відхилено. Можна вибрати фото.'
+	String get permissionDenied => 'Доступ до камери відхилено. Можна вибрати фото.';
 
-	/// uk: 'Увімкніть камеру в налаштуваннях або виберіть фото.'
-	String get permissionSettings => 'Увімкніть камеру в налаштуваннях або виберіть фото.';
+	/// uk: 'Увімкни камеру в налаштуваннях або вибери фото.'
+	String get permissionSettings => 'Увімкни камеру в налаштуваннях або вибери фото.';
 
-	/// uk: 'Камера недоступна. Виберіть фото.'
-	String get noCamera => 'Камера недоступна. Виберіть фото.';
+	/// uk: 'Камера недоступна. Вибери фото.'
+	String get noCamera => 'Камера недоступна. Вибери фото.';
 
 	/// uk: 'Відкрити налаштування'
 	String get openSettings => 'Відкрити налаштування';
 
-	/// uk: 'Не вдалося прочитати зображення. Спробуйте інше фото.'
-	String get imageDecodeFailure => 'Не вдалося прочитати зображення. Спробуйте інше фото.';
+	/// uk: 'Не вдалося прочитати зображення. Спробуй інше фото.'
+	String get imageDecodeFailure => 'Не вдалося прочитати зображення. Спробуй інше фото.';
 
-	/// uk: 'Сітку судоку не знайдено. Помістіть її повністю в кадр.'
-	String get noGridFound => 'Сітку судоку не знайдено. Помістіть її повністю в кадр.';
+	/// uk: 'Сітку судоку не знайдено. Помісти її в кадр повністю.'
+	String get noGridFound => 'Сітку судоку не знайдено. Помісти її в кадр повністю.';
 
-	/// uk: 'Не вдалося вирівняти сітку. Спробуйте чіткіше фото.'
-	String get invalidGeometry => 'Не вдалося вирівняти сітку. Спробуйте чіткіше фото.';
+	/// uk: 'Не вдалося вирівняти сітку. Спробуй чіткіше фото.'
+	String get invalidGeometry => 'Не вдалося вирівняти сітку. Спробуй чіткіше фото.';
 
-	/// uk: 'Не вдалося розділити сітку на клітинки. Спробуйте ще раз.'
-	String get segmentationFailure => 'Не вдалося розділити сітку на клітинки. Спробуйте ще раз.';
+	/// uk: 'Не вдалося розділити сітку на клітинки. Спробуй ще раз.'
+	String get segmentationFailure => 'Не вдалося розділити сітку на клітинки. Спробуй ще раз.';
 
-	/// uk: 'Деякі цифри не вдалося розпізнати. Спробуйте ще раз.'
-	String get recognitionFailure => 'Деякі цифри не вдалося розпізнати. Спробуйте ще раз.';
+	/// uk: 'Деякі цифри не вдалося розпізнати. Спробуй ще раз.'
+	String get recognitionFailure => 'Деякі цифри не вдалося розпізнати. Спробуй ще раз.';
 
 	/// uk: 'Виправте виділені конфліктні цифри.'
 	String get duplicateClues => 'Виправте виділені конфліктні цифри.';
 
-	/// uk: 'Для цих цифр немає розв’язку. Перевірте їх.'
-	String get noSolution => 'Для цих цифр немає розв’язку. Перевірте їх.';
+	/// uk: 'Ці підказки не мають розв’язку. Порівняй клітинки з ? із фото.'
+	String get noSolution => 'Ці підказки не мають розв’язку. Порівняй клітинки з ? із фото.';
 
 	/// uk: 'Можливо, бракує цифр: судоку має кілька розв’язків.'
 	String get multipleSolutions => 'Можливо, бракує цифр: судоку має кілька розв’язків.';
 
-	/// uk: 'Не вдалося зберегти судоку. Спробуйте ще раз.'
-	String get storageFailure => 'Не вдалося зберегти судоку. Спробуйте ще раз.';
+	/// uk: 'Не вдалося зберегти судоку. Спробуй ще раз.'
+	String get storageFailure => 'Не вдалося зберегти судоку. Спробуй ще раз.';
 
-	/// uk: 'Не вдалося перевірити цю головоломку. Спробуйте підтвердити ще раз.'
-	String get validationFailure => 'Не вдалося перевірити цю головоломку. Спробуйте підтвердити ще раз.';
+	/// uk: 'Не вдалося перевірити судоку. Спробуй ще раз.'
+	String get validationFailure => 'Не вдалося перевірити судоку. Спробуй ще раз.';
 
 	/// uk: 'MICHI поки не може пояснити кожен крок цього судоку.'
 	String get unsupportedCoach => 'MICHI поки не може пояснити кожен крок цього судоку.';
@@ -931,6 +981,63 @@ class Translations$scanner$uk {
 
 	/// uk: 'Клітинок для перевірки: $count'
 	String lowConfidenceCount({required Object count}) => 'Клітинок для перевірки: ${count}';
+
+	/// uk: 'Я застряг — допоможи'
+	String get stuck => 'Я застряг — допоможи';
+
+	/// uk: 'MICHI поки не знаходить наступного логічного кроку.'
+	String get noStep => 'MICHI поки не знаходить наступного логічного кроку.';
+
+	/// uk: 'Усі клітинки заповнені. Судоку завершено.'
+	String get completed => 'Усі клітинки заповнені. Судоку завершено.';
+
+	/// uk: 'Яке судоку?'
+	String get chooseTitle => 'Яке судоку?';
+
+	/// uk: 'На фото більше одного судоку. Торкнися того, яке хочеш зіграти.'
+	String get chooseBody => 'На фото більше одного судоку. Торкнися того, яке хочеш зіграти.';
+
+	/// uk: 'Судоку $number'
+	String chooseOption({required Object number}) => 'Судоку ${number}';
+
+	/// uk: 'На фото більше одного судоку. Вмісти одне в рамку.'
+	String get multipleGrids => 'На фото більше одного судоку. Вмісти одне в рамку.';
+
+	/// uk: 'Сумнівно: порівняй із фото'
+	String get legendUnsure => 'Сумнівно: порівняй із фото';
+
+	/// uk: 'Конфлікт: та сама цифра двічі'
+	String get legendConflict => 'Конфлікт: та сама цифра двічі';
+
+	/// uk: 'З твого фото'
+	String get fromPhoto => 'З твого фото';
+
+	/// uk: 'Може, $digit?'
+	String maybe({required Object digit}) => 'Може, ${digit}?';
+
+	/// uk: 'Перевірити'
+	String get checkSolution => 'Перевірити';
+
+	/// uk: 'Підкажи'
+	String get stuckShort => 'Підкажи';
+
+	/// uk: 'Розв’язано! Усі цифри правильні.'
+	String get checkSolved => 'Розв’язано! Усі цифри правильні.';
+
+	/// uk: 'Поки що без помилок. Продовжуй!'
+	String get checkOnTrack => 'Поки що без помилок. Продовжуй!';
+
+	/// uk: 'Цифра повторюється в рядку, стовпці чи квадраті. Виправ позначені.'
+	String get checkConflicts => 'Цифра повторюється в рядку, стовпці чи квадраті. Виправ позначені.';
+
+	/// uk: 'Одна з обведених цифр не підходить. Подивись спершу на них.'
+	String get checkOffTrack => 'Одна з обведених цифр не підходить. Подивись спершу на них.';
+
+	/// uk: 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.'
+	String get checkOffTrackWide => 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.';
+
+	/// uk: 'Можлива помилка'
+	String get legendSuspect => 'Можлива помилка';
 }
 
 // Path: coach
@@ -1012,6 +1119,12 @@ class Translations$coach$uk {
 
 	/// uk: 'Техніка: $name'
 	String technique({required Object name}) => 'Техніка: ${name}';
+
+	/// uk: 'Урок'
+	String get lessonLink => 'Урок';
+
+	/// uk: 'Викреслити'
+	String get removeThem => 'Викреслити';
 
 	/// uk: 'відкритий одинак'
 	String get nakedSingle => 'відкритий одинак';
@@ -1145,8 +1258,8 @@ class Translations$recommendation$uk {
 	/// uk: '$minutes хв'
 	String duration({required Object minutes}) => '${minutes} хв';
 
-	/// uk: 'Почніть із першого логічного кроку.'
-	String get startWithBasics => 'Почніть із першого логічного кроку.';
+	/// uk: 'Почни з першого логічного кроку.'
+	String get startWithBasics => 'Почни з першого логічного кроку.';
 
 	/// uk: 'Нещодавно знадобилася допомога MICHI.'
 	String get repeatedCoachHelp => 'Нещодавно знадобилася допомога MICHI.';
@@ -1154,17 +1267,17 @@ class Translations$recommendation$uk {
 	/// uk: 'Самостійні вправи варто закріпити.'
 	String get weakIndependentPractice => 'Самостійні вправи варто закріпити.';
 
-	/// uk: 'Продовжуйте практикувати цю техніку.'
-	String get continuePractice => 'Продовжуйте практикувати цю техніку.';
+	/// uk: 'Продовжуй практикувати цю техніку.'
+	String get continuePractice => 'Продовжуй практикувати цю техніку.';
 
-	/// uk: 'Наступний крок у вашому навчанні.'
-	String get nextTechnique => 'Наступний крок у вашому навчанні.';
+	/// uk: 'Наступний крок у твоєму навчанні.'
+	String get nextTechnique => 'Наступний крок у твоєму навчанні.';
 
 	/// uk: 'Знайому техніку варто повторити.'
 	String get masteredNeedsReview => 'Знайому техніку варто повторити.';
 
-	/// uk: 'Повторіть уже опановану техніку.'
-	String get allMasteredReview => 'Повторіть уже опановану техніку.';
+	/// uk: 'Повтори вже опановану техніку.'
+	String get allMasteredReview => 'Повтори вже опановану техніку.';
 }
 
 // Path: week
@@ -1242,8 +1355,8 @@ class Translations$settings$uk {
 	/// uk: 'Щодня о 08:00'
 	String get dailyReminder => 'Щодня о 08:00';
 
-	/// uk: 'Увійдіть, щоб увімкнути нагадування.'
-	String get reminderSignIn => 'Увійдіть, щоб увімкнути нагадування.';
+	/// uk: 'Увійди, щоб увімкнути нагадування.'
+	String get reminderSignIn => 'Увійди, щоб увімкнути нагадування.';
 
 	/// uk: 'Дозвольте сповіщення в налаштуваннях пристрою.'
 	String get reminderPermission => 'Дозвольте сповіщення в налаштуваннях пристрою.';
@@ -1299,14 +1412,14 @@ class Translations$sync$uk {
 	/// uk: 'Видалити обліковий запис?'
 	String get deleteTitle => 'Видалити обліковий запис?';
 
-	/// uk: 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.'
-	String get deleteBody => 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.';
+	/// uk: 'Твій акаунт і синхронізований прогрес буде видалено назавжди.'
+	String get deleteBody => 'Твій акаунт і синхронізований прогрес буде видалено назавжди.';
 
 	/// uk: 'Видалити обліковий запис'
 	String get deleteConfirm => 'Видалити обліковий запис';
 
-	/// uk: 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.'
-	String get deleteFailed => 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.';
+	/// uk: 'Не вдалося видалити акаунт. Увійди знову й спробуй ще раз.'
+	String get deleteFailed => 'Не вдалося видалити акаунт. Увійди знову й спробуй ще раз.';
 
 	/// uk: 'Вийти'
 	String get signOut => 'Вийти';
@@ -1555,6 +1668,9 @@ extension on Translations {
 		return switch (path) {
 			'appName' => 'MICHI',
 			'common.continueLabel' => 'Продовжити',
+			'common.justAMoment' => 'Хвилинку…',
+			'common.retry' => 'Спробувати ще раз',
+			'common.loadProblem' => 'MICHI не вдалося це відкрити. Твій прогрес у безпеці на цьому пристрої.',
 			'common.start' => 'Почати',
 			'splash.subtitle' => 'Вчися бачити наступний хід.',
 			'welcome.title' => 'Знайди свій шлях крізь логіку.',
@@ -1574,7 +1690,7 @@ extension on Translations {
 			'onboarding.pathBody' => 'MICHI бачить, де тобі складно, і пропонує, що потренувати.',
 			'playerLevel.title' => 'Як добре ти знаєш судоку?',
 			'playerLevel.goToGame' => 'До гри',
-			'playerLevel.subtitle' => 'Від цього залежать перший урок і складність. Змінити можна будь-коли.',
+			'playerLevel.subtitle' => 'Вибери опис, який найкраще тобі підходить.',
 			'playerLevel.beginner' => 'Тільки починаю',
 			'playerLevel.beginnerDetail' => 'Правила й перші ходи',
 			'playerLevel.basics' => 'Знаю основи',
@@ -1589,7 +1705,7 @@ extension on Translations {
 			'auth.google' => 'Продовжити з Google',
 			'auth.emailEntry' => 'Увійти через пошту',
 			'auth.createTitle' => 'Створити акаунт',
-			'auth.createSubtitle' => 'Ваш прогрес залишиться на цьому пристрої, доки синхронізація недоступна.',
+			'auth.createSubtitle' => 'Синхронізуй завершені судоку та навчальний прогрес між своїми пристроями.',
 			'auth.signInTitle' => 'З поверненням',
 			'auth.name' => 'Ім’я',
 			'auth.email' => 'Пошта',
@@ -1601,7 +1717,7 @@ extension on Translations {
 			'auth.noAccount' => 'Ще немає акаунта?',
 			'auth.forgotPassword' => 'Не пам’ятаєте пароль?',
 			'auth.resetTitle' => 'Відновлення пароля',
-			'auth.resetSubtitle' => 'Введіть пошту акаунта — ми надішлемо посилання для відновлення.',
+			'auth.resetSubtitle' => 'Введи пошту акаунта — ми надішлемо посилання для відновлення.',
 			'auth.sendLink' => 'Надіслати посилання',
 			'auth.resetSent' => 'Якщо акаунт існує, перевірте пошту для відновлення пароля.',
 			'auth.verifyTitle' => 'Перевірте пошту',
@@ -1613,17 +1729,18 @@ extension on Translations {
 			'auth.signOut' => 'Вийти',
 			'auth.localNotSynced' => 'Ігровий прогрес і надалі зберігається на цьому пристрої.',
 			'auth.verifyEmail' => 'Підтвердити пошту',
-			'auth.errorInvalidEmail' => 'Введіть правильну адресу пошти.',
-			'auth.errorPasswordLength' => 'Використайте щонайменше 8 символів.',
-			'auth.errorNameRequired' => 'Введіть ім’я.',
+			'auth.errorInvalidEmail' => 'Введи правильну адресу пошти.',
+			'auth.errorPasswordLength' => 'Використай щонайменше 8 символів.',
+			'auth.errorNameRequired' => 'Введи ім’я.',
 			'auth.errorWeakPassword' => 'Цей пароль надто слабкий.',
 			'auth.errorEmailInUse' => 'Акаунт із цією поштою вже існує.',
 			'auth.errorWrongCredentials' => 'Перевірте пошту й пароль.',
 			'auth.errorDisabled' => 'Цей акаунт вимкнено.',
-			'auth.errorTooMany' => 'Забагато спроб. Спробуйте пізніше.',
-			'auth.errorNetwork' => 'Перевірте з’єднання й спробуйте ще раз.',
+			'auth.errorTooMany' => 'Забагато спроб. Спробуй пізніше.',
+			'auth.errorNetwork' => 'Перевір з’єднання й спробуй ще раз.',
 			'auth.errorUnavailable' => 'Сервіс акаунтів недоступний. Можна грати без акаунта.',
-			'auth.errorUnexpected' => 'Щось пішло не так. Спробуйте ще раз.',
+			'auth.errorSignInAgain' => 'Увійди ще раз і повтори дію.',
+			'auth.errorUnexpected' => 'Щось пішло не так. Спробуй ще раз.',
 			'auth.showPassword' => 'Показати пароль',
 			'auth.hidePassword' => 'Сховати пароль',
 			'auth.signOutTitle' => 'Вийти з акаунта?',
@@ -1643,20 +1760,22 @@ extension on Translations {
 			'home.progress' => 'Прогрес',
 			'home.profile' => 'Профіль',
 			'home.scanner' => 'Сканер',
-			'home.chooseDifficulty' => 'Оберіть складність',
+			'home.chooseDifficulty' => 'Обери складність',
 			'home.easy' => 'Легкий',
 			'home.medium' => 'Середній',
 			'home.dailyTitle' => 'Судоку дня',
 			'home.dailyStart' => 'Почати судоку дня',
 			'home.dailyContinue' => 'Продовжити судоку дня',
 			'home.dailyCompleted' => 'Сьогодні виконано',
-			'home.contentUnavailable' => 'Набір головоломок недоступний. Спробуйте ще раз.',
+			'home.contentUnavailable' => 'Головоломки зараз недоступні. Спробуй ще раз.',
 			'home.advanced' => 'Складний',
 			'home.expert' => 'Експертний',
 			'home.greeting' => 'Доброго ранку',
 			'home.newPuzzle' => 'Ще одна головоломка',
 			'home.weekTitle' => 'Цей тиждень',
 			'home.weekDetails' => 'Детальніше',
+			'home.streak' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} день', few: '${n} дні', many: '${n} днів', other: '${n} днів', ), 
+			'home.streakMeaning' => 'Днів поспіль із розвʼязаним судоку дня',
 			'home.weekdaysShort' => 'Пн|Вт|Ср|Чт|Пт|Сб|Нд',
 			'home.newPuzzleTitle' => 'Нове судоку',
 			'home.catalogSource' => 'Обери головоломку',
@@ -1665,6 +1784,7 @@ extension on Translations {
 			'home.weekStatusDone' => 'Завершено',
 			'home.weekStatusToday' => 'Сьогодні',
 			'home.weekStatusEmpty' => 'Без активності',
+			'home.scanInvite' => 'Маєш судоку деінде? Відскануй його.',
 			'game.title' => 'Судоку дня · Середній',
 			'game.undo' => 'Скасувати',
 			'game.erase' => 'Стерти',
@@ -1699,6 +1819,9 @@ extension on Translations {
 			'game.completionHints' => 'підказки',
 			'game.dailyStampEarned' => 'Штамп дня отримано',
 			'game.completionPracticeTechnique' => ({required Object technique}) => 'Наступний крок: ${technique}',
+			'game.numberFirst' => 'Спочатку цифра',
+			'game.fillNotes' => 'Заповнити нотатки',
+			'game.inputOptions' => 'Спосіб введення',
 			'learn.title' => 'Навчання',
 			'learn.intro' => 'Крок за кроком до розуміння технік.',
 			'learn.newLabel' => 'Нове',
@@ -1723,6 +1846,8 @@ extension on Translations {
 			'learn.tryAgain' => 'Ще раз',
 			'learn.askMichi' => 'Запитати MICHI',
 			'learn.nextScenario' => 'Наступне завдання',
+			'learn.pickCellFirst' => 'Торкнись клітинки, щоб побачити її кандидатів.',
+			'learn.finishPractice' => 'Переглянути результат',
 			'learn.sessionSummary' => 'Практику завершено',
 			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} правильно · ${attempts} спроб',
 			'learn.hintsUsed' => ({required Object count}) => '${count} з MICHI',
@@ -1805,9 +1930,11 @@ extension on Translations {
 			'progress.noStrong' => 'Найсильніші техніки з’являться після практики.',
 			'progress.startLearning' => 'Почати навчання',
 			'progress.thisWeek' => 'Цей тиждень',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ), 
 			'progress.mastery' => ({required Object percent}) => 'Опанування ${percent}%',
 			'progress.openTechnique' => 'Відкрити техніку',
+			'progress.firstPuzzle' => 'Почнімо з першої головоломки',
+			'progress.firstPuzzleDetail' => 'Після неї тут з’явиться, що тобі вдається і що варто потренувати.',
 			'profile.guest' => 'Гість',
 			'profile.localOnly' => 'Прогрес зберігається на цьому пристрої.',
 			'profile.puzzles' => 'Головоломки',
@@ -1819,11 +1946,11 @@ extension on Translations {
 			'profile.settingsDetail' => 'Мова',
 			'profile.activity' => 'Твоя активність',
 			'scanner.title' => 'Сканувати судоку',
-			'scanner.intro' => 'Помістіть усю сітку в кадр або виберіть фото.',
+			'scanner.intro' => 'Помісти всю сітку в кадр або вибери фото.',
 			'scanner.openCamera' => 'Відкрити камеру',
 			'scanner.choosePhoto' => 'Вибрати фото',
 			'scanner.shutter' => 'Зробити фото',
-			'scanner.frameGuide' => 'Усі чотири кути мають бути в кадрі.',
+			'scanner.frameGuide' => 'Вмісти в рамку одне судоку.',
 			'scanner.processing' => 'Розпізнаємо судоку…',
 			'scanner.reviewTitle' => 'Перевірте цифри',
 			'scanner.reviewBody' => 'Торкніться клітинки, щоб виправити її перед грою.',
@@ -1833,26 +1960,46 @@ extension on Translations {
 			'scanner.recognized' => 'розпізнано',
 			'scanner.empty' => 'порожня',
 			'scanner.clear' => 'Очистити',
-			'scanner.confirm' => 'Імпортувати судоку',
+			'scanner.confirm' => 'Продовжити в MICHI',
+			'scanner.checking' => 'Перевіряю судоку…',
 			'scanner.rescan' => 'Сканувати знову',
 			'scanner.permissionIntro' => 'Дозвольте доступ до камери, щоб зробити фото.',
-			'scanner.permissionDenied' => 'Доступ до камери відхилено. Ви можете вибрати фото.',
-			'scanner.permissionSettings' => 'Увімкніть камеру в налаштуваннях або виберіть фото.',
-			'scanner.noCamera' => 'Камера недоступна. Виберіть фото.',
+			'scanner.permissionDenied' => 'Доступ до камери відхилено. Можна вибрати фото.',
+			'scanner.permissionSettings' => 'Увімкни камеру в налаштуваннях або вибери фото.',
+			'scanner.noCamera' => 'Камера недоступна. Вибери фото.',
 			'scanner.openSettings' => 'Відкрити налаштування',
-			'scanner.imageDecodeFailure' => 'Не вдалося прочитати зображення. Спробуйте інше фото.',
-			'scanner.noGridFound' => 'Сітку судоку не знайдено. Помістіть її повністю в кадр.',
-			'scanner.invalidGeometry' => 'Не вдалося вирівняти сітку. Спробуйте чіткіше фото.',
-			'scanner.segmentationFailure' => 'Не вдалося розділити сітку на клітинки. Спробуйте ще раз.',
-			'scanner.recognitionFailure' => 'Деякі цифри не вдалося розпізнати. Спробуйте ще раз.',
+			'scanner.imageDecodeFailure' => 'Не вдалося прочитати зображення. Спробуй інше фото.',
+			'scanner.noGridFound' => 'Сітку судоку не знайдено. Помісти її в кадр повністю.',
+			'scanner.invalidGeometry' => 'Не вдалося вирівняти сітку. Спробуй чіткіше фото.',
+			'scanner.segmentationFailure' => 'Не вдалося розділити сітку на клітинки. Спробуй ще раз.',
+			'scanner.recognitionFailure' => 'Деякі цифри не вдалося розпізнати. Спробуй ще раз.',
 			'scanner.duplicateClues' => 'Виправте виділені конфліктні цифри.',
-			'scanner.noSolution' => 'Для цих цифр немає розв’язку. Перевірте їх.',
+			'scanner.noSolution' => 'Ці підказки не мають розв’язку. Порівняй клітинки з ? із фото.',
 			'scanner.multipleSolutions' => 'Можливо, бракує цифр: судоку має кілька розв’язків.',
-			'scanner.storageFailure' => 'Не вдалося зберегти судоку. Спробуйте ще раз.',
-			'scanner.validationFailure' => 'Не вдалося перевірити цю головоломку. Спробуйте підтвердити ще раз.',
+			'scanner.storageFailure' => 'Не вдалося зберегти судоку. Спробуй ще раз.',
+			'scanner.validationFailure' => 'Не вдалося перевірити судоку. Спробуй ще раз.',
 			'scanner.unsupportedCoach' => 'MICHI поки не може пояснити кожен крок цього судоку.',
 			'scanner.importedTitle' => 'Імпортоване судоку',
 			'scanner.lowConfidenceCount' => ({required Object count}) => 'Клітинок для перевірки: ${count}',
+			'scanner.stuck' => 'Я застряг — допоможи',
+			'scanner.noStep' => 'MICHI поки не знаходить наступного логічного кроку.',
+			'scanner.completed' => 'Усі клітинки заповнені. Судоку завершено.',
+			'scanner.chooseTitle' => 'Яке судоку?',
+			'scanner.chooseBody' => 'На фото більше одного судоку. Торкнися того, яке хочеш зіграти.',
+			'scanner.chooseOption' => ({required Object number}) => 'Судоку ${number}',
+			'scanner.multipleGrids' => 'На фото більше одного судоку. Вмісти одне в рамку.',
+			'scanner.legendUnsure' => 'Сумнівно: порівняй із фото',
+			'scanner.legendConflict' => 'Конфлікт: та сама цифра двічі',
+			'scanner.fromPhoto' => 'З твого фото',
+			'scanner.maybe' => ({required Object digit}) => 'Може, ${digit}?',
+			'scanner.checkSolution' => 'Перевірити',
+			'scanner.stuckShort' => 'Підкажи',
+			'scanner.checkSolved' => 'Розв’язано! Усі цифри правильні.',
+			'scanner.checkOnTrack' => 'Поки що без помилок. Продовжуй!',
+			'scanner.checkConflicts' => 'Цифра повторюється в рядку, стовпці чи квадраті. Виправ позначені.',
+			'scanner.checkOffTrack' => 'Одна з обведених цифр не підходить. Подивись спершу на них.',
+			'scanner.checkOffTrackWide' => 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.',
+			'scanner.legendSuspect' => 'Можлива помилка',
 			'coach.step' => ({required Object step}) => 'Підказка ${step} з 4',
 			'coach.kTry' => 'Спробую',
 			'coach.show' => 'Показати',
@@ -1877,6 +2024,8 @@ extension on Translations {
 			'coach.resultEliminations' => 'Виключи перекреслених кандидатів із виділених клітинок.',
 			'coach.resultActions' => 'Виконай виділений логічний крок.',
 			'coach.technique' => ({required Object name}) => 'Техніка: ${name}',
+			'coach.lessonLink' => 'Урок',
+			'coach.removeThem' => 'Викреслити',
 			'coach.nakedSingle' => 'відкритий одинак',
 			'coach.hiddenSingle' => 'прихований одинак',
 			'coach.nakedPair' => 'відкрита пара',
@@ -1915,20 +2064,20 @@ extension on Translations {
 			'recommendation.practiceAction' => ({required Object technique}) => 'Практика: ${technique}',
 			'recommendation.reviewAction' => ({required Object technique}) => 'Повторення: ${technique}',
 			'recommendation.duration' => ({required Object minutes}) => '${minutes} хв',
-			'recommendation.startWithBasics' => 'Почніть із першого логічного кроку.',
+			'recommendation.startWithBasics' => 'Почни з першого логічного кроку.',
 			'recommendation.repeatedCoachHelp' => 'Нещодавно знадобилася допомога MICHI.',
 			'recommendation.weakIndependentPractice' => 'Самостійні вправи варто закріпити.',
-			'recommendation.continuePractice' => 'Продовжуйте практикувати цю техніку.',
-			'recommendation.nextTechnique' => 'Наступний крок у вашому навчанні.',
+			'recommendation.continuePractice' => 'Продовжуй практикувати цю техніку.',
+			'recommendation.nextTechnique' => 'Наступний крок у твоєму навчанні.',
 			'recommendation.masteredNeedsReview' => 'Знайому техніку варто повторити.',
-			'recommendation.allMasteredReview' => 'Повторіть уже опановану техніку.',
+			'recommendation.allMasteredReview' => 'Повтори вже опановану техніку.',
 			'week.title' => 'Цей тиждень',
 			'week.empty' => 'Цього тижня ще немає завершених головоломок. Активність з’явиться, коли гратимеш.',
 			'week.puzzles' => 'Головоломки',
 			'week.minutes' => 'Хвилини',
 			'week.daily' => 'Щоденні',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} активний день', few: '${n} активні дні', many: '${n} активних днів', other: '${n} активних днів', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} активний день', few: '${n} активні дні', many: '${n} активних днів', other: '${n} активних днів', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('uk'))(n, one: '${n} завершена головоломка', few: '${n} завершені головоломки', many: '${n} завершених головоломок', other: '${n} завершених головоломок', ), 
 			'week.today' => 'Сьогодні',
 			'week.noActivity' => 'Без активності',
 			'week.summary' => 'Твоя локальна активність у судоку',
@@ -1938,7 +2087,7 @@ extension on Translations {
 			'settings.languageDetail' => 'Обери мову MICHI.',
 			'settings.reminders' => 'Нагадування',
 			'settings.dailyReminder' => 'Щодня о 08:00',
-			'settings.reminderSignIn' => 'Увійдіть, щоб увімкнути нагадування.',
+			'settings.reminderSignIn' => 'Увійди, щоб увімкнути нагадування.',
 			'settings.reminderPermission' => 'Дозвольте сповіщення в налаштуваннях пристрою.',
 			'settings.reminderUnavailable' => 'Сповіщення недоступні на цьому пристрої.',
 			'sync.account' => 'Обліковий запис',
@@ -1954,9 +2103,9 @@ extension on Translations {
 			'sync.guest' => 'Прогрес зберігається лише на цьому пристрої.',
 			'sync.deleteAccount' => 'Видалити обліковий запис',
 			'sync.deleteTitle' => 'Видалити обліковий запис?',
-			'sync.deleteBody' => 'Ваш обліковий запис і синхронізований прогрес буде видалено назавжди.',
+			'sync.deleteBody' => 'Твій акаунт і синхронізований прогрес буде видалено назавжди.',
 			'sync.deleteConfirm' => 'Видалити обліковий запис',
-			'sync.deleteFailed' => 'Не вдалося видалити обліковий запис. Увійдіть знову та повторіть спробу.',
+			'sync.deleteFailed' => 'Не вдалося видалити акаунт. Увійди знову й спробуй ще раз.',
 			'sync.signOut' => 'Вийти',
 			_ => null,
 		};

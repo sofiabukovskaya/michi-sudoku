@@ -1,9 +1,28 @@
 import 'package:michi_mobile/features/puzzle/domain/puzzle_definition.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
+import 'package:michi_mobile/features/scanner/domain/solution_check.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 import 'package:sudoku_scanner/sudoku_scanner.dart';
 
-enum ScannerPhase { capture, processing, review, validating, failure, imported }
+enum ScannerPhase {
+  capture,
+  processing,
+  chooseGrid,
+  review,
+  validating,
+  failure,
+  imported,
+}
+
+/// Several puzzles in one photo: the player picks one; MICHI never guesses.
+final class ScannerGridChoice {
+  ScannerGridChoice({required this.image, required List<GridGeometry> grids})
+    : grids = List.unmodifiable(grids);
+
+  /// The upright photo the [grids] coordinates refer to.
+  final ScanImage image;
+  final List<GridGeometry> grids;
+}
 
 enum ScannerReviewIssue {
   duplicateClues,
@@ -11,6 +30,8 @@ enum ScannerReviewIssue {
   multipleSolutions,
   validation,
   storage,
+  unsupportedStep,
+  completed,
 }
 
 final class ScannerReviewData {
@@ -21,6 +42,7 @@ final class ScannerReviewData {
     required Set<CellRef> conflicts,
     this.selectedIndex,
     this.issue,
+    this.check,
   }) : edited = Set.unmodifiable(edited),
        conflicts = Set.unmodifiable(conflicts);
 
@@ -30,6 +52,9 @@ final class ScannerReviewData {
   final Set<CellRef> conflicts;
   final int? selectedIndex;
   final ScannerReviewIssue? issue;
+
+  /// The last "Check my solution" result; any edit clears it.
+  final SolutionCheck? check;
 
   static const double highConfidence = 0.90;
   static const double lowConfidence = 0.80;
@@ -51,6 +76,7 @@ final class ScannerState {
     this.review,
     this.failure,
     this.imported,
+    this.gridChoice,
   });
 
   factory ScannerState.capture(CameraAccess access) => ScannerState._(
@@ -61,6 +87,15 @@ final class ScannerState {
   factory ScannerState.processing(CameraAccess access) => ScannerState._(
     phase: ScannerPhase.processing,
     cameraAccess: access,
+  );
+
+  factory ScannerState.chooseGrid(
+    CameraAccess access,
+    ScannerGridChoice choice,
+  ) => ScannerState._(
+    phase: ScannerPhase.chooseGrid,
+    cameraAccess: access,
+    gridChoice: choice,
   );
 
   factory ScannerState.review(CameraAccess access, ScannerReviewData review) =>
@@ -102,4 +137,5 @@ final class ScannerState {
   final ScannerReviewData? review;
   final ScanFailureKind? failure;
   final PuzzleDefinition? imported;
+  final ScannerGridChoice? gridChoice;
 }

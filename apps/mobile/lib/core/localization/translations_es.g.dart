@@ -35,7 +35,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 
 	late final TranslationsEs _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsEs $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsEs(meta: meta ?? this.$meta);
 
 	// Translations
@@ -68,6 +68,9 @@ class _Translations$common$es extends Translations$common$uk {
 
 	// Translations
 	@override String get continueLabel => 'Continuar';
+	@override String get justAMoment => 'Un momento…';
+	@override String get retry => 'Reintentar';
+	@override String get loadProblem => 'MICHI no pudo abrir esto ahora. Tu progreso está a salvo en este dispositivo.';
 	@override String get start => 'Empezar';
 }
 
@@ -123,7 +126,7 @@ class _Translations$playerLevel$es extends Translations$playerLevel$uk {
 	// Translations
 	@override String get title => '¿Cuánto sabes de sudoku?';
 	@override String get goToGame => 'Empezar a jugar';
-	@override String get subtitle => 'Esto define tu primera lección y dificultad. Puedes cambiarlo después.';
+	@override String get subtitle => 'Elige la descripción que mejor te represente.';
 	@override String get beginner => 'Estoy empezando';
 	@override String get beginnerDetail => 'Reglas y primeros pasos';
 	@override String get basics => 'Conozco lo básico';
@@ -147,7 +150,7 @@ class _Translations$auth$es extends Translations$auth$uk {
 	@override String get google => 'Continuar con Google';
 	@override String get emailEntry => 'Iniciar sesión con correo';
 	@override String get createTitle => 'Crear una cuenta';
-	@override String get createSubtitle => 'Tu progreso permanece en este dispositivo hasta que la sincronización esté disponible.';
+	@override String get createSubtitle => 'Sincroniza tus sudokus completados y tu progreso de aprendizaje entre dispositivos.';
 	@override String get signInTitle => 'Qué alegría verte de nuevo';
 	@override String get name => 'Nombre';
 	@override String get email => 'Correo electrónico';
@@ -181,6 +184,7 @@ class _Translations$auth$es extends Translations$auth$uk {
 	@override String get errorTooMany => 'Demasiados intentos. Vuelve más tarde.';
 	@override String get errorNetwork => 'Revisa tu conexión e inténtalo de nuevo.';
 	@override String get errorUnavailable => 'El servicio de cuentas no está disponible. Puedes seguir jugando como invitado.';
+	@override String get errorSignInAgain => 'Vuelve a iniciar sesión e inténtalo de nuevo.';
 	@override String get errorUnexpected => 'Algo salió mal. Inténtalo de nuevo.';
 	@override String get showPassword => 'Mostrar contraseña';
 	@override String get hidePassword => 'Ocultar contraseña';
@@ -224,6 +228,11 @@ class _Translations$home$es extends Translations$home$uk {
 	@override String get newPuzzle => 'Otro sudoku';
 	@override String get weekTitle => 'Esta semana';
 	@override String get weekDetails => 'Detalles';
+	@override String streak({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n,
+		one: '${n} día',
+		other: '${n} días',
+	);
+	@override String get streakMeaning => 'Días seguidos con el Sudoku del día resuelto';
 	@override String get weekdaysShort => 'Lu|Ma|Mi|Ju|Vi|Sá|Do';
 	@override String get newPuzzleTitle => 'Nuevo sudoku';
 	@override String get catalogSource => 'Elige un sudoku';
@@ -232,6 +241,7 @@ class _Translations$home$es extends Translations$home$uk {
 	@override String get weekStatusDone => 'Completado';
 	@override String get weekStatusToday => 'Hoy';
 	@override String get weekStatusEmpty => 'Sin actividad';
+	@override String get scanInvite => '¿Tienes otro sudoku? Escanéalo.';
 }
 
 // Path: game
@@ -275,6 +285,9 @@ class _Translations$game$es extends Translations$game$uk {
 	@override String get completionHints => 'pistas';
 	@override String get dailyStampEarned => 'Sello diario conseguido';
 	@override String completionPracticeTechnique({required Object technique}) => 'Siguiente paso: ${technique}';
+	@override String get numberFirst => 'Número primero';
+	@override String get fillNotes => 'Rellenar notas';
+	@override String get inputOptions => 'Opciones de entrada';
 }
 
 // Path: learn
@@ -308,6 +321,8 @@ class _Translations$learn$es extends Translations$learn$uk {
 	@override String get tryAgain => 'Intentar de nuevo';
 	@override String get askMichi => 'Preguntar a MICHI';
 	@override String get nextScenario => 'Siguiente ejercicio';
+	@override String get pickCellFirst => 'Toca una casilla para ver sus candidatos.';
+	@override String get finishPractice => 'Ver resultados';
 	@override String get sessionSummary => 'Práctica completada';
 	@override String summaryStats({required Object correct, required Object attempts}) => '${correct} correctos · ${attempts} intentos';
 	@override String hintsUsed({required Object count}) => '${count} con MICHI';
@@ -358,6 +373,8 @@ class _Translations$progress$es extends Translations$progress$uk {
 	);
 	@override String mastery({required Object percent}) => 'Dominio ${percent} %';
 	@override String get openTechnique => 'Abrir técnica';
+	@override String get firstPuzzle => 'Empieza con tu primer sudoku';
+	@override String get firstPuzzleDetail => 'Después verás qué se te da bien y qué puedes practicar.';
 }
 
 // Path: profile
@@ -391,7 +408,7 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get openCamera => 'Usar cámara';
 	@override String get choosePhoto => 'Elegir foto';
 	@override String get shutter => 'Hacer foto';
-	@override String get frameGuide => 'Mantén las cuatro esquinas dentro del encuadre.';
+	@override String get frameGuide => 'Encuadra un solo sudoku dentro del marco.';
 	@override String get processing => 'Leyendo tu sudoku…';
 	@override String get reviewTitle => 'Revisa los números';
 	@override String get reviewBody => 'Toca una casilla para corregirla antes de jugar.';
@@ -401,7 +418,8 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get recognized => 'reconocido';
 	@override String get empty => 'vacía';
 	@override String get clear => 'Borrar';
-	@override String get confirm => 'Importar sudoku';
+	@override String get confirm => 'Continuar en MICHI';
+	@override String get checking => 'Comprobando tu sudoku…';
 	@override String get rescan => 'Escanear de nuevo';
 	@override String get permissionIntro => 'Permite el acceso a la cámara para hacer una foto.';
 	@override String get permissionDenied => 'Se denegó el acceso a la cámara. Puedes elegir una foto.';
@@ -414,13 +432,32 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get segmentationFailure => 'No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.';
 	@override String get recognitionFailure => 'No pudimos leer algunos números. Inténtalo de nuevo.';
 	@override String get duplicateClues => 'Corrige los números en conflicto resaltados.';
-	@override String get noSolution => 'Estos números no tienen solución. Revísalos.';
+	@override String get noSolution => 'Estas pistas no tienen solución. Compara las casillas con ? con tu foto.';
 	@override String get multipleSolutions => 'Pueden faltar números; este sudoku tiene varias soluciones.';
 	@override String get storageFailure => 'No pudimos guardar el sudoku importado. Inténtalo de nuevo.';
 	@override String get validationFailure => 'No se pudo comprobar este sudoku. Vuelve a confirmar.';
 	@override String get unsupportedCoach => 'MICHI quizá aún no pueda explicar todos los pasos de este sudoku.';
 	@override String get importedTitle => 'Sudoku importado';
 	@override String lowConfidenceCount({required Object count}) => 'Casillas para revisar: ${count}';
+	@override String get stuck => 'Necesito una pista';
+	@override String get noStep => 'MICHI no encuentra el siguiente paso con las técnicas disponibles.';
+	@override String get completed => 'Todas las casillas están llenas. El sudoku está resuelto.';
+	@override String get chooseTitle => '¿Qué sudoku?';
+	@override String get chooseBody => 'La foto tiene más de un sudoku. Toca el que quieras jugar.';
+	@override String chooseOption({required Object number}) => 'Sudoku ${number}';
+	@override String get multipleGrids => 'La foto tiene más de un sudoku. Encuadra uno dentro del marco.';
+	@override String get legendUnsure => 'Dudosa: compárala con tu foto';
+	@override String get legendConflict => 'Conflicto: el mismo número dos veces';
+	@override String get fromPhoto => 'De tu foto';
+	@override String maybe({required Object digit}) => '¿Quizá ${digit}?';
+	@override String get checkSolution => 'Comprobar';
+	@override String get stuckShort => 'Me atasqué';
+	@override String get checkSolved => '¡Resuelto! Todos los números encajan.';
+	@override String get checkOnTrack => 'Sin errores por ahora. ¡Sigue así!';
+	@override String get checkConflicts => 'Un número se repite en una fila, columna o caja. Corrige los marcados.';
+	@override String get checkOffTrack => 'Uno de los números rodeados no encaja. Míralos primero.';
+	@override String get checkOffTrackWide => 'Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.';
+	@override String get legendSuspect => 'Posible error';
 }
 
 // Path: coach
@@ -454,6 +491,8 @@ class _Translations$coach$es extends Translations$coach$uk {
 	@override String get resultEliminations => 'Elimina los candidatos tachados de las casillas resaltadas.';
 	@override String get resultActions => 'Aplica el paso lógico resaltado.';
 	@override String technique({required Object name}) => 'Técnica: ${name}';
+	@override String get lessonLink => 'Lección';
+	@override String get removeThem => 'Tacharlos';
 	@override String get nakedSingle => 'único candidato';
 	@override String get hiddenSingle => 'único oculto';
 	@override String get nakedPair => 'par desnudo';
@@ -735,6 +774,9 @@ extension on TranslationsEs {
 		return switch (path) {
 			'appName' => 'MICHI',
 			'common.continueLabel' => 'Continuar',
+			'common.justAMoment' => 'Un momento…',
+			'common.retry' => 'Reintentar',
+			'common.loadProblem' => 'MICHI no pudo abrir esto ahora. Tu progreso está a salvo en este dispositivo.',
 			'common.start' => 'Empezar',
 			'splash.subtitle' => 'Aprende a ver el siguiente paso.',
 			'welcome.title' => 'Encuentra tu camino a través de la lógica.',
@@ -754,7 +796,7 @@ extension on TranslationsEs {
 			'onboarding.pathBody' => 'MICHI detecta lo que te cuesta y propone qué practicar.',
 			'playerLevel.title' => '¿Cuánto sabes de sudoku?',
 			'playerLevel.goToGame' => 'Empezar a jugar',
-			'playerLevel.subtitle' => 'Esto define tu primera lección y dificultad. Puedes cambiarlo después.',
+			'playerLevel.subtitle' => 'Elige la descripción que mejor te represente.',
 			'playerLevel.beginner' => 'Estoy empezando',
 			'playerLevel.beginnerDetail' => 'Reglas y primeros pasos',
 			'playerLevel.basics' => 'Conozco lo básico',
@@ -769,7 +811,7 @@ extension on TranslationsEs {
 			'auth.google' => 'Continuar con Google',
 			'auth.emailEntry' => 'Iniciar sesión con correo',
 			'auth.createTitle' => 'Crear una cuenta',
-			'auth.createSubtitle' => 'Tu progreso permanece en este dispositivo hasta que la sincronización esté disponible.',
+			'auth.createSubtitle' => 'Sincroniza tus sudokus completados y tu progreso de aprendizaje entre dispositivos.',
 			'auth.signInTitle' => 'Qué alegría verte de nuevo',
 			'auth.name' => 'Nombre',
 			'auth.email' => 'Correo electrónico',
@@ -803,6 +845,7 @@ extension on TranslationsEs {
 			'auth.errorTooMany' => 'Demasiados intentos. Vuelve más tarde.',
 			'auth.errorNetwork' => 'Revisa tu conexión e inténtalo de nuevo.',
 			'auth.errorUnavailable' => 'El servicio de cuentas no está disponible. Puedes seguir jugando como invitado.',
+			'auth.errorSignInAgain' => 'Vuelve a iniciar sesión e inténtalo de nuevo.',
 			'auth.errorUnexpected' => 'Algo salió mal. Inténtalo de nuevo.',
 			'auth.showPassword' => 'Mostrar contraseña',
 			'auth.hidePassword' => 'Ocultar contraseña',
@@ -837,6 +880,8 @@ extension on TranslationsEs {
 			'home.newPuzzle' => 'Otro sudoku',
 			'home.weekTitle' => 'Esta semana',
 			'home.weekDetails' => 'Detalles',
+			'home.streak' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} día', other: '${n} días', ), 
+			'home.streakMeaning' => 'Días seguidos con el Sudoku del día resuelto',
 			'home.weekdaysShort' => 'Lu|Ma|Mi|Ju|Vi|Sá|Do',
 			'home.newPuzzleTitle' => 'Nuevo sudoku',
 			'home.catalogSource' => 'Elige un sudoku',
@@ -845,6 +890,7 @@ extension on TranslationsEs {
 			'home.weekStatusDone' => 'Completado',
 			'home.weekStatusToday' => 'Hoy',
 			'home.weekStatusEmpty' => 'Sin actividad',
+			'home.scanInvite' => '¿Tienes otro sudoku? Escanéalo.',
 			'game.title' => 'Sudoku diario · Intermedio',
 			'game.undo' => 'Deshacer',
 			'game.erase' => 'Borrar',
@@ -879,6 +925,9 @@ extension on TranslationsEs {
 			'game.completionHints' => 'pistas',
 			'game.dailyStampEarned' => 'Sello diario conseguido',
 			'game.completionPracticeTechnique' => ({required Object technique}) => 'Siguiente paso: ${technique}',
+			'game.numberFirst' => 'Número primero',
+			'game.fillNotes' => 'Rellenar notas',
+			'game.inputOptions' => 'Opciones de entrada',
 			'learn.title' => 'Aprender',
 			'learn.intro' => 'Una técnica y un paso claro cada vez.',
 			'learn.newLabel' => 'Nuevo',
@@ -903,6 +952,8 @@ extension on TranslationsEs {
 			'learn.tryAgain' => 'Intentar de nuevo',
 			'learn.askMichi' => 'Preguntar a MICHI',
 			'learn.nextScenario' => 'Siguiente ejercicio',
+			'learn.pickCellFirst' => 'Toca una casilla para ver sus candidatos.',
+			'learn.finishPractice' => 'Ver resultados',
 			'learn.sessionSummary' => 'Práctica completada',
 			'learn.summaryStats' => ({required Object correct, required Object attempts}) => '${correct} correctos · ${attempts} intentos',
 			'learn.hintsUsed' => ({required Object count}) => '${count} con MICHI',
@@ -985,9 +1036,11 @@ extension on TranslationsEs {
 			'progress.noStrong' => 'Tus técnicas más fuertes aparecerán después de practicar.',
 			'progress.startLearning' => 'Empezar a aprender',
 			'progress.thisWeek' => 'Esta semana',
-			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ),
+			'progress.completed' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ), 
 			'progress.mastery' => ({required Object percent}) => 'Dominio ${percent} %',
 			'progress.openTechnique' => 'Abrir técnica',
+			'progress.firstPuzzle' => 'Empieza con tu primer sudoku',
+			'progress.firstPuzzleDetail' => 'Después verás qué se te da bien y qué puedes practicar.',
 			'profile.guest' => 'Invitado',
 			'profile.localOnly' => 'El progreso se guarda en este dispositivo.',
 			'profile.puzzles' => 'Sudokus',
@@ -1003,7 +1056,7 @@ extension on TranslationsEs {
 			'scanner.openCamera' => 'Usar cámara',
 			'scanner.choosePhoto' => 'Elegir foto',
 			'scanner.shutter' => 'Hacer foto',
-			'scanner.frameGuide' => 'Mantén las cuatro esquinas dentro del encuadre.',
+			'scanner.frameGuide' => 'Encuadra un solo sudoku dentro del marco.',
 			'scanner.processing' => 'Leyendo tu sudoku…',
 			'scanner.reviewTitle' => 'Revisa los números',
 			'scanner.reviewBody' => 'Toca una casilla para corregirla antes de jugar.',
@@ -1013,7 +1066,8 @@ extension on TranslationsEs {
 			'scanner.recognized' => 'reconocido',
 			'scanner.empty' => 'vacía',
 			'scanner.clear' => 'Borrar',
-			'scanner.confirm' => 'Importar sudoku',
+			'scanner.confirm' => 'Continuar en MICHI',
+			'scanner.checking' => 'Comprobando tu sudoku…',
 			'scanner.rescan' => 'Escanear de nuevo',
 			'scanner.permissionIntro' => 'Permite el acceso a la cámara para hacer una foto.',
 			'scanner.permissionDenied' => 'Se denegó el acceso a la cámara. Puedes elegir una foto.',
@@ -1026,13 +1080,32 @@ extension on TranslationsEs {
 			'scanner.segmentationFailure' => 'No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.',
 			'scanner.recognitionFailure' => 'No pudimos leer algunos números. Inténtalo de nuevo.',
 			'scanner.duplicateClues' => 'Corrige los números en conflicto resaltados.',
-			'scanner.noSolution' => 'Estos números no tienen solución. Revísalos.',
+			'scanner.noSolution' => 'Estas pistas no tienen solución. Compara las casillas con ? con tu foto.',
 			'scanner.multipleSolutions' => 'Pueden faltar números; este sudoku tiene varias soluciones.',
 			'scanner.storageFailure' => 'No pudimos guardar el sudoku importado. Inténtalo de nuevo.',
 			'scanner.validationFailure' => 'No se pudo comprobar este sudoku. Vuelve a confirmar.',
 			'scanner.unsupportedCoach' => 'MICHI quizá aún no pueda explicar todos los pasos de este sudoku.',
 			'scanner.importedTitle' => 'Sudoku importado',
 			'scanner.lowConfidenceCount' => ({required Object count}) => 'Casillas para revisar: ${count}',
+			'scanner.stuck' => 'Necesito una pista',
+			'scanner.noStep' => 'MICHI no encuentra el siguiente paso con las técnicas disponibles.',
+			'scanner.completed' => 'Todas las casillas están llenas. El sudoku está resuelto.',
+			'scanner.chooseTitle' => '¿Qué sudoku?',
+			'scanner.chooseBody' => 'La foto tiene más de un sudoku. Toca el que quieras jugar.',
+			'scanner.chooseOption' => ({required Object number}) => 'Sudoku ${number}',
+			'scanner.multipleGrids' => 'La foto tiene más de un sudoku. Encuadra uno dentro del marco.',
+			'scanner.legendUnsure' => 'Dudosa: compárala con tu foto',
+			'scanner.legendConflict' => 'Conflicto: el mismo número dos veces',
+			'scanner.fromPhoto' => 'De tu foto',
+			'scanner.maybe' => ({required Object digit}) => '¿Quizá ${digit}?',
+			'scanner.checkSolution' => 'Comprobar',
+			'scanner.stuckShort' => 'Me atasqué',
+			'scanner.checkSolved' => '¡Resuelto! Todos los números encajan.',
+			'scanner.checkOnTrack' => 'Sin errores por ahora. ¡Sigue así!',
+			'scanner.checkConflicts' => 'Un número se repite en una fila, columna o caja. Corrige los marcados.',
+			'scanner.checkOffTrack' => 'Uno de los números rodeados no encaja. Míralos primero.',
+			'scanner.checkOffTrackWide' => 'Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.',
+			'scanner.legendSuspect' => 'Posible error',
 			'coach.step' => ({required Object step}) => 'Pista ${step} de 4',
 			'coach.kTry' => 'Lo intentaré',
 			'coach.show' => 'Mostrar',
@@ -1057,6 +1130,8 @@ extension on TranslationsEs {
 			'coach.resultEliminations' => 'Elimina los candidatos tachados de las casillas resaltadas.',
 			'coach.resultActions' => 'Aplica el paso lógico resaltado.',
 			'coach.technique' => ({required Object name}) => 'Técnica: ${name}',
+			'coach.lessonLink' => 'Lección',
+			'coach.removeThem' => 'Tacharlos',
 			'coach.nakedSingle' => 'único candidato',
 			'coach.hiddenSingle' => 'único oculto',
 			'coach.nakedPair' => 'par desnudo',
@@ -1107,8 +1182,8 @@ extension on TranslationsEs {
 			'week.puzzles' => 'Sudokus',
 			'week.minutes' => 'Minutos',
 			'week.daily' => 'Diarios',
-			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} día activo', other: '${n} días activos', ),
-			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ),
+			'week.activeDays' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} día activo', other: '${n} días activos', ), 
+			'week.completedDay' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '${n} sudoku completado', other: '${n} sudokus completados', ), 
 			'week.today' => 'Hoy',
 			'week.noActivity' => 'Sin actividad',
 			'week.summary' => 'Tu actividad local de sudoku',

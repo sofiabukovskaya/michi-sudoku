@@ -12,6 +12,7 @@ import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sud
 import 'package:michi_mobile/features/learn/data/drift_technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
+import 'package:michi_mobile/features/practice/domain/practice_session_order.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 Future<void> _settleUntil(WidgetTester tester, Finder finder) async {
@@ -50,6 +51,7 @@ void main() {
     SudokuTechnique technique, {
     Size size = const Size(390, 844),
   }) async {
+    await tester.runAsync(catalog.load);
     await tester.pumpWidget(const SizedBox.shrink());
     tester.view
       ..devicePixelRatio = 1
@@ -66,10 +68,55 @@ void main() {
     );
   }
 
+  for (final size in [
+    const Size(360, 640),
+    const Size(390, 844),
+    const Size(430, 932),
+    const Size(601, 1007),
+    const Size(1024, 768),
+  ]) {
+    testWidgets('Hidden Single controls stay usable at $size', (tester) async {
+      await pumpPractice(tester, SudokuTechnique.hiddenSingle, size: size);
+      final board = find.byType(FocusedUnitWidget);
+      expect(board, findsOneWidget);
+      // Phone keeps the approved excerpt size; tablets get a deliberate,
+      // bounded step up instead of a board stretched to the window.
+      expect(
+        tester.getSize(board).height,
+        lessThanOrEqualTo(size.width < 600 ? 280 : 320),
+      );
+      final check = find.byKey(const ValueKey('practice-check'));
+      expect(check.hitTestable(), findsOneWidget);
+      final first = practiceSessionOrder(
+        (await tester.runAsync(
+          () => catalog.forTechnique(SudokuTechnique.hiddenSingle),
+        ))!,
+      ).first;
+      final answer = const DeterministicHumanSolver()
+          .findNextDeduction(first.initialState)!
+          .placements
+          .single;
+      await tester.tap(find.byKey(ValueKey('cell-${answer.cell.index}')));
+      await tester.tap(find.byKey(ValueKey('practice-digit-${answer.digit}')));
+      // Check enables once an answer exists.
+      await tester.pump();
+      await tester.tap(check);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);
+      // Success proves the move: the digit lands in its cell.
+      expect(
+        find.byKey(ValueKey('proof-digit-${answer.cell.index}')),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets('Naked Single placement checks and advances', (tester) async {
-    final scenario = (await tester.runAsync(
+    final nakedSingles = (await tester.runAsync(
       () => catalog.forTechnique(SudokuTechnique.nakedSingle),
-    ))!.first;
+    ))!;
+    final scenario = practiceSessionOrder(nakedSingles).first;
     final placement = const DeterministicHumanSolver()
         .findNextDeduction(HumanSolverState.initial(scenario.board))!
         .placements
@@ -77,6 +124,8 @@ void main() {
     await pumpPractice(tester, SudokuTechnique.nakedSingle);
     await tester.tap(find.byKey(ValueKey('cell-${placement.cell.index}')));
     await tester.tap(find.byKey(ValueKey('practice-digit-${placement.digit}')));
+    // Check enables once an answer exists.
+    await tester.pump();
     await tester.tap(find.byKey(const ValueKey('practice-check')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);
@@ -93,9 +142,10 @@ void main() {
   testWidgets('Naked Pair candidate selection, partial answer and Coach', (
     tester,
   ) async {
-    final scenario = (await tester.runAsync(
+    final nakedPairs = (await tester.runAsync(
       () => catalog.forTechnique(SudokuTechnique.nakedPair),
-    ))!.first;
+    ))!;
+    final scenario = practiceSessionOrder(nakedPairs).first;
     final elimination = const DeterministicHumanSolver()
         .findNextDeduction(HumanSolverState.initial(scenario.board))!
         .eliminations
@@ -118,6 +168,8 @@ void main() {
       find.byType(FocusedUnitWidget),
     );
     expect(board.view.selectedEliminations, contains(elimination));
+    // Check enables once an answer exists.
+    await tester.pump();
     await tester.tap(find.byKey(const ValueKey('practice-check')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('practice-wrong')), findsOneWidget);
@@ -149,7 +201,7 @@ void main() {
       () => catalog.forTechnique(SudokuTechnique.hiddenSingle),
     ))!;
     await pumpPractice(tester, SudokuTechnique.hiddenSingle);
-    for (final scenario in scenarios.take(5)) {
+    for (final scenario in practiceSessionOrder(scenarios).take(5)) {
       final placement = const DeterministicHumanSolver()
           .findNextDeduction(HumanSolverState.initial(scenario.board))!
           .placements
@@ -158,6 +210,8 @@ void main() {
       await tester.tap(
         find.byKey(ValueKey('practice-digit-${placement.digit}')),
       );
+      // Check enables once an answer exists.
+      await tester.pump();
       await tester.tap(find.byKey(const ValueKey('practice-check')));
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);

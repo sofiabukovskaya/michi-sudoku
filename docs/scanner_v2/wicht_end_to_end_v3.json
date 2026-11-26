@@ -1,0 +1,291 @@
+{
+  "photos": 40,
+  "gridFound": 40,
+  "complete": 24,
+  "atMost3": 26,
+  "meanCorrections": 11.05,
+  "medianCorrections": 0,
+  "confidentWrongTotal": 219,
+  "boards": [
+    {
+      "image": "image1005.jpg",
+      "found": true,
+      "corrections": 6,
+      "confidentWrong": 1,
+      "flagged": 14
+    },
+    {
+      "image": "image1009.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image1019.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 1
+    },
+    {
+      "image": "image1024.jpg",
+      "found": true,
+      "corrections": 31,
+      "confidentWrong": 0,
+      "flagged": 39
+    },
+    {
+      "image": "image1041.jpg",
+      "found": true,
+      "corrections": 31,
+      "confidentWrong": 4,
+      "flagged": 31
+    },
+    {
+      "image": "image1072.jpg",
+      "found": true,
+      "corrections": 41,
+      "confidentWrong": 18,
+      "flagged": 32
+    },
+    {
+      "image": "image1073.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image1080.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image1088.jpg",
+      "found": true,
+      "corrections": 6,
+      "confidentWrong": 0,
+      "flagged": 24
+    },
+    {
+      "image": "image114.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image117.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image120.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image126.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image140.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image148.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image153.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image166.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image175.jpg",
+      "found": true,
+      "corrections": 2,
+      "confidentWrong": 1,
+      "flagged": 3
+    },
+    {
+      "image": "image176.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image179.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image18.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image193.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image205.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image208.jpg",
+      "found": true,
+      "corrections": 5,
+      "confidentWrong": 2,
+      "flagged": 3
+    },
+    {
+      "image": "image210.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 1
+    },
+    {
+      "image": "image211.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image25.jpg",
+      "found": true,
+      "corrections": 31,
+      "confidentWrong": 17,
+      "flagged": 14
+    },
+    {
+      "image": "image31.jpg",
+      "found": true,
+      "corrections": 52,
+      "confidentWrong": 28,
+      "flagged": 19
+    },
+    {
+      "image": "image32.jpg",
+      "found": true,
+      "corrections": 47,
+      "confidentWrong": 28,
+      "flagged": 20
+    },
+    {
+      "image": "image34.jpg",
+      "found": true,
+      "corrections": 47,
+      "confidentWrong": 28,
+      "flagged": 19
+    },
+    {
+      "image": "image35.jpg",
+      "found": true,
+      "corrections": 41,
+      "confidentWrong": 33,
+      "flagged": 11
+    },
+    {
+      "image": "image39.jpg",
+      "found": true,
+      "corrections": 48,
+      "confidentWrong": 28,
+      "flagged": 20
+    },
+    {
+      "image": "image46.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image47.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image50.jpg",
+      "found": true,
+      "corrections": 13,
+      "confidentWrong": 7,
+      "flagged": 9
+    },
+    {
+      "image": "image51.jpg",
+      "found": true,
+      "corrections": 1,
+      "confidentWrong": 0,
+      "flagged": 1
+    },
+    {
+      "image": "image73.jpg",
+      "found": true,
+      "corrections": 40,
+      "confidentWrong": 24,
+      "flagged": 17
+    },
+    {
+      "image": "image83.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image85.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    },
+    {
+      "image": "image91.jpg",
+      "found": true,
+      "corrections": 0,
+      "confidentWrong": 0,
+      "flagged": 0
+    }
+  ]
+}

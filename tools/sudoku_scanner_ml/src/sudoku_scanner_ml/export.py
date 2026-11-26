@@ -32,8 +32,9 @@ def export_model(
         "channels": 1,
         "input_dtype": "float32",
         "output_dtype": "float32",
-        "normalization": (
-            "RGB mean / 255; black=0, white=1; bilinear pixel-center resize"
+        "normalization": config.get(
+            "preprocessing",
+            "RGB mean / 255; black=0, white=1; bilinear pixel-center resize",
         ),
         "labels": ["empty", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
         "confidence_thresholds": config["confidence"],

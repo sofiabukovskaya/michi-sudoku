@@ -3,10 +3,19 @@ import 'package:michi_design_system/michi_design_system.dart';
 
 /// Compact brand mark used on the entry screens and Home.
 final class MichiWordmark extends StatelessWidget {
-  const MichiWordmark({this.light = false, this.iconSize = 32, super.key});
+  const MichiWordmark({
+    this.light = false,
+    this.iconSize = 32,
+    this.pathProgress = 1,
+    super.key,
+  });
 
   final bool light;
   final double iconSize;
+
+  /// How much of the coral logic path is drawn, from 0 to 1. The splash
+  /// animates it; every other surface shows the finished mark.
+  final double pathProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +27,7 @@ final class MichiWordmark extends StatelessWidget {
         children: [
           CustomPaint(
             size: Size.square(iconSize),
-            painter: _MarkPainter(light: light),
+            painter: _MarkPainter(light: light, progress: pathProgress),
           ),
           const SizedBox(width: MichiSpacing.sm),
           Text(
@@ -38,9 +47,10 @@ final class MichiWordmark extends StatelessWidget {
 }
 
 final class _MarkPainter extends CustomPainter {
-  const _MarkPainter({required this.light});
+  const _MarkPainter({required this.light, required this.progress});
 
   final bool light;
+  final double progress;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -94,10 +104,19 @@ final class _MarkPainter extends CustomPainter {
         29 * scale,
         6 * scale,
       );
-    canvas.drawPath(path, coral);
+    if (progress >= 1) {
+      canvas.drawPath(path, coral);
+    } else if (progress > 0) {
+      for (final metric in path.computeMetrics()) {
+        canvas.drawPath(
+          metric.extractPath(0, metric.length * progress),
+          coral,
+        );
+      }
+    }
   }
 
   @override
   bool shouldRepaint(covariant _MarkPainter oldDelegate) =>
-      light != oldDelegate.light;
+      light != oldDelegate.light || progress != oldDelegate.progress;
 }

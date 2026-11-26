@@ -6,6 +6,7 @@ enum AuthProblem {
   weakPassword,
   emailInUse,
   wrongCredentials,
+  signInAgain,
   disabled,
   tooManyRequests,
   network,

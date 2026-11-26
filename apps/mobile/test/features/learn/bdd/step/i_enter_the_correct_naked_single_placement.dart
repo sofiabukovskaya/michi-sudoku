@@ -10,6 +10,8 @@ Future<void> iEnterTheCorrectNakedSinglePlacement(WidgetTester tester) async {
   ))!;
   await tester.tap(find.byKey(ValueKey('cell-${placement.cell.index}')));
   await tester.tap(find.byKey(ValueKey('practice-digit-${placement.digit}')));
+  // Check enables once an answer exists.
+  await tester.pump();
   await tester.tap(find.byKey(const ValueKey('practice-check')));
   await tester.pumpAndSettle();
   expect(find.byKey(const ValueKey('practice-correct')), findsOneWidget);

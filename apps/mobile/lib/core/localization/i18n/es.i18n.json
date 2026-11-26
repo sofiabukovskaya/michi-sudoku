@@ -2,6 +2,9 @@
   "appName": "MICHI",
   "common": {
     "continueLabel": "Continuar",
+    "justAMoment": "Un momento…",
+    "retry": "Reintentar",
+    "loadProblem": "MICHI no pudo abrir esto ahora. Tu progreso está a salvo en este dispositivo.",
     "start": "Empezar"
   },
   "splash": {
@@ -29,7 +32,7 @@
   "playerLevel": {
     "title": "¿Cuánto sabes de sudoku?",
     "goToGame": "Empezar a jugar",
-    "subtitle": "Esto define tu primera lección y dificultad. Puedes cambiarlo después.",
+    "subtitle": "Elige la descripción que mejor te represente.",
     "beginner": "Estoy empezando",
     "beginnerDetail": "Reglas y primeros pasos",
     "basics": "Conozco lo básico",
@@ -46,7 +49,7 @@
     "google": "Continuar con Google",
     "emailEntry": "Iniciar sesión con correo",
     "createTitle": "Crear una cuenta",
-    "createSubtitle": "Tu progreso permanece en este dispositivo hasta que la sincronización esté disponible.",
+    "createSubtitle": "Sincroniza tus sudokus completados y tu progreso de aprendizaje entre dispositivos.",
     "signInTitle": "Qué alegría verte de nuevo",
     "name": "Nombre",
     "email": "Correo electrónico",
@@ -80,6 +83,7 @@
     "errorTooMany": "Demasiados intentos. Vuelve más tarde.",
     "errorNetwork": "Revisa tu conexión e inténtalo de nuevo.",
     "errorUnavailable": "El servicio de cuentas no está disponible. Puedes seguir jugando como invitado.",
+    "errorSignInAgain": "Vuelve a iniciar sesión e inténtalo de nuevo.",
     "errorUnexpected": "Algo salió mal. Inténtalo de nuevo.",
     "showPassword": "Mostrar contraseña",
     "hidePassword": "Ocultar contraseña",
@@ -116,6 +120,11 @@
     "newPuzzle": "Otro sudoku",
     "weekTitle": "Esta semana",
     "weekDetails": "Detalles",
+    "streak": {
+      "one": "$n día",
+      "other": "$n días"
+    },
+    "streakMeaning": "Días seguidos con el Sudoku del día resuelto",
     "weekdaysShort": "Lu|Ma|Mi|Ju|Vi|Sá|Do",
     "newPuzzleTitle": "Nuevo sudoku",
     "catalogSource": "Elige un sudoku",
@@ -123,7 +132,8 @@
     "scanSourceDetail": "Foto o cámara",
     "weekStatusDone": "Completado",
     "weekStatusToday": "Hoy",
-    "weekStatusEmpty": "Sin actividad"
+    "weekStatusEmpty": "Sin actividad",
+    "scanInvite": "¿Tienes otro sudoku? Escanéalo."
   },
   "game": {
     "title": "Sudoku diario · Intermedio",
@@ -159,7 +169,10 @@
     "completionMistakes": "errores",
     "completionHints": "pistas",
     "dailyStampEarned": "Sello diario conseguido",
-    "completionPracticeTechnique": "Siguiente paso: $technique"
+    "completionPracticeTechnique": "Siguiente paso: $technique",
+    "numberFirst": "Número primero",
+    "fillNotes": "Rellenar notas",
+    "inputOptions": "Opciones de entrada"
   },
   "learn": {
     "title": "Aprender",
@@ -186,6 +199,8 @@
     "tryAgain": "Intentar de nuevo",
     "askMichi": "Preguntar a MICHI",
     "nextScenario": "Siguiente ejercicio",
+    "pickCellFirst": "Toca una casilla para ver sus candidatos.",
+    "finishPractice": "Ver resultados",
     "sessionSummary": "Práctica completada",
     "summaryStats": "$correct correctos · $attempts intentos",
     "hintsUsed": "$count con MICHI",
@@ -293,7 +308,9 @@
       "other": "$n sudokus completados"
     },
     "mastery": "Dominio $percent %",
-    "openTechnique": "Abrir técnica"
+    "openTechnique": "Abrir técnica",
+    "firstPuzzle": "Empieza con tu primer sudoku",
+    "firstPuzzleDetail": "Después verás qué se te da bien y qué puedes practicar."
   },
   "profile": {
     "guest": "Invitado",
@@ -313,7 +330,7 @@
     "openCamera": "Usar cámara",
     "choosePhoto": "Elegir foto",
     "shutter": "Hacer foto",
-    "frameGuide": "Mantén las cuatro esquinas dentro del encuadre.",
+    "frameGuide": "Encuadra un solo sudoku dentro del marco.",
     "processing": "Leyendo tu sudoku…",
     "reviewTitle": "Revisa los números",
     "reviewBody": "Toca una casilla para corregirla antes de jugar.",
@@ -323,7 +340,8 @@
     "recognized": "reconocido",
     "empty": "vacía",
     "clear": "Borrar",
-    "confirm": "Importar sudoku",
+    "confirm": "Continuar en MICHI",
+    "checking": "Comprobando tu sudoku…",
     "rescan": "Escanear de nuevo",
     "permissionIntro": "Permite el acceso a la cámara para hacer una foto.",
     "permissionDenied": "Se denegó el acceso a la cámara. Puedes elegir una foto.",
@@ -336,13 +354,32 @@
     "segmentationFailure": "No pudimos dividir la cuadrícula en casillas. Inténtalo de nuevo.",
     "recognitionFailure": "No pudimos leer algunos números. Inténtalo de nuevo.",
     "duplicateClues": "Corrige los números en conflicto resaltados.",
-    "noSolution": "Estos números no tienen solución. Revísalos.",
+    "noSolution": "Estas pistas no tienen solución. Compara las casillas con ? con tu foto.",
     "multipleSolutions": "Pueden faltar números; este sudoku tiene varias soluciones.",
     "storageFailure": "No pudimos guardar el sudoku importado. Inténtalo de nuevo.",
     "validationFailure": "No se pudo comprobar este sudoku. Vuelve a confirmar.",
     "unsupportedCoach": "MICHI quizá aún no pueda explicar todos los pasos de este sudoku.",
     "importedTitle": "Sudoku importado",
-    "lowConfidenceCount": "Casillas para revisar: $count"
+    "lowConfidenceCount": "Casillas para revisar: $count",
+    "stuck": "Necesito una pista",
+    "noStep": "MICHI no encuentra el siguiente paso con las técnicas disponibles.",
+    "completed": "Todas las casillas están llenas. El sudoku está resuelto.",
+    "chooseTitle": "¿Qué sudoku?",
+    "chooseBody": "La foto tiene más de un sudoku. Toca el que quieras jugar.",
+    "chooseOption": "Sudoku $number",
+    "multipleGrids": "La foto tiene más de un sudoku. Encuadra uno dentro del marco.",
+    "legendUnsure": "Dudosa: compárala con tu foto",
+    "legendConflict": "Conflicto: el mismo número dos veces",
+    "fromPhoto": "De tu foto",
+    "maybe": "¿Quizá $digit?",
+    "checkSolution": "Comprobar",
+    "stuckShort": "Me atasqué",
+    "checkSolved": "¡Resuelto! Todos los números encajan.",
+    "checkOnTrack": "Sin errores por ahora. ¡Sigue así!",
+    "checkConflicts": "Un número se repite en una fila, columna o caja. Corrige los marcados.",
+    "checkOffTrack": "Uno de los números rodeados no encaja. Míralos primero.",
+    "checkOffTrackWide": "Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.",
+    "legendSuspect": "Posible error"
   },
   "coach": {
     "step": "Pista $step de 4",
@@ -369,6 +406,8 @@
     "resultEliminations": "Elimina los candidatos tachados de las casillas resaltadas.",
     "resultActions": "Aplica el paso lógico resaltado.",
     "technique": "Técnica: $name",
+    "lessonLink": "Lección",
+    "removeThem": "Tacharlos",
     "nakedSingle": "único candidato",
     "hiddenSingle": "único oculto",
     "nakedPair": "par desnudo",

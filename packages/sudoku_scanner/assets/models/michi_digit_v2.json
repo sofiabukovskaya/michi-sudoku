@@ -1,0 +1,27 @@
+{
+  "model_version": "michi-digit-v2",
+  "input_size": 32,
+  "channels": 1,
+  "input_dtype": "float32",
+  "output_dtype": "float32",
+  "normalization": "cell-normalizer-v2",
+  "labels": [
+    "empty",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "confidence_thresholds": {
+    "high": 0.9,
+    "review": 0.8
+  },
+  "training_dataset_version": "v2-cells-2026-11-25",
+  "sha256": "6803c9152edc7a8036a0bca79fc346417e303608b85bbbb62dfc19570ba97c12",
+  "bytes": 632680
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="1024" height="1024">
+  <!-- MICHI wordmark's 32-unit board and path, centered in native icon safe space. -->
+  <path fill="#F7F2E8" d="M0 0h48v48H0z"/>
+  <g transform="translate(8 8)" fill="none">
+    <rect x="1" y="1" width="30" height="30" rx="6" stroke="#252724" stroke-width="1.8"/>
+    <path d="M11 1v30M1 11h30M21 1v30M1 21h30" stroke="#B5AC9C"/>
+    <path d="M3 27C9 25 11 28 14 21C18 13 21 17 29 6" stroke="#D9826B" stroke-width="2.8" stroke-linecap="round"/>
+  </g>
+</svg>

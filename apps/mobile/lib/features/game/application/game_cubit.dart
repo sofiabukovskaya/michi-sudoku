@@ -1,14 +1,17 @@
 import 'dart:developer' as developer;
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_mobile/core/errors/app_failure.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
+import 'package:michi_mobile/features/game/application/game_preparation.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/game_timer.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
 import 'package:michi_mobile/features/game/domain/move_reasoning_context.dart';
+import 'package:michi_mobile/features/game/domain/proven_elimination.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 /// Owns an offline game session and serializes its persistence operations.
@@ -21,6 +24,7 @@ final class GameCubit extends Cubit<GameState> {
     String? dailyChallengeKey,
     GameRepository? repository,
     GameClock? clock,
+    PreparedGame? prepared,
   }) {
     final gameClock = clock ?? SystemGameClock();
     final now = gameClock.now();
@@ -32,7 +36,8 @@ final class GameCubit extends Cubit<GameState> {
         startedAt: now,
         puzzle: puzzle,
         dailyChallengeKey: dailyChallengeKey,
-        solution: _solve(puzzle, exactSolver),
+        solution:
+            prepared?.solutionFor(puzzle.givens) ?? _solve(puzzle, exactSolver),
         board: puzzle.givens,
         notes: const {},
         history: const [],
@@ -54,6 +59,7 @@ final class GameCubit extends Cubit<GameState> {
     required CoachEngine coachEngine,
     GameRepository? repository,
     GameClock? clock,
+    PreparedGame? prepared,
   }) {
     final gameClock = clock ?? SystemGameClock();
     _validateStored(stored);
@@ -61,7 +67,8 @@ final class GameCubit extends Cubit<GameState> {
       id: stored.puzzleId,
       givens: stored.initialBoard,
     );
-    final solution = _solve(puzzle, exactSolver);
+    final solution =
+        prepared?.solutionFor(puzzle.givens) ?? _solve(puzzle, exactSolver);
     if (stored.currentBoard == solution) {
       throw const FormatException('Completed board stored as active.');
     }
@@ -75,6 +82,7 @@ final class GameCubit extends Cubit<GameState> {
         board: stored.currentBoard,
         notes: stored.notes,
         reasoning: stored.reasoning,
+        provenEliminations: stored.provenEliminations,
         history: [
           for (final item in stored.undoHistory)
             GameSnapshot(
@@ -93,6 +101,7 @@ final class GameCubit extends Cubit<GameState> {
         clock: gameClock,
         elapsedBeforeRun: stored.elapsedBeforeRun,
         runningSince: stored.runningSince,
+        lastActiveAt: stored.updatedAt,
       ),
       clock: gameClock,
       repository: repository,
@@ -121,6 +130,32 @@ final class GameCubit extends Cubit<GameState> {
 
   final HumanSolver _humanSolver;
   final CoachEngine _coachEngine;
+
+  /// The solver's view: board candidates minus Coach removals the player
+  /// accepted that are still justified. Player notes are never consulted.
+  HumanSolverState _solverState() => _solverStateFor(state.board);
+
+  /// [board] plus only the removals already proven on it. Why? uses this for
+  /// the pre-move position, so it never relies on facts proven later.
+  HumanSolverState _solverStateFor(SudokuBoard board) {
+    final base = HumanSolverState.initial(board);
+    if (state.provenEliminations.isEmpty) return base;
+    final candidates = <CellRef, CandidateMask>{
+      for (final entry in base.candidates.entries) entry.key: entry.value,
+    };
+    for (final proof in state.provenEliminations) {
+      if (!proof.holdsOn(board)) continue;
+      final removal = proof.removal;
+      final mask = candidates[removal.cell];
+      if (mask == null || !mask.contains(removal.digit)) continue;
+      candidates[removal.cell] = mask.remove(removal.digit);
+    }
+    return HumanSolverState.fromCandidates(
+      board: board,
+      candidates: candidates,
+    );
+  }
+
   final GameRepository? _repository;
   final GameClock _clock;
   GameTimer _timer;
@@ -204,7 +239,7 @@ final class GameCubit extends Cubit<GameState> {
       }
     }
     final deduction = _humanSolver.findDeductionForPlacement(
-      HumanSolverState.initial(record.preMoveBoard),
+      _solverStateFor(record.preMoveBoard),
       record.placement,
     );
     if (deduction == null || deduction.technique != record.technique) {
@@ -217,6 +252,17 @@ final class GameCubit extends Cubit<GameState> {
     return plan == null
         ? const WhySelection(WhyAvailability.unsupported)
         : WhySelection(WhyAvailability.available, plan: plan);
+  }
+
+  /// Explicit, undoable assistance. Never runs when starting a learning game.
+  void fillPencilNotes() {
+    if (state.status != GameStatus.playing ||
+        state.isPaused ||
+        state.wrongCells.isNotEmpty) {
+      return;
+    }
+    final notes = const CandidateCalculator().calculateAll(state.board);
+    if (!mapEquals(notes, state.notes)) _commit(state.board, notes);
   }
 
   void toggleNotesMode() {
@@ -251,7 +297,7 @@ final class GameCubit extends Cubit<GameState> {
       final deduction = coachDeduction?.placements.contains(target) == true
           ? coachDeduction
           : _humanSolver.findDeductionForPlacement(
-              HumanSolverState.initial(preMoveBoard),
+              _solverStateFor(preMoveBoard),
               target,
             );
       if (deduction != null) {
@@ -358,9 +404,7 @@ final class GameCubit extends Cubit<GameState> {
       );
       return;
     }
-    final deduction = _humanSolver.findNextDeduction(
-      HumanSolverState.initial(state.board),
-    );
+    final deduction = _humanSolver.findNextDeduction(_solverState());
     if (deduction == null) {
       emit(
         state.copyWith(
@@ -433,12 +477,30 @@ final class GameCubit extends Cubit<GameState> {
     );
   }
 
-  /// Placement results require an explicit action; eliminations stay visual.
+  /// Result actions are explicit: a placement enters its digit; an
+  /// elimination is remembered for later hints and removed from notes.
   void applyCoachResult() {
     final coach = state.coach;
     if (state.isPaused ||
         coach == null ||
         coach.hint.level != CoachHintLevel.result) {
+      return;
+    }
+    final removals = coach.hint.revealedEliminations;
+    if (removals.isNotEmpty) {
+      final known = state.provenEliminations.map((item) => item.removal);
+      emit(
+        state.copyWith(
+          provenEliminations: [
+            ...state.provenEliminations,
+            for (final removal in removals)
+              if (!known.contains(removal))
+                ProvenElimination(removal: removal, basis: state.board),
+          ],
+          keepCoach: false,
+        ),
+      );
+      _scheduleSave();
       return;
     }
     final placements = coach.hint.revealedPlacements;
@@ -508,6 +570,7 @@ final class GameCubit extends Cubit<GameState> {
       currentBoard: snapshot.board,
       notes: snapshot.notes,
       reasoning: snapshot.reasoning,
+      provenEliminations: snapshot.provenEliminations,
       undoHistory: [
         for (final item in snapshot.history)
           StoredGameSnapshot(

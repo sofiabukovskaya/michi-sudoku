@@ -1,0 +1,12 @@
+version: michi-digit-v2
+seed: 20261125
+input_size: 32
+dataset_version: v2-cells-2026-11-25
+preprocessing: cell-normalizer-v2
+batch_size: 256
+epochs: 24
+learning_rate: 0.002
+patience: 5
+confidence:
+  high: 0.90
+  review: 0.80

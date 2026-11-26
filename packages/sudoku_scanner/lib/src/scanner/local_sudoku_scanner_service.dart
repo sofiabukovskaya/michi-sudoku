@@ -4,8 +4,10 @@ import '../grid/cell_segmenter.dart';
 import '../grid/grid_detector.dart';
 import '../grid/perspective_corrector.dart';
 import '../image/scan_image_codec.dart';
+import '../model/grid_geometry.dart';
 import '../model/recognized_cell.dart';
 import '../model/scan_failure.dart';
+import '../model/scan_focus.dart';
 import '../model/scan_image.dart';
 import '../model/scan_result.dart';
 import '../recognition/digit_classifier.dart';
@@ -26,13 +28,19 @@ final class LocalSudokuScannerService implements SudokuScannerService {
   final DigitClassifier classifier;
 
   @override
-  Future<SudokuScanResult> scan(ScanImage image) async {
+  Future<SudokuScanResult> scan(
+    ScanImage image, {
+    ScanFocus? focus,
+    GridGeometry? grid,
+  }) async {
     final stopwatch = Stopwatch()..start();
-    final normalized = await ScanImageCodec.normalize(image);
+    // A chosen grid refers to the already upright image of the failure.
+    final normalized = grid == null
+        ? await ScanImageCodec.normalize(image)
+        : image;
     _log('decode', stopwatch);
-    final geometry = await detector.detect(normalized);
+    final geometry = grid ?? await _selectGrid(normalized, focus);
     _log('grid', stopwatch);
-    if (geometry == null) throw const ScanFailure(ScanFailureKind.noGridFound);
     final corrected = await corrector.correct(normalized, geometry);
     _log('perspective', stopwatch);
     final cells = await segmenter.segment(corrected);
@@ -52,6 +60,7 @@ final class LocalSudokuScannerService implements SudokuScannerService {
             row: cell.row,
             column: cell.column,
             prediction: await classifier.classify(cell.image),
+            image: cell.image,
           ),
         );
       } on ScanFailure {
@@ -72,6 +81,49 @@ final class LocalSudokuScannerService implements SudokuScannerService {
       geometry: geometry,
       overallConfidence: confidence,
     );
+  }
+
+  /// The frame decides first: the search is limited to it (with a margin),
+  /// and only if nothing is there does the whole photo count. Two similar
+  /// grids with no frame preference are the player's choice, never a guess.
+  Future<GridGeometry> _selectGrid(ScanImage image, ScanFocus? focus) async {
+    if (focus != null) {
+      final framed = await detector.candidates(
+        image,
+        region: focus.expand(0.08),
+      );
+      if (framed.length == 1) return framed.first;
+      if (framed.length > 1) return _decide(image, framed);
+    }
+    final all = await detector.candidates(image);
+    if (all.isEmpty) throw const ScanFailure(ScanFailureKind.noGridFound);
+    return _decide(image, all);
+  }
+
+  GridGeometry _decide(ScanImage image, List<GridGeometry> grids) {
+    if (grids.length == 1) return grids.first;
+    final first = _area(grids[0]);
+    final second = _area(grids[1]);
+    // A clearly dominant grid is the one being photographed.
+    if (second < first * 0.5) return grids.first;
+    throw ScanFailure(
+      ScanFailureKind.multipleGrids,
+      image: image,
+      candidates: [
+        for (final grid in grids)
+          if (_area(grid) >= first * 0.5) grid,
+      ],
+    );
+  }
+
+  static double _area(GridGeometry grid) {
+    var sum = 0.0;
+    for (var i = 0; i < 4; i++) {
+      final a = grid.corners[i];
+      final b = grid.corners[(i + 1) % 4];
+      sum += a.x * b.y - b.x * a.y;
+    }
+    return sum.abs() / 2;
   }
 
   void _log(String stage, Stopwatch stopwatch) {

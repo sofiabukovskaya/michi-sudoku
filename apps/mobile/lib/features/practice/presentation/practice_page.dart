@@ -1,24 +1,23 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/app/widgets/michi_page_state.dart';
+import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
-import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
-import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
-import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
-import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/focused_unit_widget.dart';
-import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
-import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
+import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/practice/application/practice_cubit.dart';
 import 'package:michi_mobile/features/practice/application/practice_state.dart';
 import 'package:michi_mobile/features/practice/data/local_practice_catalog.dart';
+import 'package:michi_mobile/features/practice/domain/practice_session_order.dart';
+import 'package:michi_mobile/features/practice/presentation/widgets/practice_exercise_view.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
@@ -60,8 +59,9 @@ final class _PracticePageState extends State<PracticePage> {
       final progressRepository =
           widget.progressRepository ?? getIt<TechniqueProgressRepository>();
       final progress = await progressRepository.load(widget.technique);
+      final ordered = practiceSessionOrder(scenarios);
       final cubit = PracticeCubit(
-        scenarios: scenarios.take(5).toList(),
+        scenarios: ordered.take(5).toList(),
         humanSolver: widget.humanSolver ?? getIt<HumanSolver>(),
         coachEngine: widget.coachEngine ?? getIt<CoachEngine>(),
         progressRepository: progressRepository,
@@ -96,454 +96,73 @@ final class _PracticePageState extends State<PracticePage> {
       return Scaffold(
         backgroundColor: MichiColors.paper,
         appBar: AppBar(title: Text(context.t.learn.practiceTitle)),
-        body: Center(
-          child: Text(
-            _failed ? context.t.learn.unavailable : context.t.learn.loading,
-          ),
-        ),
+        body: _failed
+            ? MichiProblemState(
+                message: context.t.learn.unavailable,
+                actionLabel: MaterialLocalizations.of(
+                  context,
+                ).backButtonTooltip,
+                onAction: () => Navigator.of(context).maybePop(),
+              )
+            : MichiLoadingState(label: context.t.learn.loading),
       );
     }
     return BlocProvider.value(
       value: cubit,
-      child: BlocBuilder<PracticeCubit, PracticeState>(
+      child: BlocConsumer<PracticeCubit, PracticeState>(
+        listenWhen: (a, b) => a.status != b.status,
+        listener: (_, state) {
+          switch (state.status) {
+            case PracticeStatus.correct:
+              unawaited(HapticFeedback.lightImpact());
+            case PracticeStatus.incorrect:
+              unawaited(HapticFeedback.mediumImpact());
+            case PracticeStatus.completed:
+              unawaited(HapticFeedback.heavyImpact());
+            case PracticeStatus.answering:
+              break;
+          }
+        },
         builder: (context, state) => Scaffold(
           backgroundColor: MichiColors.paper,
           appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.close_rounded),
+              tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+              onPressed: () => context.router.maybePop(),
+            ),
+            centerTitle: true,
             title: Text(
               '${context.t.learn.practiceTitle} · '
               '${TechniqueCopy.name(context.t, widget.technique)}',
+              style: MichiTypography.body.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
           body: SafeArea(
+            top: false,
             child: state.status == PracticeStatus.completed
-                ? _PracticeSummary(state: state)
-                : LayoutBuilder(
-                    builder: (context, constraints) {
-                      final cellSize = math
-                          .min(
-                            (constraints.maxWidth - 32) / 9,
-                            math.max(25, (constraints.maxHeight - 270) / 9),
-                          )
-                          .toDouble();
-                      final focusedUnit = FocusedUnitWidget.unitFor(
-                        state.deduction,
-                      );
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: MichiSpacing.md,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  context.t.learn.exercise(
-                                    current: state.index + 1,
-                                    total: state.scenarios.length,
-                                  ),
-                                  style: MichiTypography.meta,
-                                ),
-                                const SizedBox(height: MichiSpacing.xs),
-                                LinearProgressIndicator(
-                                  value:
-                                      (state.index + 1) /
-                                      state.scenarios.length,
-                                  color: MichiColors.indigo,
-                                  backgroundColor: MichiColors.cream,
-                                ),
-                                const SizedBox(height: MichiSpacing.sm),
-                                Text(
-                                  context.t.learn.findTechnique(
-                                    technique: TechniqueCopy.name(
-                                      context.t,
-                                      widget.technique,
-                                    ),
-                                  ),
-                                  style: MichiTypography.editorialTitle,
-                                ),
-                                Text(
-                                  state.isPlacement
-                                      ? context.t.learn.placementPrompt
-                                      : context.t.learn.eliminationPrompt,
-                                  style: MichiTypography.secondary,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: MichiSpacing.sm),
-                          if (focusedUnit case final unit?)
-                            SizedBox(
-                              height: math.min(
-                                constraints.maxWidth - 32,
-                                math.min(
-                                  310,
-                                  constraints.maxHeight *
-                                      (constraints.maxHeight < 650
-                                          ? 0.32
-                                          : 0.43),
-                                ),
-                              ),
-                              child: FocusedUnitWidget(
-                                unit: unit,
-                                view: BoardViewState.educational(
-                                  state: state.engineState,
-                                  selectedCell: state.selectedCell,
-                                  coachHint: state.visibleHint,
-                                  selectedEliminations:
-                                      state.selectedEliminations,
-                                ),
-                                onCellTap: cubit.selectCell,
-                              ),
-                            )
-                          else
-                            SudokuBoardWidget(
-                              view: BoardViewState.educational(
-                                state: state.engineState,
-                                selectedCell: state.selectedCell,
-                                coachHint: state.visibleHint,
-                                selectedEliminations:
-                                    state.selectedEliminations,
-                              ),
-                              cellSize: cellSize,
-                              onCellTap: cubit.selectCell,
-                            ),
-                          const SizedBox(height: MichiSpacing.sm),
-                          Expanded(
-                            child: state.visibleHint != null
-                                ? Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: SizedBox(
-                                      height: 220,
-                                      child: CoachPanel(
-                                        model: CoachPresenter.presentPlan(
-                                          context.t,
-                                          state.coachPlan,
-                                          state.hintIndex!,
-                                        ),
-                                        onNext: cubit.requestHint,
-                                        onDismiss: cubit.dismissHint,
-                                        onApply: () {
-                                          final placements =
-                                              state.deduction.placements;
-                                          if (placements.length == 1) {
-                                            cubit
-                                              ..dismissHint()
-                                              ..selectCell(
-                                                placements.single.cell,
-                                              )
-                                              ..selectDigit(
-                                                placements.single.digit,
-                                              );
-                                          } else {
-                                            cubit.dismissHint();
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                : _PracticeControls(
-                                    state: state,
-                                    cubit: cubit,
-                                  ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-final class _PracticeControls extends StatelessWidget {
-  const _PracticeControls({required this.state, required this.cubit});
-
-  final PracticeState state;
-  final PracticeCubit cubit;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: MichiSpacing.md),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (state.status == PracticeStatus.answering) ...[
-          Expanded(
-            child: SingleChildScrollView(
-              child: state.isPlacement
-                  ? _digitChoices(context)
-                  : _candidateChoices(context),
-            ),
-          ),
-          if (state.persistenceFailed)
-            Text(
-              context.t.learn.saveFailed,
-              style: MichiTypography.secondary.copyWith(
-                color: MichiColors.error,
-              ),
-            ),
-          Row(
-            children: [
-              Expanded(
-                child: MichiButton(
-                  label: context.t.learn.askMichi,
-                  variant: MichiButtonVariant.secondary,
-                  onPressed: cubit.requestHint,
-                ),
-              ),
-              const SizedBox(width: MichiSpacing.sm),
-              Expanded(
-                child: MichiButton(
-                  key: const ValueKey('practice-check'),
-                  label: context.t.learn.checkAnswer,
-                  onPressed: state.saving ? null : cubit.checkAnswer,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: MichiSpacing.sm),
-        ] else ...[
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) => SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        _feedback(context),
-                      ],
+                ? MichiContentFrame(
+                    maxWidth: MichiLayout.focusedWidth,
+                    expandedMaxHeight: MichiLayout.taskMaxHeight,
+                    child: MichiReveal(child: _PracticeSummary(state: state)),
+                  )
+                : PracticeExerciseView(
+                    state: state,
+                    cubit: cubit,
+                    continueLabel: state.isLast
+                        ? context.t.learn.finishPractice
+                        : context.t.learn.nextScenario,
+                    onContinue: cubit.next,
+                    header: _PracticeHeader(
+                      state: state,
+                      technique: widget.technique,
                     ),
                   ),
-                ),
-              ),
-            ),
           ),
-        ],
-      ],
-    ),
-  );
-
-  Widget _digitChoices(BuildContext context) => Wrap(
-    spacing: MichiSpacing.xs,
-    runSpacing: MichiSpacing.xs,
-    alignment: WrapAlignment.center,
-    children: [
-      for (var digit = 1; digit <= 9; digit++)
-        _DigitChoice(
-          key: ValueKey('practice-digit-$digit'),
-          digit: digit,
-          selected: state.selectedDigit == digit,
-          onTap: () => cubit.selectDigit(digit),
-        ),
-    ],
-  );
-
-  Widget _candidateChoices(BuildContext context) {
-    final cell = state.selectedCell;
-    if (cell == null || state.engineState.board.isFilled(cell)) {
-      return const SizedBox.shrink();
-    }
-    return Wrap(
-      spacing: MichiSpacing.xs,
-      runSpacing: MichiSpacing.xs,
-      alignment: WrapAlignment.center,
-      children: [
-        for (final digit in state.engineState.candidatesFor(cell).digits)
-          Semantics(
-            label: _candidateSemanticsLabel(
-              context,
-              cell,
-              digit,
-              state.selectedEliminations.contains(
-                CandidateElimination(cell, digit),
-              ),
-            ),
-            selected: state.selectedEliminations.contains(
-              CandidateElimination(cell, digit),
-            ),
-            button: true,
-            onTap: () => cubit.toggleElimination(cell, digit),
-            child: ExcludeSemantics(
-              child: _DigitChoice(
-                key: ValueKey('candidate-${cell.index}-$digit'),
-                digit: digit,
-                selected: state.selectedEliminations.contains(
-                  CandidateElimination(cell, digit),
-                ),
-                onTap: () => cubit.toggleElimination(cell, digit),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  String _candidateSemanticsLabel(
-    BuildContext context,
-    CellRef cell,
-    int digit,
-    bool selected,
-  ) =>
-      '${context.t.game.row} ${cell.row + 1}, '
-      '${context.t.game.column} ${cell.column + 1}, '
-      '${context.t.game.candidates} $digit'
-      '${selected ? ', ${context.t.learn.selectedForElimination}' : ''}';
-
-  Widget _feedback(BuildContext context) {
-    final correct = state.status == PracticeStatus.correct;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: correct ? MichiColors.successTint : MichiColors.almostTint,
-        borderRadius: BorderRadius.circular(MichiRadius.card),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(MichiSpacing.lg),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          correct
-                              ? context.t.learn.correctTitle
-                              : context.t.learn.incorrectTitle,
-                          key: ValueKey(
-                            correct ? 'practice-correct' : 'practice-wrong',
-                          ),
-                          style: MichiTypography.heading.copyWith(
-                            color: correct
-                                ? MichiColors.success
-                                : MichiColors.almostText,
-                          ),
-                        ),
-                      ),
-                      if (correct)
-                        const MichiMascot(
-                          state: MichiMascotState.happy,
-                          size: 64,
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: MichiSpacing.sm),
-                  Text(
-                    correct
-                        ? TechniqueCopy.step(
-                            context.t,
-                            state.scenario.technique,
-                            LessonStepKind.reasoning,
-                          )
-                        : _incorrectExplanation(context),
-                    style: MichiTypography.body,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: MichiSpacing.lg),
-            Row(
-              children: [
-                if (!correct) ...[
-                  Expanded(
-                    child: MichiButton(
-                      label: context.t.learn.askMichi,
-                      variant: MichiButtonVariant.secondary,
-                      onPressed: cubit.requestHint,
-                    ),
-                  ),
-                  const SizedBox(width: MichiSpacing.sm),
-                ],
-                Expanded(
-                  child: MichiButton(
-                    key: ValueKey(correct ? 'practice-next' : 'practice-retry'),
-                    label: correct
-                        ? context.t.learn.nextScenario
-                        : context.t.learn.tryAgain,
-                    onPressed: correct ? cubit.next : cubit.tryAgain,
-                  ),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );
   }
-
-  String _incorrectExplanation(BuildContext context) {
-    if (state.isPlacement) {
-      final placement = state.deduction.placements.singleOrNull;
-      if (placement == null) return context.t.learn.wrongCellAndDigit;
-      if (state.selectedCell != placement.cell) {
-        return context.t.learn.wrongCell;
-      }
-      if (state.selectedDigit != placement.digit) {
-        return context.t.learn.wrongDigit;
-      }
-      return context.t.learn.wrongCellAndDigit;
-    }
-    final expected = state.deduction.eliminations.toSet();
-    if (state.selectedEliminations.difference(expected).isNotEmpty) {
-      return context.t.learn.extraElimination;
-    }
-    return context.t.learn.missingElimination;
-  }
-}
-
-final class _DigitChoice extends StatelessWidget {
-  const _DigitChoice({
-    required this.digit,
-    required this.selected,
-    required this.onTap,
-    super.key,
-  });
-
-  final int digit;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    selected: selected,
-    label: '$digit',
-    onTap: onTap,
-    child: ExcludeSemantics(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(MichiRadius.small),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: selected ? MichiColors.indigo : MichiColors.ivory,
-            borderRadius: BorderRadius.circular(MichiRadius.small),
-            border: Border.all(color: MichiColors.hairline),
-          ),
-          child: SizedBox.square(
-            dimension: 44,
-            child: Center(
-              child: Text(
-                '$digit',
-                style: MichiTypography.body.copyWith(
-                  color: selected ? MichiColors.ivory : MichiColors.textPrimary,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
 final class _PracticeSummary extends StatelessWidget {
@@ -558,10 +177,18 @@ final class _PracticeSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Spacer(),
-        const Center(
-          child: MichiMascot(
-            state: MichiMascotState.happy,
-            size: 160,
+        // Mastery is a genuine milestone (celebrate); a finished session
+        // without it is still a good moment (happy). Plays once on arrival.
+        Center(
+          child: MichiMotionMascot(
+            asset: state.progress.mastery == TechniqueMastery.mastered
+                ? MichiMotionAsset.celebrating
+                : MichiMotionAsset.happy,
+            size: 176,
+            fallback: const MichiMascot(
+              state: MichiMascotState.happy,
+              size: 160,
+            ),
           ),
         ),
         const SizedBox(height: MichiSpacing.xl),
@@ -597,5 +224,49 @@ final class _PracticeSummary extends StatelessWidget {
         ),
       ],
     ),
+  );
+}
+
+final class _PracticeHeader extends StatelessWidget {
+  const _PracticeHeader({required this.state, required this.technique});
+
+  final PracticeState state;
+  final SudokuTechnique technique;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      PracticeSegments(
+        total: state.scenarios.length,
+        current: state.index,
+        label: context.t.learn.exercise(
+          current: state.index + 1,
+          total: state.scenarios.length,
+        ),
+      ),
+      const SizedBox(height: MichiSpacing.lg),
+      MichiReveal(
+        key: ValueKey(state.index),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              context.t.learn.findTechnique(
+                technique: TechniqueCopy.name(context.t, technique),
+              ),
+              style: MichiTypography.editorialTitle,
+            ),
+            const SizedBox(height: MichiSpacing.xs),
+            Text(
+              state.isPlacement
+                  ? context.t.learn.placementPrompt
+                  : context.t.learn.eliminationPrompt,
+              style: MichiTypography.secondary,
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 }

@@ -54,59 +54,67 @@ final class _EmailVerificationPageState extends State<EmailVerificationPage> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: MichiMascot(state: MichiMascotState.notebook, size: 112),
-              ),
-              const SizedBox(height: MichiSpacing.xl),
-              Text(
-                context.t.auth.verifyTitle,
-                style: MichiTypography.functionalTitle,
-              ),
-              const SizedBox(height: MichiSpacing.sm),
-              Text(
-                context.t.auth.verifySubtitle(email: auth.account?.email ?? ''),
-                style: MichiTypography.body,
-              ),
-              if (_checked && !auth.isSignedIn) ...[
-                const SizedBox(height: MichiSpacing.lg),
-                AuthErrorBanner(message: context.t.auth.errorUnavailable),
-              ] else if (_checked && auth.account?.emailVerified == false) ...[
-                const SizedBox(height: MichiSpacing.lg),
-                AuthErrorBanner(message: context.t.auth.notVerified),
+        child: MichiContentFrame(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: MichiMascot(
+                    state: MichiMascotState.notebook,
+                    size: 112,
+                  ),
+                ),
+                const SizedBox(height: MichiSpacing.xl),
+                Text(
+                  context.t.auth.verifyTitle,
+                  style: MichiTypography.functionalTitle,
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                Text(
+                  context.t.auth.verifySubtitle(
+                    email: auth.account?.email ?? '',
+                  ),
+                  style: MichiTypography.body,
+                ),
+                if (_checked && !auth.isSignedIn) ...[
+                  const SizedBox(height: MichiSpacing.lg),
+                  AuthErrorBanner(message: context.t.auth.errorUnavailable),
+                ] else if (_checked &&
+                    auth.account?.emailVerified == false) ...[
+                  const SizedBox(height: MichiSpacing.lg),
+                  AuthErrorBanner(message: context.t.auth.notVerified),
+                ],
+                if (auth.problem case final problem?) ...[
+                  const SizedBox(height: MichiSpacing.lg),
+                  AuthErrorBanner(message: authProblemText(context, problem)),
+                ],
+                const Spacer(),
+                MichiButton(
+                  key: const ValueKey('verify-check'),
+                  label: context.t.auth.checkVerification,
+                  isLoading: auth.busy,
+                  onPressed: auth.busy ? null : _check,
+                ),
+                const SizedBox(height: MichiSpacing.sm),
+                TextButton(
+                  key: const ValueKey('verify-resend'),
+                  onPressed: auth.busy || !auth.isSignedIn
+                      ? null
+                      : () async {
+                          final sent = await context
+                              .read<AuthCubit>()
+                              .sendEmailVerification();
+                          if (sent && context.mounted) {
+                            setState(() => _checked = false);
+                          }
+                        },
+                  child: Text(context.t.auth.resendVerification),
+                ),
               ],
-              if (auth.problem case final problem?) ...[
-                const SizedBox(height: MichiSpacing.lg),
-                AuthErrorBanner(message: authProblemText(context, problem)),
-              ],
-              const Spacer(),
-              MichiButton(
-                key: const ValueKey('verify-check'),
-                label: context.t.auth.checkVerification,
-                isLoading: auth.busy,
-                onPressed: auth.busy ? null : _check,
-              ),
-              const SizedBox(height: MichiSpacing.sm),
-              TextButton(
-                key: const ValueKey('verify-resend'),
-                onPressed: auth.busy || !auth.isSignedIn
-                    ? null
-                    : () async {
-                        final sent = await context
-                            .read<AuthCubit>()
-                            .sendEmailVerification();
-                        if (sent && context.mounted) {
-                          setState(() => _checked = false);
-                        }
-                      },
-                child: Text(context.t.auth.resendVerification),
-              ),
-            ],
+            ),
           ),
         ),
       ),

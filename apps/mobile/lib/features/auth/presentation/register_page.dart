@@ -79,111 +79,114 @@ final class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: MichiColors.paper,
       appBar: AppBar(),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
-          children: [
-            Text(
-              context.t.auth.createTitle,
-              style: MichiTypography.functionalTitle,
-            ),
-            const SizedBox(height: MichiSpacing.sm),
-            Text(
-              context.t.auth.createSubtitle,
-              style: MichiTypography.secondary,
-            ),
-            const SizedBox(height: MichiSpacing.xl),
-            if (!auth.available || !auth.hasEnabledProvider) ...[
-              AuthErrorBanner(message: context.t.auth.errorUnavailable),
-            ] else ...[
-              if (auth.googleEnabled || auth.appleEnabled) ...[
-                AuthProviderButtons(onAuthenticated: _finishSocial),
-                const SizedBox(height: MichiSpacing.lg),
-                const Divider(color: MichiColors.hairline),
-                const SizedBox(height: MichiSpacing.lg),
-              ],
-              if (auth.problem case final problem?) ...[
-                AuthErrorBanner(message: authProblemText(context, problem)),
-                const SizedBox(height: MichiSpacing.lg),
-              ],
-              if (auth.emailEnabled) ...[
-                MichiTextField(
-                  key: const ValueKey('register-name'),
-                  label: context.t.auth.name,
-                  controller: _name,
-                  errorText: _nameError,
-                  textInputAction: TextInputAction.next,
-                  autofillHints: const [AutofillHints.name],
-                  enabled: !auth.busy,
-                  onChanged: (_) => _clearErrors(),
-                ),
-                const SizedBox(height: MichiSpacing.md),
-                MichiTextField(
-                  key: const ValueKey('register-email'),
-                  label: context.t.auth.email,
-                  controller: _email,
-                  errorText: _emailError,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  autofillHints: const [AutofillHints.email],
-                  enabled: !auth.busy,
-                  onChanged: (_) => _clearErrors(),
-                ),
-                const SizedBox(height: MichiSpacing.md),
-                MichiTextField(
-                  key: const ValueKey('register-password'),
-                  label: context.t.auth.password,
-                  controller: _password,
-                  errorText: _passwordError,
-                  obscureText: !_showPassword,
-                  textInputAction: TextInputAction.done,
-                  autofillHints: const [AutofillHints.newPassword],
-                  enabled: !auth.busy,
-                  onChanged: (_) => _clearErrors(),
-                  onSubmitted: (_) => _create(),
-                  suffixIcon: IconButton(
-                    tooltip: _showPassword
-                        ? context.t.auth.hidePassword
-                        : context.t.auth.showPassword,
-                    onPressed: () =>
-                        setState(() => _showPassword = !_showPassword),
-                    icon: Icon(
-                      _showPassword
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
+        child: MichiContentFrame(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
+            children: [
+              Text(
+                context.t.auth.createTitle,
+                style: MichiTypography.functionalTitle,
+              ),
+              const SizedBox(height: MichiSpacing.sm),
+              Text(
+                context.t.auth.createSubtitle,
+                style: MichiTypography.secondary,
+              ),
+              const SizedBox(height: MichiSpacing.xl),
+              if (!auth.available || !auth.hasEnabledProvider) ...[
+                AuthErrorBanner(message: context.t.auth.errorUnavailable),
+              ] else ...[
+                if (auth.googleEnabled || auth.appleEnabled) ...[
+                  AuthProviderButtons(onAuthenticated: _finishSocial),
+                  const SizedBox(height: MichiSpacing.lg),
+                  const Divider(color: MichiColors.hairline),
+                  const SizedBox(height: MichiSpacing.lg),
+                ],
+                if (auth.problem case final problem?) ...[
+                  AuthErrorBanner(message: authProblemText(context, problem)),
+                  const SizedBox(height: MichiSpacing.lg),
+                ],
+                if (auth.emailEnabled) ...[
+                  MichiTextField(
+                    key: const ValueKey('register-name'),
+                    label: context.t.auth.name,
+                    controller: _name,
+                    errorText: _nameError,
+                    textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.name],
+                    enabled: !auth.busy,
+                    onChanged: (_) => _clearErrors(),
+                  ),
+                  const SizedBox(height: MichiSpacing.md),
+                  MichiTextField(
+                    key: const ValueKey('register-email'),
+                    label: context.t.auth.email,
+                    controller: _email,
+                    errorText: _emailError,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.email],
+                    enabled: !auth.busy,
+                    onChanged: (_) => _clearErrors(),
+                  ),
+                  const SizedBox(height: MichiSpacing.md),
+                  MichiTextField(
+                    key: const ValueKey('register-password'),
+                    label: context.t.auth.password,
+                    controller: _password,
+                    errorText: _passwordError,
+                    obscureText: !_showPassword,
+                    textInputAction: TextInputAction.done,
+                    autofillHints: const [AutofillHints.newPassword],
+                    enabled: !auth.busy,
+                    onChanged: (_) => _clearErrors(),
+                    onSubmitted: (_) => _create(),
+                    suffixIcon: IconButton(
+                      tooltip: _showPassword
+                          ? context.t.auth.hidePassword
+                          : context.t.auth.showPassword,
+                      onPressed: () =>
+                          setState(() => _showPassword = !_showPassword),
+                      icon: Icon(
+                        _showPassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: MichiSpacing.xs),
-                  child: Text(
-                    context.t.auth.passwordHint,
-                    style: MichiTypography.meta,
+                  Padding(
+                    padding: const EdgeInsets.only(top: MichiSpacing.xs),
+                    child: Text(
+                      context.t.auth.passwordHint,
+                      style: MichiTypography.meta,
+                    ),
                   ),
-                ),
-                const SizedBox(height: MichiSpacing.xl),
-                MichiButton(
-                  key: const ValueKey('register-submit'),
-                  label: context.t.auth.createAccount,
-                  isLoading: auth.busy,
-                  onPressed: auth.busy ? null : _create,
-                ),
-                const SizedBox(height: MichiSpacing.lg),
-                TextButton(
-                  onPressed: auth.busy
-                      ? null
-                      : () async {
-                          context.read<AuthCubit>().clearProblem();
-                          await context.router.replace(
-                            AuthRoute(fromWelcome: widget.fromWelcome),
-                          );
-                        },
-                  child: Text(
-                    '${context.t.auth.alreadyAccount} ${context.t.auth.signIn}',
+                  const SizedBox(height: MichiSpacing.xl),
+                  MichiButton(
+                    key: const ValueKey('register-submit'),
+                    label: context.t.auth.createAccount,
+                    isLoading: auth.busy,
+                    onPressed: auth.busy ? null : _create,
                   ),
-                ),
+                  const SizedBox(height: MichiSpacing.lg),
+                  TextButton(
+                    onPressed: auth.busy
+                        ? null
+                        : () async {
+                            context.read<AuthCubit>().clearProblem();
+                            await context.router.replace(
+                              AuthRoute(fromWelcome: widget.fromWelcome),
+                            );
+                          },
+                    child: Text(
+                      '${context.t.auth.alreadyAccount} '
+                      '${context.t.auth.signIn}',
+                    ),
+                  ),
+                ],
               ],
             ],
-          ],
+          ),
         ),
       ),
     );
