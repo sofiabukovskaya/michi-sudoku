@@ -59,6 +59,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$settings$en settings = _Translations$settings$en._(_root);
 	@override late final _Translations$sync$en sync = _Translations$sync$en._(_root);
 	@override late final _Translations$reminder$en reminder = _Translations$reminder$en._(_root);
+	@override late final _Translations$spotIt$en spotIt = _Translations$spotIt$en._(_root);
 }
 
 // Path: common
@@ -644,6 +645,23 @@ class _Translations$reminder$en extends Translations$reminder$uk {
 	// Translations
 	@override String streakBody({required Object count}) => 'Keep your streak going: ${count} in a row. Today\'s Sudoku is waiting.';
 	@override String get readyBody => 'Today\'s Sudoku is ready when you are.';
+}
+
+// Path: spotIt
+class _Translations$spotIt$en extends Translations$spotIt$uk {
+	_Translations$spotIt$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Spot it';
+	@override String get homeTitle => '30-second Spot it';
+	@override String get homeDetail => 'A quick win that keeps your streak on busy days';
+	@override String get doneToday => 'Done today. Your streak is safe.';
+	@override String get question => 'Which cell can be filled for sure?';
+	@override String get prompt => 'Exactly one cell can be filled right now. Find it and place its digit.';
+	@override String get stuck => 'Stuck? The hint shows where to look.';
+	@override String get done => 'Done';
 }
 
 // Path: learn.lessons
@@ -1241,6 +1259,14 @@ extension on TranslationsEn {
 			'sync.signOut' => 'Sign out',
 			'reminder.streakBody' => ({required Object count}) => 'Keep your streak going: ${count} in a row. Today\'s Sudoku is waiting.',
 			'reminder.readyBody' => 'Today\'s Sudoku is ready when you are.',
+			'spotIt.title' => 'Spot it',
+			'spotIt.homeTitle' => '30-second Spot it',
+			'spotIt.homeDetail' => 'A quick win that keeps your streak on busy days',
+			'spotIt.doneToday' => 'Done today. Your streak is safe.',
+			'spotIt.question' => 'Which cell can be filled for sure?',
+			'spotIt.prompt' => 'Exactly one cell can be filled right now. Find it and place its digit.',
+			'spotIt.stuck' => 'Stuck? The hint shows where to look.',
+			'spotIt.done' => 'Done',
 			_ => null,
 		};
 	}

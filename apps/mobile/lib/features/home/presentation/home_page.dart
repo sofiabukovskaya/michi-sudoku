@@ -32,6 +32,7 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
 import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
 import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
+import 'package:michi_mobile/features/spot_it/data/spot_it_store.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 @RoutePage()
@@ -70,6 +71,9 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   /// Recent completion times, newest first (for the reminder's timing).
   List<DateTime> _completions = const [];
+
+  /// A "Spot it" solved today: the streak is safe even before the Daily.
+  bool _spotItDone = false;
   StoredGame? _activeGame;
   bool _dailyCompleted = false;
   bool _dailyFailed = false;
@@ -236,7 +240,8 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     unawaited(
       getIt<StreakReminder>().reschedule(
         now: _clock.now(),
-        dailyDone: _dailyCompleted,
+        // Either keeps the streak, so either makes today's nudge unneeded.
+        dailyDone: _dailyCompleted || _spotItDone,
         streak: _streak,
         completions: _completions,
         title: 'MICHI',
@@ -299,11 +304,19 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Future<void> _loadWeek(int sequence) async {
     try {
       final games = await _repository.loadRecentCompletedGames(limit: 1000);
+      final spotItDays = await SpotItStore().days();
       if (!mounted || sequence != _reloadSequence) return;
       final now = _clock.now();
       setState(() {
         _week = WeeklyActivity.current(now, games);
-        _streak = DailyStreak.count(now, games);
+        _streak = DailyStreak.count(now, games, extraDays: spotItDays);
+        final today = now.toLocal();
+        _spotItDone = spotItDays.any(
+          (day) =>
+              day.year == today.year &&
+              day.month == today.month &&
+              day.day == today.day,
+        );
         _completions = [for (final game in games) game.completedAt];
       });
       _publishWidgets();
@@ -316,6 +329,11 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         stackTrace: stackTrace,
       );
     }
+  }
+
+  Future<void> _openSpotIt() async {
+    await context.router.root.push(const SpotItRoute());
+    if (mounted) await _reload();
   }
 
   Future<void> _openFocus() async {
@@ -533,6 +551,16 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           onTap: _continue,
         ),
       if (_focus case final focus?) _focusRow(t, focus),
+      MichiListRow(
+        key: const ValueKey('home-spot-it'),
+        icon: _spotItDone
+            ? Icons.check_circle_outline_rounded
+            : Icons.center_focus_strong_outlined,
+        tone: MichiRowTone.coral,
+        title: t.spotIt.homeTitle,
+        subtitle: _spotItDone ? t.spotIt.doneToday : t.spotIt.homeDetail,
+        onTap: _loading || _loadFailed ? null : _openSpotIt,
+      ),
       MichiListRow(
         key: const ValueKey('home-new-puzzle'),
         icon: Icons.grid_on_outlined,

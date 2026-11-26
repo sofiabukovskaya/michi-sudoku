@@ -59,6 +59,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$settings$de settings = _Translations$settings$de._(_root);
 	@override late final _Translations$sync$de sync = _Translations$sync$de._(_root);
 	@override late final _Translations$reminder$de reminder = _Translations$reminder$de._(_root);
+	@override late final _Translations$spotIt$de spotIt = _Translations$spotIt$de._(_root);
 }
 
 // Path: common
@@ -644,6 +645,23 @@ class _Translations$reminder$de extends Translations$reminder$uk {
 	// Translations
 	@override String streakBody({required Object count}) => 'Halte deine Serie: ${count} in Folge. Das heutige Sudoku wartet.';
 	@override String get readyBody => 'Das heutige Sudoku ist bereit, wenn du es bist.';
+}
+
+// Path: spotIt
+class _Translations$spotIt$de extends Translations$spotIt$uk {
+	_Translations$spotIt$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Entdecke es';
+	@override String get homeTitle => '30-Sekunden-Entdecker';
+	@override String get homeDetail => 'Ein schneller Erfolg, der deine Serie an vollen Tagen hält';
+	@override String get doneToday => 'Heute erledigt. Deine Serie ist sicher.';
+	@override String get question => 'Welches Feld lässt sich sicher füllen?';
+	@override String get prompt => 'Genau ein Feld lässt sich jetzt sicher füllen. Finde es und setze die Zahl.';
+	@override String get stuck => 'Hängst du? Der Tipp zeigt, wo du schauen kannst.';
+	@override String get done => 'Fertig';
 }
 
 // Path: learn.lessons
@@ -1241,6 +1259,14 @@ extension on TranslationsDe {
 			'sync.signOut' => 'Abmelden',
 			'reminder.streakBody' => ({required Object count}) => 'Halte deine Serie: ${count} in Folge. Das heutige Sudoku wartet.',
 			'reminder.readyBody' => 'Das heutige Sudoku ist bereit, wenn du es bist.',
+			'spotIt.title' => 'Entdecke es',
+			'spotIt.homeTitle' => '30-Sekunden-Entdecker',
+			'spotIt.homeDetail' => 'Ein schneller Erfolg, der deine Serie an vollen Tagen hält',
+			'spotIt.doneToday' => 'Heute erledigt. Deine Serie ist sicher.',
+			'spotIt.question' => 'Welches Feld lässt sich sicher füllen?',
+			'spotIt.prompt' => 'Genau ein Feld lässt sich jetzt sicher füllen. Finde es und setze die Zahl.',
+			'spotIt.stuck' => 'Hängst du? Der Tipp zeigt, wo du schauen kannst.',
+			'spotIt.done' => 'Fertig',
 			_ => null,
 		};
 	}

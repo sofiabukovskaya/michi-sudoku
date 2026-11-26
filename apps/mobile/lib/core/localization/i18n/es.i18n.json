@@ -516,5 +516,15 @@
   "reminder": {
     "streakBody": "Mantén tu racha: $count seguidos. El sudoku de hoy te espera.",
     "readyBody": "El sudoku de hoy está listo cuando tú lo estés."
+  },
+  "spotIt": {
+    "title": "Encuéntralo",
+    "homeTitle": "Encuéntralo en 30 segundos",
+    "homeDetail": "Una victoria rápida que mantiene tu racha en días ocupados",
+    "doneToday": "Hecho hoy. Tu racha está a salvo.",
+    "question": "¿Qué casilla se puede llenar con certeza?",
+    "prompt": "Ahora mismo solo una casilla se puede llenar con certeza. Encuéntrala y pon su número.",
+    "stuck": "¿Atascado? La pista te muestra dónde mirar.",
+    "done": "Listo"
   }
 }

@@ -59,6 +59,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$settings$es settings = _Translations$settings$es._(_root);
 	@override late final _Translations$sync$es sync = _Translations$sync$es._(_root);
 	@override late final _Translations$reminder$es reminder = _Translations$reminder$es._(_root);
+	@override late final _Translations$spotIt$es spotIt = _Translations$spotIt$es._(_root);
 }
 
 // Path: common
@@ -644,6 +645,23 @@ class _Translations$reminder$es extends Translations$reminder$uk {
 	// Translations
 	@override String streakBody({required Object count}) => 'Mantén tu racha: ${count} seguidos. El sudoku de hoy te espera.';
 	@override String get readyBody => 'El sudoku de hoy está listo cuando tú lo estés.';
+}
+
+// Path: spotIt
+class _Translations$spotIt$es extends Translations$spotIt$uk {
+	_Translations$spotIt$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Encuéntralo';
+	@override String get homeTitle => 'Encuéntralo en 30 segundos';
+	@override String get homeDetail => 'Una victoria rápida que mantiene tu racha en días ocupados';
+	@override String get doneToday => 'Hecho hoy. Tu racha está a salvo.';
+	@override String get question => '¿Qué casilla se puede llenar con certeza?';
+	@override String get prompt => 'Ahora mismo solo una casilla se puede llenar con certeza. Encuéntrala y pon su número.';
+	@override String get stuck => '¿Atascado? La pista te muestra dónde mirar.';
+	@override String get done => 'Listo';
 }
 
 // Path: learn.lessons
@@ -1241,6 +1259,14 @@ extension on TranslationsEs {
 			'sync.signOut' => 'Cerrar sesión',
 			'reminder.streakBody' => ({required Object count}) => 'Mantén tu racha: ${count} seguidos. El sudoku de hoy te espera.',
 			'reminder.readyBody' => 'El sudoku de hoy está listo cuando tú lo estés.',
+			'spotIt.title' => 'Encuéntralo',
+			'spotIt.homeTitle' => 'Encuéntralo en 30 segundos',
+			'spotIt.homeDetail' => 'Una victoria rápida que mantiene tu racha en días ocupados',
+			'spotIt.doneToday' => 'Hecho hoy. Tu racha está a salvo.',
+			'spotIt.question' => '¿Qué casilla se puede llenar con certeza?',
+			'spotIt.prompt' => 'Ahora mismo solo una casilla se puede llenar con certeza. Encuéntrala y pon su número.',
+			'spotIt.stuck' => '¿Atascado? La pista te muestra dónde mirar.',
+			'spotIt.done' => 'Listo',
 			_ => null,
 		};
 	}

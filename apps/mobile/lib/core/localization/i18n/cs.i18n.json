@@ -520,5 +520,15 @@
   "reminder": {
     "streakBody": "Udrž svou sérii: $count v řadě. Dnešní sudoku čeká.",
     "readyBody": "Dnešní sudoku je připravené, až budeš mít chvilku."
+  },
+  "spotIt": {
+    "title": "Najdi to",
+    "homeTitle": "Najdi to za 30 sekund",
+    "homeDetail": "Rychlá výhra, která udrží sérii i v náročný den",
+    "doneToday": "Dnes hotovo. Tvoje série je v bezpečí.",
+    "question": "Které políčko jde vyplnit s jistotou?",
+    "prompt": "Právě teď jde s jistotou vyplnit jediné políčko. Najdi ho a doplň číslici.",
+    "stuck": "Nevíš? Nápověda ukáže, kam se dívat.",
+    "done": "Hotovo"
   }
 }

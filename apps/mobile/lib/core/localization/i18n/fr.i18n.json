@@ -516,5 +516,15 @@
   "reminder": {
     "streakBody": "Garde ta série : $count d’affilée. Le sudoku du jour t’attend.",
     "readyBody": "Le sudoku du jour est prêt quand tu l’es."
+  },
+  "spotIt": {
+    "title": "Repère-le",
+    "homeTitle": "Repère-le en 30 secondes",
+    "homeDetail": "Une victoire rapide qui garde ta série les jours chargés",
+    "doneToday": "Fait aujourd’hui. Ta série est sauve.",
+    "question": "Quelle case peut-on remplir à coup sûr ?",
+    "prompt": "Une seule case peut être remplie à coup sûr maintenant. Trouve-la et place son chiffre.",
+    "stuck": "Bloqué ? L’indice montre où regarder.",
+    "done": "Terminé"
   }
 }

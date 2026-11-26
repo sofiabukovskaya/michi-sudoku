@@ -64,6 +64,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$settings$uk settings = Translations$settings$uk.internal(_root);
 	late final Translations$sync$uk sync = Translations$sync$uk.internal(_root);
 	late final Translations$reminder$uk reminder = Translations$reminder$uk.internal(_root);
+	late final Translations$spotIt$uk spotIt = Translations$spotIt$uk.internal(_root);
 }
 
 // Path: common
@@ -1462,6 +1463,39 @@ class Translations$reminder$uk {
 	String get readyBody => 'Сьогоднішнє судоку чекає на тебе.';
 }
 
+// Path: spotIt
+class Translations$spotIt$uk {
+	Translations$spotIt$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Знайди'
+	String get title => 'Знайди';
+
+	/// uk: 'Знайди за 30 секунд'
+	String get homeTitle => 'Знайди за 30 секунд';
+
+	/// uk: 'Швидка перемога, що зберігає серію в зайнятий день'
+	String get homeDetail => 'Швидка перемога, що зберігає серію в зайнятий день';
+
+	/// uk: 'Сьогодні виконано. Твоя серія в безпеці.'
+	String get doneToday => 'Сьогодні виконано. Твоя серія в безпеці.';
+
+	/// uk: 'Яку клітинку можна заповнити напевно?'
+	String get question => 'Яку клітинку можна заповнити напевно?';
+
+	/// uk: 'Зараз напевно можна заповнити лише одну клітинку. Знайди її та постав цифру.'
+	String get prompt => 'Зараз напевно можна заповнити лише одну клітинку. Знайди її та постав цифру.';
+
+	/// uk: 'Не знаєш, де шукати? Підказка покаже.'
+	String get stuck => 'Не знаєш, де шукати? Підказка покаже.';
+
+	/// uk: 'Готово'
+	String get done => 'Готово';
+}
+
 // Path: learn.lessons
 class Translations$learn$lessons$uk {
 	Translations$learn$lessons$uk.internal(this._root);
@@ -2153,6 +2187,14 @@ extension on Translations {
 			'sync.signOut' => 'Вийти',
 			'reminder.streakBody' => ({required Object count}) => 'Збережи свою серію: ${count} поспіль. Сьогоднішнє судоку чекає.',
 			'reminder.readyBody' => 'Сьогоднішнє судоку чекає на тебе.',
+			'spotIt.title' => 'Знайди',
+			'spotIt.homeTitle' => 'Знайди за 30 секунд',
+			'spotIt.homeDetail' => 'Швидка перемога, що зберігає серію в зайнятий день',
+			'spotIt.doneToday' => 'Сьогодні виконано. Твоя серія в безпеці.',
+			'spotIt.question' => 'Яку клітинку можна заповнити напевно?',
+			'spotIt.prompt' => 'Зараз напевно можна заповнити лише одну клітинку. Знайди її та постав цифру.',
+			'spotIt.stuck' => 'Не знаєш, де шукати? Підказка покаже.',
+			'spotIt.done' => 'Готово',
 			_ => null,
 		};
 	}

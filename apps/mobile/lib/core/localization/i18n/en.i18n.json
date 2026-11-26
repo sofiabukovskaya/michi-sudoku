@@ -516,5 +516,15 @@
   "reminder": {
     "streakBody": "Keep your streak going: $count in a row. Today's Sudoku is waiting.",
     "readyBody": "Today's Sudoku is ready when you are."
+  },
+  "spotIt": {
+    "title": "Spot it",
+    "homeTitle": "30-second Spot it",
+    "homeDetail": "A quick win that keeps your streak on busy days",
+    "doneToday": "Done today. Your streak is safe.",
+    "question": "Which cell can be filled for sure?",
+    "prompt": "Exactly one cell can be filled right now. Find it and place its digit.",
+    "stuck": "Stuck? The hint shows where to look.",
+    "done": "Done"
   }
 }

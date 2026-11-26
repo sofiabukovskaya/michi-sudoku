@@ -33,6 +33,7 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/presentation/scanner_page.dart';
 import 'package:michi_mobile/features/splash/presentation/splash_page.dart';
+import 'package:michi_mobile/features/spot_it/presentation/spot_it_page.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 part 'app_router.gr.dart';
@@ -70,6 +71,7 @@ final class AppRouter extends RootStackRouter {
     AutoRoute(page: WhyRoute.page),
     AutoRoute(page: TechniqueLessonRoute.page),
     AutoRoute(page: PracticeRoute.page),
+    AutoRoute(page: SpotItRoute.page),
     AutoRoute(page: ScannerRoute.page),
     AutoRoute(page: WeekRoute.page),
     AutoRoute(page: SettingsRoute.page),

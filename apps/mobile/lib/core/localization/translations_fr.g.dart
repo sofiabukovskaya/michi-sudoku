@@ -59,6 +59,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$settings$fr settings = _Translations$settings$fr._(_root);
 	@override late final _Translations$sync$fr sync = _Translations$sync$fr._(_root);
 	@override late final _Translations$reminder$fr reminder = _Translations$reminder$fr._(_root);
+	@override late final _Translations$spotIt$fr spotIt = _Translations$spotIt$fr._(_root);
 }
 
 // Path: common
@@ -644,6 +645,23 @@ class _Translations$reminder$fr extends Translations$reminder$uk {
 	// Translations
 	@override String streakBody({required Object count}) => 'Garde ta série : ${count} d’affilée. Le sudoku du jour t’attend.';
 	@override String get readyBody => 'Le sudoku du jour est prêt quand tu l’es.';
+}
+
+// Path: spotIt
+class _Translations$spotIt$fr extends Translations$spotIt$uk {
+	_Translations$spotIt$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Repère-le';
+	@override String get homeTitle => 'Repère-le en 30 secondes';
+	@override String get homeDetail => 'Une victoire rapide qui garde ta série les jours chargés';
+	@override String get doneToday => 'Fait aujourd’hui. Ta série est sauve.';
+	@override String get question => 'Quelle case peut-on remplir à coup sûr ?';
+	@override String get prompt => 'Une seule case peut être remplie à coup sûr maintenant. Trouve-la et place son chiffre.';
+	@override String get stuck => 'Bloqué ? L’indice montre où regarder.';
+	@override String get done => 'Terminé';
 }
 
 // Path: learn.lessons
@@ -1241,6 +1259,14 @@ extension on TranslationsFr {
 			'sync.signOut' => 'Se déconnecter',
 			'reminder.streakBody' => ({required Object count}) => 'Garde ta série : ${count} d’affilée. Le sudoku du jour t’attend.',
 			'reminder.readyBody' => 'Le sudoku du jour est prêt quand tu l’es.',
+			'spotIt.title' => 'Repère-le',
+			'spotIt.homeTitle' => 'Repère-le en 30 secondes',
+			'spotIt.homeDetail' => 'Une victoire rapide qui garde ta série les jours chargés',
+			'spotIt.doneToday' => 'Fait aujourd’hui. Ta série est sauve.',
+			'spotIt.question' => 'Quelle case peut-on remplir à coup sûr ?',
+			'spotIt.prompt' => 'Une seule case peut être remplie à coup sûr maintenant. Trouve-la et place son chiffre.',
+			'spotIt.stuck' => 'Bloqué ? L’indice montre où regarder.',
+			'spotIt.done' => 'Terminé',
 			_ => null,
 		};
 	}

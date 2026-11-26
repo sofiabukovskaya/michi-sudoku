@@ -516,5 +516,15 @@
   "reminder": {
     "streakBody": "Halte deine Serie: $count in Folge. Das heutige Sudoku wartet.",
     "readyBody": "Das heutige Sudoku ist bereit, wenn du es bist."
+  },
+  "spotIt": {
+    "title": "Entdecke es",
+    "homeTitle": "30-Sekunden-Entdecker",
+    "homeDetail": "Ein schneller Erfolg, der deine Serie an vollen Tagen hält",
+    "doneToday": "Heute erledigt. Deine Serie ist sicher.",
+    "question": "Welches Feld lässt sich sicher füllen?",
+    "prompt": "Genau ein Feld lässt sich jetzt sicher füllen. Finde es und setze die Zahl.",
+    "stuck": "Hängst du? Der Tipp zeigt, wo du schauen kannst.",
+    "done": "Fertig"
   }
 }

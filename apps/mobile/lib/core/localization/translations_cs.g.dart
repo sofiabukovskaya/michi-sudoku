@@ -59,6 +59,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$settings$cs settings = _Translations$settings$cs._(_root);
 	@override late final _Translations$sync$cs sync = _Translations$sync$cs._(_root);
 	@override late final _Translations$reminder$cs reminder = _Translations$reminder$cs._(_root);
+	@override late final _Translations$spotIt$cs spotIt = _Translations$spotIt$cs._(_root);
 }
 
 // Path: common
@@ -648,6 +649,23 @@ class _Translations$reminder$cs extends Translations$reminder$uk {
 	// Translations
 	@override String streakBody({required Object count}) => 'Udrž svou sérii: ${count} v řadě. Dnešní sudoku čeká.';
 	@override String get readyBody => 'Dnešní sudoku je připravené, až budeš mít chvilku.';
+}
+
+// Path: spotIt
+class _Translations$spotIt$cs extends Translations$spotIt$uk {
+	_Translations$spotIt$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Najdi to';
+	@override String get homeTitle => 'Najdi to za 30 sekund';
+	@override String get homeDetail => 'Rychlá výhra, která udrží sérii i v náročný den';
+	@override String get doneToday => 'Dnes hotovo. Tvoje série je v bezpečí.';
+	@override String get question => 'Které políčko jde vyplnit s jistotou?';
+	@override String get prompt => 'Právě teď jde s jistotou vyplnit jediné políčko. Najdi ho a doplň číslici.';
+	@override String get stuck => 'Nevíš? Nápověda ukáže, kam se dívat.';
+	@override String get done => 'Hotovo';
 }
 
 // Path: learn.lessons
@@ -1245,6 +1263,14 @@ extension on TranslationsCs {
 			'sync.signOut' => 'Odhlásit se',
 			'reminder.streakBody' => ({required Object count}) => 'Udrž svou sérii: ${count} v řadě. Dnešní sudoku čeká.',
 			'reminder.readyBody' => 'Dnešní sudoku je připravené, až budeš mít chvilku.',
+			'spotIt.title' => 'Najdi to',
+			'spotIt.homeTitle' => 'Najdi to za 30 sekund',
+			'spotIt.homeDetail' => 'Rychlá výhra, která udrží sérii i v náročný den',
+			'spotIt.doneToday' => 'Dnes hotovo. Tvoje série je v bezpečí.',
+			'spotIt.question' => 'Které políčko jde vyplnit s jistotou?',
+			'spotIt.prompt' => 'Právě teď jde s jistotou vyplnit jediné políčko. Najdi ho a doplň číslici.',
+			'spotIt.stuck' => 'Nevíš? Nápověda ukáže, kam se dívat.',
+			'spotIt.done' => 'Hotovo',
 			_ => null,
 		};
 	}

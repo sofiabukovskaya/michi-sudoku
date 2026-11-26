@@ -988,6 +988,22 @@ class SplashRouteArgs {
 }
 
 /// generated route for
+/// [SpotItPage]
+class SpotItRoute extends PageRouteInfo<void> {
+  const SpotItRoute({List<PageRouteInfo>? children})
+    : super(SpotItRoute.name, initialChildren: children);
+
+  static const String name = 'SpotItRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SpotItPage();
+    },
+  );
+}
+
+/// generated route for
 /// [TechniqueLessonPage]
 class TechniqueLessonRoute extends PageRouteInfo<TechniqueLessonRouteArgs> {
   TechniqueLessonRoute({
