@@ -1038,6 +1038,12 @@ class Translations$scanner$uk {
 
 	/// uk: 'Можлива помилка'
 	String get legendSuspect => 'Можлива помилка';
+
+	/// uk: 'Тримай рівно…'
+	String get holdStill => 'Тримай рівно…';
+
+	/// uk: 'Наступна для перевірки · $count'
+	String nextToCheck({required Object count}) => 'Наступна для перевірки · ${count}';
 }
 
 // Path: coach
@@ -2000,6 +2006,8 @@ extension on Translations {
 			'scanner.checkOffTrack' => 'Одна з обведених цифр не підходить. Подивись спершу на них.',
 			'scanner.checkOffTrackWide' => 'Деякі цифри не узгоджуються. В обведені клітинки вже не підходить жодна цифра.',
 			'scanner.legendSuspect' => 'Можлива помилка',
+			'scanner.holdStill' => 'Тримай рівно…',
+			'scanner.nextToCheck' => ({required Object count}) => 'Наступна для перевірки · ${count}',
 			'coach.step' => ({required Object step}) => 'Підказка ${step} з 4',
 			'coach.kTry' => 'Спробую',
 			'coach.show' => 'Показати',

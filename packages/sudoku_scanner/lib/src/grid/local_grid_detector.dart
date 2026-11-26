@@ -53,20 +53,45 @@ final class LocalGridDetector implements GridDetector {
     }
     final width = bitmap.width;
     final height = bitmap.height;
-    if (width < 180 || height < 180) return const [];
-    final stride = width + 1;
-    final sums = Int32List(stride * (height + 1));
     final gray = Uint8List(width * height);
     for (var y = 0; y < height; y++) {
-      var line = 0;
       for (var x = 0; x < width; x++) {
         final p = bitmap.getPixel(x, y);
-        final value =
+        gray[y * width + x] =
             ((p.r.toInt() * 299 + p.g.toInt() * 587 + p.b.toInt() * 114) ~/
                     1000)
                 .clamp(0, 255);
-        gray[y * width + x] = value;
-        line += value;
+      }
+    }
+    final grids = candidatesInGray(gray, width, height);
+    final multiplier = originalWidth / width;
+    return [
+      for (final geometry in grids)
+        GridGeometry([
+          for (final point in geometry.corners)
+            ImagePoint(
+              point.x * multiplier + offsetX,
+              point.y * multiplier + offsetY,
+            ),
+        ]),
+    ];
+  }
+
+  /// Grids in an 8-bit gray buffer (0 black), in its own pixel coordinates,
+  /// largest first. Synchronous: callers run it off the UI isolate. Used for
+  /// still photos and for live camera frames (the luma plane, downscaled).
+  static List<GridGeometry> candidatesInGray(
+    Uint8List gray,
+    int width,
+    int height,
+  ) {
+    if (width < 180 || height < 180) return const [];
+    final stride = width + 1;
+    final sums = Int32List(stride * (height + 1));
+    for (var y = 0; y < height; y++) {
+      var line = 0;
+      for (var x = 0; x < width; x++) {
+        line += gray[y * width + x];
         sums[(y + 1) * stride + x + 1] = sums[y * stride + x + 1] + line;
       }
     }
@@ -97,19 +122,8 @@ final class LocalGridDetector implements GridDetector {
     // dark table, shadow or page edge does not merge with it (that merge put
     // corners at the photo's corners). The absolute mask remains the
     // fallback for faint, low-contrast grids.
-    var grids = _grids(localInk, width, height, minimumAxisLines: 4);
-    if (grids.isEmpty) grids = _grids(dark, width, height);
-    final multiplier = originalWidth / width;
-    return [
-      for (final geometry in grids)
-        GridGeometry([
-          for (final point in geometry.corners)
-            ImagePoint(
-              point.x * multiplier + offsetX,
-              point.y * multiplier + offsetY,
-            ),
-        ]),
-    ];
+    final grids = _grids(localInk, width, height, minimumAxisLines: 4);
+    return grids.isNotEmpty ? grids : _grids(dark, width, height);
   }
 
   static List<GridGeometry> _grids(

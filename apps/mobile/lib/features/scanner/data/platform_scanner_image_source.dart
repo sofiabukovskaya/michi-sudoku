@@ -55,6 +55,8 @@ final class PlatformScannerImageSource implements ScannerImageSource {
         selected,
         ResolutionPreset.high,
         enableAudio: false,
+        // The live frame check reads only the brightness plane.
+        imageFormatGroup: ImageFormatGroup.yuv420,
       );
       await controller.initialize();
       _controller = controller;
@@ -74,6 +76,10 @@ final class PlatformScannerImageSource implements ScannerImageSource {
   Future<ScanImage?> capture() async {
     final controller = _controller;
     if (controller == null || !controller.value.isInitialized) return null;
+    if (controller.value.isStreamingImages) {
+      // Live framing must stop before a still photo on every platform.
+      await controller.stopImageStream();
+    }
     final file = await controller.takePicture();
     try {
       final image = await _read(file);

@@ -458,6 +458,8 @@ class _Translations$scanner$es extends Translations$scanner$uk {
 	@override String get checkOffTrack => 'Uno de los números rodeados no encaja. Míralos primero.';
 	@override String get checkOffTrackWide => 'Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.';
 	@override String get legendSuspect => 'Posible error';
+	@override String get holdStill => 'No te muevas…';
+	@override String nextToCheck({required Object count}) => 'Siguiente por revisar · ${count}';
 }
 
 // Path: coach
@@ -1106,6 +1108,8 @@ extension on TranslationsEs {
 			'scanner.checkOffTrack' => 'Uno de los números rodeados no encaja. Míralos primero.',
 			'scanner.checkOffTrackWide' => 'Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.',
 			'scanner.legendSuspect' => 'Posible error',
+			'scanner.holdStill' => 'No te muevas…',
+			'scanner.nextToCheck' => ({required Object count}) => 'Siguiente por revisar · ${count}',
 			'coach.step' => ({required Object step}) => 'Pista ${step} de 4',
 			'coach.kTry' => 'Lo intentaré',
 			'coach.show' => 'Mostrar',

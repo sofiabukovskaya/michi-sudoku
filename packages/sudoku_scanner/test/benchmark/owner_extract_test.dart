@@ -23,8 +23,9 @@ void main() {
       const detector = LocalGridDetector();
       const corrector = HomographyPerspectiveCorrector();
       const segmenter = InsetCellSegmenter();
-      final photos = Directory('$root/photos').listSync().whereType<File>().toList()
-        ..sort((a, b) => a.path.compareTo(b.path));
+      final photos =
+          Directory('$root/photos').listSync().whereType<File>().toList()
+            ..sort((a, b) => a.path.compareTo(b.path));
       final summary = <Map<String, Object?>>[];
       for (final photo in photos) {
         final name = photo.uri.pathSegments.last.replaceAll('.jpg', '');

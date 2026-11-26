@@ -63,6 +63,21 @@ final class ScannerReviewData {
       !edited.contains(cell) &&
       result.cells[cell.index].prediction.confidence < lowConfidence;
 
+  /// Cells worth a second look, row by row: unsure readings, repeated
+  /// digits, and digits "Check it" ringed as possible mistakes.
+  List<int> get toCheck {
+    final suspects = check?.verdict == SolutionVerdict.offTrack
+        ? check!.suspects
+        : const <CellRef>{};
+    return [
+      for (var index = 0; index < 81; index++)
+        if (needsReview(CellRef.fromIndex(index)) ||
+            conflicts.contains(CellRef.fromIndex(index)) ||
+            suspects.contains(CellRef.fromIndex(index)))
+          index,
+    ];
+  }
+
   int get lowConfidenceCount => [
     for (var index = 0; index < 81; index++)
       if (needsReview(CellRef.fromIndex(index))) index,

@@ -219,6 +219,19 @@ final class ScannerCubit extends Cubit<ScannerState> {
     );
   }
 
+  /// Moves to the next cell worth checking after the selected one,
+  /// wrapping around; does nothing when nothing is left to check.
+  void selectNextToCheck() {
+    final review = state.review;
+    if (state.phase != ScannerPhase.review || review == null) return;
+    final cells = review.toCheck;
+    if (cells.isEmpty) return;
+    final current = review.selectedIndex ?? -1;
+    selectCell(
+      cells.firstWhere((index) => index > current, orElse: () => cells.first),
+    );
+  }
+
   void editSelected(int digit) {
     final review = state.review;
     final index = review?.selectedIndex;

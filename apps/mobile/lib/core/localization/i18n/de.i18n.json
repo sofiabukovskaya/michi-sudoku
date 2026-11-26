@@ -379,7 +379,9 @@
     "checkConflicts": "Eine Zahl kommt in Zeile, Spalte oder Block doppelt vor. Korrigiere die markierten.",
     "checkOffTrack": "Eine der eingekreisten Zahlen passt nicht. Schau dir diese zuerst an.",
     "checkOffTrackWide": "Einige Zahlen passen nicht zusammen. In die eingekreisten Felder passt keine Zahl mehr.",
-    "legendSuspect": "Möglicher Fehler"
+    "legendSuspect": "Möglicher Fehler",
+    "holdStill": "Ruhig halten…",
+    "nextToCheck": "Nächstes prüfen · $count"
   },
   "coach": {
     "step": "Hinweis $step von 4",

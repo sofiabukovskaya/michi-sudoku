@@ -20,6 +20,7 @@ import 'package:michi_mobile/features/learn/domain/technique_lesson.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_state.dart';
+import 'package:michi_mobile/features/scanner/data/live_grid_watcher.dart';
 import 'package:michi_mobile/features/scanner/domain/solution_check.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 import 'package:sudoku_scanner/sudoku_scanner.dart';
@@ -199,7 +200,10 @@ final class _Capture extends StatelessWidget {
       children: [
         Text(context.t.scanner.intro, style: MichiTypography.secondary),
         const SizedBox(height: MichiSpacing.lg),
-        _Viewfinder(controller: ready ? controller : null),
+        _Viewfinder(
+          controller: ready ? controller : null,
+          onAutoCapture: (focus) => unawaited(cubit.capture(focus: focus)),
+        ),
         const SizedBox(height: MichiSpacing.md),
         Text(
           message,
@@ -244,10 +248,13 @@ final class _Capture extends StatelessWidget {
 /// The live camera at its true aspect ratio (never stretched), as large as
 /// the screen allows, with a square scanning frame. The frame is the same
 /// region the detector searches first, so what is framed is what is read.
-final class _Viewfinder extends StatelessWidget {
-  const _Viewfinder({required this.controller});
+final class _Viewfinder extends StatefulWidget {
+  const _Viewfinder({required this.controller, required this.onAutoCapture});
 
   final CameraController? controller;
+
+  /// Takes the photo once a framed puzzle has held still.
+  final ValueChanged<ScanFocus> onAutoCapture;
 
   /// Frame side as a fraction of the preview's shorter side.
   static const frameFraction = 0.86;
@@ -275,12 +282,57 @@ final class _Viewfinder extends StatelessWidget {
   }
 
   @override
+  State<_Viewfinder> createState() => _ViewfinderState();
+}
+
+final class _ViewfinderState extends State<_Viewfinder> {
+  late final LiveGridWatcher _watcher = LiveGridWatcher(
+    onSteady: () {
+      final focus = _focus;
+      if (focus == null || !mounted) return;
+      unawaited(HapticFeedback.mediumImpact());
+      widget.onAutoCapture(focus);
+    },
+  );
+  ScanFocus? _focus;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(_Viewfinder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.controller, widget.controller)) _sync();
+  }
+
+  void _sync() {
+    final camera = widget.controller;
+    if (camera == null) {
+      _focus = null;
+      unawaited(_watcher.stop());
+      return;
+    }
+    final focus = _Viewfinder.focusFor(_Viewfinder.aspectOf(context, camera));
+    _focus = focus;
+    unawaited(_watcher.start(camera, focus));
+  }
+
+  @override
+  void dispose() {
+    _watcher.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final camera = controller;
+      final camera = widget.controller;
       final portrait =
           MediaQuery.orientationOf(context) == Orientation.portrait;
-      final aspect = aspectOf(context, camera);
+      final aspect = _Viewfinder.aspectOf(context, camera);
       final maxHeight = math.max(
         240,
         MediaQuery.sizeOf(context).height * (portrait ? 0.62 : 0.72),
@@ -322,10 +374,45 @@ final class _Viewfinder extends StatelessWidget {
                     ),
                   ),
                 IgnorePointer(
-                  child: CustomPaint(
-                    painter: _FramePainter(
-                      live: camera != null,
-                      fraction: frameFraction,
+                  child: ValueListenableBuilder<LiveGridState>(
+                    valueListenable: _watcher.state,
+                    builder: (context, live, _) => Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        CustomPaint(
+                          painter: _FramePainter(
+                            live: camera != null,
+                            fraction: _Viewfinder.frameFraction,
+                            accent: switch (live) {
+                              LiveGridState.searching => null,
+                              LiveGridState.found => MichiColors.coral,
+                              LiveGridState.steady => MichiColors.success,
+                            },
+                          ),
+                        ),
+                        if (camera != null && live != LiveGridState.searching)
+                          Align(
+                            alignment: const Alignment(0, 0.9),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: MichiColors.ivory,
+                                borderRadius: BorderRadius.circular(
+                                  MichiRadius.control,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: MichiSpacing.md,
+                                  vertical: MichiSpacing.xs,
+                                ),
+                                child: Text(
+                                  context.t.scanner.holdStill,
+                                  style: MichiTypography.secondary,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),
@@ -341,10 +428,17 @@ final class _Viewfinder extends StatelessWidget {
 /// Dims everything outside the frame and marks its corners, so the target
 /// area reads at a glance on any page. Painted once; no animation.
 final class _FramePainter extends CustomPainter {
-  const _FramePainter({required this.live, required this.fraction});
+  const _FramePainter({
+    required this.live,
+    required this.fraction,
+    this.accent,
+  });
 
   final bool live;
   final double fraction;
+
+  /// Corner colour while live framing sees a puzzle (found, then steady).
+  final Color? accent;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -364,7 +458,8 @@ final class _FramePainter extends CustomPainter {
         Paint()..color = const Color(0x66000000),
       );
     }
-    final color = live ? MichiColors.ivory : MichiColors.indigo;
+    final base = live ? MichiColors.ivory : MichiColors.indigo;
+    final color = accent ?? base;
     canvas.drawRRect(
       RRect.fromRectAndRadius(frame, radius),
       Paint()
@@ -396,7 +491,9 @@ final class _FramePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_FramePainter oldDelegate) =>
-      oldDelegate.live != live || oldDelegate.fraction != fraction;
+      oldDelegate.live != live ||
+      oldDelegate.fraction != fraction ||
+      oldDelegate.accent != accent;
 }
 
 /// More than one puzzle in the photo: show them, the player taps one.
@@ -728,7 +825,11 @@ final class _Review extends StatelessWidget {
         _ReviewLegend(review: review),
         const SizedBox(height: MichiSpacing.md),
         // Fixed height whether or not a cell is chosen: nothing below moves.
-        _CellPhoto(review: review, onDigit: cubit.editSelected),
+        _CellPhoto(
+          review: review,
+          onDigit: cubit.editSelected,
+          onNext: cubit.selectNextToCheck,
+        ),
         const SizedBox(height: MichiSpacing.lg),
       ],
     );
@@ -805,10 +906,17 @@ final class _ReviewLegend extends StatelessWidget {
 /// The chosen cell as it looked in the photo, beside what was read, so an
 /// unsure cell can be checked without going back to the page.
 final class _CellPhoto extends StatelessWidget {
-  const _CellPhoto({required this.review, required this.onDigit});
+  const _CellPhoto({
+    required this.review,
+    required this.onDigit,
+    required this.onNext,
+  });
 
   final ScannerReviewData review;
   final ValueChanged<int> onDigit;
+
+  /// Jumps to the next cell worth checking.
+  final VoidCallback onNext;
 
   static const _side = 56.0;
 
@@ -828,10 +936,23 @@ final class _CellPhoto extends StatelessWidget {
         alternative != null &&
         review.needsReview(CellRef.fromIndex(index)) &&
         review.board.values[index] != alternative;
+    final remaining = review.toCheck.length;
+    final next = remaining == 0
+        ? null
+        : context.t.scanner.nextToCheck(count: remaining);
     return SizedBox(
       height: _side,
       child: image == null
-          ? null
+          ? (next == null
+                ? null
+                : Center(
+                    child: TextButton.icon(
+                      key: const ValueKey('scan-next-check'),
+                      onPressed: onNext,
+                      icon: const Icon(Icons.arrow_forward_rounded),
+                      label: Text(next),
+                    ),
+                  ))
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -872,6 +993,13 @@ final class _CellPhoto extends StatelessWidget {
                     ),
                   ),
                 ],
+                if (next != null)
+                  IconButton(
+                    key: const ValueKey('scan-next-check'),
+                    tooltip: next,
+                    onPressed: onNext,
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                  ),
               ],
             ),
     );

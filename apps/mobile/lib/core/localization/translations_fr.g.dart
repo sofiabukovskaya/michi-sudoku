@@ -458,6 +458,8 @@ class _Translations$scanner$fr extends Translations$scanner$uk {
 	@override String get checkOffTrack => 'Un des chiffres entourés ne va pas. Regarde-les d’abord.';
 	@override String get checkOffTrackWide => 'Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.';
 	@override String get legendSuspect => 'Erreur possible';
+	@override String get holdStill => 'Ne bouge plus…';
+	@override String nextToCheck({required Object count}) => 'Suivant à vérifier · ${count}';
 }
 
 // Path: coach
@@ -1106,6 +1108,8 @@ extension on TranslationsFr {
 			'scanner.checkOffTrack' => 'Un des chiffres entourés ne va pas. Regarde-les d’abord.',
 			'scanner.checkOffTrackWide' => 'Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.',
 			'scanner.legendSuspect' => 'Erreur possible',
+			'scanner.holdStill' => 'Ne bouge plus…',
+			'scanner.nextToCheck' => ({required Object count}) => 'Suivant à vérifier · ${count}',
 			'coach.step' => ({required Object step}) => 'Indice ${step} sur 4',
 			'coach.kTry' => 'Je vais essayer',
 			'coach.show' => 'Afficher',

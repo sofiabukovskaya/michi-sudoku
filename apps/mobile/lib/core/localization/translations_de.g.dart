@@ -458,6 +458,8 @@ class _Translations$scanner$de extends Translations$scanner$uk {
 	@override String get checkOffTrack => 'Eine der eingekreisten Zahlen passt nicht. Schau dir diese zuerst an.';
 	@override String get checkOffTrackWide => 'Einige Zahlen passen nicht zusammen. In die eingekreisten Felder passt keine Zahl mehr.';
 	@override String get legendSuspect => 'Möglicher Fehler';
+	@override String get holdStill => 'Ruhig halten…';
+	@override String nextToCheck({required Object count}) => 'Nächstes prüfen · ${count}';
 }
 
 // Path: coach
@@ -1106,6 +1108,8 @@ extension on TranslationsDe {
 			'scanner.checkOffTrack' => 'Eine der eingekreisten Zahlen passt nicht. Schau dir diese zuerst an.',
 			'scanner.checkOffTrackWide' => 'Einige Zahlen passen nicht zusammen. In die eingekreisten Felder passt keine Zahl mehr.',
 			'scanner.legendSuspect' => 'Möglicher Fehler',
+			'scanner.holdStill' => 'Ruhig halten…',
+			'scanner.nextToCheck' => ({required Object count}) => 'Nächstes prüfen · ${count}',
 			'coach.step' => ({required Object step}) => 'Hinweis ${step} von 4',
 			'coach.kTry' => 'Ich versuche es',
 			'coach.show' => 'Anzeigen',

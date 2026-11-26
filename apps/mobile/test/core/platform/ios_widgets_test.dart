@@ -26,16 +26,18 @@ void main() {
     expect(game.board, hasLength(81));
     expect(game.givenMask.substring(0, 4), '1100');
 
-    final json = jsonDecode(
-      WidgetSnapshot(
-        day: '2026-11-25',
-        difficulty: 'medium',
-        dailyDone: false,
-        streak: 3,
-        week: const [true, false, false, false, false, false, false],
-        game: game,
-      ).toJson(),
-    ) as Map<String, dynamic>;
+    final json =
+        jsonDecode(
+              WidgetSnapshot(
+                day: '2026-11-25',
+                difficulty: 'medium',
+                dailyDone: false,
+                streak: 3,
+                week: const [true, false, false, false, false, false, false],
+                game: game,
+              ).toJson(),
+            )
+            as Map<String, dynamic>;
     expect(json['streak'], 3);
     expect((json['game'] as Map)['filled'], 2);
   });

@@ -379,7 +379,9 @@
     "checkConflicts": "Un chiffre se répète dans une ligne, une colonne ou un carré. Corrige ceux qui sont marqués.",
     "checkOffTrack": "Un des chiffres entourés ne va pas. Regarde-les d’abord.",
     "checkOffTrackWide": "Certains chiffres ne vont pas ensemble. Aucune valeur ne rentre plus dans les cases entourées.",
-    "legendSuspect": "Erreur possible"
+    "legendSuspect": "Erreur possible",
+    "holdStill": "Ne bouge plus…",
+    "nextToCheck": "Suivant à vérifier · $count"
   },
   "coach": {
     "step": "Indice $step sur 4",

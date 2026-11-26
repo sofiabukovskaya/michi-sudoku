@@ -381,7 +381,9 @@
     "checkConflicts": "Číslice se opakuje v řádku, sloupci nebo čtverci. Oprav označené.",
     "checkOffTrack": "Jedna z kroužkem označených číslic nesedí. Podívej se nejdřív na ně.",
     "checkOffTrackWide": "Některé číslice k sobě nesedí. Do označených políček už nejde žádná číslice.",
-    "legendSuspect": "Možná chyba"
+    "legendSuspect": "Možná chyba",
+    "holdStill": "Drž v klidu…",
+    "nextToCheck": "Další ke kontrole · $count"
   },
   "coach": {
     "step": "Nápověda $step ze 4",

@@ -379,7 +379,9 @@
     "checkConflicts": "Un número se repite en una fila, columna o caja. Corrige los marcados.",
     "checkOffTrack": "Uno de los números rodeados no encaja. Míralos primero.",
     "checkOffTrackWide": "Algunos números no encajan entre sí. En las casillas rodeadas ya no cabe ningún número.",
-    "legendSuspect": "Posible error"
+    "legendSuspect": "Posible error",
+    "holdStill": "No te muevas…",
+    "nextToCheck": "Siguiente por revisar · $count"
   },
   "coach": {
     "step": "Pista $step de 4",

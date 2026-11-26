@@ -458,6 +458,8 @@ class _Translations$scanner$en extends Translations$scanner$uk {
 	@override String get checkOffTrack => 'One of the ringed digits doesn\'t fit. Look at those first.';
 	@override String get checkOffTrackWide => 'Some digits don\'t fit together. The ringed cells can\'t take any digit now.';
 	@override String get legendSuspect => 'Could be the mistake';
+	@override String get holdStill => 'Hold still…';
+	@override String nextToCheck({required Object count}) => 'Next to check · ${count}';
 }
 
 // Path: coach
@@ -1106,6 +1108,8 @@ extension on TranslationsEn {
 			'scanner.checkOffTrack' => 'One of the ringed digits doesn\'t fit. Look at those first.',
 			'scanner.checkOffTrackWide' => 'Some digits don\'t fit together. The ringed cells can\'t take any digit now.',
 			'scanner.legendSuspect' => 'Could be the mistake',
+			'scanner.holdStill' => 'Hold still…',
+			'scanner.nextToCheck' => ({required Object count}) => 'Next to check · ${count}',
 			'coach.step' => ({required Object step}) => 'Hint ${step} of 4',
 			'coach.kTry' => 'I\'ll try',
 			'coach.show' => 'Show me',

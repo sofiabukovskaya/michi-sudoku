@@ -57,6 +57,35 @@ void main() {
     });
   }
 
+  testWidgets('Next to check visits unsure and conflicting cells in order', (
+    tester,
+  ) async {
+    LocaleSettings.setLocaleSync(AppLocale.en);
+    final cubit = _cubit(conflict: true);
+    await cubit.scanImage(ScanImage(bytes: [1], format: ScanImageFormat.png));
+    await tester.pumpWidget(
+      TranslationProvider(
+        child: MaterialApp(
+          theme: AppTheme.light,
+          home: ScannerPage(cubit: cubit),
+        ),
+      ),
+    );
+    // Cell 0 is unsure; the repeated 5s are cells 0, 1 and 4 (row 1).
+    final toCheck = cubit.state.review!.toCheck;
+    expect(toCheck.first, 0);
+    final next = find.byKey(const ValueKey('scan-next-check'));
+    await tester.ensureVisible(next);
+    await tester.tap(next);
+    await tester.pump();
+    expect(cubit.state.review!.selectedIndex, toCheck[0]);
+    await tester.ensureVisible(next);
+    await tester.tap(next);
+    await tester.pump();
+    expect(cubit.state.review!.selectedIndex, toCheck[1]);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Check it confirms correct entries without changing them', (
     tester,
   ) async {

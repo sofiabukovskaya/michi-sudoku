@@ -460,6 +460,8 @@ class _Translations$scanner$cs extends Translations$scanner$uk {
 	@override String get checkOffTrack => 'Jedna z kroužkem označených číslic nesedí. Podívej se nejdřív na ně.';
 	@override String get checkOffTrackWide => 'Některé číslice k sobě nesedí. Do označených políček už nejde žádná číslice.';
 	@override String get legendSuspect => 'Možná chyba';
+	@override String get holdStill => 'Drž v klidu…';
+	@override String nextToCheck({required Object count}) => 'Další ke kontrole · ${count}';
 }
 
 // Path: coach
@@ -1110,6 +1112,8 @@ extension on TranslationsCs {
 			'scanner.checkOffTrack' => 'Jedna z kroužkem označených číslic nesedí. Podívej se nejdřív na ně.',
 			'scanner.checkOffTrackWide' => 'Některé číslice k sobě nesedí. Do označených políček už nejde žádná číslice.',
 			'scanner.legendSuspect' => 'Možná chyba',
+			'scanner.holdStill' => 'Drž v klidu…',
+			'scanner.nextToCheck' => ({required Object count}) => 'Další ke kontrole · ${count}',
 			'coach.step' => ({required Object step}) => 'Nápověda ${step} ze 4',
 			'coach.kTry' => 'Zkusím to',
 			'coach.show' => 'Ukázat',

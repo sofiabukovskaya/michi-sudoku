@@ -379,7 +379,9 @@
     "checkConflicts": "A digit repeats in a row, column or box. Fix the marked ones.",
     "checkOffTrack": "One of the ringed digits doesn't fit. Look at those first.",
     "checkOffTrackWide": "Some digits don't fit together. The ringed cells can't take any digit now.",
-    "legendSuspect": "Could be the mistake"
+    "legendSuspect": "Could be the mistake",
+    "holdStill": "Hold still…",
+    "nextToCheck": "Next to check · $count"
   },
   "coach": {
     "step": "Hint $step of 4",

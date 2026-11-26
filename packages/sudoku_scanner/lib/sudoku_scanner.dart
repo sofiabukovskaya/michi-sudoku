@@ -21,3 +21,4 @@ export 'src/recognition/tflite_digit_classifier.dart';
 export 'src/scanner/local_sudoku_scanner_service.dart';
 export 'src/scanner/sudoku_scanner_service.dart';
 export 'src/tracking/grid_tracker.dart';
+export 'src/tracking/steady_grid_gate.dart';
