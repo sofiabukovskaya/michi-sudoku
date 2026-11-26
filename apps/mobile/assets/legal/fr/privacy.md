@@ -32,6 +32,10 @@ Les données locales restent jusqu’à leur suppression dans l’app, l’effac
 
 Selon la loi applicable, tu peux demander l’accès, la rectification, l’effacement, la limitation ou la portabilité, t’opposer au traitement ou porter plainte auprès d’une autorité. Écris à [{{EMAIL}}](mailto:{{EMAIL}}). Les permissions de caméra, de photos et de notifications se règlent sur l’appareil.
 
+## Retours
+
+Lors de l’envoi, MICHI enregistre la catégorie, le message, l’adresse facultative de réponse et, si tu les ajoutes, la version et le build de l’app, la plateforme, la version du système, le modèle, la langue et l’état de connexion. L’adresse sert uniquement à répondre. L’identifiant d’installation et, si la session est ouverte, celui du compte servent à limiter les abus. Si la session est ouverte, le message est enregistré avec l’identifiant du compte. Le responsable de MICHI peut recevoir le message par e-mail. Une fois la règle de conservation activée, la suppression dans Firestore est prévue après 24 mois. Les copies par e-mail suivent {{RETENTION}}. Les brouillons restent sur ton appareil jusqu’à leur envoi ou à l’effacement du stockage. Aucune photo du scanner n’est jointe.
+
 ## Supprimer ton compte
 
 Connecte-toi et ouvre **Profil → Réglages → Compte → Supprimer le compte**. Firebase supprime le compte et déclenche l’effacement des parties, progrès et rappels associés dans le cloud. MICHI retire le profil local du compte de cet appareil. Les données hors compte et les copies sur d’autres appareils peuvent rester. Si tu ne peux pas utiliser l’app, écris à [{{EMAIL}}](mailto:{{EMAIL}}) depuis l’adresse de ton compte pour demander la suppression du compte MICHI et des données associées. N’envoie pas ton mot de passe. Nous pouvons vérifier que le compte t’appartient.

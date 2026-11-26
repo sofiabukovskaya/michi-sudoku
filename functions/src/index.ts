@@ -2,6 +2,7 @@ import {initializeApp} from 'firebase-admin/app';
 import {getFirestore, type Firestore} from 'firebase-admin/firestore';
 import * as functions from 'firebase-functions/v1';
 export {ensureDailyChallengesPublished} from './daily.js';
+export {submitFeedback} from './feedback.js';
 export {sendDueDailyReminders} from './reminders.js';
 
 initializeApp();

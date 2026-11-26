@@ -62,6 +62,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$spotIt$en spotIt = _Translations$spotIt$en._(_root);
 	@override late final _Translations$notebook$en notebook = _Translations$notebook$en._(_root);
 	@override late final _Translations$legal$en legal = _Translations$legal$en._(_root);
+	@override late final _Translations$feedback$en feedback = _Translations$feedback$en._(_root);
 }
 
 // Path: common
@@ -706,6 +707,51 @@ class _Translations$legal$en extends Translations$legal$uk {
 	@override String get privacyInline => 'Privacy Policy';
 }
 
+// Path: feedback
+class _Translations$feedback$en extends Translations$feedback$uk {
+	_Translations$feedback$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get rate => 'Rate MICHI';
+	@override String get title => 'Send feedback';
+	@override String get intro => 'Tell us what would make MICHI better.';
+	@override String get idea => 'Idea';
+	@override String get broken => 'Something’s broken';
+	@override String get scanner => 'Scanner';
+	@override String get learning => 'Learning';
+	@override String get other => 'Other';
+	@override String get message => 'Message';
+	@override String counter({required Object count}) => '${count} / 2000';
+	@override String get messageError => 'Enter 10–2000 characters.';
+	@override String get categoryError => 'Choose a category.';
+	@override String get reply => 'Reply to (email, optional)';
+	@override String get replyDetail => 'We only use this address to reply.';
+	@override String get emailError => 'Enter a valid email address.';
+	@override String get include => 'Include app details';
+	@override String get preview => 'What’s included';
+	@override String get alwaysIncluded => 'Your category and message are sent. We use an installation ID to limit submissions. If you’re signed in, we save your account ID with the note.';
+	@override String get appVersion => 'App version';
+	@override String get build => 'Build';
+	@override String get platform => 'Platform';
+	@override String get os => 'OS version';
+	@override String get model => 'Device model';
+	@override String get language => 'App language';
+	@override String get account => 'Account status';
+	@override String get signedIn => 'Signed in';
+	@override String get guest => 'Guest';
+	@override String get unavailable => 'Feedback is unavailable right now. Your draft is kept here.';
+	@override String get limited => 'You’ve reached the feedback limit. Try again later.';
+	@override String get retry => 'We couldn’t send your feedback. Your draft is here. Check your connection and try again.';
+	@override String get tooLarge => 'This note exceeds the send limit. Try shortening it or turning off app details.';
+	@override String get draftError => 'We couldn’t save the draft on this device. Keep this screen open to retain your text.';
+	@override String get send => 'Send';
+	@override String get thanks => 'Thank you. MICHI reads every note.';
+	@override String get done => 'Back';
+	@override String get problemLink => 'Something wrong? Tell us';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$en extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$en._(TranslationsEn root) : this._root = root, super.internal(root);
@@ -1331,6 +1377,44 @@ extension on TranslationsEn {
 			'legal.registration' => ({required Object terms, required Object privacy}) => 'By creating an account, you agree to the ${terms} and acknowledge the ${privacy}.',
 			'legal.termsInline' => 'Terms of Use',
 			'legal.privacyInline' => 'Privacy Policy',
+			'feedback.rate' => 'Rate MICHI',
+			'feedback.title' => 'Send feedback',
+			'feedback.intro' => 'Tell us what would make MICHI better.',
+			'feedback.idea' => 'Idea',
+			'feedback.broken' => 'Something’s broken',
+			'feedback.scanner' => 'Scanner',
+			'feedback.learning' => 'Learning',
+			'feedback.other' => 'Other',
+			'feedback.message' => 'Message',
+			'feedback.counter' => ({required Object count}) => '${count} / 2000',
+			'feedback.messageError' => 'Enter 10–2000 characters.',
+			'feedback.categoryError' => 'Choose a category.',
+			'feedback.reply' => 'Reply to (email, optional)',
+			'feedback.replyDetail' => 'We only use this address to reply.',
+			'feedback.emailError' => 'Enter a valid email address.',
+			'feedback.include' => 'Include app details',
+			'feedback.preview' => 'What’s included',
+			'feedback.alwaysIncluded' => 'Your category and message are sent. We use an installation ID to limit submissions. If you’re signed in, we save your account ID with the note.',
+			'feedback.appVersion' => 'App version',
+			'feedback.build' => 'Build',
+			'feedback.platform' => 'Platform',
+			'feedback.os' => 'OS version',
+			'feedback.model' => 'Device model',
+			'feedback.language' => 'App language',
+			'feedback.account' => 'Account status',
+			'feedback.signedIn' => 'Signed in',
+			'feedback.guest' => 'Guest',
+			'feedback.unavailable' => 'Feedback is unavailable right now. Your draft is kept here.',
+			'feedback.limited' => 'You’ve reached the feedback limit. Try again later.',
+			'feedback.retry' => 'We couldn’t send your feedback. Your draft is here. Check your connection and try again.',
+			'feedback.tooLarge' => 'This note exceeds the send limit. Try shortening it or turning off app details.',
+			'feedback.draftError' => 'We couldn’t save the draft on this device. Keep this screen open to retain your text.',
+			_ => null,
+		} ?? switch (path) {
+			'feedback.send' => 'Send',
+			'feedback.thanks' => 'Thank you. MICHI reads every note.',
+			'feedback.done' => 'Back',
+			'feedback.problemLink' => 'Something wrong? Tell us',
 			_ => null,
 		};
 	}

@@ -12,6 +12,8 @@ import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
 import 'package:michi_mobile/features/learn/presentation/technique_copy.dart';
 import 'package:michi_mobile/features/notebook/data/notebook_stamps.dart';
+import 'package:michi_mobile/features/review/domain/review_policy.dart';
+import 'package:michi_mobile/features/review/presentation/review_opportunity.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
 final class _NotebookData {
@@ -136,6 +138,7 @@ final class _NotebookPageState extends State<NotebookPage> {
                                 technique: technique,
                                 progress: data.progress[technique],
                                 fresh: data.fresh.contains(technique),
+                                reviewStamp: before == data.fresh.length - 1,
                                 delay: Duration(
                                   milliseconds: 300 + 350 * before,
                                 ),
@@ -196,6 +199,7 @@ final class _NotebookPageCard extends StatelessWidget {
     required this.technique,
     required this.progress,
     required this.fresh,
+    required this.reviewStamp,
     required this.delay,
     required this.onTap,
   });
@@ -204,6 +208,7 @@ final class _NotebookPageCard extends StatelessWidget {
   final SudokuTechnique technique;
   final TechniqueProgress? progress;
   final bool fresh;
+  final bool reviewStamp;
   final Duration delay;
   final VoidCallback onTap;
 
@@ -266,11 +271,10 @@ final class _NotebookPageCard extends StatelessWidget {
                         dimension: 72,
                         child: mastered
                             ? (fresh
-                                  ? MichiMotionMascot(
-                                      asset: MichiMotionAsset.dailyStamp,
-                                      size: 72,
-                                      startDelay: delay,
-                                      fallback: const _PawStamp(),
+                                  ? _FreshStamp(
+                                      key: ValueKey(technique),
+                                      delay: delay,
+                                      review: reviewStamp,
                                     )
                                   : const _PawStamp())
                             : _Unstamped(
@@ -289,6 +293,33 @@ final class _NotebookPageCard extends StatelessWidget {
       ),
     );
   }
+}
+
+final class _FreshStamp extends StatefulWidget {
+  const _FreshStamp({required this.delay, required this.review, super.key});
+  final Duration delay;
+  final bool review;
+
+  @override
+  State<_FreshStamp> createState() => _FreshStampState();
+}
+
+final class _FreshStampState extends State<_FreshStamp> {
+  bool _settled = false;
+
+  @override
+  Widget build(BuildContext context) => ReviewOpportunity(
+    ready: widget.review && _settled,
+    moments: const {ReviewMoment.techniqueMastery},
+    requireInViewport: true,
+    child: MichiMotionMascot(
+      asset: MichiMotionAsset.dailyStamp,
+      size: 72,
+      startDelay: widget.delay,
+      fallback: const _PawStamp(),
+      onSettled: () => setState(() => _settled = true),
+    ),
+  );
 }
 
 /// The settled stamp: a coral ring and paw, slightly turned like ink.

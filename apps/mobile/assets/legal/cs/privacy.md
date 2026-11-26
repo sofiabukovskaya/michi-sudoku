@@ -32,6 +32,10 @@ Místní data zůstanou do smazání v aplikaci, vymazání úložiště nebo od
 
 Podle platného práva můžeš požádat o přístup, opravu, výmaz, omezení nebo přenos údajů, vznést námitku či podat stížnost u dozorového úřadu. Napiš na [{{EMAIL}}](mailto:{{EMAIL}}). Oprávnění k fotoaparátu, fotkám a oznámením změníš v nastavení zařízení.
 
+## Zpětná vazba
+
+Při odeslání uložíme kategorii, zprávu, nepovinný e-mail pro odpověď a podle tvé volby verzi a sestavení aplikace, platformu, verzi systému, model zařízení, jazyk a stav přihlášení. E-mail použijeme jen k odpovědi. ID instalace a po přihlášení i ID účtu slouží k omezení zneužití. Při přihlášení ukládáme ID účtu také se zprávou. Provozovatel MICHI může zprávu dostat e-mailem. Po zapnutí pravidla uchování se mají záznamy ve Firestore mazat po 24 měsících. Uchování e-mailových kopií upravuje {{RETENTION}}. Neodeslané zprávy zůstávají v zařízení do odeslání nebo vymazání úložiště. Fotky ze skeneru se nepřikládají.
+
 ## Jak smazat účet
 
 Přihlas se a otevři **Profil → Nastavení → Účet → Smazat účet**. Firebase smaže účet a spustí odstranění her, pokroku a připomínek z cloudu. MICHI odstraní místní profil účtu z tohoto zařízení. Údaje hosta a kopie v jiných zařízeních mohou zůstat. Pokud aplikaci nemůžeš použít, napiš na [{{EMAIL}}](mailto:{{EMAIL}}) z adresy svého účtu a požádej o odstranění účtu MICHI a souvisejících údajů. Heslo neposílej. Můžeme ověřit, že ti účet patří.

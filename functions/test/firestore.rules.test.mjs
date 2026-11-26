@@ -127,3 +127,14 @@ test('two authenticated clients retain distinct offline contributions', async ()
   assert.equal(snapshot.docs.length, 2);
   assert.equal(snapshot.docs.reduce((sum, doc) => sum + doc.data().attempts, 0), 5);
 });
+
+test('clients cannot read or create feedback notes and counters', async () => {
+  for (const scope of [environment.unauthenticatedContext(), environment.authenticatedContext('owner')]) {
+    const client = scope.firestore();
+    for (const collection of ['feedback', 'feedbackLimits']) {
+      const ref = client.collection(collection).doc('test');
+      await assertFails(ref.get());
+      await assertFails(ref.set({uid: 'owner'}));
+    }
+  }
+});

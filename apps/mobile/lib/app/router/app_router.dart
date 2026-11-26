@@ -7,6 +7,8 @@ import 'package:michi_mobile/features/auth/presentation/auth_page.dart';
 import 'package:michi_mobile/features/auth/presentation/email_verification_page.dart';
 import 'package:michi_mobile/features/auth/presentation/password_reset_page.dart';
 import 'package:michi_mobile/features/auth/presentation/register_page.dart';
+import 'package:michi_mobile/features/feedback/domain/feedback_draft.dart';
+import 'package:michi_mobile/features/feedback/presentation/feedback_page.dart';
 import 'package:michi_mobile/features/game/application/game_cubit.dart';
 import 'package:michi_mobile/features/game/application/game_state.dart';
 import 'package:michi_mobile/features/game/application/why_selection.dart';
@@ -80,6 +82,7 @@ final class AppRouter extends RootStackRouter {
     AutoRoute(page: WeekRoute.page),
     AutoRoute(page: SettingsRoute.page),
     AutoRoute(page: LegalRoute.page),
+    AutoRoute(page: FeedbackRoute.page),
   ];
 }
 

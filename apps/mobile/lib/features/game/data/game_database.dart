@@ -339,6 +339,13 @@ final class GameDatabase extends _$GameDatabase {
     },
   );
 
+  Future<String> installationId() async {
+    final row = await (select(
+      syncMetadata,
+    )..where((item) => item.key.equals('installationId'))).getSingle();
+    return row.value;
+  }
+
   Future<void> _createInstallationId() =>
       customStatement('''
     INSERT OR IGNORE INTO sync_metadata (key, value)

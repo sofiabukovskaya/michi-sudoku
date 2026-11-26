@@ -7,6 +7,7 @@ import 'package:michi_mobile/core/firebase/firebase_runtime.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/legal/domain/legal_document.dart';
 import 'package:michi_mobile/features/legal/presentation/legal_link.dart';
+import 'package:michi_mobile/features/review/data/review_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 final class LegalAboutSection extends StatefulWidget {
@@ -79,6 +80,24 @@ final class _LegalAboutSectionState extends State<LegalAboutSection> {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () =>
                     showLicensePage(context: context, applicationName: 'MICHI'),
+              ),
+              if (ReviewService.canOpenListing)
+                ListTile(
+                  title: Text(context.t.feedback.rate),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () async {
+                    final opened = await getIt<ReviewService>().openListing();
+                    if (!opened && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(context.t.legal.openFailed)),
+                      );
+                    }
+                  },
+                ),
+              ListTile(
+                title: Text(context.t.feedback.title),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.router.root.push(FeedbackRoute()),
               ),
               FutureBuilder<bool>(
                 future: _saved,

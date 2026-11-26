@@ -13,6 +13,20 @@ import WidgetKit
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    FlutterMethodChannel(name: "michi/device", binaryMessenger: engineBridge.applicationRegistrar.messenger())
+      .setMethodCallHandler { call, result in
+        guard call.method == "model" else {
+          result(FlutterMethodNotImplemented)
+          return
+        }
+        var system = utsname()
+        uname(&system)
+        let model = Mirror(reflecting: system.machine).children
+          .compactMap { $0.value as? Int8 }
+          .prefix(while: { $0 != 0 })
+          .map { UInt8(bitPattern: $0) }
+        result(String(decoding: model, as: UTF8.self))
+      }
     FlutterMethodChannel(name: "michi/daily", binaryMessenger: engineBridge.applicationRegistrar.messenger())
       .setMethodCallHandler { call, result in
         if call.method == "snapshot" {

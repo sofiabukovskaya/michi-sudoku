@@ -15,6 +15,7 @@ import 'package:michi_mobile/core/notifications/reminder_registration.dart';
 import 'package:michi_mobile/core/profile/local_profile_scope.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
+import 'package:michi_mobile/features/review/data/review_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,9 @@ Future<void> main() async {
     await LocaleSettings.useDeviceLocale();
   }
   bootstrap();
+  final review = getIt<ReviewService>();
+  unawaited(review.initialize());
+  AppLifecycleListener(onResume: () => unawaited(review.recordActiveDay()));
   FirebaseMessaging.onBackgroundMessage(michiBackgroundMessage);
   unawaited(getIt<FirebaseRuntime>().initialize());
   getIt<SyncCoordinator>().start();

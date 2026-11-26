@@ -62,6 +62,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$spotIt$es spotIt = _Translations$spotIt$es._(_root);
 	@override late final _Translations$notebook$es notebook = _Translations$notebook$es._(_root);
 	@override late final _Translations$legal$es legal = _Translations$legal$es._(_root);
+	@override late final _Translations$feedback$es feedback = _Translations$feedback$es._(_root);
 }
 
 // Path: common
@@ -706,6 +707,51 @@ class _Translations$legal$es extends Translations$legal$uk {
 	@override String get privacyInline => 'Política de privacidad';
 }
 
+// Path: feedback
+class _Translations$feedback$es extends Translations$feedback$uk {
+	_Translations$feedback$es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get rate => 'Valorar MICHI';
+	@override String get title => 'Enviar comentarios';
+	@override String get intro => 'Cuéntanos qué haría mejor a MICHI.';
+	@override String get idea => 'Idea';
+	@override String get broken => 'Algo no funciona';
+	@override String get scanner => 'Escáner';
+	@override String get learning => 'Aprendizaje';
+	@override String get other => 'Otro';
+	@override String get message => 'Mensaje';
+	@override String counter({required Object count}) => '${count} / 2000';
+	@override String get messageError => 'Escribe entre 10 y 2000 caracteres.';
+	@override String get categoryError => 'Elige una categoría.';
+	@override String get reply => 'Correo para recibir respuesta (opcional)';
+	@override String get replyDetail => 'Solo usamos esta dirección para responder.';
+	@override String get emailError => 'Escribe una dirección de correo válida.';
+	@override String get include => 'Incluir detalles de la aplicación';
+	@override String get preview => 'Qué se envía';
+	@override String get alwaysIncluded => 'Enviamos tu categoría y mensaje. Usamos un ID de instalación para limitar los envíos. Si has iniciado sesión, guardamos el ID de tu cuenta con el mensaje.';
+	@override String get appVersion => 'Versión de la aplicación';
+	@override String get build => 'Compilación';
+	@override String get platform => 'Plataforma';
+	@override String get os => 'Versión del sistema';
+	@override String get model => 'Modelo del dispositivo';
+	@override String get language => 'Idioma de la aplicación';
+	@override String get account => 'Estado de la cuenta';
+	@override String get signedIn => 'Con sesión iniciada';
+	@override String get guest => 'Sin cuenta';
+	@override String get unavailable => 'Los comentarios no están disponibles ahora. Tu borrador sigue aquí.';
+	@override String get limited => 'Has alcanzado el límite de envíos. Inténtalo más tarde.';
+	@override String get retry => 'No pudimos enviar el mensaje. Tu borrador sigue aquí. Revisa la conexión e inténtalo otra vez.';
+	@override String get tooLarge => 'El mensaje supera el límite de envío. Acórtalo o desactiva los detalles de la aplicación.';
+	@override String get draftError => 'No pudimos guardar el borrador. Mantén esta pantalla abierta para conservar el texto.';
+	@override String get send => 'Enviar';
+	@override String get thanks => 'Gracias. MICHI lee cada mensaje.';
+	@override String get done => 'Volver';
+	@override String get problemLink => '¿Algo no va bien? Cuéntanoslo';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$es extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$es._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -1331,6 +1377,44 @@ extension on TranslationsEs {
 			'legal.registration' => ({required Object terms, required Object privacy}) => 'Al crear una cuenta, aceptas las ${terms} y reconoces haber leído la ${privacy}.',
 			'legal.termsInline' => 'Condiciones de uso',
 			'legal.privacyInline' => 'Política de privacidad',
+			'feedback.rate' => 'Valorar MICHI',
+			'feedback.title' => 'Enviar comentarios',
+			'feedback.intro' => 'Cuéntanos qué haría mejor a MICHI.',
+			'feedback.idea' => 'Idea',
+			'feedback.broken' => 'Algo no funciona',
+			'feedback.scanner' => 'Escáner',
+			'feedback.learning' => 'Aprendizaje',
+			'feedback.other' => 'Otro',
+			'feedback.message' => 'Mensaje',
+			'feedback.counter' => ({required Object count}) => '${count} / 2000',
+			'feedback.messageError' => 'Escribe entre 10 y 2000 caracteres.',
+			'feedback.categoryError' => 'Elige una categoría.',
+			'feedback.reply' => 'Correo para recibir respuesta (opcional)',
+			'feedback.replyDetail' => 'Solo usamos esta dirección para responder.',
+			'feedback.emailError' => 'Escribe una dirección de correo válida.',
+			'feedback.include' => 'Incluir detalles de la aplicación',
+			'feedback.preview' => 'Qué se envía',
+			'feedback.alwaysIncluded' => 'Enviamos tu categoría y mensaje. Usamos un ID de instalación para limitar los envíos. Si has iniciado sesión, guardamos el ID de tu cuenta con el mensaje.',
+			'feedback.appVersion' => 'Versión de la aplicación',
+			'feedback.build' => 'Compilación',
+			'feedback.platform' => 'Plataforma',
+			'feedback.os' => 'Versión del sistema',
+			'feedback.model' => 'Modelo del dispositivo',
+			'feedback.language' => 'Idioma de la aplicación',
+			'feedback.account' => 'Estado de la cuenta',
+			'feedback.signedIn' => 'Con sesión iniciada',
+			'feedback.guest' => 'Sin cuenta',
+			'feedback.unavailable' => 'Los comentarios no están disponibles ahora. Tu borrador sigue aquí.',
+			'feedback.limited' => 'Has alcanzado el límite de envíos. Inténtalo más tarde.',
+			'feedback.retry' => 'No pudimos enviar el mensaje. Tu borrador sigue aquí. Revisa la conexión e inténtalo otra vez.',
+			'feedback.tooLarge' => 'El mensaje supera el límite de envío. Acórtalo o desactiva los detalles de la aplicación.',
+			'feedback.draftError' => 'No pudimos guardar el borrador. Mantén esta pantalla abierta para conservar el texto.',
+			_ => null,
+		} ?? switch (path) {
+			'feedback.send' => 'Enviar',
+			'feedback.thanks' => 'Gracias. MICHI lee cada mensaje.',
+			'feedback.done' => 'Volver',
+			'feedback.problemLink' => '¿Algo no va bien? Cuéntanoslo',
 			_ => null,
 		};
 	}

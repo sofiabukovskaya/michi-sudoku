@@ -86,7 +86,7 @@ final class ReminderRegistration with WidgetsBindingObserver {
       return;
     }
     try {
-      final id = await _installationId();
+      final id = await database.installationId();
       final doc = await runtime.firestore
           .collection('users')
           .doc(uid)
@@ -126,16 +126,6 @@ final class ReminderRegistration with WidgetsBindingObserver {
     }
   }
 
-  Future<String> _installationId() async {
-    final row = await (database.select(
-      database.syncMetadata,
-    )..where((item) => item.key.equals('installationId'))).getSingleOrNull();
-    if (row == null) {
-      throw StateError('Installation ID missing');
-    }
-    return row.value;
-  }
-
   Future<bool> _enabledLocally(String uid) async {
     final row =
         await (database.select(database.syncMetadata)
@@ -169,7 +159,7 @@ final class ReminderRegistration with WidgetsBindingObserver {
       final permission = _map(
         (await messaging.getNotificationSettings()).authorizationStatus,
       );
-      final id = await _installationId();
+      final id = await database.installationId();
       final doc = await runtime.firestore
           .collection('users')
           .doc(uid)
@@ -236,7 +226,7 @@ final class ReminderRegistration with WidgetsBindingObserver {
   }
 
   Future<void> _write(String uid, String token, String locale) async {
-    final id = await _installationId();
+    final id = await database.installationId();
     final zone = (await FlutterTimezone.getLocalTimezone()).identifier;
     final now = DateTime.now();
     var next = DateTime(now.year, now.month, now.day, 8);
@@ -278,7 +268,7 @@ final class ReminderRegistration with WidgetsBindingObserver {
     Object? deletionError;
     StackTrace? deletionStack;
     try {
-      final id = await _installationId();
+      final id = await database.installationId();
       await runtime.firestore
           .collection('users')
           .doc(uid)
@@ -308,7 +298,7 @@ final class ReminderRegistration with WidgetsBindingObserver {
 
   Future<void> refreshTimezone(String uid, String locale) async {
     if (!await runtime.ready || FirebaseRuntime.useEmulators) return;
-    final id = await _installationId();
+    final id = await database.installationId();
     final ref = runtime.firestore
         .collection('users')
         .doc(uid)

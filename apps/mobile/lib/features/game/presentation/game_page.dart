@@ -38,6 +38,8 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
 import 'package:michi_mobile/features/recommendation/domain/learning_recommendation.dart';
 import 'package:michi_mobile/features/recommendation/domain/learning_recommendation_engine.dart';
 import 'package:michi_mobile/features/recommendation/presentation/recommendation_copy.dart';
+import 'package:michi_mobile/features/review/domain/review_policy.dart';
+import 'package:michi_mobile/features/review/presentation/review_opportunity.dart';
 import 'package:michi_mobile/features/scanner/domain/imported_puzzle_repository.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
 
@@ -379,6 +381,8 @@ final class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
                           future: _postGameRecommendation,
                           builder: (context, snapshot) => MichiReveal(
                             child: _CompletedSurface(
+                              key: ValueKey(state.gameId),
+                              cubit: cubit,
                               state: state,
                               elapsed: cubit.elapsed,
                               puzzleTitle: _gameTitle(context),
@@ -771,8 +775,9 @@ final class _PausedSurface extends StatelessWidget {
   );
 }
 
-final class _CompletedSurface extends StatelessWidget {
+final class _CompletedSurface extends StatefulWidget {
   const _CompletedSurface({
+    required this.cubit,
     required this.state,
     required this.elapsed,
     required this.puzzleTitle,
@@ -780,8 +785,10 @@ final class _CompletedSurface extends StatelessWidget {
     required this.recommendation,
     required this.onContinue,
     required this.onHome,
+    super.key,
   });
 
+  final GameCubit cubit;
   final GameState state;
   final Duration elapsed;
   final String puzzleTitle;
@@ -791,7 +798,63 @@ final class _CompletedSurface extends StatelessWidget {
   final VoidCallback onHome;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
+  State<_CompletedSurface> createState() => _CompletedSurfaceState();
+}
+
+final class _CompletedSurfaceState extends State<_CompletedSurface> {
+  bool _saved = false;
+  bool _celebrated = false;
+  bool _stamped = false;
+
+  bool get _reviewReady =>
+      _saved &&
+      state.storageFailure == null &&
+      _celebrated &&
+      (!isDaily || _stamped);
+
+  GameState get state => widget.state;
+  bool get isDaily => widget.isDaily;
+  VoidCallback? get onContinue => widget.onContinue;
+  VoidCallback get onHome => widget.onHome;
+  LearningRecommendation? get recommendation => widget.recommendation;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_checkSaved());
+  }
+
+  @override
+  void didUpdateWidget(_CompletedSurface oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.state.storageFailure != state.storageFailure) {
+      if (state.storageFailure != null) _saved = false;
+      unawaited(_checkSaved());
+    }
+  }
+
+  Future<void> _checkSaved() async {
+    await widget.cubit.flushPersistence();
+    if (mounted && widget.cubit.state.storageFailure == null) {
+      setState(() => _saved = true);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => ReviewOpportunity(
+    ready: _reviewReady,
+    moments: {
+      if (ReviewPolicy.cleanPuzzle(
+        mistakes: state.mistakes,
+        highestHintLevel: state.highestHintLevelUsed,
+      ))
+        ReviewMoment.cleanPuzzle,
+    },
+    completedDailyId: isDaily ? state.gameId : null,
+    child: _content(context),
+  );
+
+  Widget _content(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -823,7 +886,11 @@ final class _CompletedSurface extends StatelessWidget {
                             math.min(constraints.maxWidth - 48, 260),
                           ),
                           // The stamp only marks a Daily that was saved.
-                          dailyStamp: isDaily && state.storageFailure == null,
+                          dailyStamp:
+                              isDaily && _saved && state.storageFailure == null,
+                          onCelebrated: () =>
+                              setState(() => _celebrated = true),
+                          onStamped: () => setState(() => _stamped = true),
                         ),
                       ),
                     ),
@@ -837,7 +904,7 @@ final class _CompletedSurface extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          _formatElapsed(elapsed),
+                          _formatElapsed(widget.elapsed),
                           style: MichiTypography.heading.copyWith(
                             color: MichiColors.ivory,
                           ),
@@ -845,7 +912,7 @@ final class _CompletedSurface extends StatelessWidget {
                         const SizedBox(width: MichiSpacing.md),
                         Expanded(
                           child: Text(
-                            puzzleTitle,
+                            widget.puzzleTitle,
                             style: MichiTypography.secondary.copyWith(
                               color: MichiColors.ivory,
                             ),
@@ -890,7 +957,10 @@ final class _CompletedSurface extends StatelessWidget {
                   ],
                 ),
                 const Divider(height: MichiSpacing.xxl),
-                _PostGameInsightLine(state: state),
+                _PostGameInsightLine(
+                  state: state,
+                  reviewReady: _reviewReady,
+                ),
                 Text(context.t.game.completeBody, style: MichiTypography.body),
                 if (isDaily) ...[
                   const SizedBox(height: MichiSpacing.lg),
@@ -986,9 +1056,13 @@ final class _CompletedSurface extends StatelessWidget {
 
 /// One personal line about the finished game (see [PostGameInsight]).
 final class _PostGameInsightLine extends StatefulWidget {
-  const _PostGameInsightLine({required this.state});
+  const _PostGameInsightLine({
+    required this.state,
+    required this.reviewReady,
+  });
 
   final GameState state;
+  final bool reviewReady;
 
   @override
   State<_PostGameInsightLine> createState() => _PostGameInsightLineState();
@@ -1021,27 +1095,34 @@ final class _PostGameInsightLineState extends State<_PostGameInsightLine> {
     builder: (context, snapshot) {
       final insight = snapshot.data;
       if (insight == null) return const SizedBox.shrink();
-      return MichiReveal(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: MichiSpacing.md),
-          child: Row(
-            key: const ValueKey('post-game-insight'),
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 2),
-                child: Icon(Icons.pets, size: 18, color: MichiColors.coral),
-              ),
-              const SizedBox(width: MichiSpacing.sm),
-              Expanded(
-                child: Text(
-                  _text(context.t, insight),
-                  style: MichiTypography.body.copyWith(
-                    fontWeight: FontWeight.w700,
+      return ReviewOpportunity(
+        ready:
+            widget.reviewReady &&
+            insight.kind == PostGameInsightKind.personalBest,
+        moments: const {ReviewMoment.personalBest},
+        requireInViewport: true,
+        child: MichiReveal(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: MichiSpacing.md),
+            child: Row(
+              key: const ValueKey('post-game-insight'),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: Icon(Icons.pets, size: 18, color: MichiColors.coral),
+                ),
+                const SizedBox(width: MichiSpacing.sm),
+                Expanded(
+                  child: Text(
+                    _text(context.t, insight),
+                    style: MichiTypography.body.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -1188,10 +1269,17 @@ final class _SheetHeight extends StatelessWidget {
 /// stamp lands beside MICHI. Both are one-shots driven by the completion
 /// that already happened; neither delays navigation or saves anything.
 final class _CompletionCelebration extends StatelessWidget {
-  const _CompletionCelebration({required this.size, required this.dailyStamp});
+  const _CompletionCelebration({
+    required this.size,
+    required this.dailyStamp,
+    required this.onCelebrated,
+    required this.onStamped,
+  });
 
   final double size;
   final bool dailyStamp;
+  final VoidCallback onCelebrated;
+  final VoidCallback onStamped;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -1203,6 +1291,7 @@ final class _CompletionCelebration extends StatelessWidget {
       children: [
         MichiMotionMascot(
           asset: MichiMotionAsset.celebrating,
+          onSettled: onCelebrated,
           size: size,
           fallback: Image.asset(
             MichiMascot.assetFor(MichiMascotState.celebrating),
@@ -1217,6 +1306,7 @@ final class _CompletionCelebration extends StatelessWidget {
             child: MichiMotionMascot(
               key: const ValueKey('daily-stamp'),
               asset: MichiMotionAsset.dailyStamp,
+              onSettled: onStamped,
               size: size * 0.42,
               startDelay: const Duration(milliseconds: 1200),
             ),

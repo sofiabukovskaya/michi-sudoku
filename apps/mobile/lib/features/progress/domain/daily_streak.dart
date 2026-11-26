@@ -11,17 +11,19 @@ abstract final class DailyStreak {
     DateTime now,
     Iterable<CompletedGame> games, {
     Iterable<DateTime> extraDays = const [],
-  }) {
+  }) => countDays(now, [
+    for (final game in games)
+      if (game.dailyChallengeKey != null) game.completedAt,
+    ...extraDays,
+  ]);
+
+  static int countDays(DateTime now, Iterable<DateTime> solvedDays) {
     DateTime day(DateTime value) {
       final local = value.toLocal();
       return DateTime(local.year, local.month, local.day);
     }
 
-    final solved = {
-      for (final game in games)
-        if (game.dailyChallengeKey != null) day(game.completedAt),
-      for (final extra in extraDays) day(extra),
-    };
+    final solved = solvedDays.map(day).toSet();
     var cursor = day(now);
     if (!solved.contains(cursor)) {
       cursor = DateTime(cursor.year, cursor.month, cursor.day - 1);

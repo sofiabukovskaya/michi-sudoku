@@ -67,6 +67,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$spotIt$uk spotIt = Translations$spotIt$uk.internal(_root);
 	late final Translations$notebook$uk notebook = Translations$notebook$uk.internal(_root);
 	late final Translations$legal$uk legal = Translations$legal$uk.internal(_root);
+	late final Translations$feedback$uk feedback = Translations$feedback$uk.internal(_root);
 }
 
 // Path: common
@@ -1582,6 +1583,123 @@ class Translations$legal$uk {
 	String get privacyInline => 'Політику конфіденційності';
 }
 
+// Path: feedback
+class Translations$feedback$uk {
+	Translations$feedback$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Оцінити MICHI'
+	String get rate => 'Оцінити MICHI';
+
+	/// uk: 'Надіслати відгук'
+	String get title => 'Надіслати відгук';
+
+	/// uk: 'Розкажи, як зробити MICHI кращим.'
+	String get intro => 'Розкажи, як зробити MICHI кращим.';
+
+	/// uk: 'Ідея'
+	String get idea => 'Ідея';
+
+	/// uk: 'Щось не працює'
+	String get broken => 'Щось не працює';
+
+	/// uk: 'Сканер'
+	String get scanner => 'Сканер';
+
+	/// uk: 'Навчання'
+	String get learning => 'Навчання';
+
+	/// uk: 'Інше'
+	String get other => 'Інше';
+
+	/// uk: 'Повідомлення'
+	String get message => 'Повідомлення';
+
+	/// uk: '$count / 2000'
+	String counter({required Object count}) => '${count} / 2000';
+
+	/// uk: 'Напиши від 10 до 2000 символів.'
+	String get messageError => 'Напиши від 10 до 2000 символів.';
+
+	/// uk: 'Вибери категорію.'
+	String get categoryError => 'Вибери категорію.';
+
+	/// uk: 'Пошта для відповіді (необов’язково)'
+	String get reply => 'Пошта для відповіді (необов’язково)';
+
+	/// uk: 'Використаємо цю адресу лише для відповіді.'
+	String get replyDetail => 'Використаємо цю адресу лише для відповіді.';
+
+	/// uk: 'Введи дійсну адресу пошти.'
+	String get emailError => 'Введи дійсну адресу пошти.';
+
+	/// uk: 'Додати відомості про застосунок'
+	String get include => 'Додати відомості про застосунок';
+
+	/// uk: 'Що надсилається'
+	String get preview => 'Що надсилається';
+
+	/// uk: 'Ми надсилаємо категорію й повідомлення. Ідентифікатор установки обмежує кількість відгуків. Якщо виконано вхід, ми збережемо ідентифікатор акаунта разом із повідомленням.'
+	String get alwaysIncluded => 'Ми надсилаємо категорію й повідомлення. Ідентифікатор установки обмежує кількість відгуків. Якщо виконано вхід, ми збережемо ідентифікатор акаунта разом із повідомленням.';
+
+	/// uk: 'Версія застосунку'
+	String get appVersion => 'Версія застосунку';
+
+	/// uk: 'Номер збірки'
+	String get build => 'Номер збірки';
+
+	/// uk: 'Платформа'
+	String get platform => 'Платформа';
+
+	/// uk: 'Версія системи'
+	String get os => 'Версія системи';
+
+	/// uk: 'Модель пристрою'
+	String get model => 'Модель пристрою';
+
+	/// uk: 'Мова застосунку'
+	String get language => 'Мова застосунку';
+
+	/// uk: 'Стан входу'
+	String get account => 'Стан входу';
+
+	/// uk: 'Вхід виконано'
+	String get signedIn => 'Вхід виконано';
+
+	/// uk: 'Без акаунта'
+	String get guest => 'Без акаунта';
+
+	/// uk: 'Відгуки зараз недоступні. Чернетка залишиться тут.'
+	String get unavailable => 'Відгуки зараз недоступні. Чернетка залишиться тут.';
+
+	/// uk: 'Досягнуто ліміту відгуків. Спробуй пізніше.'
+	String get limited => 'Досягнуто ліміту відгуків. Спробуй пізніше.';
+
+	/// uk: 'Не вдалося надіслати відгук. Чернетка залишилася тут. Перевір з’єднання та спробуй ще раз.'
+	String get retry => 'Не вдалося надіслати відгук. Чернетка залишилася тут. Перевір з’єднання та спробуй ще раз.';
+
+	/// uk: 'Повідомлення завелике. Скороти його або вимкни відомості про застосунок.'
+	String get tooLarge => 'Повідомлення завелике. Скороти його або вимкни відомості про застосунок.';
+
+	/// uk: 'Не вдалося зберегти чернетку. Не закривай екран, щоб зберегти текст.'
+	String get draftError => 'Не вдалося зберегти чернетку. Не закривай екран, щоб зберегти текст.';
+
+	/// uk: 'Надіслати'
+	String get send => 'Надіслати';
+
+	/// uk: 'Дякуємо. MICHI читає кожен відгук.'
+	String get thanks => 'Дякуємо. MICHI читає кожен відгук.';
+
+	/// uk: 'Назад'
+	String get done => 'Назад';
+
+	/// uk: 'Щось не так? Напиши нам'
+	String get problemLink => 'Щось не так? Напиши нам';
+}
+
 // Path: learn.lessons
 class Translations$learn$lessons$uk {
 	Translations$learn$lessons$uk.internal(this._root);
@@ -2303,6 +2421,44 @@ extension on Translations {
 			'legal.registration' => ({required Object terms, required Object privacy}) => 'Створюючи акаунт, ти погоджуєшся з ${terms} та береш до відома ${privacy}.',
 			'legal.termsInline' => 'Умовами',
 			'legal.privacyInline' => 'Політику конфіденційності',
+			'feedback.rate' => 'Оцінити MICHI',
+			'feedback.title' => 'Надіслати відгук',
+			'feedback.intro' => 'Розкажи, як зробити MICHI кращим.',
+			'feedback.idea' => 'Ідея',
+			'feedback.broken' => 'Щось не працює',
+			'feedback.scanner' => 'Сканер',
+			'feedback.learning' => 'Навчання',
+			'feedback.other' => 'Інше',
+			'feedback.message' => 'Повідомлення',
+			'feedback.counter' => ({required Object count}) => '${count} / 2000',
+			'feedback.messageError' => 'Напиши від 10 до 2000 символів.',
+			'feedback.categoryError' => 'Вибери категорію.',
+			'feedback.reply' => 'Пошта для відповіді (необов’язково)',
+			'feedback.replyDetail' => 'Використаємо цю адресу лише для відповіді.',
+			'feedback.emailError' => 'Введи дійсну адресу пошти.',
+			'feedback.include' => 'Додати відомості про застосунок',
+			'feedback.preview' => 'Що надсилається',
+			'feedback.alwaysIncluded' => 'Ми надсилаємо категорію й повідомлення. Ідентифікатор установки обмежує кількість відгуків. Якщо виконано вхід, ми збережемо ідентифікатор акаунта разом із повідомленням.',
+			'feedback.appVersion' => 'Версія застосунку',
+			'feedback.build' => 'Номер збірки',
+			'feedback.platform' => 'Платформа',
+			'feedback.os' => 'Версія системи',
+			'feedback.model' => 'Модель пристрою',
+			'feedback.language' => 'Мова застосунку',
+			'feedback.account' => 'Стан входу',
+			'feedback.signedIn' => 'Вхід виконано',
+			'feedback.guest' => 'Без акаунта',
+			'feedback.unavailable' => 'Відгуки зараз недоступні. Чернетка залишиться тут.',
+			'feedback.limited' => 'Досягнуто ліміту відгуків. Спробуй пізніше.',
+			'feedback.retry' => 'Не вдалося надіслати відгук. Чернетка залишилася тут. Перевір з’єднання та спробуй ще раз.',
+			'feedback.tooLarge' => 'Повідомлення завелике. Скороти його або вимкни відомості про застосунок.',
+			'feedback.draftError' => 'Не вдалося зберегти чернетку. Не закривай екран, щоб зберегти текст.',
+			_ => null,
+		} ?? switch (path) {
+			'feedback.send' => 'Надіслати',
+			'feedback.thanks' => 'Дякуємо. MICHI читає кожен відгук.',
+			'feedback.done' => 'Назад',
+			'feedback.problemLink' => 'Щось не так? Напиши нам',
 			_ => null,
 		};
 	}

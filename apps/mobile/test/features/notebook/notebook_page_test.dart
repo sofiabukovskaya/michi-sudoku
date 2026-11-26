@@ -8,6 +8,9 @@ import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress.dart';
 import 'package:michi_mobile/features/learn/domain/technique_progress_repository.dart';
+import 'package:michi_mobile/features/review/data/review_service.dart';
+import 'package:michi_mobile/features/review/domain/review_policy.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:sudoku_engine/sudoku_engine.dart';
@@ -34,8 +37,13 @@ final class _Progress implements TechniqueProgressRepository {
   }) async => load(technique);
 }
 
+class _Review extends Mock implements ReviewService {}
+
 void main() {
-  setUpAll(bootstrap);
+  setUpAll(() {
+    bootstrap();
+    registerFallbackValue(() => true);
+  });
 
   testWidgets('a new mastery stamps once; afterwards the stamp is still', (
     tester,
@@ -61,6 +69,16 @@ void main() {
         ),
       }),
     );
+    await getIt.unregister<ReviewService>();
+    final review = _Review();
+    getIt.registerSingleton<ReviewService>(review);
+    when(
+      () => review.consider(
+        moments: {ReviewMoment.techniqueMastery},
+        isVisible: any(named: 'isVisible'),
+      ),
+    ).thenAnswer((_) async {});
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     tester.view
       ..devicePixelRatio = 1
       ..physicalSize = const Size(390, 844);
@@ -88,11 +106,22 @@ void main() {
     expect(find.byType(MichiMotionMascot), findsOneWidget);
     expect(find.textContaining('%'), findsWidgets);
 
+    Future<void> opportunity() => review.consider(
+      moments: {ReviewMoment.techniqueMastery},
+      isVisible: any(named: 'isVisible'),
+    );
+    verifyNever(opportunity);
+    for (var frame = 0; frame < 38; frame++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    verify(opportunity).called(1);
+
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpWidget(MichiApp(router: router));
     await open();
     expect(find.byType(MichiMotionMascot), findsNothing);
     expect(find.byKey(const ValueKey('notebook-stamp')), findsOneWidget);
+    verifyNever(opportunity);
     expect(tester.takeException(), isNull);
   });
 }

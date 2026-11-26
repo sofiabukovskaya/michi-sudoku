@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/widgets/michi_mascot.dart';
+import 'package:michi_mobile/features/feedback/presentation/feedback_link.dart';
 
 /// A screen whose content is being prepared: MICHI's paw loader, centred.
 /// It stays invisible for a perceptible instant, so quick local loads never
@@ -33,7 +34,7 @@ final class MichiProblemState extends StatelessWidget {
   Widget build(BuildContext context) => Center(
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: MichiLayout.focusedWidth),
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(MichiSpacing.xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -53,6 +54,7 @@ final class MichiProblemState extends StatelessWidget {
                 onPressed: onAction,
               ),
             ],
+            const FeedbackLink(),
           ],
         ),
       ),

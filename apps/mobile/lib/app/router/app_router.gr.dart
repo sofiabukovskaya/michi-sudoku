@@ -176,6 +176,55 @@ class EmailVerificationRouteArgs {
 }
 
 /// generated route for
+/// [FeedbackPage]
+class FeedbackRoute extends PageRouteInfo<FeedbackRouteArgs> {
+  FeedbackRoute({
+    FeedbackCategory? category,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         FeedbackRoute.name,
+         args: FeedbackRouteArgs(category: category, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'FeedbackRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<FeedbackRouteArgs>(
+        orElse: () => const FeedbackRouteArgs(),
+      );
+      return FeedbackPage(category: args.category, key: args.key);
+    },
+  );
+}
+
+class FeedbackRouteArgs {
+  const FeedbackRouteArgs({this.category, this.key});
+
+  final FeedbackCategory? category;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'FeedbackRouteArgs{category: $category, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! FeedbackRouteArgs) return false;
+    return category == other.category && key == other.key;
+  }
+
+  @override
+  int get hashCode => category.hashCode ^ key.hashCode;
+}
+
+/// generated route for
 /// [GamePage]
 class GameRoute extends PageRouteInfo<GameRouteArgs> {
   GameRoute({

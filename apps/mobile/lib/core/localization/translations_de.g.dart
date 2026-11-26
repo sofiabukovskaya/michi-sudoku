@@ -62,6 +62,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$spotIt$de spotIt = _Translations$spotIt$de._(_root);
 	@override late final _Translations$notebook$de notebook = _Translations$notebook$de._(_root);
 	@override late final _Translations$legal$de legal = _Translations$legal$de._(_root);
+	@override late final _Translations$feedback$de feedback = _Translations$feedback$de._(_root);
 }
 
 // Path: common
@@ -706,6 +707,51 @@ class _Translations$legal$de extends Translations$legal$uk {
 	@override String get privacyInline => 'Datenschutzerklärung';
 }
 
+// Path: feedback
+class _Translations$feedback$de extends Translations$feedback$uk {
+	_Translations$feedback$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get rate => 'MICHI bewerten';
+	@override String get title => 'Feedback senden';
+	@override String get intro => 'Sag uns, was MICHI besser machen würde.';
+	@override String get idea => 'Idee';
+	@override String get broken => 'Etwas funktioniert nicht';
+	@override String get scanner => 'Scanner';
+	@override String get learning => 'Lernen';
+	@override String get other => 'Sonstiges';
+	@override String get message => 'Nachricht';
+	@override String counter({required Object count}) => '${count} / 2000';
+	@override String get messageError => 'Gib 10–2000 Zeichen ein.';
+	@override String get categoryError => 'Wähle eine Kategorie.';
+	@override String get reply => 'E-Mail für eine Antwort (optional)';
+	@override String get replyDetail => 'Wir verwenden diese Adresse nur für die Antwort.';
+	@override String get emailError => 'Gib eine gültige E-Mail-Adresse ein.';
+	@override String get include => 'App-Details mitsenden';
+	@override String get preview => 'Was wird gesendet?';
+	@override String get alwaysIncluded => 'Wir senden deine Kategorie und Nachricht. Eine Installations-ID begrenzt Einsendungen. Wenn du angemeldet bist, speichern wir deine Konto-ID mit der Nachricht.';
+	@override String get appVersion => 'App-Version';
+	@override String get build => 'Build';
+	@override String get platform => 'Plattform';
+	@override String get os => 'Betriebssystemversion';
+	@override String get model => 'Gerätemodell';
+	@override String get language => 'App-Sprache';
+	@override String get account => 'Kontostatus';
+	@override String get signedIn => 'Angemeldet';
+	@override String get guest => 'Gast';
+	@override String get unavailable => 'Feedback ist gerade nicht verfügbar. Dein Entwurf bleibt hier.';
+	@override String get limited => 'Du hast das Feedback-Limit erreicht. Versuch es später.';
+	@override String get retry => 'Dein Feedback konnte nicht gesendet werden. Der Entwurf bleibt hier. Prüfe die Verbindung und versuch es erneut.';
+	@override String get tooLarge => 'Die Nachricht ist zu groß. Kürze sie oder schalte die App-Details aus.';
+	@override String get draftError => 'Der Entwurf konnte nicht gespeichert werden. Lass den Bildschirm offen, damit der Text erhalten bleibt.';
+	@override String get send => 'Senden';
+	@override String get thanks => 'Danke. MICHI liest jede Nachricht.';
+	@override String get done => 'Zurück';
+	@override String get problemLink => 'Stimmt etwas nicht? Sag es uns';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$de extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$de._(TranslationsDe root) : this._root = root, super.internal(root);
@@ -1331,6 +1377,44 @@ extension on TranslationsDe {
 			'legal.registration' => ({required Object terms, required Object privacy}) => 'Wenn du ein Konto erstellst, stimmst du den ${terms} zu und nimmst die ${privacy} zur Kenntnis.',
 			'legal.termsInline' => 'Nutzungsbedingungen',
 			'legal.privacyInline' => 'Datenschutzerklärung',
+			'feedback.rate' => 'MICHI bewerten',
+			'feedback.title' => 'Feedback senden',
+			'feedback.intro' => 'Sag uns, was MICHI besser machen würde.',
+			'feedback.idea' => 'Idee',
+			'feedback.broken' => 'Etwas funktioniert nicht',
+			'feedback.scanner' => 'Scanner',
+			'feedback.learning' => 'Lernen',
+			'feedback.other' => 'Sonstiges',
+			'feedback.message' => 'Nachricht',
+			'feedback.counter' => ({required Object count}) => '${count} / 2000',
+			'feedback.messageError' => 'Gib 10–2000 Zeichen ein.',
+			'feedback.categoryError' => 'Wähle eine Kategorie.',
+			'feedback.reply' => 'E-Mail für eine Antwort (optional)',
+			'feedback.replyDetail' => 'Wir verwenden diese Adresse nur für die Antwort.',
+			'feedback.emailError' => 'Gib eine gültige E-Mail-Adresse ein.',
+			'feedback.include' => 'App-Details mitsenden',
+			'feedback.preview' => 'Was wird gesendet?',
+			'feedback.alwaysIncluded' => 'Wir senden deine Kategorie und Nachricht. Eine Installations-ID begrenzt Einsendungen. Wenn du angemeldet bist, speichern wir deine Konto-ID mit der Nachricht.',
+			'feedback.appVersion' => 'App-Version',
+			'feedback.build' => 'Build',
+			'feedback.platform' => 'Plattform',
+			'feedback.os' => 'Betriebssystemversion',
+			'feedback.model' => 'Gerätemodell',
+			'feedback.language' => 'App-Sprache',
+			'feedback.account' => 'Kontostatus',
+			'feedback.signedIn' => 'Angemeldet',
+			'feedback.guest' => 'Gast',
+			'feedback.unavailable' => 'Feedback ist gerade nicht verfügbar. Dein Entwurf bleibt hier.',
+			'feedback.limited' => 'Du hast das Feedback-Limit erreicht. Versuch es später.',
+			'feedback.retry' => 'Dein Feedback konnte nicht gesendet werden. Der Entwurf bleibt hier. Prüfe die Verbindung und versuch es erneut.',
+			'feedback.tooLarge' => 'Die Nachricht ist zu groß. Kürze sie oder schalte die App-Details aus.',
+			'feedback.draftError' => 'Der Entwurf konnte nicht gespeichert werden. Lass den Bildschirm offen, damit der Text erhalten bleibt.',
+			_ => null,
+		} ?? switch (path) {
+			'feedback.send' => 'Senden',
+			'feedback.thanks' => 'Danke. MICHI liest jede Nachricht.',
+			'feedback.done' => 'Zurück',
+			'feedback.problemLink' => 'Stimmt etwas nicht? Sag es uns',
 			_ => null,
 		};
 	}

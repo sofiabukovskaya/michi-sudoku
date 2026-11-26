@@ -59,6 +59,7 @@ final class MichiMotionMascot extends StatefulWidget {
     this.occasionalInterval = const Duration(seconds: 24),
     this.startDelay = Duration.zero,
     this.fallback,
+    this.onSettled,
     super.key,
   });
 
@@ -77,6 +78,9 @@ final class MichiMotionMascot extends StatefulWidget {
   /// Shown if the composition cannot be loaded.
   final Widget? fallback;
 
+  /// Called once when this pose settles, including static fallbacks.
+  final VoidCallback? onSettled;
+
   @override
   State<MichiMotionMascot> createState() => _MichiMotionMascotState();
 }
@@ -89,6 +93,7 @@ final class _MichiMotionMascotState extends State<MichiMotionMascot>
   LottieComposition? _composition;
   Timer? _next;
   bool _played = false;
+  bool _settled = false;
 
   bool get _reduceMotion => MediaQuery.disableAnimationsOf(context);
 
@@ -104,9 +109,11 @@ final class _MichiMotionMascotState extends State<MichiMotionMascot>
     if (oldWidget.asset != widget.asset) {
       _composition = null;
       _played = false;
+      _settled = false;
       _next?.cancel();
       _controller.stop();
     } else if (oldWidget.trigger != widget.trigger) {
+      _settled = false;
       _play();
     }
   }
@@ -132,11 +139,21 @@ final class _MichiMotionMascotState extends State<MichiMotionMascot>
     }
   }
 
+  void _notifySettled() {
+    if (_settled || widget.onSettled == null) return;
+    _settled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) widget.onSettled?.call();
+    });
+    WidgetsBinding.instance.ensureVisualUpdate();
+  }
+
   void _rest() {
     _next?.cancel();
     _controller
       ..stop()
       ..value = widget.asset.rest == MichiMotionRest.start ? 0 : 1;
+    _notifySettled();
   }
 
   void _play() {
@@ -150,6 +167,7 @@ final class _MichiMotionMascotState extends State<MichiMotionMascot>
       _controller.forward(from: 0).whenComplete(() {
         if (!mounted) return;
         if (widget.asset.rest == MichiMotionRest.start) _controller.value = 0;
+        _notifySettled();
         if (widget.playback == MichiMotionPlayback.occasional) {
           _next = Timer(widget.occasionalInterval, _playIfVisible);
         }
@@ -180,8 +198,10 @@ final class _MichiMotionMascotState extends State<MichiMotionMascot>
           onLoaded: _onLoaded,
           fit: BoxFit.contain,
           frameRate: FrameRate.composition,
-          errorBuilder: (context, error, stackTrace) =>
-              widget.fallback ?? const SizedBox.shrink(),
+          errorBuilder: (context, error, stackTrace) {
+            _notifySettled();
+            return widget.fallback ?? const SizedBox.shrink();
+          },
         ),
       ),
     ),

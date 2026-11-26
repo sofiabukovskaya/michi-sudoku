@@ -62,6 +62,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$spotIt$cs spotIt = _Translations$spotIt$cs._(_root);
 	@override late final _Translations$notebook$cs notebook = _Translations$notebook$cs._(_root);
 	@override late final _Translations$legal$cs legal = _Translations$legal$cs._(_root);
+	@override late final _Translations$feedback$cs feedback = _Translations$feedback$cs._(_root);
 }
 
 // Path: common
@@ -710,6 +711,51 @@ class _Translations$legal$cs extends Translations$legal$uk {
 	@override String get privacyInline => 'zásady ochrany soukromí';
 }
 
+// Path: feedback
+class _Translations$feedback$cs extends Translations$feedback$uk {
+	_Translations$feedback$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String get rate => 'Ohodnotit MICHI';
+	@override String get title => 'Poslat zpětnou vazbu';
+	@override String get intro => 'Napiš nám, co by MICHI zlepšilo.';
+	@override String get idea => 'Nápad';
+	@override String get broken => 'Něco nefunguje';
+	@override String get scanner => 'Skener';
+	@override String get learning => 'Učení';
+	@override String get other => 'Jiné';
+	@override String get message => 'Zpráva';
+	@override String counter({required Object count}) => '${count} / 2000';
+	@override String get messageError => 'Napiš 10–2000 znaků.';
+	@override String get categoryError => 'Vyber kategorii.';
+	@override String get reply => 'E-mail pro odpověď (nepovinné)';
+	@override String get replyDetail => 'Adresu použijeme jen k odpovědi.';
+	@override String get emailError => 'Zadej platnou e-mailovou adresu.';
+	@override String get include => 'Přiložit údaje o aplikaci';
+	@override String get preview => 'Co se odešle';
+	@override String get alwaysIncluded => 'Odešleme kategorii a zprávu. Počet zpráv omezujeme pomocí ID instalace. Při přihlášení uložíme ke zprávě ID účtu.';
+	@override String get appVersion => 'Verze aplikace';
+	@override String get build => 'Sestavení';
+	@override String get platform => 'Platforma';
+	@override String get os => 'Verze systému';
+	@override String get model => 'Model zařízení';
+	@override String get language => 'Jazyk aplikace';
+	@override String get account => 'Stav účtu';
+	@override String get signedIn => 'S účtem';
+	@override String get guest => 'Bez účtu';
+	@override String get unavailable => 'Zpětná vazba teď není dostupná. Rozepsaná zpráva tu zůstane.';
+	@override String get limited => 'Dosáhl jsi limitu zpráv. Zkus to později.';
+	@override String get retry => 'Limit zpráv je vyčerpán. Zkus to později.';
+	@override String get tooLarge => 'Zpráva je příliš velká. Zkrať ji nebo vypni přiložení údajů.';
+	@override String get draftError => 'Rozepsanou zprávu se nepodařilo uložit. Nech obrazovku otevřenou, aby text zůstal.';
+	@override String get send => 'Odeslat';
+	@override String get thanks => 'Díky. MICHI čte každou zprávu.';
+	@override String get done => 'Zpět';
+	@override String get problemLink => 'Něco nefunguje? Napiš nám';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$cs extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$cs._(TranslationsCs root) : this._root = root, super.internal(root);
@@ -1335,6 +1381,44 @@ extension on TranslationsCs {
 			'legal.registration' => ({required Object terms, required Object privacy}) => 'Vytvořením účtu souhlasíš s ${terms} a bereš na vědomí ${privacy}.',
 			'legal.termsInline' => 'podmínkami používání',
 			'legal.privacyInline' => 'zásady ochrany soukromí',
+			'feedback.rate' => 'Ohodnotit MICHI',
+			'feedback.title' => 'Poslat zpětnou vazbu',
+			'feedback.intro' => 'Napiš nám, co by MICHI zlepšilo.',
+			'feedback.idea' => 'Nápad',
+			'feedback.broken' => 'Něco nefunguje',
+			'feedback.scanner' => 'Skener',
+			'feedback.learning' => 'Učení',
+			'feedback.other' => 'Jiné',
+			'feedback.message' => 'Zpráva',
+			'feedback.counter' => ({required Object count}) => '${count} / 2000',
+			'feedback.messageError' => 'Napiš 10–2000 znaků.',
+			'feedback.categoryError' => 'Vyber kategorii.',
+			'feedback.reply' => 'E-mail pro odpověď (nepovinné)',
+			'feedback.replyDetail' => 'Adresu použijeme jen k odpovědi.',
+			'feedback.emailError' => 'Zadej platnou e-mailovou adresu.',
+			'feedback.include' => 'Přiložit údaje o aplikaci',
+			'feedback.preview' => 'Co se odešle',
+			'feedback.alwaysIncluded' => 'Odešleme kategorii a zprávu. Počet zpráv omezujeme pomocí ID instalace. Při přihlášení uložíme ke zprávě ID účtu.',
+			'feedback.appVersion' => 'Verze aplikace',
+			'feedback.build' => 'Sestavení',
+			'feedback.platform' => 'Platforma',
+			'feedback.os' => 'Verze systému',
+			'feedback.model' => 'Model zařízení',
+			'feedback.language' => 'Jazyk aplikace',
+			'feedback.account' => 'Stav účtu',
+			'feedback.signedIn' => 'S účtem',
+			'feedback.guest' => 'Bez účtu',
+			'feedback.unavailable' => 'Zpětná vazba teď není dostupná. Rozepsaná zpráva tu zůstane.',
+			'feedback.limited' => 'Dosáhl jsi limitu zpráv. Zkus to později.',
+			'feedback.retry' => 'Limit zpráv je vyčerpán. Zkus to později.',
+			'feedback.tooLarge' => 'Zpráva je příliš velká. Zkrať ji nebo vypni přiložení údajů.',
+			'feedback.draftError' => 'Rozepsanou zprávu se nepodařilo uložit. Nech obrazovku otevřenou, aby text zůstal.',
+			_ => null,
+		} ?? switch (path) {
+			'feedback.send' => 'Odeslat',
+			'feedback.thanks' => 'Díky. MICHI čte každou zprávu.',
+			'feedback.done' => 'Zpět',
+			'feedback.problemLink' => 'Něco nefunguje? Napiš nám',
 			_ => null,
 		};
 	}

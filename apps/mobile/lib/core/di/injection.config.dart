@@ -30,6 +30,8 @@ import 'package:michi_mobile/features/auth/application/auth_cubit.dart'
     as _i404;
 import 'package:michi_mobile/features/auth/domain/auth_repository.dart'
     as _i685;
+import 'package:michi_mobile/features/feedback/data/feedback_repository.dart'
+    as _i345;
 import 'package:michi_mobile/features/game/application/game_preparation.dart'
     as _i815;
 import 'package:michi_mobile/features/game/data/game_database.dart' as _i520;
@@ -56,6 +58,7 @@ import 'package:michi_mobile/features/recommendation/application/learning_recomm
     as _i539;
 import 'package:michi_mobile/features/recommendation/domain/daily_learning_focus_repository.dart'
     as _i397;
+import 'package:michi_mobile/features/review/data/review_service.dart' as _i450;
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart'
     as _i738;
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart'
@@ -104,6 +107,18 @@ extension GetItInjectableX on _i174.GetIt {
       () => appModule.puzzleAnalyzer(
         gh<_i247.ExactSolver>(),
         gh<_i247.HumanSolver>(),
+      ),
+    );
+    gh.lazySingleton<_i345.FeedbackRepository>(
+      () => appModule.feedbackRepository(
+        gh<_i891.FirebaseRuntime>(),
+        gh<_i520.GameDatabase>(),
+      ),
+    );
+    gh.lazySingleton<_i450.ReviewService>(
+      () => appModule.reviewService(
+        gh<_i520.GameDatabase>(),
+        gh<_i906.LocalProfileScope>(),
       ),
     );
     gh.lazySingleton<_i247.LocalProfileManager>(

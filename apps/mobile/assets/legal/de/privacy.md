@@ -32,6 +32,10 @@ Lokale Daten bleiben bis zur Löschung in der App, dem Leeren des App-Speichers 
 
 Je nach anwendbarem Recht kannst du Auskunft, Berichtigung, Löschung, Einschränkung oder Übertragung verlangen, Widerspruch einlegen oder dich bei einer Aufsichtsbehörde beschweren. Schreib an [{{EMAIL}}](mailto:{{EMAIL}}). Kamera-, Foto- und Mitteilungsrechte änderst du in den Geräteeinstellungen.
 
+## Feedback
+
+Beim Senden speichern wir Kategorie, Nachricht, optionale Antwortadresse und auf Wunsch App-Version, Build, Plattform, Systemversion, Gerätemodell, App-Sprache und Anmeldestatus. Die Antwortadresse dient nur zur Antwort. Die Installations-ID und bei Anmeldung die Konto-ID begrenzen Missbrauch. Wenn du angemeldet bist, speichern wir die Konto-ID mit der Nachricht. Der MICHI-Betreiber kann die Nachricht per E-Mail erhalten. Nach Aktivierung der Aufbewahrungsregel ist die Löschung aus Firestore nach 24 Monaten vorgesehen. Für E-Mail-Kopien gilt {{RETENTION}}. Entwürfe bleiben bis zum Senden oder Leeren des App-Speichers auf dem Gerät. Scannerfotos werden nicht angehängt.
+
 ## Dein Konto löschen
 
 Melde dich an und öffne **Profil → Einstellungen → Konto → Konto löschen**. Firebase löscht das Konto und stößt die Entfernung der zugehörigen Cloud-Daten zu Spielen, Fortschritten und Erinnerungen an. MICHI entfernt das lokale Kontoprofil auf diesem Gerät. Getrennte Gastdaten und Kopien auf anderen Geräten können erhalten bleiben. Wenn du die App nicht nutzen kannst, bitte per E-Mail von deiner Konto-Adresse an [{{EMAIL}}](mailto:{{EMAIL}}) um Löschung deines MICHI-Kontos und der zugehörigen Daten. Sende kein Passwort. Wir können deine Berechtigung prüfen.

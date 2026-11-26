@@ -32,6 +32,10 @@ Los datos locales permanecen hasta que los borres en la aplicación, vacíes su 
 
 Según la ley aplicable, puedes pedir acceso, rectificación, supresión, limitación o portabilidad, oponerte al tratamiento o reclamar ante una autoridad de protección de datos. Escribe a [{{EMAIL}}](mailto:{{EMAIL}}). Puedes cambiar los permisos de cámara, fotos y avisos en los ajustes del dispositivo.
 
+## Comentarios
+
+Al enviar comentarios, MICHI guarda la categoría, el mensaje, el correo opcional de respuesta y, si los incluyes, versión y compilación, plataforma, versión del sistema, modelo, idioma y estado de sesión. El correo solo se usa para responder. Usamos el ID de la instalación y, si has iniciado sesión, el de tu cuenta para limitar abusos. Si hay una sesión iniciada, guardamos también el ID de cuenta con el mensaje. El operador de MICHI puede recibir el mensaje por correo. Al activar la política de conservación, se programa el borrado de Firestore tras 24 meses. Para las copias de correo rige {{RETENTION}}. Los borradores quedan en tu dispositivo hasta que los envíes o borres el almacenamiento. No adjuntamos fotos del escáner.
+
 ## Eliminar tu cuenta
 
 Inicia sesión y abre **Perfil → Ajustes → Cuenta → Eliminar cuenta**. Firebase elimina la cuenta e inicia el borrado de partidas, progreso y recordatorios en la nube. MICHI elimina el perfil local de esa cuenta en ese dispositivo. Los datos de invitado y las copias de otros dispositivos pueden seguir ahí. Si no puedes usar la aplicación, escribe a [{{EMAIL}}](mailto:{{EMAIL}}) desde el correo de tu cuenta y pide eliminar tu cuenta de MICHI y los datos asociados. No envíes tu contraseña. Podemos verificar la titularidad de la cuenta.

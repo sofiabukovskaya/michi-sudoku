@@ -62,6 +62,7 @@ class TranslationsFr extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$spotIt$fr spotIt = _Translations$spotIt$fr._(_root);
 	@override late final _Translations$notebook$fr notebook = _Translations$notebook$fr._(_root);
 	@override late final _Translations$legal$fr legal = _Translations$legal$fr._(_root);
+	@override late final _Translations$feedback$fr feedback = _Translations$feedback$fr._(_root);
 }
 
 // Path: common
@@ -706,6 +707,51 @@ class _Translations$legal$fr extends Translations$legal$uk {
 	@override String get privacyInline => 'Politique de confidentialité';
 }
 
+// Path: feedback
+class _Translations$feedback$fr extends Translations$feedback$uk {
+	_Translations$feedback$fr._(TranslationsFr root) : this._root = root, super.internal(root);
+
+	final TranslationsFr _root; // ignore: unused_field
+
+	// Translations
+	@override String get rate => 'Noter MICHI';
+	@override String get title => 'Envoyer un retour';
+	@override String get intro => 'Dis-nous ce qui rendrait MICHI meilleur.';
+	@override String get idea => 'Idée';
+	@override String get broken => 'Un problème';
+	@override String get scanner => 'Scanner';
+	@override String get learning => 'Apprentissage';
+	@override String get other => 'Autre';
+	@override String get message => 'Message';
+	@override String counter({required Object count}) => '${count} / 2000';
+	@override String get messageError => 'Écris entre 10 et 2000 caractères.';
+	@override String get categoryError => 'Choisis une catégorie.';
+	@override String get reply => 'E-mail pour te répondre (facultatif)';
+	@override String get replyDetail => 'Cette adresse sert uniquement à te répondre.';
+	@override String get emailError => 'Saisis une adresse e-mail valide.';
+	@override String get include => 'Inclure les détails de l’app';
+	@override String get preview => 'Ce qui est envoyé';
+	@override String get alwaysIncluded => 'Ta catégorie et ton message sont envoyés. Un identifiant d’installation limite les envois. Si ta session est ouverte, nous enregistrons l’identifiant du compte avec le message.';
+	@override String get appVersion => 'Version de l’app';
+	@override String get build => 'Numéro de build';
+	@override String get platform => 'Plateforme';
+	@override String get os => 'Version du système';
+	@override String get model => 'Modèle de l’appareil';
+	@override String get language => 'Langue de l’app';
+	@override String get account => 'État du compte';
+	@override String get signedIn => 'Session ouverte';
+	@override String get guest => 'Sans compte';
+	@override String get unavailable => 'Les retours sont indisponibles pour le moment. Ton brouillon reste ici.';
+	@override String get limited => 'Tu as atteint la limite d’envois. Réessaie plus tard.';
+	@override String get retry => 'Le message n’a pas pu être envoyé. Ton brouillon reste ici. Vérifie la connexion et réessaie.';
+	@override String get tooLarge => 'Le message est trop volumineux. Raccourcis-le ou désactive les détails de l’app.';
+	@override String get draftError => 'Le brouillon n’a pas pu être enregistré. Garde cet écran ouvert pour conserver le texte.';
+	@override String get send => 'Envoyer';
+	@override String get thanks => 'Merci. MICHI lit chaque message.';
+	@override String get done => 'Retour';
+	@override String get problemLink => 'Un souci ? Dis-le-nous';
+}
+
 // Path: learn.lessons
 class _Translations$learn$lessons$fr extends Translations$learn$lessons$uk {
 	_Translations$learn$lessons$fr._(TranslationsFr root) : this._root = root, super.internal(root);
@@ -1331,6 +1377,44 @@ extension on TranslationsFr {
 			'legal.registration' => ({required Object terms, required Object privacy}) => 'En créant un compte, tu acceptes les ${terms} et reconnais avoir pris connaissance de la ${privacy}.',
 			'legal.termsInline' => 'Conditions d’utilisation',
 			'legal.privacyInline' => 'Politique de confidentialité',
+			'feedback.rate' => 'Noter MICHI',
+			'feedback.title' => 'Envoyer un retour',
+			'feedback.intro' => 'Dis-nous ce qui rendrait MICHI meilleur.',
+			'feedback.idea' => 'Idée',
+			'feedback.broken' => 'Un problème',
+			'feedback.scanner' => 'Scanner',
+			'feedback.learning' => 'Apprentissage',
+			'feedback.other' => 'Autre',
+			'feedback.message' => 'Message',
+			'feedback.counter' => ({required Object count}) => '${count} / 2000',
+			'feedback.messageError' => 'Écris entre 10 et 2000 caractères.',
+			'feedback.categoryError' => 'Choisis une catégorie.',
+			'feedback.reply' => 'E-mail pour te répondre (facultatif)',
+			'feedback.replyDetail' => 'Cette adresse sert uniquement à te répondre.',
+			'feedback.emailError' => 'Saisis une adresse e-mail valide.',
+			'feedback.include' => 'Inclure les détails de l’app',
+			'feedback.preview' => 'Ce qui est envoyé',
+			'feedback.alwaysIncluded' => 'Ta catégorie et ton message sont envoyés. Un identifiant d’installation limite les envois. Si ta session est ouverte, nous enregistrons l’identifiant du compte avec le message.',
+			'feedback.appVersion' => 'Version de l’app',
+			'feedback.build' => 'Numéro de build',
+			'feedback.platform' => 'Plateforme',
+			'feedback.os' => 'Version du système',
+			'feedback.model' => 'Modèle de l’appareil',
+			'feedback.language' => 'Langue de l’app',
+			'feedback.account' => 'État du compte',
+			'feedback.signedIn' => 'Session ouverte',
+			'feedback.guest' => 'Sans compte',
+			'feedback.unavailable' => 'Les retours sont indisponibles pour le moment. Ton brouillon reste ici.',
+			'feedback.limited' => 'Tu as atteint la limite d’envois. Réessaie plus tard.',
+			'feedback.retry' => 'Le message n’a pas pu être envoyé. Ton brouillon reste ici. Vérifie la connexion et réessaie.',
+			'feedback.tooLarge' => 'Le message est trop volumineux. Raccourcis-le ou désactive les détails de l’app.',
+			'feedback.draftError' => 'Le brouillon n’a pas pu être enregistré. Garde cet écran ouvert pour conserver le texte.',
+			_ => null,
+		} ?? switch (path) {
+			'feedback.send' => 'Envoyer',
+			'feedback.thanks' => 'Merci. MICHI lit chaque message.',
+			'feedback.done' => 'Retour',
+			'feedback.problemLink' => 'Un souci ? Dis-le-nous',
 			_ => null,
 		};
 	}

@@ -13,6 +13,8 @@ import 'package:michi_mobile/app/widgets/michi_digit_pad.dart';
 import 'package:michi_mobile/app/widgets/michi_reveal.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/features/coach/presentation/coach_presenter.dart';
+import 'package:michi_mobile/features/feedback/domain/feedback_draft.dart';
+import 'package:michi_mobile/features/feedback/presentation/feedback_link.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/coach_panel.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/board_view_state.dart';
 import 'package:michi_mobile/features/game/presentation/widgets/sudoku_board/sudoku_board_widget.dart';
@@ -823,6 +825,7 @@ final class _Review extends StatelessWidget {
         ),
         const SizedBox(height: MichiSpacing.sm),
         _ReviewLegend(review: review),
+        const FeedbackLink(category: FeedbackCategory.scanner),
         const SizedBox(height: MichiSpacing.md),
         // Fixed height whether or not a cell is chosen: nothing below moves.
         _CellPhoto(

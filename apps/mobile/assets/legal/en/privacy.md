@@ -32,6 +32,10 @@ Local data remains on the device until cleared by an app action or by clearing a
 
 Depending on applicable law, you may be able to request access, correction, deletion, restriction or portability, object to processing, or complain to a data protection authority. Contact [{{EMAIL}}](mailto:{{EMAIL}}). You can change camera, photo and notification permissions in device settings.
 
+## Feedback
+
+When you send feedback, MICHI saves the category, message, optional reply email and, if you include them, the app version and build, platform, OS version, device model, app language and sign-in status. We use the reply address only to respond. We use an installation ID and, when signed in, your account ID to limit abuse. Signed-in feedback is saved with the account ID. The note can be forwarded to the MICHI operator by email. Firestore records are scheduled for deletion after 24 months once the retention policy is enabled. The retention of email copies follows {{RETENTION}}. Unsent drafts stay on your device until submitted or removed with app storage. Scanner images are not attached.
+
 ## Delete your account
 
 In MICHI, sign in and open **Profile → Settings → Account → Delete account**. Firebase deletes the account and triggers removal of its cloud game, progress and reminder records. MICHI removes the local account profile on that device. Separate guest data and data already stored on other devices may remain. If you cannot use the app, email [{{EMAIL}}](mailto:{{EMAIL}}) from the address on your account and ask to delete your MICHI account and associated data. Do not send your password. We may verify that you own the account.

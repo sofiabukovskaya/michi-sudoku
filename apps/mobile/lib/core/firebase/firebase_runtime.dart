@@ -44,6 +44,7 @@ final class FirebaseRuntime {
 
   final Completer<bool> _ready = Completer<bool>();
   bool _started = false;
+  bool _appCheckActive = false;
   late final FirebaseApp _app;
   FirebaseApp get app => _app;
 
@@ -52,6 +53,8 @@ final class FirebaseRuntime {
   FirebaseFunctions get functions => FirebaseFunctions.instanceFor(app: _app);
 
   Future<bool> get ready => _ready.future;
+
+  Future<bool> get appCheckReady async => await ready && _appCheckActive;
 
   Future<void> initialize() async {
     if (_started) return;
@@ -87,6 +90,7 @@ final class FirebaseRuntime {
             ? const AppleDebugProvider()
             : const AppleAppAttestWithDeviceCheckFallbackProvider(),
       );
+      _appCheckActive = true;
     } on Object {
       // App Check enforcement stays disabled until provider registration is
       // verified; a setup failure cannot stop account or local features.

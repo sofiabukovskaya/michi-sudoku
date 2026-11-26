@@ -15,6 +15,7 @@ import 'package:michi_mobile/core/time/game_clock.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:michi_mobile/features/auth/data/firebase_auth_repository.dart';
 import 'package:michi_mobile/features/auth/domain/auth_repository.dart';
+import 'package:michi_mobile/features/feedback/data/feedback_repository.dart';
 import 'package:michi_mobile/features/game/data/drift_game_repository.dart';
 import 'package:michi_mobile/features/game/data/game_database.dart';
 import 'package:michi_mobile/features/game/domain/game_repository.dart';
@@ -34,6 +35,7 @@ import 'package:michi_mobile/features/recommendation/application/learning_profil
 import 'package:michi_mobile/features/recommendation/application/learning_recommendation_service.dart';
 import 'package:michi_mobile/features/recommendation/data/drift_daily_learning_focus_repository.dart';
 import 'package:michi_mobile/features/recommendation/domain/daily_learning_focus_repository.dart';
+import 'package:michi_mobile/features/review/data/review_service.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_cubit.dart';
 import 'package:michi_mobile/features/scanner/application/scanner_image_source.dart';
 import 'package:michi_mobile/features/scanner/data/drift_imported_puzzle_repository.dart';
@@ -53,6 +55,16 @@ void configureDependencies() => getIt.init();
 abstract class AppModule {
   @lazySingleton
   FirebaseRuntime get firebaseRuntime => FirebaseRuntime();
+
+  @lazySingleton
+  ReviewService reviewService(GameDatabase database, LocalProfileScope scope) =>
+      ReviewService(database, scope);
+
+  @lazySingleton
+  FeedbackRepository feedbackRepository(
+    FirebaseRuntime runtime,
+    GameDatabase database,
+  ) => FeedbackRepository(runtime, database);
 
   @lazySingleton
   // Resolving reminders lazily keeps widget tests and guest startup free of
