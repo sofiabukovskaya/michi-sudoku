@@ -491,7 +491,8 @@
     "dailyReminder": "Tous les jours à 08:00",
     "reminderSignIn": "Connecte-toi pour activer les rappels.",
     "reminderPermission": "Autorisez les notifications dans les réglages du système.",
-    "reminderUnavailable": "Les notifications ne sont pas disponibles sur cet appareil."
+    "reminderUnavailable": "Les notifications ne sont pas disponibles sur cet appareil.",
+    "streakReminderDetail": "Seulement si le sudoku du jour n’est pas fait, vers l’heure où tu joues d’habitude."
   },
   "sync": {
     "account": "Compte",
@@ -511,5 +512,9 @@
     "deleteConfirm": "Supprimer le compte",
     "deleteFailed": "Impossible de supprimer ton compte. Reconnecte-toi et réessaie.",
     "signOut": "Se déconnecter"
+  },
+  "reminder": {
+    "streakBody": "Garde ta série : $count d’affilée. Le sudoku du jour t’attend.",
+    "readyBody": "Le sudoku du jour est prêt quand tu l’es."
   }
 }

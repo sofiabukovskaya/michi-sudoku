@@ -13,6 +13,7 @@ import 'package:michi_mobile/app/widgets/michi_wordmark.dart';
 import 'package:michi_mobile/app/widgets/mini_board.dart';
 import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
+import 'package:michi_mobile/core/notifications/streak_reminder.dart';
 import 'package:michi_mobile/core/platform/ios_widgets.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/core/time/game_clock.dart';
@@ -66,6 +67,9 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   DailyPuzzle? _daily;
   WeeklyActivity? _week;
   int _streak = 0;
+
+  /// Recent completion times, newest first (for the reminder's timing).
+  List<DateTime> _completions = const [];
   StoredGame? _activeGame;
   bool _dailyCompleted = false;
   bool _dailyFailed = false;
@@ -198,6 +202,7 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _dailyCompleted = completed;
         _dailyFailed = false;
       });
+      _scheduleReminder();
       if (widget.puzzleRepository == null &&
           getIt.isRegistered<GamePreparation>()) {
         // Warm only the visible Daily; failures are handled by Game's error UI.
@@ -220,6 +225,25 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       // A failed refresh keeps a Daily that is already shown.
       if (_daily == null) setState(() => _dailyFailed = true);
     }
+  }
+
+  /// Replaces the device's streak reminder with the next one: none today
+  /// once the Daily is done. Silent when reminders are off.
+  void _scheduleReminder() {
+    final daily = _daily;
+    if (daily == null || !getIt.isRegistered<StreakReminder>()) return;
+    final t = context.t;
+    unawaited(
+      getIt<StreakReminder>().reschedule(
+        now: _clock.now(),
+        dailyDone: _dailyCompleted,
+        streak: _streak,
+        completions: _completions,
+        title: 'MICHI',
+        streakBody: (count) => t.reminder.streakBody(count: count),
+        readyBody: t.reminder.readyBody,
+      ),
+    );
   }
 
   /// Shares what Home knows with the iOS widgets. Called after each load
@@ -280,8 +304,10 @@ final class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       setState(() {
         _week = WeeklyActivity.current(now, games);
         _streak = DailyStreak.count(now, games);
+        _completions = [for (final game in games) game.completedAt];
       });
       _publishWidgets();
+      _scheduleReminder();
     } on Object catch (error, stackTrace) {
       developer.log(
         'Unable to load weekly activity',

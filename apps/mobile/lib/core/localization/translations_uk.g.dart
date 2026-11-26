@@ -63,6 +63,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$week$uk week = Translations$week$uk.internal(_root);
 	late final Translations$settings$uk settings = Translations$settings$uk.internal(_root);
 	late final Translations$sync$uk sync = Translations$sync$uk.internal(_root);
+	late final Translations$reminder$uk reminder = Translations$reminder$uk.internal(_root);
 }
 
 // Path: common
@@ -1381,6 +1382,9 @@ class Translations$settings$uk {
 
 	/// uk: 'Сповіщення недоступні на цьому пристрої.'
 	String get reminderUnavailable => 'Сповіщення недоступні на цьому пристрої.';
+
+	/// uk: 'Лише якщо сьогоднішнє судоку ще не розв’язане, приблизно тоді, коли ти зазвичай граєш.'
+	String get streakReminderDetail => 'Лише якщо сьогоднішнє судоку ще не розв’язане, приблизно тоді, коли ти зазвичай граєш.';
 }
 
 // Path: sync
@@ -1441,6 +1445,21 @@ class Translations$sync$uk {
 
 	/// uk: 'Вийти'
 	String get signOut => 'Вийти';
+}
+
+// Path: reminder
+class Translations$reminder$uk {
+	Translations$reminder$uk.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// uk: 'Збережи свою серію: $count поспіль. Сьогоднішнє судоку чекає.'
+	String streakBody({required Object count}) => 'Збережи свою серію: ${count} поспіль. Сьогоднішнє судоку чекає.';
+
+	/// uk: 'Сьогоднішнє судоку чекає на тебе.'
+	String get readyBody => 'Сьогоднішнє судоку чекає на тебе.';
 }
 
 // Path: learn.lessons
@@ -2114,6 +2133,7 @@ extension on Translations {
 			'settings.reminderSignIn' => 'Увійди, щоб увімкнути нагадування.',
 			'settings.reminderPermission' => 'Дозвольте сповіщення в налаштуваннях пристрою.',
 			'settings.reminderUnavailable' => 'Сповіщення недоступні на цьому пристрої.',
+			'settings.streakReminderDetail' => 'Лише якщо сьогоднішнє судоку ще не розв’язане, приблизно тоді, коли ти зазвичай граєш.',
 			'sync.account' => 'Обліковий запис',
 			'sync.email' => 'Електронна пошта',
 			'sync.synchronization' => 'Синхронізація',
@@ -2131,6 +2151,8 @@ extension on Translations {
 			'sync.deleteConfirm' => 'Видалити обліковий запис',
 			'sync.deleteFailed' => 'Не вдалося видалити акаунт. Увійди знову й спробуй ще раз.',
 			'sync.signOut' => 'Вийти',
+			'reminder.streakBody' => ({required Object count}) => 'Збережи свою серію: ${count} поспіль. Сьогоднішнє судоку чекає.',
+			'reminder.readyBody' => 'Сьогоднішнє судоку чекає на тебе.',
 			_ => null,
 		};
 	}

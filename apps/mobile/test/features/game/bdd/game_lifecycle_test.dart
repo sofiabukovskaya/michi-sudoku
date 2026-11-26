@@ -18,9 +18,8 @@ import './step/home_no_longer_offers_continue.dart';
 
 void main() {
   group('''Local Sudoku game lifecycle''', () {
-    testWidgets('''Continue an unfinished game after reopening''', (
-      tester,
-    ) async {
+    testWidgets('''Continue an unfinished game after reopening''',
+        (tester) async {
       await anUnfinishedLocalGameWithEntriesAndNotes(tester);
       await theGameIsReopenedFromLocalStorage(tester);
       await theBoardNotesMistakesTimerAndUndoAreRestored(tester);

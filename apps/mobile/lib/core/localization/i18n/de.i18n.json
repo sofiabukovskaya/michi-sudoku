@@ -491,7 +491,8 @@
     "dailyReminder": "Täglich um 08:00",
     "reminderSignIn": "Melde dich an, um Erinnerungen zu aktivieren.",
     "reminderPermission": "Erlaube Mitteilungen in den Systemeinstellungen.",
-    "reminderUnavailable": "Mitteilungen sind auf diesem Gerät nicht verfügbar."
+    "reminderUnavailable": "Mitteilungen sind auf diesem Gerät nicht verfügbar.",
+    "streakReminderDetail": "Nur wenn das heutige Sudoku noch offen ist, ungefähr zu deiner üblichen Spielzeit."
   },
   "sync": {
     "account": "Konto",
@@ -511,5 +512,9 @@
     "deleteConfirm": "Konto löschen",
     "deleteFailed": "Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.",
     "signOut": "Abmelden"
+  },
+  "reminder": {
+    "streakBody": "Halte deine Serie: $count in Folge. Das heutige Sudoku wartet.",
+    "readyBody": "Das heutige Sudoku ist bereit, wenn du es bist."
   }
 }

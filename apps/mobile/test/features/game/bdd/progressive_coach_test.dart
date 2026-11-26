@@ -20,9 +20,8 @@ void main() {
       await aPlayableSudokuGameIsOpen(tester);
     }
 
-    testWidgets('''The first hint gives direction without the answer''', (
-      tester,
-    ) async {
+    testWidgets('''The first hint gives direction without the answer''',
+        (tester) async {
       await bddSetUp(tester);
       await iRequestTheFirstCoachHint(tester);
       await coachLevelDirectionIsVisible(tester);
@@ -35,18 +34,16 @@ void main() {
       await coachLevelFocusIsVisible(tester);
       await noFinalCoachActionIsRevealed(tester);
     });
-    testWidgets('''The reasoning hint keeps the placement hidden''', (
-      tester,
-    ) async {
+    testWidgets('''The reasoning hint keeps the placement hidden''',
+        (tester) async {
       await bddSetUp(tester);
       await coachIsShowingLevel(tester, 1);
       await iRequestAnotherCoachHint(tester);
       await coachLevelReasoningIsVisible(tester);
       await noFinalCoachActionIsRevealed(tester);
     });
-    testWidgets('''The final hint shows the actual engine deduction''', (
-      tester,
-    ) async {
+    testWidgets('''The final hint shows the actual engine deduction''',
+        (tester) async {
       await bddSetUp(tester);
       await coachIsShowingLevel(tester, 2);
       await iRequestAnotherCoachHint(tester);

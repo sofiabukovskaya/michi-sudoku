@@ -23,9 +23,8 @@ void main() {
       await iEnterTheCorrectDigit(tester);
       await theCellShowsAPlayerenteredDigit(tester);
     });
-    testWidgets('''A wrong entry remains visible as a mistake''', (
-      tester,
-    ) async {
+    testWidgets('''A wrong entry remains visible as a mistake''',
+        (tester) async {
       await bddSetUp(tester);
       await anEditableEmptyCellIsSelected(tester);
       await iEnterAnIncorrectDigit(tester);

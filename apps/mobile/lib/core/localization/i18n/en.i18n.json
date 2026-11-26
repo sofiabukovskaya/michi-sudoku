@@ -491,7 +491,8 @@
     "dailyReminder": "Daily at 08:00",
     "reminderSignIn": "Sign in to enable reminders.",
     "reminderPermission": "Allow notifications in system settings to enable reminders.",
-    "reminderUnavailable": "Notifications are unavailable on this device."
+    "reminderUnavailable": "Notifications are unavailable on this device.",
+    "streakReminderDetail": "Only if today's Sudoku isn't done, around when you usually play."
   },
   "sync": {
     "account": "Account",
@@ -511,5 +512,9 @@
     "deleteConfirm": "Delete account",
     "deleteFailed": "Could not delete your account. Sign in again and retry.",
     "signOut": "Sign out"
+  },
+  "reminder": {
+    "streakBody": "Keep your streak going: $count in a row. Today's Sudoku is waiting.",
+    "readyBody": "Today's Sudoku is ready when you are."
   }
 }

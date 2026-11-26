@@ -58,6 +58,7 @@ class TranslationsCs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$week$cs week = _Translations$week$cs._(_root);
 	@override late final _Translations$settings$cs settings = _Translations$settings$cs._(_root);
 	@override late final _Translations$sync$cs sync = _Translations$sync$cs._(_root);
+	@override late final _Translations$reminder$cs reminder = _Translations$reminder$cs._(_root);
 }
 
 // Path: common
@@ -609,6 +610,7 @@ class _Translations$settings$cs extends Translations$settings$uk {
 	@override String get reminderSignIn => 'Pro připomínky se přihlas.';
 	@override String get reminderPermission => 'Povol oznámení v nastavení zařízení.';
 	@override String get reminderUnavailable => 'Oznámení nejsou na tomto zařízení dostupná.';
+	@override String get streakReminderDetail => 'Jen když dnešní sudoku ještě není hotové, zhruba v čase, kdy obvykle hraješ.';
 }
 
 // Path: sync
@@ -635,6 +637,17 @@ class _Translations$sync$cs extends Translations$sync$uk {
 	@override String get deleteConfirm => 'Smazat účet';
 	@override String get deleteFailed => 'Účet se nepodařilo smazat. Přihlas se znovu a zkus to.';
 	@override String get signOut => 'Odhlásit se';
+}
+
+// Path: reminder
+class _Translations$reminder$cs extends Translations$reminder$uk {
+	_Translations$reminder$cs._(TranslationsCs root) : this._root = root, super.internal(root);
+
+	final TranslationsCs _root; // ignore: unused_field
+
+	// Translations
+	@override String streakBody({required Object count}) => 'Udrž svou sérii: ${count} v řadě. Dnešní sudoku čeká.';
+	@override String get readyBody => 'Dnešní sudoku je připravené, až budeš mít chvilku.';
 }
 
 // Path: learn.lessons
@@ -1212,6 +1225,7 @@ extension on TranslationsCs {
 			'settings.reminderSignIn' => 'Pro připomínky se přihlas.',
 			'settings.reminderPermission' => 'Povol oznámení v nastavení zařízení.',
 			'settings.reminderUnavailable' => 'Oznámení nejsou na tomto zařízení dostupná.',
+			'settings.streakReminderDetail' => 'Jen když dnešní sudoku ještě není hotové, zhruba v čase, kdy obvykle hraješ.',
 			'sync.account' => 'Účet',
 			'sync.email' => 'E-mail',
 			'sync.synchronization' => 'Synchronizace',
@@ -1229,6 +1243,8 @@ extension on TranslationsCs {
 			'sync.deleteConfirm' => 'Smazat účet',
 			'sync.deleteFailed' => 'Účet se nepodařilo smazat. Přihlas se znovu a zkus to.',
 			'sync.signOut' => 'Odhlásit se',
+			'reminder.streakBody' => ({required Object count}) => 'Udrž svou sérii: ${count} v řadě. Dnešní sudoku čeká.',
+			'reminder.readyBody' => 'Dnešní sudoku je připravené, až budeš mít chvilku.',
 			_ => null,
 		};
 	}

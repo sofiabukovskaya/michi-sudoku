@@ -495,7 +495,8 @@
     "dailyReminder": "Denně v 08:00",
     "reminderSignIn": "Pro připomínky se přihlas.",
     "reminderPermission": "Povol oznámení v nastavení zařízení.",
-    "reminderUnavailable": "Oznámení nejsou na tomto zařízení dostupná."
+    "reminderUnavailable": "Oznámení nejsou na tomto zařízení dostupná.",
+    "streakReminderDetail": "Jen když dnešní sudoku ještě není hotové, zhruba v čase, kdy obvykle hraješ."
   },
   "sync": {
     "account": "Účet",
@@ -515,5 +516,9 @@
     "deleteConfirm": "Smazat účet",
     "deleteFailed": "Účet se nepodařilo smazat. Přihlas se znovu a zkus to.",
     "signOut": "Odhlásit se"
+  },
+  "reminder": {
+    "streakBody": "Udrž svou sérii: $count v řadě. Dnešní sudoku čeká.",
+    "readyBody": "Dnešní sudoku je připravené, až budeš mít chvilku."
   }
 }

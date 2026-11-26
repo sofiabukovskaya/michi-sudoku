@@ -58,6 +58,7 @@ class TranslationsEn extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$week$en week = _Translations$week$en._(_root);
 	@override late final _Translations$settings$en settings = _Translations$settings$en._(_root);
 	@override late final _Translations$sync$en sync = _Translations$sync$en._(_root);
+	@override late final _Translations$reminder$en reminder = _Translations$reminder$en._(_root);
 }
 
 // Path: common
@@ -605,6 +606,7 @@ class _Translations$settings$en extends Translations$settings$uk {
 	@override String get reminderSignIn => 'Sign in to enable reminders.';
 	@override String get reminderPermission => 'Allow notifications in system settings to enable reminders.';
 	@override String get reminderUnavailable => 'Notifications are unavailable on this device.';
+	@override String get streakReminderDetail => 'Only if today\'s Sudoku isn\'t done, around when you usually play.';
 }
 
 // Path: sync
@@ -631,6 +633,17 @@ class _Translations$sync$en extends Translations$sync$uk {
 	@override String get deleteConfirm => 'Delete account';
 	@override String get deleteFailed => 'Could not delete your account. Sign in again and retry.';
 	@override String get signOut => 'Sign out';
+}
+
+// Path: reminder
+class _Translations$reminder$en extends Translations$reminder$uk {
+	_Translations$reminder$en._(TranslationsEn root) : this._root = root, super.internal(root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String streakBody({required Object count}) => 'Keep your streak going: ${count} in a row. Today\'s Sudoku is waiting.';
+	@override String get readyBody => 'Today\'s Sudoku is ready when you are.';
 }
 
 // Path: learn.lessons
@@ -1208,6 +1221,7 @@ extension on TranslationsEn {
 			'settings.reminderSignIn' => 'Sign in to enable reminders.',
 			'settings.reminderPermission' => 'Allow notifications in system settings to enable reminders.',
 			'settings.reminderUnavailable' => 'Notifications are unavailable on this device.',
+			'settings.streakReminderDetail' => 'Only if today\'s Sudoku isn\'t done, around when you usually play.',
 			'sync.account' => 'Account',
 			'sync.email' => 'Email',
 			'sync.synchronization' => 'Synchronization',
@@ -1225,6 +1239,8 @@ extension on TranslationsEn {
 			'sync.deleteConfirm' => 'Delete account',
 			'sync.deleteFailed' => 'Could not delete your account. Sign in again and retry.',
 			'sync.signOut' => 'Sign out',
+			'reminder.streakBody' => ({required Object count}) => 'Keep your streak going: ${count} in a row. Today\'s Sudoku is waiting.',
+			'reminder.readyBody' => 'Today\'s Sudoku is ready when you are.',
 			_ => null,
 		};
 	}

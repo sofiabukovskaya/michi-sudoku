@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/firebase/firebase_runtime.dart';
+import 'package:michi_mobile/core/notifications/streak_reminder.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 
@@ -15,17 +16,27 @@ import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 Future<void> michiBackgroundMessage(RemoteMessage message) async {}
 
 final class NotificationCoordinator {
-  NotificationCoordinator(this.runtime, this.router, this.auth, this.sync);
+  NotificationCoordinator(
+    this.runtime,
+    this.router,
+    this.auth,
+    this.sync,
+    this.reminder,
+  );
 
   final FirebaseRuntime runtime;
   final AppRouter router;
   final AuthCubit auth;
   final SyncCoordinator sync;
+  final StreakReminder reminder;
   StreamSubscription<RemoteMessage>? _opened;
   StreamSubscription<RemoteMessage>? _foreground;
   final Set<String> _handledIds = {};
 
   Future<void> start() async {
+    // The local streak reminder needs no account or server.
+    reminder.onOpenDaily = () => unawaited(_openDaily(null));
+    if (await reminder.launchedFromReminder()) unawaited(_openDaily(null));
     if (!await runtime.ready || FirebaseRuntime.useEmulators) return;
     _foreground = FirebaseMessaging.onMessage.listen((message) {
       // Foreground messages are intentionally silent; Home already shows Daily.
@@ -48,7 +59,9 @@ final class NotificationCoordinator {
     unawaited(_openDaily(recipient));
   }
 
-  Future<void> _openDaily(String recipient) async {
+  /// [recipient] is the account a push was sent to; a local reminder
+  /// (null) opens the Daily of whoever is using the app.
+  Future<void> _openDaily(String? recipient) async {
     // Route after first frame and account/profile selection. Home resolves its
     // locked Daily and completed/active state; a tap never creates a new game.
     await WidgetsBinding.instance.endOfFrame;
@@ -56,7 +69,8 @@ final class NotificationCoordinator {
       if (_profileReady) break;
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
-    if (!_profileReady || auth.state.account?.uid != recipient) return;
+    if (!_profileReady) return;
+    if (recipient != null && auth.state.account?.uid != recipient) return;
     await router.replaceAll([
       AppShellRoute(
         children: [HomeRoute(key: UniqueKey(), launchAction: 'daily')],

@@ -4,6 +4,7 @@ import 'package:michi_mobile/app/router/app_router.dart';
 import 'package:michi_mobile/core/firebase/firebase_runtime.dart';
 import 'package:michi_mobile/core/notifications/notification_coordinator.dart';
 import 'package:michi_mobile/core/notifications/reminder_registration.dart';
+import 'package:michi_mobile/core/notifications/streak_reminder.dart';
 import 'package:michi_mobile/core/profile/local_profile_manager.dart';
 import 'package:michi_mobile/core/profile/local_profile_scope.dart';
 import 'package:michi_mobile/core/sync/cloud_sync_repository.dart';
@@ -67,12 +68,16 @@ abstract class AppModule {
   ) => ReminderRegistration(runtime, database, flags);
 
   @lazySingleton
+  StreakReminder get streakReminder => StreakReminder();
+
+  @lazySingleton
   NotificationCoordinator notificationCoordinator(
     FirebaseRuntime runtime,
     AppRouter router,
     AuthCubit auth,
     SyncCoordinator sync,
-  ) => NotificationCoordinator(runtime, router, auth, sync);
+    StreakReminder reminder,
+  ) => NotificationCoordinator(runtime, router, auth, sync, reminder);
 
   @lazySingleton
   AuthCubit authCubit(AuthRepository repository) => AuthCubit(repository);

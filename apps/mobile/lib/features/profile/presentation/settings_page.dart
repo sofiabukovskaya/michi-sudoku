@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:michi_design_system/michi_design_system.dart';
 import 'package:michi_mobile/app/router/app_router.dart';
+import 'package:michi_mobile/core/di/injection.dart';
 import 'package:michi_mobile/core/localization/locale_preference_store.dart';
 import 'package:michi_mobile/core/localization/translations.g.dart';
 import 'package:michi_mobile/core/notifications/reminder_registration.dart';
+import 'package:michi_mobile/core/notifications/streak_reminder.dart';
 import 'package:michi_mobile/core/sync/sync_coordinator.dart';
 import 'package:michi_mobile/features/auth/application/auth_cubit.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -308,11 +310,11 @@ final class _RemindersTile extends StatefulWidget {
 
 final class _RemindersTileState extends State<_RemindersTile>
     with WidgetsBindingObserver {
-  ReminderSettings _settings = const ReminderSettings(
-    enabled: false,
-    permission: ReminderPermission.notRequested,
-  );
+  bool _enabled = false;
+  bool _permitted = true;
   bool _busy = false;
+
+  StreakReminder get _reminder => getIt<StreakReminder>();
 
   @override
   void initState() {
@@ -333,44 +335,50 @@ final class _RemindersTileState extends State<_RemindersTile>
   }
 
   Future<void> _load() async {
-    final uid = widget.uid;
-    final registration = context.read<ReminderRegistration>();
     try {
-      if (uid != null) {
-        await registration.refreshTimezone(
-          uid,
-          LocaleSettings.currentLocale.languageCode,
-        );
+      final uid = widget.uid;
+      var enabled = await _reminder.isEnabled();
+      final permitted = await _reminder.permitted();
+      // The old 08:00 push becomes the local streak reminder, so nobody
+      // gets both.
+      if (uid != null && mounted) {
+        final registration = context.read<ReminderRegistration>();
+        final server = await registration.load(uid);
+        if (server.enabled) {
+          await registration.disable(uid);
+          if (!enabled && permitted) enabled = await _reminder.enable();
+        }
       }
-      final settings = await registration.load(uid);
-      if (mounted && widget.uid == uid) setState(() => _settings = settings);
+      if (mounted) {
+        setState(() {
+          _enabled = enabled;
+          _permitted = permitted || !enabled;
+        });
+      }
     } on Object {
-      // Settings remain usable offline with the last displayed state.
+      // Settings remain usable with the last displayed state.
     }
   }
 
   Future<void> _setEnabled(bool enabled) async {
-    final uid = widget.uid;
-    if (uid == null || _busy) return;
+    if (_busy) return;
     setState(() => _busy = true);
     try {
-      final registration = context.read<ReminderRegistration>();
       if (enabled) {
-        final settings = await registration.enable(
-          uid,
-          LocaleSettings.currentLocale.languageCode,
-        );
-        if (mounted) setState(() => _settings = settings);
-      } else {
-        await registration.disable(uid);
-        if (mounted) {
-          setState(
-            () => _settings = ReminderSettings(
-              enabled: false,
-              permission: _settings.permission,
-            ),
-          );
+        final on = await _reminder.enable();
+        final uid = widget.uid;
+        if (on && uid != null && mounted) {
+          await context.read<ReminderRegistration>().disable(uid);
         }
+        if (mounted) {
+          setState(() {
+            _enabled = on;
+            _permitted = on;
+          });
+        }
+      } else {
+        await _reminder.disable();
+        if (mounted) setState(() => _enabled = false);
       }
     } on Object {
       if (mounted) await _load();
@@ -387,11 +395,11 @@ final class _RemindersTileState extends State<_RemindersTile>
 
   @override
   Widget build(BuildContext context) {
-    final denied = _settings.permission == ReminderPermission.denied;
-    final unavailable = _settings.permission == ReminderPermission.unsupported;
+    final denied = !_permitted;
     return Column(
       children: [
         SwitchListTile(
+          key: const ValueKey('streak-reminder'),
           secondary: const Icon(
             Icons.access_time_rounded,
             color: MichiColors.textSecondary,
@@ -400,21 +408,17 @@ final class _RemindersTileState extends State<_RemindersTile>
             context.t.settings.reminders,
             style: MichiTypography.body,
           ),
-          subtitle: widget.uid == null
-              ? Text(context.t.settings.reminderSignIn)
-              : denied
-              ? Text(context.t.settings.reminderPermission)
-              : unavailable
-              ? Text(context.t.settings.reminderUnavailable)
-              : Text(context.t.settings.dailyReminder),
-          value: _settings.enabled,
+          subtitle: Text(
+            denied
+                ? context.t.settings.reminderPermission
+                : context.t.settings.streakReminderDetail,
+          ),
+          value: _enabled,
           activeThumbColor: MichiColors.ivory,
           activeTrackColor: MichiColors.indigo,
           inactiveThumbColor: MichiColors.ivory,
           inactiveTrackColor: MichiColors.cream,
-          onChanged: widget.uid == null || _busy || unavailable || denied
-              ? null
-              : _setEnabled,
+          onChanged: _busy ? null : _setEnabled,
         ),
         if (denied)
           TextButton(

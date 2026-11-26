@@ -19,6 +19,7 @@ import 'package:michi_mobile/core/notifications/notification_coordinator.dart'
     as _i1043;
 import 'package:michi_mobile/core/notifications/reminder_registration.dart'
     as _i408;
+import 'package:michi_mobile/core/notifications/streak_reminder.dart' as _i613;
 import 'package:michi_mobile/core/profile/local_profile_manager.dart' as _i247;
 import 'package:michi_mobile/core/profile/local_profile_scope.dart' as _i906;
 import 'package:michi_mobile/core/sync/cloud_sync_repository.dart' as _i479;
@@ -74,6 +75,7 @@ extension GetItInjectableX on _i174.GetIt {
     final appModule = _$AppModule();
     gh.factory<_i78.ScannerImageSource>(() => appModule.scannerImageSource);
     gh.lazySingleton<_i891.FirebaseRuntime>(() => appModule.firebaseRuntime);
+    gh.lazySingleton<_i613.StreakReminder>(() => appModule.streakReminder);
     gh.lazySingleton<_i712.AppRouter>(() => appModule.router);
     gh.lazySingleton<_i247.ExactSolver>(() => appModule.exactSolver);
     gh.lazySingleton<_i247.HumanSolver>(() => appModule.humanSolver);
@@ -207,19 +209,20 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1055.ImportedPuzzleRepository>(),
       ),
     );
+    gh.lazySingleton<_i539.LearningRecommendationService>(
+      () => appModule.learningRecommendationService(
+        gh<_i484.LearningProfileProvider>(),
+        gh<_i397.DailyLearningFocusRepository>(),
+        gh<_i585.GameClock>(),
+      ),
+    );
     gh.lazySingleton<_i1043.NotificationCoordinator>(
       () => appModule.notificationCoordinator(
         gh<_i891.FirebaseRuntime>(),
         gh<_i712.AppRouter>(),
         gh<_i404.AuthCubit>(),
         gh<_i460.SyncCoordinator>(),
-      ),
-    );
-    gh.lazySingleton<_i539.LearningRecommendationService>(
-      () => appModule.learningRecommendationService(
-        gh<_i484.LearningProfileProvider>(),
-        gh<_i397.DailyLearningFocusRepository>(),
-        gh<_i585.GameClock>(),
+        gh<_i613.StreakReminder>(),
       ),
     );
     return this;

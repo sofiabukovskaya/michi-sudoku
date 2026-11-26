@@ -58,6 +58,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$week$de week = _Translations$week$de._(_root);
 	@override late final _Translations$settings$de settings = _Translations$settings$de._(_root);
 	@override late final _Translations$sync$de sync = _Translations$sync$de._(_root);
+	@override late final _Translations$reminder$de reminder = _Translations$reminder$de._(_root);
 }
 
 // Path: common
@@ -605,6 +606,7 @@ class _Translations$settings$de extends Translations$settings$uk {
 	@override String get reminderSignIn => 'Melde dich an, um Erinnerungen zu aktivieren.';
 	@override String get reminderPermission => 'Erlaube Mitteilungen in den Systemeinstellungen.';
 	@override String get reminderUnavailable => 'Mitteilungen sind auf diesem Gerät nicht verfügbar.';
+	@override String get streakReminderDetail => 'Nur wenn das heutige Sudoku noch offen ist, ungefähr zu deiner üblichen Spielzeit.';
 }
 
 // Path: sync
@@ -631,6 +633,17 @@ class _Translations$sync$de extends Translations$sync$uk {
 	@override String get deleteConfirm => 'Konto löschen';
 	@override String get deleteFailed => 'Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.';
 	@override String get signOut => 'Abmelden';
+}
+
+// Path: reminder
+class _Translations$reminder$de extends Translations$reminder$uk {
+	_Translations$reminder$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String streakBody({required Object count}) => 'Halte deine Serie: ${count} in Folge. Das heutige Sudoku wartet.';
+	@override String get readyBody => 'Das heutige Sudoku ist bereit, wenn du es bist.';
 }
 
 // Path: learn.lessons
@@ -1208,6 +1221,7 @@ extension on TranslationsDe {
 			'settings.reminderSignIn' => 'Melde dich an, um Erinnerungen zu aktivieren.',
 			'settings.reminderPermission' => 'Erlaube Mitteilungen in den Systemeinstellungen.',
 			'settings.reminderUnavailable' => 'Mitteilungen sind auf diesem Gerät nicht verfügbar.',
+			'settings.streakReminderDetail' => 'Nur wenn das heutige Sudoku noch offen ist, ungefähr zu deiner üblichen Spielzeit.',
 			'sync.account' => 'Konto',
 			'sync.email' => 'E-Mail',
 			'sync.synchronization' => 'Synchronisierung',
@@ -1225,6 +1239,8 @@ extension on TranslationsDe {
 			'sync.deleteConfirm' => 'Konto löschen',
 			'sync.deleteFailed' => 'Dein Konto konnte nicht gelöscht werden. Melde dich erneut an und versuche es noch einmal.',
 			'sync.signOut' => 'Abmelden',
+			'reminder.streakBody' => ({required Object count}) => 'Halte deine Serie: ${count} in Folge. Das heutige Sudoku wartet.',
+			'reminder.readyBody' => 'Das heutige Sudoku ist bereit, wenn du es bist.',
 			_ => null,
 		};
 	}
