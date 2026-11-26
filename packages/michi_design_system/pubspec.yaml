@@ -27,3 +27,7 @@ flutter:
     - family: Lora
       fonts:
         - asset: assets/fonts/Lora-wght.ttf
+        # True italic (OFL, same license file): the splash tagline and
+        # other italic editorial text no longer use a synthesized slant.
+        - asset: assets/fonts/Lora-Italic-wght.ttf
+          style: italic

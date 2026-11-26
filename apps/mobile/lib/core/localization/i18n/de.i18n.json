@@ -8,7 +8,8 @@
     "start": "Starten"
   },
   "splash": {
-    "subtitle": "Lerne, den nächsten Zug zu erkennen."
+    "subtitle": "Lerne, den nächsten Zug zu erkennen.",
+    "slowStart": "Der Start dauert etwas länger…"
   },
   "welcome": {
     "title": "Finde deinen Weg durch Logik.",

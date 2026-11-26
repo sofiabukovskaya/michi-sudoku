@@ -8,7 +8,8 @@
     "start": "Commencer"
   },
   "splash": {
-    "subtitle": "Apprends à voir le prochain coup."
+    "subtitle": "Apprends à voir le prochain coup.",
+    "slowStart": "Le démarrage prend un peu plus de temps…"
   },
   "welcome": {
     "title": "Trouve ton chemin grâce à la logique.",

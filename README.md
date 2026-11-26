@@ -5,9 +5,6 @@ Coach teaches the reasoning behind a move through progressive hints.
 Phases 1–16 include the workspace foundation, Sudoku engine, playable Game and
 Coach, local restoration, bundled puzzles, Learn and Practice, recommendations,
 and a still-image scanner with a local printed-digit model and editable review.
-Design audits record the visual
-decisions for [Phase 10](docs/phase10_design_audit.md) and
-[scanner Phase 13](docs/phase13_scanner_design_audit.md).
 
 ## Workspace
 
@@ -71,8 +68,7 @@ metadata. Imported puzzle IDs derive from the confirmed 81-cell board hash;
 Phase 16 scopes user records to guest or Firebase UID profiles and migrates
 legacy records into guest. The transactional outbox and per-device practice
 contributions synchronize completed games, learning progress, and Daily
-completion. See [Phase 16 local-first sync](docs/phase16_local_first_sync.md)
-for merge rules, emulator verification, and live setup still required.
+completion.
 
 Boards are stored as 81-character `0`–`9` strings. Player pencil notes are
 JSON from zero-based cell index to `CandidateMask` bits. The last 100 meaningful
@@ -195,10 +191,7 @@ Daily completion, and technique progress synchronize through a Drift outbox;
 active games stay on their owning device. Firestore rules restrict each UID to
 its own progress, and an Auth deletion Function removes cloud data. Account
 controls stay hidden until each Firebase provider and its platform setup is
-verified; the Auth emulator can exercise email flows now. See the
-[Phase 15 setup guide](docs/phase15_firebase_setup.md) for provider steps and
-[Phase 16 sync](docs/phase16_local_first_sync.md) for the merge policy and
-live deployment prerequisites.
+verified; the Auth emulator can exercise email flows now.
 
 The home screen selects a bundled puzzle by difficulty, starts or continues
 today's Daily, or continues the saved game. Game, content, and Coach behavior
@@ -214,9 +207,7 @@ remote inference or image uploads. The classifier implements the existing
 in the import flow. The model's official Wicht V2 real-photo holdout cell
 accuracy is **92.10%** with **6.40 corrections per board on average**; this is
 measured with annotated grid outlines, so grid detection quality is separate.
-See the [evaluation](docs/phase14_scanner_ml_evaluation.md),
-[model card](docs/phase14_digit_model_card.md), and
-[reproduction guide](tools/sudoku_scanner_ml/README.md) for data provenance,
+See the [reproduction guide](tools/sudoku_scanner_ml/README.md) for data provenance,
 splits, metrics and limitations. CI checks Python tests, model loading,
 Flutter analysis and workspace tests without retraining.
 
@@ -245,4 +236,3 @@ responsibility boundaries. Cross-device active games, leaderboards,
 subscriptions, XY-Wing, Swordfish, and unrelated visual screens remain future
 work.
 
-Phase 17 remote content, Daily publishing, cache, and reminder operations are documented in [docs/phase17_remote_content.md](docs/phase17_remote_content.md).

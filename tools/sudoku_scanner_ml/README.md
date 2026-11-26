@@ -89,6 +89,5 @@ root>` once before `flutter test`. Android and iOS apps bundle their native
 libraries through the plugin. The classifier loads one interpreter, uses its
 isolate worker for the 81 cells, and closes both resources together.
 
-The model is float32 (no quantization); see the [evaluation report](../../docs/phase14_scanner_ml_evaluation.md)
-and [model card](../../docs/phase14_digit_model_card.md) for measured quality
-and limits. The existing Review and Sudoku validation remain required.
+The model is float32 (no quantization). The existing Review and Sudoku
+validation remain required.

@@ -85,6 +85,7 @@ class _Translations$splash$en extends Translations$splash$uk {
 
 	// Translations
 	@override String get subtitle => 'Learn to see the next move.';
+	@override String get slowStart => 'Starting up takes a little longer…';
 }
 
 // Path: welcome
@@ -832,6 +833,7 @@ extension on TranslationsEn {
 			'common.loadProblem' => 'MICHI couldn’t open this right now. Your progress is safe on this device.',
 			'common.start' => 'Start',
 			'splash.subtitle' => 'Learn to see the next move.',
+			'splash.slowStart' => 'Starting up takes a little longer…',
 			'welcome.title' => 'Find your way through logic.',
 			'welcome.subtitle' => 'Sudoku with a coach who guides you instead of solving for you.',
 			'welcome.guest' => 'Start without an account',

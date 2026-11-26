@@ -8,7 +8,8 @@
     "start": "Empezar"
   },
   "splash": {
-    "subtitle": "Aprende a ver el siguiente paso."
+    "subtitle": "Aprende a ver el siguiente paso.",
+    "slowStart": "El inicio tarda un poco más…"
   },
   "welcome": {
     "title": "Encuentra tu camino a través de la lógica.",

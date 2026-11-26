@@ -102,6 +102,9 @@ class Translations$splash$uk {
 
 	/// uk: 'Вчися бачити наступний хід.'
 	String get subtitle => 'Вчися бачити наступний хід.';
+
+	/// uk: 'Запуск займає трохи довше…'
+	String get slowStart => 'Запуск займає трохи довше…';
 }
 
 // Path: welcome
@@ -1772,6 +1775,7 @@ extension on Translations {
 			'common.loadProblem' => 'MICHI не вдалося це відкрити. Твій прогрес у безпеці на цьому пристрої.',
 			'common.start' => 'Почати',
 			'splash.subtitle' => 'Вчися бачити наступний хід.',
+			'splash.slowStart' => 'Запуск займає трохи довше…',
 			'welcome.title' => 'Знайди свій шлях крізь логіку.',
 			'welcome.subtitle' => 'Судоку з наставником, який підказує — а не розв’язує за тебе.',
 			'welcome.guest' => 'Почати без акаунта',

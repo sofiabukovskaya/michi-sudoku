@@ -8,7 +8,8 @@
     "start": "Začít"
   },
   "splash": {
-    "subtitle": "Nauč se vidět další tah."
+    "subtitle": "Nauč se vidět další tah.",
+    "slowStart": "Spuštění trvá trochu déle…"
   },
   "welcome": {
     "title": "Najdi svou cestu logikou.",

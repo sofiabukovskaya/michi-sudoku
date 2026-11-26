@@ -39,9 +39,16 @@ final class _SplashPageState extends State<SplashPage>
 
   bool _started = false;
 
+  /// Design: after a few seconds, a quiet note that start-up takes longer.
+  bool _slow = false;
+  Timer? _slowTimer;
+
   @override
   void initState() {
     super.initState();
+    _slowTimer = Timer(const Duration(seconds: 4), () {
+      if (mounted) setState(() => _slow = true);
+    });
     unawaited(_checkForSavedGame());
   }
 
@@ -83,6 +90,7 @@ final class _SplashPageState extends State<SplashPage>
 
   @override
   void dispose() {
+    _slowTimer?.cancel();
     _fallback?.cancel();
     if (defaultTargetPlatform == TargetPlatform.android) {
       _launchChannel.setMethodCallHandler(null);
@@ -154,6 +162,7 @@ final class _SplashPageState extends State<SplashPage>
           size: constraints.biggest,
           progress: _entrance.value,
           tagline: context.t.splash.subtitle,
+          slowNote: _slow ? context.t.splash.slowStart : null,
         ),
       ),
     ),
@@ -170,6 +179,7 @@ final class _SplashComposition extends StatelessWidget {
     required this.size,
     required this.progress,
     required this.tagline,
+    this.slowNote,
   });
 
   /// Native launch disc size, measured on device: the iOS LaunchScreen image
@@ -181,6 +191,9 @@ final class _SplashComposition extends StatelessWidget {
   final double progress;
   final String tagline;
 
+  /// Shown at the bottom once start-up takes longer than usual.
+  final String? slowNote;
+
   static double _interval(double value, double begin, double end) =>
       MichiMotion.curve.transform(
         ((value - begin) / (end - begin)).clamp(0.0, 1.0),
@@ -189,10 +202,12 @@ final class _SplashComposition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final windowClass = MichiLayout.classify(size.width);
+    // Design: the disc spans about 71% of a phone's width; it fills 87% of
+    // the artwork, so the artwork is about 82% of the width.
     final disc = switch (windowClass) {
-      MichiWindowClass.compact => (size.width * 0.62).clamp(188.0, 248.0),
-      MichiWindowClass.medium => 264.0,
-      MichiWindowClass.expanded => 288.0,
+      MichiWindowClass.compact => (size.width * 0.82).clamp(188.0, 360.0),
+      MichiWindowClass.medium => 360.0,
+      MichiWindowClass.expanded => 380.0,
     };
     final settle = _interval(progress, 0, 0.62);
     final mark = _interval(progress, 0.28, 0.82);
@@ -201,7 +216,7 @@ final class _SplashComposition extends StatelessWidget {
     // The disc finishes slightly above center; the words below it bring the
     // whole group's visual weight to just above the middle of the window.
     final startCenter = size.height / 2;
-    final endCenter = size.height * 0.42;
+    final endCenter = size.height * 0.39;
     final discCenter = startCenter + (endCenter - startCenter) * settle;
     final scale = (_launchDisc / disc) + (1 - _launchDisc / disc) * settle;
     final textTop = endCenter + disc / 2 + MichiSpacing.xl;
@@ -232,10 +247,10 @@ final class _SplashComposition extends StatelessWidget {
               children: [
                 MichiWordmark(
                   light: true,
-                  iconSize: windowClass == MichiWindowClass.compact ? 40 : 46,
+                  iconSize: windowClass == MichiWindowClass.compact ? 44 : 50,
                   pathProgress: mark,
                 ),
-                const SizedBox(height: MichiSpacing.lg),
+                const SizedBox(height: MichiSpacing.xl),
                 Opacity(
                   opacity: words,
                   child: Transform.translate(
@@ -245,9 +260,12 @@ final class _SplashComposition extends StatelessWidget {
                       style: MichiTypography.editorialTitle.copyWith(
                         color: MichiColors.ivory,
                         fontSize: windowClass == MichiWindowClass.compact
-                            ? 20
-                            : 22,
+                            ? 22
+                            : 24,
                         fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w400,
+                        // Lora is variable: the weight axis must be explicit.
+                        fontVariations: const [FontVariation('wght', 400)],
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -257,6 +275,22 @@ final class _SplashComposition extends StatelessWidget {
             ),
           ),
         ),
+        if (slowNote case final note?)
+          Positioned(
+            left: MichiSpacing.xl,
+            right: MichiSpacing.xl,
+            bottom: 56 + MediaQuery.paddingOf(context).bottom,
+            child: Semantics(
+              liveRegion: true,
+              child: Text(
+                note,
+                textAlign: TextAlign.center,
+                style: MichiTypography.secondary.copyWith(
+                  color: MichiColors.ivory.withValues(alpha: 0.85),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
